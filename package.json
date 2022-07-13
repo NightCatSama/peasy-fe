@@ -5,7 +5,8 @@
   "scripts": {
     "dev": "vite",
     "build": "vue-tsc --noEmit && vite build",
-    "build:template": "rm -rf template-dist/ && vue-tsc --noEmit && vite build --config vite.template.config.ts --mode template",
+    "build:template": "vue-tsc --noEmit && vite build --config vite.template.config.ts --mode template && npm run template",
+    "template": "cp -r template-dist/ peasy-be/template/ && cp -r template.html peasy-be/template/template.html",
     "preview": "vite preview",
     "prettier": "npx prettier --write src/"
   },

@@ -1,0 +1,3 @@
+[submodule "peasy-be"]
+	path = peasy-be
+	url = https://github.com/NightCatSama/peasy-be.git
