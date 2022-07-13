@@ -18,17 +18,24 @@ const { text, size = 'md', type = 'primary' } = defineProps<IBtnProps>()
   display: flex;
   justify-content: center;
   align-items: center;
+  cursor: pointer;
+  transition: all .3s;
 
   &-size-md {
     padding: 0 32px;
     font-size: 14px;
     height: 36px;
     border-radius: 18px;
+    font-weight: bold;
   }
 
   &-type-primary {
     color: $color;
     background-color: $theme;
+
+    &:hover {
+      background-color: lighten($theme, 7%);
+    }
   }
 }
 </style>
