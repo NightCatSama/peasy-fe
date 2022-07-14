@@ -1,11 +1,10 @@
 import type { IDeviceInfo } from '@/stores/display'
 
-const preset = {
+export const presetDevice = {
   desktop: [
     [1280, 720],
     [1920, 1080],
     [2560, 1440],
-    [3840, 2160],
   ],
   mobile: [
     [375, 667],
@@ -18,7 +17,7 @@ const preset = {
 /** 根据屏幕宽度计算出最佳的模拟容器大小，尽量能全部在容器中 */
 export const getDefaultDevice = (parentWidth: number): IDeviceInfo => {
   const w = parentWidth * 0.8 // 尽量不超过容器 80% 的大小)
-  let size = preset.desktop[0]
+  let size = presetDevice.desktop[0]
   let zoom = 1
   // 如果比最小的设备宽度还小，则开启缩放
   if (w < size[0] * 0.8) {
@@ -26,9 +25,9 @@ export const getDefaultDevice = (parentWidth: number): IDeviceInfo => {
   } else if (w < size[0]) {
     zoom = 0.8
   } else {
-    for (let i = 1; i < preset.desktop.length; i++) {
-      if (w >= preset.desktop[i][0]) {
-        size = preset.desktop[i]
+    for (let i = 1; i < presetDevice.desktop.length; i++) {
+      if (w >= presetDevice.desktop[i][0]) {
+        size = presetDevice.desktop[i]
       }
     }
   }

@@ -58,6 +58,7 @@ const allKey = Symbol('all')
     font-size: 18px;
     opacity: 0.8;
     border: 1px solid $color;
+    font-weight: bold;
     cursor: pointer;
     transition: all 0.3s, transform 0.5s;
 
@@ -67,7 +68,7 @@ const allKey = Symbol('all')
 
     &.active {
       transform: rotateY(360deg);
-      color: $bg-default;
+      color: $color;
       background-color: $theme;
       border-color: $theme;
     }

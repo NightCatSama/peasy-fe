@@ -3,6 +3,9 @@ import Btn from './widgets/Btn.vue'
 import Avatar from './widgets/Avatar.vue'
 import { useDisplayStore } from '@/stores/display'
 import { storeToRefs } from 'pinia'
+import Dropdown from './widgets/Dropdown.vue';
+import Icon from './widgets/Icon.vue';
+import { presetDevice } from '@/utils/device';
 
 const displayStore = useDisplayStore()
 const { device } = storeToRefs(displayStore)
@@ -14,6 +17,9 @@ const text = $computed(
 )
 
 const zoomText = $computed(() => `${device.value.zoom * 100}%`)
+
+const desktop = $ref(presetDevice.desktop)
+
 </script>
 
 <template>
@@ -23,7 +29,19 @@ const zoomText = $computed(() => `${device.value.zoom * 100}%`)
       <div class="ext">.html</div>
     </div>
     <div class="center">
-      <div class="size">{{ text }}</div>
+      <Dropdown>
+        <div class="size">{{ text }}</div>
+        <template #content>
+          <div class="device-list">
+            <div class="device-item" v-for="(item, index) in desktop" :key="index">
+              <Icon v-if="index === 0" name="device-sm" type="pure" :size="28" />
+              <Icon v-else-if="index === 1" name="device-md" type="pure" :size="28" />
+              <Icon v-else name="device-lg" type="pure" :size="28" />
+              <div class="device-text">{{ item[0] + '×' + item[1] }}</div>
+            </div>
+          </div>
+        </template>
+      </Dropdown>
       <div class="zoom">{{ zoomText }}</div>
     </div>
     <div class="right">
@@ -106,6 +124,30 @@ const zoomText = $computed(() => `${device.value.zoom * 100}%`)
 
   .avatar {
     margin-left: 20px;
+  }
+}
+
+.device-list {
+  color: $color;
+  display: flex;
+
+  .device-item {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 80px;
+    height: 80px;
+    font-size: 10px;
+    color: $panel-light;
+    border: 3px solid $panel-light;
+    border-radius: 4px;
+    margin: 0 4px;
+    cursor: pointer;
+
+    .device-text {
+      margin-top: 2px;
+    }
   }
 }
 </style>
