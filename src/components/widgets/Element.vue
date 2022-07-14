@@ -1,10 +1,10 @@
 <script setup lang="ts">
 interface IElementProps {
-  image?: string;
-  name: string;
+  image?: string
+  name: string
 }
-const { image = 'https://avatars.githubusercontent.com/u/13888962?v=4', name } = defineProps<IElementProps>()
-
+const { image = 'https://avatars.githubusercontent.com/u/13888962?v=4', name } =
+  defineProps<IElementProps>()
 </script>
 
 <template>
@@ -28,12 +28,12 @@ const { image = 'https://avatars.githubusercontent.com/u/13888962?v=4', name } =
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
-    transition: all .3s;
+    transition: all 0.3s;
     cursor: pointer;
 
     &:hover {
       transform: scale(1.03);
-      outline: 2px solid $theme;
+      outline: 3px solid $theme;
     }
   }
 

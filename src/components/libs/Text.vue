@@ -9,11 +9,9 @@ interface ITextProps {
 }
 const { color, text, position } = defineProps<ITextProps>()
 
-const isEditMode = !!inject('isEditMode')
-
 const style = $computed(() => ({
   color,
-  ...usePositionStyle(position, isEditMode),
+  ...usePositionStyle(position),
 }))
 </script>
 

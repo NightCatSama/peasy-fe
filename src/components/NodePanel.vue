@@ -1,12 +1,11 @@
 <script setup lang="ts">
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
-import Element from './widgets/Element.vue';
+import Element from './widgets/Element.vue'
 
 const pageStore = usePageStore()
-const { modelData } = storeToRefs(pageStore)
+const { pageData, modelData } = storeToRefs(pageStore)
 const { addSection } = pageStore
-
 </script>
 
 <template>
@@ -18,7 +17,7 @@ const { addSection } = pageStore
           v-for="(template, key) in list"
           class="element-item"
           :name="template.name"
-          @click="() => addSection(template)"
+          @click="() => addSection({ ...template, name: template.name + `${Math.random() * 100}`})"
         ></Element>
       </div>
     </section>
@@ -27,7 +26,10 @@ const { addSection } = pageStore
 
 <style lang="scss" scoped>
 .node-panel {
+  position: relative;
   width: 250px;
+  height: 100%;
+  overflow-y: auto;
   flex-shrink: 0;
   background-color: $panel;
   padding: 15px 24px;

@@ -9,6 +9,8 @@ import { downloadHtml } from '@/utils/download'
 import Sidebar from '@/components/Sidebar.vue'
 import ConfigHeader from '@/components/ConfigHeader.vue'
 import NodePanel from '@/components/NodePanel.vue'
+import EditSection from '@/components/EditSection.vue'
+import SectionList from '@/components/SectionList.vue'
 
 provide('isEditMode', true)
 
@@ -26,21 +28,30 @@ const handleDownload = async () => {
   const res = await download()
   downloadHtml(res.data)
 }
+
+const showLeftPanel = $ref(true)
+
 </script>
 
 <template>
   <div class="page">
-    <Sidebar></Sidebar>
+    <Sidebar
+      :active-node-panel="showLeftPanel"
+      @change-node-panel="(val) => (showLeftPanel = val)"
+    ></Sidebar>
     <div class="container">
       <ConfigHeader @download="handleDownload"></ConfigHeader>
       <!-- 页面主体内容 -->
       <div class="content">
         <!-- 左侧模板/组件选择区域 -->
-        <NodePanel></NodePanel>
-        <!-- 页面编辑区 -->
-        <div class="edit-section">
-          <LibComponent v-for="item in pageData" :item="item" :key="item.name"></LibComponent>
+        <div :class="['left-panel', { show: showLeftPanel }]">
+          <NodePanel></NodePanel>
+          <SectionList></SectionList>
         </div>
+        <!-- 页面编辑区 -->
+        <EditSection>
+          <LibComponent v-for="item in pageData" :item="item" :key="item.name"></LibComponent>
+        </EditSection>
         <!-- 右侧组件参数配置区 -->
         <div class="right" v-show="false">
           <ConfigSection></ConfigSection>
@@ -56,6 +67,7 @@ const handleDownload = async () => {
   color: $color;
 }
 .container {
+  position: relative;
   display: flex;
   flex-direction: column;
   width: 100%;
@@ -63,16 +75,25 @@ const handleDownload = async () => {
   overflow: hidden;
   background-color: $bg-default;
 
+  .left-panel {
+    position: absolute;
+    left: 0;
+    top: 0;
+    height: 100%;
+    transform: translateX(-100%);
+    transition: all 0.5s;
+    z-index: 999;
+
+    &.show {
+      transform: translateX(0);
+    }
+  }
+
   .content {
+    position: relative;
     flex: 1;
     height: 100%;
     display: flex;
-
-    .edit-section {
-      flex: 1;
-      height: 100%;
-      overflow: auto;
-    }
 
     .right {
       width: 300px;

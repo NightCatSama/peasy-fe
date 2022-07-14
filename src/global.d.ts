@@ -61,9 +61,10 @@ interface ConfigNode {
 
 /** 尺寸信息 */
 interface IBox {
-  width?: string | number | 'auto'
-  height?: string | number | 'auto'
+  width?: string | 'auto'
+  height?: string | 'auto'
   stretch?: boolean
+  isSection?: boolean
 }
 
 /** 容器的布局信息 */
@@ -80,4 +81,12 @@ interface IPosition {
   top?: number
   right?: number
   bottom?: number
+}
+
+/** 容器信息 */
+interface IContainer {
+  type: 'color' | 'image'
+  backgroundColor?: string
+  backgroundImage?: string
+  backgroundSize?: 'cover' | 'contain' | 'auto'
 }

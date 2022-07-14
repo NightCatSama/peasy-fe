@@ -41,6 +41,11 @@ export const usePageStore = defineStore('page', {
       const insertIndex = index ?? this.pageData.length
       this.pageData.splice(insertIndex, 0, cloneDeep(node))
     },
+    removeSection(node: CNode) {
+      const index = this.pageData.indexOf(node)
+      console.log('index', index)
+      this.pageData.splice(index, 1)
+    },
     setActiveNode(node: CNode) {
       this.activeNode = node
     },

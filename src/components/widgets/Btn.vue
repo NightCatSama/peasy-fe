@@ -19,7 +19,7 @@ const { text, size = 'md', type = 'primary' } = defineProps<IBtnProps>()
   justify-content: center;
   align-items: center;
   cursor: pointer;
-  transition: all .3s;
+  transition: all 0.3s;
 
   &-size-md {
     padding: 0 32px;

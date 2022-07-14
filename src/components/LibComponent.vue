@@ -25,7 +25,7 @@ watch(activeNode, (newNode) => {
 
 <template>
   <Component
-    :class="{ active: isActive }"
+    :class="['lib-component', { active: isActive }]"
     @click.stop="test"
     :is="item.component"
     v-bind="item.props || {}"
@@ -37,6 +37,9 @@ watch(activeNode, (newNode) => {
 </template>
 
 <style lang="scss" scoped>
+.lib-component {
+  cursor: default;
+}
 .active {
   outline: 1px solid skyblue;
   position: relative;
@@ -48,7 +51,7 @@ watch(activeNode, (newNode) => {
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.05);
+    background: rgba(0, 0, 0, 0.15);
     pointer-events: none;
   }
 }

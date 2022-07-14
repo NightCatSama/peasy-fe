@@ -3,11 +3,15 @@ interface IAvatarProps {
   image?: string
   size?: number
 }
-const { image = 'https://avatars.githubusercontent.com/u/13888962?v=4', size = 24 } = defineProps<IAvatarProps>()
+const { image = 'https://avatars.githubusercontent.com/u/13888962?v=4', size = 24 } =
+  defineProps<IAvatarProps>()
 </script>
 
 <template>
-  <div class="avatar" :style="{ backgroundImage: `url(${image})`, width: `${size}px`, height: `${size}px` }" />
+  <div
+    class="avatar"
+    :style="{ backgroundImage: `url(${image})`, width: `${size}px`, height: `${size}px` }"
+  />
 </template>
 
 <style lang="scss" scoped>

@@ -9,12 +9,17 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
         type: 'relative',
       },
       box: {
-        height: '100vh',
+        height: '100%',
+        isSection: type === 'section',
       },
       layout: {
         direction: 'row',
         justify: 'center',
         align: 'center',
+      },
+      container: {
+        type: 'color',
+        backgroundColor: 'pink',
       },
     },
     children: [
@@ -38,6 +43,10 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
             justify: 'center',
             align: 'start',
           } as ILayout,
+          container: {
+            type: 'color',
+            backgroundColor: '#fff',
+          },
         },
         children: [
           {
