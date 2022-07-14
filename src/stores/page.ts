@@ -12,21 +12,29 @@ type ModelData = {
 
 export const usePageStore = defineStore('page', {
   state: () => ({
-    pageData: [] as CNode[],
+    allPageData: [] as CNode[],
     activeNode: null as CNode | null,
     modelData: {
       section: [],
       component: [],
       template: [],
     } as ModelData,
+    /** 当前展示的 Section，null 为全部 */
+    activeSection: null as string | null,
   }),
   getters: {
     activeConfigData: (state) => (state.activeNode ? getConfig(state.activeNode) : null),
+    isActiveAllSection: (state) => state.activeSection === null,
+    pageData: (state) =>
+      state.activeSection === null
+        ? state.allPageData
+        : [state.allPageData.find((item) => item.name === state.activeSection)] ||
+          state.allPageData,
   },
   actions: {
     async getPageData() {
       // const { data } = await api.post<any>({})
-      this.pageData = []
+      this.allPageData = []
     },
     async getAssetsData() {
       // const { data } = await api.post<any>({})
@@ -38,23 +46,25 @@ export const usePageStore = defineStore('page', {
       this.modelData = data
     },
     addSection(node: CNode, index?: number) {
-      const insertIndex = index ?? this.pageData.length
-      this.pageData.splice(insertIndex, 0, cloneDeep(node))
+      const insertIndex = index ?? this.allPageData.length
+      this.allPageData.splice(insertIndex, 0, cloneDeep(node))
     },
     removeSection(node: CNode) {
-      const index = this.pageData.indexOf(node)
-      console.log('index', index)
-      this.pageData.splice(index, 1)
+      const index = this.allPageData.indexOf(node)
+      this.allPageData.splice(index, 1)
     },
     setActiveNode(node: CNode) {
       this.activeNode = node
     },
     async download() {
-      const data = this.pageData
+      const data = this.allPageData
       const res = await api.post<any>({
         data,
       })
       return res
+    },
+    setActiveSection(node: CNode | null) {
+      this.activeSection = node ? node.name : null
     },
   },
 })

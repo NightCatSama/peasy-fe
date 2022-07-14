@@ -30,7 +30,6 @@ const handleDownload = async () => {
 }
 
 const showLeftPanel = $ref(true)
-
 </script>
 
 <template>

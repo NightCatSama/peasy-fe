@@ -1,4 +1,4 @@
-import type { IDeviceInfo } from "@/stores/display"
+import type { IDeviceInfo } from '@/stores/display'
 
 const preset = {
   desktop: [

@@ -11,12 +11,8 @@ export interface IDeviceInfo {
 export const useDisplayStore = defineStore('display', {
   state: () => ({
     device: { width: 0, height: 0, zoom: 1 } as IDeviceInfo,
-    /** 当前展示的 Section，null 为全部 */
-    activeSection: null as string | null,
   }),
-  getters: {
-    isActiveAllSection: (state) => state.activeSection === null,
-  },
+  getters: {},
   actions: {
     setDeviceByParent(parentWidth: number) {
       this.device = getDefaultDevice(parentWidth)
@@ -24,8 +20,5 @@ export const useDisplayStore = defineStore('display', {
     setDevice(device: IDeviceInfo) {
       this.device = device
     },
-    setActiveSection(node: CNode) {
-      this.activeSection = node.name
-    }
   },
 })

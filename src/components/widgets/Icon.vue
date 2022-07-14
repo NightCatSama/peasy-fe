@@ -1,21 +1,31 @@
 <script setup lang="ts">
 import AddIcon from '@/assets/add.svg'
+import FocusIcon from '@/assets/focus.svg'
 
 interface IIconProps {
+  name: 'add' | 'focus'
   size?: number
   active?: boolean
 }
-const { size = 26, active } = defineProps<IIconProps>()
+
+const iconMap = {
+  add: AddIcon,
+  focus: FocusIcon,
+}
+
+const { name, size = 26, active } = defineProps<IIconProps>()
 
 const style = $ref({
   width: size + 'px',
   height: size + 'px',
 })
+
+const IconComp: any = iconMap[name]
 </script>
 
 <template>
   <div class="icon">
-    <add-icon :class="['icon-inner', { active }]" :style="style"></add-icon>
+    <IconComp :class="['icon-inner', { active }]" :style="style"></IconComp>
   </div>
 </template>
 

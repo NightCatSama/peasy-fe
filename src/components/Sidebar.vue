@@ -24,6 +24,8 @@ const { activeConfigData } = storeToRefs(pageStore)
       <div class="top">
         <div class="operator-item">
           <Icon
+            :size="26"
+            name="add"
             :active="activeNodePanel"
             @click.native="$emit('change-node-panel', !activeNodePanel)"
           />

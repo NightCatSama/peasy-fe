@@ -12,7 +12,10 @@ const pageStore = usePageStore()
 const { setActiveNode } = pageStore
 const { activeNode } = storeToRefs(pageStore)
 
-const test = () => {
+const mousedownTime = $ref(0)
+
+const setActive = () => {
+  if (Date.now() - mousedownTime > 300) return
   setActiveNode(item)
 }
 
@@ -26,7 +29,8 @@ watch(activeNode, (newNode) => {
 <template>
   <Component
     :class="['lib-component', { active: isActive }]"
-    @click.stop="test"
+    @click.stop="setActive"
+    @mousedown="mousedownTime = Date.now()"
     :is="item.component"
     v-bind="item.props || {}"
   >
