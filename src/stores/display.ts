@@ -12,7 +12,14 @@ export const useDisplayStore = defineStore('display', {
   state: () => ({
     device: { width: 0, height: 0, zoom: 1 } as IDeviceInfo,
   }),
-  getters: {},
+  getters: {
+    realDeviceSize(state) {
+      return {
+        width: state.device.width * state.device.zoom,
+        height: state.device.height * state.device.zoom,
+      }
+    }
+  },
   actions: {
     setDeviceByParent(parentWidth: number) {
       this.device = getDefaultDevice(parentWidth)

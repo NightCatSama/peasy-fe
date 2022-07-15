@@ -1,52 +1,27 @@
 <script setup lang="ts">
-import Vue3DraggableResizable from 'vue3-draggable-resizable'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
-import { onMounted, onUnmounted, reactive, ref } from 'vue'
+import { onMounted, onUnmounted, reactive, watch, ref, watchEffect, nextTick } from 'vue'
 import { useDisplayStore } from '@/stores/display'
 import Icon from './widgets/Icon.vue'
 import { emitter } from '@/utils/event'
+import panzoom, { PanZoom } from 'panzoom'
 
 const pageStore = usePageStore()
 const { pageData, activeNode } = storeToRefs(pageStore)
 
 const displayStore = useDisplayStore()
-const { setDevice, setDeviceByParent } = displayStore
+const { realDeviceSize, setDevice, setDeviceByParent } = displayStore
 const { device } = storeToRefs(displayStore)
-
-let x = $ref(0)
-let y = $ref(0)
-let w = $ref(0)
-let h = $ref(0)
-let active = $ref(false)
-/** 是否重新定位中 */
-let focusing = $ref(false)
 
 const wrapperRef = ref<HTMLDivElement | null>(null)
 const contentRef = ref<HTMLDivElement | null>(null)
 
+const pz = ref<PanZoom | null>(null)
+
 const wrapperSize = reactive({
   width: 0,
   height: 0,
-})
-
-let MutationObserver = window.MutationObserver
-let observer = new MutationObserver(() => {
-  const rect = contentRef.value?.getBoundingClientRect()
-  const [preW, preH] = [w, h]
-  w = rect?.width || 0
-  h = rect?.height || 0
-
-  if (!w || !h) return
-
-  if (preW === 0 || preH === 0) {
-    if (w < wrapperSize.width) {
-      x = (wrapperSize.width - w) / 2
-    }
-    if (y < wrapperSize.height) {
-      y = (wrapperSize.height - h) / 2
-    }
-  }
 })
 
 const setWrapperSize = () => {
@@ -57,13 +32,40 @@ const setWrapperSize = () => {
 onMounted(() => {
   setWrapperSize()
   setDeviceByParent(wrapperSize.width)
-  observer.observe(contentRef.value!, {
-    attributes: true,
-    childList: true,
-    subtree: true,
-  })
   window.addEventListener('resize', setWrapperSize, false)
+  pz.value = panzoom(contentRef.value!, {
+    initialZoom: device.value.zoom,
+    minZoom: 0.2,
+    maxZoom: 2,
+    zoomSpeed: 0.2,
+    zoomDoubleClickSpeed: 1,
+    pinchSpeed: 40,
+    smoothScroll: false,
+    filterKey: () => true,
+    beforeWheel: function(e) {
+      var shouldIgnore = !e.ctrlKey
+      return shouldIgnore;
+    }
+  })
+  pz.value.on('zoom', (e: any) => {
+    const { scale } = e.getTransform()
+    device.value.zoom = scale
+  })
+  handleLocationPage()
 })
+
+watchEffect(() => {
+  const trans = pz.value?.getTransform()
+  if (trans && trans?.scale !== device.value.zoom) {
+    pz.value?.zoomTo(trans!.x + realDeviceSize.width / 2, trans!.y + realDeviceSize.height / 2, device.value.zoom / trans.scale)
+  }
+})
+
+watch(pageData, (newData, oldData) => {
+  if (oldData.length === 1) {
+    nextTick(() => handleLocationPage(true))
+  }
+}, { deep: true })
 
 onUnmounted(() => {
   window.removeEventListener('resize', setWrapperSize)
@@ -72,8 +74,6 @@ onUnmounted(() => {
 const editContentStyle = $computed(() => {
   return {
     width: `${device.value.width}px`,
-    // minHeight: `${device.value.height}px`,
-    transform: `scale(${device.value.zoom})`,
   }
 })
 
@@ -81,45 +81,39 @@ const noPageData = $computed(() => {
   return pageData.value.length === 0
 })
 
-const handleFocusView = () => {
+/** 重置预览位置，居中显示 */
+const handleLocationPage = (immediate = false) => {
+  if (!contentRef.value) return
+
   const { width, height } = wrapperSize
-  x = (width - w) / 2
-  y = h < height ? (height - h) / 2 : 0
+  const rect = contentRef.value!.getBoundingClientRect()
+  const w = rect.width
+  const h = rect.height
+  const x = (width - w) / 2
+  const y = h < height ? (height - h) / 2 : 0
 
-  focusing = true
-
-  setTimeout(() => {
-    focusing = false
-  }, 300)
+  immediate ? pz.value!.moveTo(x, y) : pz.value!.smoothMoveTo(x, y)
 }
 
-emitter.on('location', handleFocusView)
+// // emitter
+emitter.on('location', () => handleLocationPage())
+const hideNodePanel = () => emitter.emit('switchNodePanel', false)
+
 </script>
 
 <template>
-  <div ref="wrapperRef" class="edit-section">
+  <div
+    ref="wrapperRef"
+    class="edit-section"
+    @click="hideNodePanel"
+  >
     <div class="edit-wrapper">
-      <Vue3DraggableResizable
-        :min-w="0"
-        :min-h="0"
-        v-model:x="x"
-        v-model:y="y"
-        v-model:w="w"
-        v-model:h="h"
-        v-model:active="active"
-        :draggable="!noPageData && !focusing"
-        :resizable="false"
-        :parent="false"
-        :style="{ border: 'none' }"
-        :class="{ focusing }"
-      >
-        <div ref="contentRef" class="edit-content" :style="editContentStyle">
-          <slot></slot>
-        </div>
-      </Vue3DraggableResizable>
-      <div class="no-data" v-if="noPageData">TODO: 没有数据，提示左侧「+」</div>
-      <Icon class="focus-btn" name="focus" :size="32" @click="handleFocusView"></Icon>
+      <div ref="contentRef" class="edit-content" :style="editContentStyle">
+        <slot></slot>
+      </div>
     </div>
+    <div class="no-data" v-if="noPageData">TODO: 没有数据，提示左侧「+」</div>
+    <Icon class="focus-btn" name="focus" :size="26" @click="handleLocationPage"></Icon>
   </div>
 </template>
 
@@ -140,8 +134,6 @@ emitter.on('location', handleFocusView)
       position: relative;
       display: flex;
       flex-direction: column;
-      overflow: auto;
-      transform-origin: left top;
     }
   }
 
@@ -158,6 +150,7 @@ emitter.on('location', handleFocusView)
     position: absolute;
     right: 20px;
     bottom: 20px;
+    padding: 8px;
     opacity: 0.6;
     transition: all 0.3s;
 

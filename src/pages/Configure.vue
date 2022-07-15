@@ -11,6 +11,7 @@ import ConfigHeader from '@/components/ConfigHeader.vue'
 import NodePanel from '@/components/NodePanel.vue'
 import EditSection from '@/components/EditSection.vue'
 import SectionList from '@/components/SectionList.vue'
+import { emitter } from '@/utils/event'
 
 provide('isEditMode', true)
 
@@ -19,17 +20,22 @@ const pageStore = usePageStore()
 const { pageData, modelData } = storeToRefs(pageStore)
 const { addSection, getAssetsData, getPageData, download } = pageStore
 
-onMounted(() => {
-  getAssetsData()
-  getPageData()
-})
-
 const handleDownload = async () => {
   const res = await download()
   downloadHtml(res.data)
 }
 
-const showLeftPanel = $ref(true)
+let showLeftPanel = $ref(true)
+
+onMounted(() => {
+  getAssetsData()
+  getPageData()
+
+  emitter.on('switchNodePanel', (show: boolean) => {
+    showLeftPanel = show
+  })
+})
+
 </script>
 
 <template>
@@ -91,8 +97,8 @@ const showLeftPanel = $ref(true)
   .content {
     position: relative;
     flex: 1;
-    height: 100%;
     display: flex;
+    overflow: hidden;
 
     .right {
       width: 300px;

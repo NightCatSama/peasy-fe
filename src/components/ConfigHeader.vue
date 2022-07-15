@@ -8,10 +8,12 @@ import { useDisplayStore } from '@/stores/display'
 import Dropdown from './widgets/Dropdown.vue'
 import Icon from './widgets/Icon.vue'
 import { presetDevice } from '@/utils/device'
-import { ref } from 'vue'
+import { onMounted, ref, watchEffect } from 'vue'
+import Slider from './widgets/Slider.vue'
 
 const displayStore = useDisplayStore()
 const { device } = storeToRefs(displayStore)
+const { setDevice } = displayStore
 
 const name = $ref('index')
 
@@ -19,15 +21,20 @@ const text = $computed(
   () => `${device.value.width || 'width'} x ${device.value.height || 'height'}`
 )
 
-const zoomText = $computed(() => `${device.value.zoom * 100}%`)
+const zoomText = $computed(() => `${Math.round(device.value.zoom * 100)}%`)
 
 const desktop = $ref(presetDevice.desktop)
 
-const useHoverRefs = ref([])
-const isHoverList = $computed(() => {
-  console.log(useHoverRefs.value)
-  return useHover(useHoverRefs.value[0])
-})
+const hoverIndex = ref(-1)
+const activeIndex = $computed(() => presetDevice.desktop.findIndex(d => device.value.width === d[0] && device.value.height === d[1]))
+
+const setDeviceBySize = (width: number, height: number) => {
+  setDevice({
+    width,
+    height,
+    zoom: device.value.zoom
+  })
+}
 
 </script>
 
@@ -44,21 +51,38 @@ const isHoverList = $computed(() => {
           <div class="device-wrapper">
             <div class="title">
               Options
-              {{ isHoverList  }}
-              <!-- <span>{{ isHoverList.indexOf(true) > -1 ? desktop[isHoverList.indexOf(true)] : '' }}</span> -->
+              <span class="device-size" v-if="hoverIndex > -1">
+                {{ desktop[hoverIndex].join(' × ') }}
+              </span>
             </div>
             <div class="device-list">
-              <div ref="useHoverRef" class="device-item" v-for="(item, index) in desktop" :key="index">
+              <div
+                :class="['device-item', { active: activeIndex === index }]"
+                v-for="(item, index) in desktop"
+                :key="index"
+                v-hover="(isHover: boolean) => hoverIndex = isHover ? index : -1"
+                @click="setDeviceBySize(item[0], item[1])"
+              >
                 <Icon v-if="index === 0" name="device-sm" type="pure" :size="28" />
                 <Icon v-else-if="index === 1" name="device-md" type="pure" :size="28" />
                 <Icon v-else name="device-lg" type="pure" :size="28" />
-                <!-- <div class="device-text">{{ item[0] + '×' + item[1] }}</div> -->
               </div>
             </div>
           </div>
         </template>
       </Dropdown>
-      <div class="zoom">{{ zoomText }}</div>
+      <Dropdown>
+        <div class="zoom">{{ zoomText }}</div>
+        <template #content>
+          <Slider
+            width="200px"
+            v-model="device.zoom"
+            :min="0.2"
+            :max="2"
+            :interval="0.01"
+          ></Slider>
+        </template>
+      </Dropdown>
     </div>
     <div class="right">
       <Btn @click="$emit('download')" text="Download"></Btn>
@@ -149,6 +173,13 @@ const isHoverList = $computed(() => {
     color: $color;
     margin-bottom: 5px;
     font-weight: bold;
+
+    .device-size {
+      margin-left: 2px;
+      font-size: 10px;
+      font-weight: lighter;
+      opacity: .7;
+    }
   }
   .device-list {
     color: $color;

@@ -25,11 +25,12 @@ export const usePageStore = defineStore('page', {
   getters: {
     activeConfigData: (state) => (state.activeNode ? getConfig(state.activeNode) : null),
     isActiveAllSection: (state) => state.activeSection === null,
-    pageData: (state) =>
-      state.activeSection === null
-        ? state.allPageData
-        : [state.allPageData.find((item) => item.name === state.activeSection)] ||
-          state.allPageData,
+    pageData: (state): typeof state.allPageData => {
+      if (!state.activeSection) return state.allPageData
+
+      const pageData = state.allPageData.find((item) => item.name === state.activeSection)
+      return pageData ? [pageData] : state.allPageData
+    }
   },
   actions: {
     async getPageData() {
