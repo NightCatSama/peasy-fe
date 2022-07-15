@@ -55,7 +55,7 @@ onMounted(() => {
           <LibComponent v-for="item in pageData" :item="item" :key="item.name"></LibComponent>
         </EditSection>
         <!-- 右侧组件参数配置区 -->
-        <div class="right" v-show="false">
+        <div class="right">
           <ConfigSection></ConfigSection>
         </div>
       </div>
@@ -98,9 +98,8 @@ onMounted(() => {
     overflow: hidden;
 
     .right {
-      width: 300px;
+      width: $config-width;
       flex-shrink: 0;
-      background-color: #ddd;
     }
   }
 }

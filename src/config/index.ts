@@ -1,4 +1,4 @@
-import { useBlockGroup } from './block'
+import { useBoxStyle } from './box'
 import { usePositionGroup } from './position'
 import { useTextGroup } from './text'
 
@@ -9,7 +9,7 @@ export const getConfig = (node: CNode): ConfigData => {
         node,
         name: node.name,
         desc: '容器组件，可以自由添加子组件',
-        groups: [...useBlockGroup(node), usePositionGroup(node)],
+        groups: [...useBoxStyle(node), usePositionGroup(node)],
       }
     case 'Text':
     default:

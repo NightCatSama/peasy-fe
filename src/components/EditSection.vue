@@ -109,17 +109,26 @@ const handleLocationPage = (immediate = false) => {
   const y = h < height ? (height - h) / 2 : 0
 
   immediate === true ? pz.value!.moveTo(x, y) : pz.value!.smoothMoveTo(x, y)
+
+  wrapperRef.value?.scrollTo({
+    top: 0,
+    left: 0,
+    behavior: 'smooth',
+  })
 }
 
 // emitter
 emitter.on('location', (immediate?: boolean) => handleLocationPage(immediate))
 const hideNodePanel = () => emitter.emit('switchNodePanel', false)
-useKeyPress('space', () => handleLocationPage())
+useKeyPress('space', (e) => {
+  e.preventDefault()
+  handleLocationPage()
+})
 </script>
 
 <template>
-  <div ref="wrapperRef" class="edit-section" @click="hideNodePanel">
-    <div class="edit-wrapper" tabindex="none">
+  <div class="edit-section" @click="hideNodePanel">
+    <div ref="wrapperRef" class="edit-wrapper">
       <div ref="contentRef" class="edit-content" :style="editContentStyle">
         <slot></slot>
       </div>

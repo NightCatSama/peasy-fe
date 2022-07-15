@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useBoxStyle, useContainerStyle, useLayoutStyle, usePositionStyle } from '@/utils/style'
+import { useStyle, useBoxStyle, useContainerStyle, useLayoutStyle, usePositionStyle } from '@/utils/style'
 
 interface IBlockProps {
   position: IPosition
@@ -10,7 +10,7 @@ interface IBlockProps {
 
 const { position, box, layout, container } = defineProps<IBlockProps>()
 
-const style = $computed(() => ({
+const style = $computed(() => useStyle({
   ...usePositionStyle(position),
   ...useBoxStyle(box),
   ...useLayoutStyle(layout),

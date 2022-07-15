@@ -63,6 +63,8 @@ interface ConfigNode {
 interface IBox {
   width?: string | 'auto'
   height?: string | 'auto'
+  minWidth?: string
+  minHeight?: string
   stretch?: boolean
   isSection?: boolean
 }

@@ -8,7 +8,7 @@ const { configure } = defineProps<IConfigItemProps>()
 <template>
   <div>
     <div class="label">{{ configure.label }}</div>
-    <div class="desc" v-if="configure.desc" v-html="configure.desc"></div>
+    <!-- <div class="desc" v-if="configure.desc" v-html="configure.desc"></div> -->
     <div>
       <div v-if="configure.type === 'string'">
         <input

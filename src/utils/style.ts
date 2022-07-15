@@ -1,7 +1,16 @@
 import { useDisplayStore } from '@/stores/display'
-import { inject } from 'vue'
+import { computed, inject } from 'vue'
 
 const getIsEditMode = () => !!inject('isEditMode')
+
+export const useStyle = (styles: any) => {
+  for (let key in styles) {
+    if (!styles[key]) {
+      delete styles[key]
+    }
+  }
+  return styles
+}
 
 export const usePositionStyle = (position?: IPosition) => {
   if (!position) return {}
@@ -11,14 +20,14 @@ export const usePositionStyle = (position?: IPosition) => {
 
   return {
     position: isAbsPosition ? (isEditMode ? 'absolute' : position.type) : 'relative',
-    top: isAbsPosition && position.top !== void 0 ? position.top : 'auto',
-    left: isAbsPosition && position.left !== void 0 ? position.left : 'auto',
-    right: isAbsPosition && position.top !== void 0 ? position.right : 'auto',
-    bottom: isAbsPosition && position.left !== void 0 ? position.bottom : 'auto',
-    marginLeft: !isAbsPosition && position.left !== void 0 ? position.left : '0',
-    marginTop: !isAbsPosition && position.top !== void 0 ? position.top : '0',
-    marginRight: !isAbsPosition && position.right !== void 0 ? position.right : '0',
-    marginBottom: !isAbsPosition && position.bottom !== void 0 ? position.bottom : '0',
+    top: isAbsPosition && position.top !== void 0 ? position.top : '',
+    left: isAbsPosition && position.left !== void 0 ? position.left : '',
+    right: isAbsPosition && position.top !== void 0 ? position.right : '',
+    bottom: isAbsPosition && position.left !== void 0 ? position.bottom : '',
+    marginLeft: !isAbsPosition && position.left !== void 0 ? position.left : '',
+    marginTop: !isAbsPosition && position.top !== void 0 ? position.top : '',
+    marginRight: !isAbsPosition && position.right !== void 0 ? position.right : '',
+    marginBottom: !isAbsPosition && position.bottom !== void 0 ? position.bottom : '',
   }
 }
 
@@ -36,6 +45,8 @@ export const useBoxStyle = (box: IBox) => {
   return {
     width: box.width,
     height,
+    minWidth: box.minWidth,
+    minHeight: box.minHeight,
     flex: box.stretch ? 1 : 'none',
     flexShrink: box.stretch ? 1 : 0,
   }
@@ -57,7 +68,7 @@ export const useContainerStyle = (container: IContainer) => {
 
   return {
     backgroundColor: container.type === 'color' ? container.backgroundColor : 'transparent',
-    backgroundImage: container.type === 'image' ? `url(${container.backgroundColor})` : 'none',
+    backgroundImage: container.type === 'image' ? `url(${container.backgroundColor})` : '',
     backgroundSize: container.backgroundSize,
   }
 }

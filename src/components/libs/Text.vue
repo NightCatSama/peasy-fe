@@ -1,6 +1,5 @@
 <script setup lang="ts">
-import { usePositionStyle } from '@/utils/style'
-import { inject } from 'vue'
+import { usePositionStyle, useStyle } from '@/utils/style'
 
 interface ITextProps {
   color: string
@@ -9,7 +8,7 @@ interface ITextProps {
 }
 const { color, text, position } = defineProps<ITextProps>()
 
-const style = $computed(() => ({
+const style = $computed(() => useStyle({
   color,
   ...usePositionStyle(position),
 }))
