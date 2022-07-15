@@ -7,7 +7,7 @@ import DeviceLg from '@/assets/device-lg.svg'
 
 interface IIconProps {
   name: 'add' | 'focus' | 'device-sm' | 'device-md' | 'device-lg'
-  type: 'circle' | 'pure'
+  type?: 'circle' | 'pure'
   size?: number
   active?: boolean
 }
@@ -41,7 +41,6 @@ const IconComp: any = iconMap[name]
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
-  cursor: default;
 
   &-type-circle {
     padding: 4px;

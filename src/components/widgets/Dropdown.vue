@@ -14,7 +14,7 @@ const { disabled, triggers = ['click'] } = defineProps<IDropdownProps>()
     popperClass="dropdown-popper"
     :distance="10"
     auto-hide
-   >
+  >
     <slot></slot>
     <template #popper>
       <slot name="content"></slot>
@@ -25,7 +25,7 @@ const { disabled, triggers = ['click'] } = defineProps<IDropdownProps>()
 <style lang="scss">
 .dropdown-popper.v-popper__popper {
   .v-popper__inner {
-    padding: 12px 14px;
+    padding: 12px 16px;
     border-radius: 8px;
     color: $color;
     background-color: $panel;
@@ -33,8 +33,8 @@ const { disabled, triggers = ['click'] } = defineProps<IDropdownProps>()
     box-shadow: none;
   }
 
-  .v-popper__arrow-container {
-    display: none;
+  .v-popper__arrow-outer, .v-popper__arrow-inner {
+    border-color: $panel;
   }
 }
 </style>

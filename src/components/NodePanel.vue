@@ -37,6 +37,7 @@ const { addSection } = pageStore
   .title {
     margin-bottom: 15px;
     font-size: 24px;
+    font-weight: bold;
   }
 
   .element-list {
