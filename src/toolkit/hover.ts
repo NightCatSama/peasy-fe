@@ -1,4 +1,4 @@
-import { App } from "vue"
+import { App } from 'vue'
 
 export const HoverDirective = {
   install(app: App) {
@@ -16,7 +16,7 @@ export const HoverDirective = {
       },
       beforeMount(el) {
         el.__hover_directive__?.()
-      }
+      },
     })
-  }
+  },
 }

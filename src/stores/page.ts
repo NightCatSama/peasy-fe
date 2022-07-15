@@ -30,7 +30,7 @@ export const usePageStore = defineStore('page', {
 
       const pageData = state.allPageData.find((item) => item.name === state.activeSection)
       return pageData ? [pageData] : state.allPageData
-    }
+    },
   },
   actions: {
     async getPageData() {

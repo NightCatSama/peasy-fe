@@ -10,7 +10,6 @@ import Sidebar from '@/components/Sidebar.vue'
 import ConfigHeader from '@/components/ConfigHeader.vue'
 import NodePanel from '@/components/NodePanel.vue'
 import EditSection from '@/components/EditSection.vue'
-import SectionList from '@/components/SectionList.vue'
 import { emitter } from '@/utils/event'
 
 provide('isEditMode', true)
@@ -35,7 +34,6 @@ onMounted(() => {
     showLeftPanel = show
   })
 })
-
 </script>
 
 <template>
@@ -51,7 +49,6 @@ onMounted(() => {
         <!-- 左侧模板/组件选择区域 -->
         <div :class="['left-panel', { show: showLeftPanel }]">
           <NodePanel></NodePanel>
-          <SectionList></SectionList>
         </div>
         <!-- 页面编辑区 -->
         <EditSection>

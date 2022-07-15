@@ -4,6 +4,7 @@ import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import Avatar from './widgets/Avatar.vue'
 import Icon from './widgets/Icon.vue'
+import SectionList from '@/components/SectionList.vue'
 
 interface ISidebarProps {
   activeNodePanel: boolean
@@ -30,6 +31,7 @@ const { activeConfigData } = storeToRefs(pageStore)
             @click.native="$emit('change-node-panel', !activeNodePanel)"
           />
         </div>
+        <SectionList />
       </div>
       <div class="bottom"></div>
     </div>
@@ -60,8 +62,9 @@ const { activeConfigData } = storeToRefs(pageStore)
 
   .top {
     flex: 1;
-    overflow-x: hidden;
-    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
   }
 
   .bottom {

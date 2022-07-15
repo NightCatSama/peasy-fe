@@ -18,7 +18,7 @@ export const useDisplayStore = defineStore('display', {
         width: state.device.width * state.device.zoom,
         height: state.device.height * state.device.zoom,
       }
-    }
+    },
   },
   actions: {
     setDeviceByParent(parentWidth: number) {

@@ -1,7 +1,7 @@
 import mitt from 'mitt'
 
 type Events = {
-  location: void
+  location?: boolean
   switchNodePanel: boolean
 }
 

@@ -30,6 +30,7 @@ const allKey = Symbol('all')
       v-for="(item, index) in allPageData"
       :key="item.name"
       @click="handleSectionItemClick(item)"
+      v-tooltip.right="{ content: item.name, distance: 10 }"
     >
       {{ index + 1 }}
     </div>
@@ -38,39 +39,42 @@ const allKey = Symbol('all')
 
 <style lang="scss" scoped>
 .section-list {
-  position: absolute;
-  left: 100%;
-  top: 0;
+  position: relative;
   height: 100%;
   padding: 10px;
   display: flex;
   flex-direction: column;
-  z-index: 9;
+  overflow: auto;
+  flex: 1;
 
   .section-item {
-    width: 36px;
-    height: 36px;
-    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    border-radius: 4px;
+    background-color: transparent;
     background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
-    font-size: 18px;
+    font-size: 16px;
+    text-shadow: $text-shadow;
     opacity: 0.8;
-    border: 1px solid $color;
-    font-weight: bold;
+    background-color: $bg-default;
+    // font-weight: bold;
     cursor: pointer;
-    transition: all 0.3s, transform 0.5s;
+    transition: all 0.3s, transform 0.3s 0.1s;
 
     &:not(:last-child) {
-      margin-bottom: 10px;
+      margin-bottom: 12px;
     }
 
     &.active {
-      transform: rotateY(360deg);
-      color: $color;
+      color: $bg-default;
       background-color: $theme;
-      border-color: $theme;
+      text-shadow: none;
+      font-weight: bold;
+      box-shadow: $float-shadow;
+      transform: scale(1.05);
     }
   }
 }

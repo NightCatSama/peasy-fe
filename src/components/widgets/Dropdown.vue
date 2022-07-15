@@ -33,8 +33,19 @@ const { disabled, triggers = ['click'] } = defineProps<IDropdownProps>()
     box-shadow: none;
   }
 
-  .v-popper__arrow-outer, .v-popper__arrow-inner {
+  .v-popper__arrow-outer,
+  .v-popper__arrow-inner {
     border-color: $panel;
   }
+}
+.v-popper__popper.v-popper__popper--show-from,
+.v-popper__wrapper {
+  transform: scale(0.9);
+}
+.v-popper__popper.v-popper__popper--show-to .v-popper__wrapper {
+  transform: none;
+}
+.v-popper__wrapper {
+  transition: transform 0.15s;
 }
 </style>

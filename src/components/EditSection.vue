@@ -6,6 +6,7 @@ import { useDisplayStore } from '@/stores/display'
 import Icon from './widgets/Icon.vue'
 import { emitter } from '@/utils/event'
 import panzoom, { PanZoom } from 'panzoom'
+import { useKeyPress } from 'ahooks-vue'
 
 const pageStore = usePageStore()
 const { pageData, activeNode } = storeToRefs(pageStore)
@@ -18,6 +19,7 @@ const wrapperRef = ref<HTMLDivElement | null>(null)
 const contentRef = ref<HTMLDivElement | null>(null)
 
 const pz = ref<PanZoom | null>(null)
+let isSmoothing = $ref(false)
 
 const wrapperSize = reactive({
   width: 0,
@@ -42,10 +44,10 @@ onMounted(() => {
     pinchSpeed: 40,
     smoothScroll: false,
     filterKey: () => true,
-    beforeWheel: function(e) {
-      var shouldIgnore = !e.ctrlKey
-      return shouldIgnore;
-    }
+    beforeWheel: function (e) {
+      var shouldIgnore = !e.ctrlKey && !e.metaKey
+      return shouldIgnore
+    },
   })
   pz.value.on('zoom', (e: any) => {
     const { scale } = e.getTransform()
@@ -56,16 +58,25 @@ onMounted(() => {
 
 watchEffect(() => {
   const trans = pz.value?.getTransform()
-  if (trans && trans?.scale !== device.value.zoom) {
-    pz.value?.zoomTo(trans!.x + realDeviceSize.width / 2, trans!.y + realDeviceSize.height / 2, device.value.zoom / trans.scale)
+  const rect = contentRef.value?.getBoundingClientRect()
+  if (trans && rect && trans?.scale !== device.value.zoom) {
+    pz.value?.zoomTo(
+      trans!.x + rect.width / 2,
+      trans!.y + rect.height / 2,
+      device.value.zoom / trans.scale
+    )
   }
 })
 
-watch(pageData, (newData, oldData) => {
-  if (oldData.length === 1) {
-    nextTick(() => handleLocationPage(true))
-  }
-}, { deep: true })
+watch(
+  pageData,
+  (_, oldData) => {
+    if (!isSmoothing && oldData.length === 1) {
+      nextTick(() => handleLocationPage(true))
+    }
+  },
+  { deep: true }
+)
 
 onUnmounted(() => {
   window.removeEventListener('resize', setWrapperSize)
@@ -83,7 +94,12 @@ const noPageData = $computed(() => {
 
 /** 重置预览位置，居中显示 */
 const handleLocationPage = (immediate = false) => {
-  if (!contentRef.value) return
+  if (!contentRef.value || isSmoothing) return
+
+  if (immediate !== true) {
+    isSmoothing = true
+    setTimeout(() => (isSmoothing = false), 300)
+  }
 
   const { width, height } = wrapperSize
   const rect = contentRef.value!.getBoundingClientRect()
@@ -92,22 +108,18 @@ const handleLocationPage = (immediate = false) => {
   const x = (width - w) / 2
   const y = h < height ? (height - h) / 2 : 0
 
-  immediate ? pz.value!.moveTo(x, y) : pz.value!.smoothMoveTo(x, y)
+  immediate === true ? pz.value!.moveTo(x, y) : pz.value!.smoothMoveTo(x, y)
 }
 
-// // emitter
-emitter.on('location', () => handleLocationPage())
+// emitter
+emitter.on('location', (immediate?: boolean) => handleLocationPage(immediate))
 const hideNodePanel = () => emitter.emit('switchNodePanel', false)
-
+useKeyPress('space', () => handleLocationPage())
 </script>
 
 <template>
-  <div
-    ref="wrapperRef"
-    class="edit-section"
-    @click="hideNodePanel"
-  >
-    <div class="edit-wrapper">
+  <div ref="wrapperRef" class="edit-section" @click="hideNodePanel">
+    <div class="edit-wrapper" tabindex="none">
       <div ref="contentRef" class="edit-content" :style="editContentStyle">
         <slot></slot>
       </div>
@@ -129,6 +141,12 @@ const hideNodePanel = () => emitter.emit('switchNodePanel', false)
     height: 100%;
     overflow: auto;
     position: relative;
+
+    &:active,
+    &:focus {
+      outline: none;
+      border: none;
+    }
 
     .edit-content {
       position: relative;

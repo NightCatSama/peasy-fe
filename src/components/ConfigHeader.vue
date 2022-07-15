@@ -26,16 +26,17 @@ const zoomText = $computed(() => `${Math.round(device.value.zoom * 100)}%`)
 const desktop = $ref(presetDevice.desktop)
 
 const hoverIndex = ref(-1)
-const activeIndex = $computed(() => presetDevice.desktop.findIndex(d => device.value.width === d[0] && device.value.height === d[1]))
+const activeIndex = $computed(() =>
+  presetDevice.desktop.findIndex((d) => device.value.width === d[0] && device.value.height === d[1])
+)
 
 const setDeviceBySize = (width: number, height: number) => {
   setDevice({
     width,
     height,
-    zoom: device.value.zoom
+    zoom: device.value.zoom,
   })
 }
-
 </script>
 
 <template>
@@ -74,13 +75,7 @@ const setDeviceBySize = (width: number, height: number) => {
       <Dropdown>
         <div class="zoom">{{ zoomText }}</div>
         <template #content>
-          <Slider
-            width="200px"
-            v-model="device.zoom"
-            :min="0.2"
-            :max="2"
-            :interval="0.01"
-          ></Slider>
+          <Slider width="200px" v-model="device.zoom" :min="0.2" :max="2" :interval="0.01"></Slider>
         </template>
       </Dropdown>
     </div>
@@ -156,8 +151,8 @@ const setDeviceBySize = (width: number, height: number) => {
   }
 
   .zoom {
-    height: 32px;
-    width: 32px;
+    height: 34px;
+    width: 34px;
     font-size: 12px;
     border-radius: 200px;
   }
@@ -178,7 +173,7 @@ const setDeviceBySize = (width: number, height: number) => {
       margin-left: 2px;
       font-size: 10px;
       font-weight: lighter;
-      opacity: .7;
+      opacity: 0.7;
     }
   }
   .device-list {
@@ -198,7 +193,7 @@ const setDeviceBySize = (width: number, height: number) => {
       background-color: $panel-light;
       border-radius: 5px;
       cursor: pointer;
-      transition: all .3s;
+      transition: all 0.3s;
 
       &:not(:last-child) {
         margin-right: 8px;
