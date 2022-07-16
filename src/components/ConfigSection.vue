@@ -1,8 +1,6 @@
 <script setup lang="ts">
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
-import ConfigItem from './ConfigItem.vue'
-import { onMounted, ref, triggerRef } from 'vue'
 import ConfigGroup from './ConfigGroup.vue'
 
 const pageStore = usePageStore()

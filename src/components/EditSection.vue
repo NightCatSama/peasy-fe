@@ -153,7 +153,7 @@ useKeyPress('space', (e) => {
       :class="['focus-btn', { active: isMove }]"
       name="focus"
       :size="26"
-      @click="handleLocationPage"
+      @click="() => handleLocationPage()"
     ></Icon>
   </div>
 </template>
@@ -184,6 +184,7 @@ useKeyPress('space', (e) => {
       border-radius: $normal-radius;
       overflow: hidden;
       background: #fff;
+      color: black;
     }
   }
 

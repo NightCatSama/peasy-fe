@@ -4,7 +4,7 @@ import { cloneDeep } from 'lodash'
 import { getMockBlock } from '@/utils/mock'
 import { ComponentGroup } from '@/config'
 
-const api = mande('http://192.168.2.161:3030/api/page')
+const api = mande('http://localhost:3030/api/page')
 
 type ModelData = {
   [key in CNode['type']]: CNode[]
