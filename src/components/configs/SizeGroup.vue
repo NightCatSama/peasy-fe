@@ -85,8 +85,7 @@ const isSection = $computed(() => node.type === 'section')
     margin-right: 8px;
   }
   .size-input {
-    width: 90px;
-    min-width: 90px;
+    width: $item-width;
     flex: none;
     transition: all .3s;
 

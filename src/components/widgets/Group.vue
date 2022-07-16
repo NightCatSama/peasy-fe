@@ -63,6 +63,8 @@ let collapsed = $ref(defaultCollapsed)
     background: darken($panel, 3%);
     padding: 10px 16px 10px;
     transition: all .3s;
+    display: flex;
+    flex-direction: column;
 
     :deep(.item) {
       display: flex;

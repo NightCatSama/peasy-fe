@@ -2,22 +2,22 @@
 import { watchEffect, defineEmits } from 'vue';
 import Icon from './Icon.vue';
 
-const emit = defineEmits(['change']);
+const emit = defineEmits(['update:modelValue']);
 
 interface ISelectProps {
   display?: 'inline' | 'block'
-  value: string
+  modelValue: string
   options: { [key: string]: string }
 }
 
-const { display = 'block', options, value } = defineProps<ISelectProps>()
+const { display = 'block', options, modelValue } = defineProps<ISelectProps>()
 
 let isOpen = $ref(false)
 
-const showValue = $computed(() => options[value] || '')
+const showValue = $computed(() => options[modelValue] || '')
 
 const handleChange = (val: string) => {
-  emit('change', val)
+  emit('update:modelValue', val)
   isOpen = false
 }
 
@@ -31,7 +31,7 @@ const handleChange = (val: string) => {
     <div class="select-value">{{ showValue }}</div>
     <div :class="['select-option-wrapper', { hide: !isOpen }]" v-click-outside="() => isOpen = false">
       <div
-        :class="['select-option', { active: key === value }]"
+        :class="['select-option', { active: key === modelValue }]"
         v-for="(label, key) in options"
         :key="key"
         @click.stop="() => handleChange(key as string)"
@@ -46,8 +46,23 @@ const handleChange = (val: string) => {
   display: inline-flex;
   align-items: center;
 
+  &-display-block {
+    border-radius: $normal-radius;
+    padding: 2px;
+    height: $item-height;
+    background: $item-bg;
+    border: 1px solid $item-bg;
+    font-size: 12px;
+    min-width: $item-width;
+  }
+
   &-display-inline {
     flex: 1;
+  }
+
+  .select-value {
+    flex: 1;
+    height: 100%;
     color: darken($color, 30%);
     cursor: pointer;
     padding: 0 8px;
@@ -55,7 +70,8 @@ const handleChange = (val: string) => {
     justify-content: center;
     align-items: center;
     background: $panel-dark-gradient;
-    border-radius: 6px;
+    border-radius: $inner-radius;
+    white-space: nowrap;
     transition: all .3s;
   }
 
@@ -85,7 +101,10 @@ const handleChange = (val: string) => {
       padding: 4px 8px;
       font-size: 14px;
       background: $panel-dark;
-      border-radius: 4px;
+      border-radius: $inner-radius;
+      white-space: nowrap;
+      cursor: pointer;
+
       &:not(:last-child) {
         margin-bottom: 4px;
       }

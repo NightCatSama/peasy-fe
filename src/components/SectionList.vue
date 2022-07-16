@@ -51,7 +51,7 @@ const allKey = Symbol('all')
   .section-item {
     width: 32px;
     height: 32px;
-    border-radius: 4px;
+    border-radius: $normal-radius;
     display: flex;
     justify-content: center;
     align-items: center;

@@ -168,7 +168,7 @@ useKeyPress('space', (e) => {
       position: relative;
       display: flex;
       flex-direction: column;
-      border-radius: 6px;
+      border-radius: $normal-radius;
       overflow: hidden;
       background: #fff;
     }

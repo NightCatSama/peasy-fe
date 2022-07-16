@@ -44,7 +44,7 @@ interface ISize {
 /** 容器的布局信息 */
 interface ILayout {
   direction: 'row' | 'column'
-  justify: 'start' | 'end' | 'center' | 'space-between' | 'space-around'
+  justify: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
   align: 'start' | 'end' | 'center' | 'stretch' | 'baseline'
 }
 

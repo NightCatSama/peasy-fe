@@ -96,9 +96,9 @@ const handleSuffixClick = (key: string) => {
     <template v-if="suffixInValue && suffix">
       <Select
         display="inline"
-        :value="suffixInValue"
+        :model-value="suffixInValue"
         :options="Object.fromEntries(suffix.map((s) => [s, getSuffixText(s)]))"
-        @change="handleSuffixClick"
+        @update:model-value="handleSuffixClick"
       ></Select>
     </template>
   </div>
@@ -107,9 +107,9 @@ const handleSuffixClick = (key: string) => {
 <style lang="scss" scoped>
 .input-wrapper {
   display: inline-flex;
-  border-radius: 6px;
+  border-radius: $normal-radius;
   padding: 2px;
-  min-height: 32px;
+  height: $item-height;
   background: $item-bg;
   border: 1px solid $item-bg;
   flex: 1;
@@ -147,7 +147,7 @@ const handleSuffixClick = (key: string) => {
     justify-content: center;
     align-items: center;
     background: $panel-dark;
-    border-radius: 6px;
+    border-radius: $normal-radius;
     transition: all .3s;
   }
 }

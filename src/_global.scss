@@ -6,6 +6,8 @@ $panel-header: #404040;
 $panel-sidebar: #4c4c4c;
 $bg-default: #202124;
 
+$item-bg: $panel-header;
+
 $theme-gradient: linear-gradient(lighten($theme, 7%), $theme);
 $panel-gradient: linear-gradient(lighten($panel, 7%), $panel);
 $panel-light-gradient: linear-gradient(lighten($panel-light, 7%), $panel-light);
@@ -17,15 +19,18 @@ $bg-default-gradient: linear-gradient(lighten($bg-default, 7%), $bg-default);
 $color: #cecece;
 $border: rgba(#5a5a5c, 0.7);
 
-$item-bg: #404040;
-
+$inner-radius: 4px;
+$normal-radius: 6px;
 $radius: 12px;
 $shadow: 0 0 20px 5px rgba(0, 0, 0, 0.16);
 $text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
-$float-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.36), 1px 1px 2px 0 rgb(255, 255, 255, 0.12);
+$bulge-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.36);
+$float-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.36), 1px 1px 3px 0 rgb(255, 255, 255, .1);
 
 $header-height: 64px;
 $config-width: 300px;
+$item-height: 32px;
+$item-width: 90px;
 
 // beautiful scrollbar
 $black: #000;
