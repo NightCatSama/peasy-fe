@@ -46,7 +46,7 @@ export default {
           el.offsetWidth // force reflow
           el.style.height = '0'
         }
-      }
+      },
     })
 
     /**
@@ -58,7 +58,11 @@ export default {
     app.directive('click-outside', {
       created(el, binding) {
         if (typeof binding.value !== 'function' && typeof binding.value.handler !== 'function') {
-          console.warn('[Vue-click-outside:] provided expression', binding.value, 'is not a function.')
+          console.warn(
+            '[Vue-click-outside:] provided expression',
+            binding.value,
+            'is not a function.'
+          )
           return
         }
 
@@ -72,24 +76,28 @@ export default {
           if (
             el.contains(target) ||
             (includeParent ? el.parentElement?.contains(target) : false) ||
-            extraSelectors.some((selector: string) => document.querySelector(selector)?.contains(target))
-          ) return
+            extraSelectors.some((selector: string) =>
+              document.querySelector(selector)?.contains(target)
+            )
+          )
+            return
 
           el.__clickOutside_cb__(e)
         }
-        const clickHandler = 'ontouchstart' in document.documentElement ? 'touchstart' : 'click';
+        const clickHandler = 'ontouchstart' in document.documentElement ? 'touchstart' : 'click'
         document.addEventListener(clickHandler, handleClick)
         el.__clickOutside_rm__ = () => document.removeEventListener(clickHandler, handleClick)
       },
       updated(el, binding) {
-        el.__clickOutside_cb__ = typeof binding.value === 'function' ? binding.value : binding.value.handler
+        el.__clickOutside_cb__ =
+          typeof binding.value === 'function' ? binding.value : binding.value.handler
       },
       beforeUnmount(el) {
         el.__clickOutside_cb__ = null
         delete el.__clickOutside_cb__
-        el.__clickOutside_rm__?.();
+        el.__clickOutside_rm__?.()
         delete el.__clickOutside_rm__
-      }
+      },
     })
 
     /**
@@ -112,6 +120,33 @@ export default {
       beforeMount(el) {
         el.__hover_directive__?.()
       },
+    })
+
+    app.directive('tap', {
+      mounted(el, binding) {
+        let mousedownTime = 0
+        el.__tap_cb__ = binding.value
+        const handleMousedown = () => mousedownTime = Date.now()
+        const handleClick = (e: any) => {
+          if (Date.now() - mousedownTime < 300) {
+            el.__tap_cb__?.(e)
+          }
+        }
+        el.addEventListener('mousedown', handleMousedown, false)
+        el.addEventListener('click', handleClick)
+        el.__tap_rm__ = () => {
+          el.removeEventListener('mousedown', handleMousedown)
+          el.removeEventListener('click', handleClick)
+        }
+      },
+      updated(el, binding) {
+        el.__tap_cb__ = binding.value
+      },
+      beforeUnmount(el) {
+        el.__tap_rm__?.()
+        delete el.__tap_rm__;
+        delete el.__tap_cb__;
+      }
     })
   },
 }

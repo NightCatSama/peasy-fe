@@ -1,4 +1,4 @@
-import { getDefaultLayout, getDefaultSize } from "./defaultConfig"
+import { getDefaultLayout, getDefaultSize } from './defaultConfig'
 
 export const getMockBlock = (type?: CNode['type']): CNode => {
   const t = type || 'component'
@@ -50,34 +50,22 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
               },
             },
           },
+          {
+            type: 'component',
+            name: `${t}-title-${~~(Math.random() * 1000)}`,
+            component: 'Text',
+            props: {
+              text: 'Hello Child',
+              color: `#${Math.random().toString(16).slice(2, 8)}`,
+              position: {
+                type: 'relative',
+                left: '0',
+                top: '0',
+              },
+            },
+          },
         ],
-      },
-      {
-        type: 'component',
-        name: `${t}-title-${~~(Math.random() * 1000)}`,
-        component: 'Text',
-        props: {
-          text: 'Hello NightCat',
-          position: {
-            type: 'absolute',
-            left: '0',
-            top: '0',
-          },
-        },
-      },
-      {
-        type: 'component',
-        name: `${t}-title-${~~(Math.random() * 1000)}`,
-        component: 'Text',
-        props: {
-          text: 'Hello',
-          position: {
-            type: 'relative',
-            left: '0',
-            top: '0',
-          },
-        },
-      },
+      }
     ],
   }
 }

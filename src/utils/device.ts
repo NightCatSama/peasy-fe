@@ -16,7 +16,7 @@ export const presetDevice = {
 
 /** 根据屏幕宽度计算出最佳的模拟容器大小，尽量能全部在容器中 */
 export const getDefaultDevice = (parentWidth: number): IDeviceInfo => {
-  const w = parentWidth * 0.8 // 尽量不超过容器 80% 的大小)
+  const w = parentWidth * 0.9 // 尽量不超过容器 90% 的大小)
   let size = presetDevice.desktop[0]
   let zoom = 1
   // 如果比最小的设备宽度还小，则开启缩放

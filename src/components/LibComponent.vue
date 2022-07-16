@@ -25,6 +25,7 @@ const isActive = ref(false)
 watch(activeNode, (newNode) => {
   isActive.value = newNode === item
 })
+
 </script>
 
 <template>
@@ -37,7 +38,11 @@ watch(activeNode, (newNode) => {
     :direction="parent?.props?.layout?.direction"
   >
     <template v-if="item.children">
-      <LibComponent v-for="subItem in item.children" :item="subItem" :parent="item"></LibComponent>
+      <LibComponent
+        v-for="subItem in item.children"
+        :item="subItem"
+        :parent="item"
+      ></LibComponent>
     </template>
   </Component>
 </template>
@@ -47,7 +52,6 @@ watch(activeNode, (newNode) => {
   cursor: default;
 }
 .active {
-  outline: 1px solid skyblue;
   position: relative;
   cursor: default;
   &::after {
@@ -57,8 +61,11 @@ watch(activeNode, (newNode) => {
     top: 0;
     width: 100%;
     height: 100%;
-    background: rgba(0, 0, 0, 0.15);
+    // background: rgba(0, 0, 0, 0.15);
     pointer-events: none;
+    border: 5px dashed $theme;
+    z-index: 99;
+    box-sizing: border-box;
   }
 }
 </style>

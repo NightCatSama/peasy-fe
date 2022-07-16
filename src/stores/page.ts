@@ -23,7 +23,8 @@ export const usePageStore = defineStore('page', {
     activeSection: null as string | null,
   }),
   getters: {
-    activeNodeGroups: (state) => (state.activeNode ? ComponentGroup[state.activeNode.component] : null),
+    activeNodeGroups: (state) =>
+      state.activeNode ? ComponentGroup[state.activeNode.component] : null,
     isActiveAllSection: (state) => state.activeSection === null,
     pageData: (state): typeof state.allPageData => {
       if (!state.activeSection) return state.allPageData
@@ -54,8 +55,8 @@ export const usePageStore = defineStore('page', {
       const index = this.allPageData.indexOf(node)
       this.allPageData.splice(index, 1)
     },
-    setActiveNode(node: CNode) {
-      this.activeNode = node
+    setActiveNode(node?: CNode) {
+      this.activeNode = node || null
     },
     async download() {
       const data = this.allPageData

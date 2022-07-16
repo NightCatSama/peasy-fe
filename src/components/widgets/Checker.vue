@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { watchEffect, defineEmits } from 'vue';
-import Icon from './Icon.vue';
+import { watchEffect, defineEmits } from 'vue'
+import Icon from './Icon.vue'
 
-const emit = defineEmits(['change']);
+const emit = defineEmits(['change'])
 
 interface ICheckerProps {
   check: boolean

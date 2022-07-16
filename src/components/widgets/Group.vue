@@ -1,14 +1,25 @@
 <script setup lang="ts">
-import Icon from './Icon.vue';
+import { useDisplayStore } from '@/stores/display';
+import { onMounted, onUpdated, watchEffect } from 'vue';
+import Icon from './Icon.vue'
 interface IGroupProps {
   title: string
-  desc?: string
   defaultCollapsed?: boolean
+  canAdvanced?: boolean
 }
-const { title, defaultCollapsed = false } = defineProps<IGroupProps>()
+const { title, defaultCollapsed = true, canAdvanced } = defineProps<IGroupProps>()
 
-let collapsed = $ref(defaultCollapsed)
+const displayStore = useDisplayStore()
+const { saveGroupStatus, getGroupStatus } = displayStore
 
+const status = getGroupStatus(title)
+
+let collapsed = $ref(status ? status.collapsed : defaultCollapsed)
+let showAdvanced = $ref(status ? status.advanced : false)
+
+onUpdated(() => {
+  saveGroupStatus(title, { collapsed, advanced: showAdvanced })
+})
 </script>
 
 <template>
@@ -16,11 +27,24 @@ let collapsed = $ref(defaultCollapsed)
     <div class="info">
       <span class="title">{{ title }}</span>
       <span class="info-op">
-        <Icon :class="{ 'rotate': collapsed }" @click="collapsed = !collapsed" name="down" :size="12" type="pure" />
+        <Icon
+          v-if="canAdvanced"
+          @click="showAdvanced = !showAdvanced"
+          name="advanced"
+          :size="16"
+          type="pure"
+        />
+        <Icon
+          :class="{ rotate: collapsed }"
+          @click="collapsed = !collapsed"
+          name="down"
+          :size="12"
+          type="pure"
+        />
       </span>
     </div>
     <div class="content" v-collapse="collapsed">
-      <slot></slot>
+      <slot :showAdvanced="showAdvanced"></slot>
     </div>
   </div>
 </template>
@@ -50,7 +74,8 @@ let collapsed = $ref(defaultCollapsed)
       :deep(.icon) {
         cursor: pointer;
         user-select: none;
-        transition: all .3s;
+        transition: all 0.3s;
+        margin: 0 3px;
 
         &.rotate {
           transform: rotateZ(180deg);
@@ -62,7 +87,7 @@ let collapsed = $ref(defaultCollapsed)
   .content {
     background: darken($panel, 3%);
     padding: 10px 16px 10px;
-    transition: all .3s;
+    transition: all 0.3s;
     display: flex;
     flex-direction: column;
 

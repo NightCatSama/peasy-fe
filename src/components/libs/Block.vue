@@ -1,5 +1,11 @@
 <script setup lang="ts">
-import { useStyle, useSizeStyle, useContainerStyle, useLayoutStyle, usePositionStyle } from '@/utils/style'
+import {
+  useStyle,
+  useSizeStyle,
+  useContainerStyle,
+  useLayoutStyle,
+  usePositionStyle,
+} from '@/utils/style'
 
 interface IBlockProps {
   direction?: 'row' | 'column'
@@ -11,12 +17,14 @@ interface IBlockProps {
 
 const { position, size, layout, container, direction } = defineProps<IBlockProps>()
 
-const style = $computed(() => useStyle({
-  ...usePositionStyle(position),
-  ...useSizeStyle(size, direction),
-  ...useLayoutStyle(layout),
-  ...useContainerStyle(container),
-}))
+const style = $computed(() =>
+  useStyle({
+    ...usePositionStyle(position),
+    ...useSizeStyle(size, direction),
+    ...useLayoutStyle(layout),
+    ...useContainerStyle(container),
+  })
+)
 </script>
 
 <template>

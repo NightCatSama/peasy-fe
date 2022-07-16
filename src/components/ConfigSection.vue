@@ -3,11 +3,10 @@ import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import ConfigItem from './ConfigItem.vue'
 import { onMounted, ref, triggerRef } from 'vue'
-import ConfigGroup from './ConfigGroup.vue';
+import ConfigGroup from './ConfigGroup.vue'
 
 const pageStore = usePageStore()
 const { activeNode, activeNodeGroups } = storeToRefs(pageStore)
-
 </script>
 
 <template>
@@ -46,7 +45,7 @@ const { activeNode, activeNodeGroups } = storeToRefs(pageStore)
 
   .no-data {
     font-size: 18px;
-    opacity: .5;
+    opacity: 0.5;
     align-self: center;
     margin-top: 80px;
   }

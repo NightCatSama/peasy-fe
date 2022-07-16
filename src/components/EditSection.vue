@@ -9,6 +9,7 @@ import panzoom, { PanZoom } from 'panzoom'
 import { useKeyPress } from 'ahooks-vue'
 
 const pageStore = usePageStore()
+const { setActiveNode } = pageStore
 const { pageData, activeNode } = storeToRefs(pageStore)
 
 const displayStore = useDisplayStore()
@@ -17,6 +18,15 @@ const { device } = storeToRefs(displayStore)
 
 const wrapperRef = ref<HTMLDivElement | null>(null)
 const contentRef = ref<HTMLDivElement | null>(null)
+
+// TODO: 后续可根据分辨率配置
+let roomFontSize = $ref(16)
+const editContentStyle = $computed(() => {
+  return {
+    width: `${device.value.width}px`,
+    fontSize: roomFontSize + 'px',
+  }
+})
 
 const pz = ref<PanZoom | null>(null)
 let isSmoothing = $ref(false)
@@ -31,8 +41,6 @@ const setWrapperSize = () => {
   wrapperSize.width = wrapperRef.value?.clientWidth || 0
   wrapperSize.height = wrapperRef.value?.clientHeight || 0
 }
-
-
 
 onMounted(() => {
   setWrapperSize()
@@ -88,12 +96,6 @@ onUnmounted(() => {
   window.removeEventListener('resize', setWrapperSize)
 })
 
-const editContentStyle = $computed(() => {
-  return {
-    width: `${device.value.width}px`,
-  }
-})
-
 const noPageData = $computed(() => {
   return pageData.value.length === 0
 })
@@ -104,7 +106,7 @@ const handleLocationPage = (immediate = false) => {
 
   if (immediate !== true) {
     isSmoothing = true
-    setTimeout(() => isSmoothing = false, 300)
+    setTimeout(() => (isSmoothing = false), 300)
   }
   isMove = false
 
@@ -126,7 +128,13 @@ const handleLocationPage = (immediate = false) => {
 
 // emitter
 emitter.on('location', (immediate?: boolean) => handleLocationPage(immediate))
-const hideNodePanel = () => emitter.emit('switchNodePanel', false)
+const hideNodePanel = (e: Event) => {
+  const target = e.target as HTMLDivElement
+  if (target?.classList.contains('edit-wrapper')) {
+    setActiveNode()
+  }
+  emitter.emit('switchNodePanel', false)
+}
 useKeyPress('space', (e) => {
   e.preventDefault()
   handleLocationPage()
@@ -134,14 +142,19 @@ useKeyPress('space', (e) => {
 </script>
 
 <template>
-  <div class="edit-section" @click="hideNodePanel">
+  <div class="edit-section" v-tap="hideNodePanel">
     <div ref="wrapperRef" class="edit-wrapper">
       <div ref="contentRef" v-show="!noPageData" class="edit-content" :style="editContentStyle">
         <slot></slot>
       </div>
     </div>
     <div class="no-data" v-if="noPageData">TODO: 没有数据，提示左侧「+」</div>
-    <Icon :class="['focus-btn', { active: isMove }]" name="focus" :size="26" @click="handleLocationPage"></Icon>
+    <Icon
+      :class="['focus-btn', { active: isMove }]"
+      name="focus"
+      :size="26"
+      @click="handleLocationPage"
+    ></Icon>
   </div>
 </template>
 
@@ -192,7 +205,8 @@ useKeyPress('space', (e) => {
     transition: all 0.3s;
     background: $panel-light;
 
-    &:hover, &.active {
+    &:hover,
+    &.active {
       opacity: 0.8;
     }
   }

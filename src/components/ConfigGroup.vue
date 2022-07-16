@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { usePageStore } from '@/stores/page';
-import { storeToRefs } from 'pinia';
-import LayoutGroup from './configs/LayoutGroup.vue';
+import { usePageStore } from '@/stores/page'
+import { storeToRefs } from 'pinia'
+import LayoutGroup from './configs/LayoutGroup.vue'
 import SizeGroup from './configs/SizeGroup.vue'
 
 interface IConfigGroupProps {
@@ -13,15 +13,14 @@ const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
 
 const componentNameMap: { [type in GroupType]: any | null } = {
-  'size': SizeGroup,
-  'position': null,
-  'text': null,
-  'layout': LayoutGroup,
-  'font': null,
-  'container': null,
-  'animation': null,
+  size: SizeGroup,
+  position: null,
+  text: null,
+  layout: LayoutGroup,
+  font: null,
+  container: null,
+  animation: null,
 }
-
 </script>
 
 <template>
@@ -41,15 +40,16 @@ const componentNameMap: { [type in GroupType]: any | null } = {
   flex-direction: column;
   // padding: 12px 18px;
 
-  &::before, &:last-child::after {
+  &::before,
+  &:last-child::after {
     content: '';
     position: absolute;
     left: 0;
     top: 0;
     width: 100%;
     height: 1px;
-    background: rgba(255,255,255, 0.15);
-    transform: scaleY(.5);
+    background: rgba(255, 255, 255, 0.15);
+    transform: scaleY(0.5);
   }
 
   &:last-child::after {

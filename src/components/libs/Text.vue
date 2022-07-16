@@ -8,9 +8,11 @@ interface ITextProps {
 }
 const { text, position } = defineProps<ITextProps>()
 
-const style = $computed(() => useStyle({
-  ...usePositionStyle(position),
-}))
+const style = $computed(() =>
+  useStyle({
+    ...usePositionStyle(position),
+  })
+)
 </script>
 
 <template>

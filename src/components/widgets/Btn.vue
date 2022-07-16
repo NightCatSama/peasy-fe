@@ -34,7 +34,7 @@ const { text, size = 'md', type = 'primary' } = defineProps<IBtnProps>()
     background: $theme-gradient;
 
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
     }
   }
 }

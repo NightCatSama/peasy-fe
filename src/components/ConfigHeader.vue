@@ -139,7 +139,7 @@ const setDeviceBySize = (width: number, height: number) => {
     transition: all 0.3s;
 
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
     }
   }
 

@@ -1,34 +1,34 @@
 <script setup lang="ts">
-import { watchEffect, defineEmits, nextTick } from 'vue';
-import Select from './Select.vue';
+import { watchEffect, defineEmits, nextTick } from 'vue'
+import Select from './Select.vue'
 
-const emit = defineEmits(['change']);
+const emit = defineEmits(['update:modelValue'])
 
 type SuffixType = 'px' | '%' | 'auto' | 'none' | 'stretch'
 
 interface IInputProps {
   type?: 'text' | 'number'
-  value?: string
+  modelValue?: string
   disabled?: boolean
   suffix?: SuffixType[]
 }
 
-const { type = 'text', value = '', suffix, disabled } = defineProps<IInputProps>()
+const { type = 'text', modelValue = '', suffix, disabled } = defineProps<IInputProps>()
 
-let inputValue = $ref(value)
+let inputValue = $ref(modelValue)
 let suffixInValue = $ref('')
 let focus = $ref(false)
 let inputRef = $ref<HTMLInputElement | null>(null)
 let memoryNumberValue = $ref(0)
 
-watchEffect(() => memoryNumberValue = parseFloat(inputValue) || memoryNumberValue)
+watchEffect(() => (memoryNumberValue = parseFloat(inputValue) || memoryNumberValue))
 
 const suffixMap = {
-  'px': 'px',
+  px: 'px',
   '%': '%',
-  'auto': 'Adaptive',
-  'none': 'Unlimited',
-  'stretch': 'Stretch',
+  auto: 'Adaptive',
+  none: 'Unlimited',
+  stretch: 'Stretch',
 }
 
 const hideInput = $computed(() => ['auto', 'none', 'stretch'].includes(suffixInValue))
@@ -38,26 +38,28 @@ const getSuffixText = $computed(() => (suffixType: SuffixType) => {
 })
 
 const getValueBySuffix = $computed(() => (suffixType: string) => {
-  return ({
-    'px': (parseFloat(inputValue) || memoryNumberValue) + 'px',
-    '%': (parseFloat(inputValue) || memoryNumberValue) + '%',
-    'auto': 'auto',
-    'none': 'none',
-    'stretch': 'stretch',
-  })[suffixType] || inputValue
+  return (
+    {
+      px: (parseFloat(inputValue) || memoryNumberValue) + 'px',
+      '%': (parseFloat(inputValue) || memoryNumberValue) + '%',
+      auto: 'auto',
+      none: 'none',
+      stretch: 'stretch',
+    }[suffixType] || inputValue
+  )
 })
 
 watchEffect(() => {
-  if (suffix && suffix.length > 0 && value) {
+  if (suffix && suffix.length > 0 && modelValue) {
     suffixInValue = suffix[0]
     suffix.some((s: string) => {
-      if (value.slice(-s.length) === s) {
+      if (modelValue.slice(-s.length) === s) {
         suffixInValue = s
         return true
       }
     })
     if (suffixInValue) {
-      inputValue = value.slice(0, -suffixInValue.length)
+      inputValue = modelValue.slice(0, -suffixInValue.length)
     }
   }
 })
@@ -69,11 +71,11 @@ const handleChange = (event: Event) => {
     value = '' + (parseFloat(value) || 0)
   }
   inputValue = value
-  emit('change', getValueBySuffix(suffixInValue))
+  emit('update:modelValue', getValueBySuffix(suffixInValue))
 }
 
 const handleSuffixClick = (key: string) => {
-  emit('change', getValueBySuffix(key))
+  emit('update:modelValue', getValueBySuffix(key))
   nextTick(() => inputRef?.focus?.())
 }
 </script>
@@ -117,8 +119,8 @@ const handleSuffixClick = (key: string) => {
 
   &.disabled {
     cursor: not-allowed;
-    opacity: .5;
-    transition: all .3s;
+    opacity: 0.5;
+    transition: all 0.3s;
   }
 
   &.focus {
@@ -148,7 +150,7 @@ const handleSuffixClick = (key: string) => {
     align-items: center;
     background: $panel-dark;
     border-radius: $normal-radius;
-    transition: all .3s;
+    transition: all 0.3s;
   }
 }
 </style>

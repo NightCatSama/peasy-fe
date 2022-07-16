@@ -13,7 +13,9 @@ const { data, activeKey } = defineProps<ITabsProps>()
       v-for="(value, key) in data"
       :key="key"
       @click="$emit('change', key)"
-    >{{ value }}</div>
+    >
+      {{ value }}
+    </div>
   </div>
 </template>
 
@@ -24,7 +26,7 @@ const { data, activeKey } = defineProps<ITabsProps>()
   height: 36px;
   padding: 4px;
   border-radius: $normal-radius;
-  border: 1px solid rgba($panel-light, .5);
+  border: 1px solid rgba($panel-light, 0.5);
 
   .tab-item {
     flex: 1;

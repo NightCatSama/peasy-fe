@@ -8,9 +8,13 @@ export interface IDeviceInfo {
   zoom: number
 }
 
+/** 保存配置组的状态 */
+export interface IGroupStatus { collapsed: boolean; advanced: boolean }
+
 export const useDisplayStore = defineStore('display', {
   state: () => ({
     device: { width: 0, height: 0, zoom: 1 } as IDeviceInfo,
+    groupStatus: {} as { [key: string]: IGroupStatus },
   }),
   getters: {
     realDeviceSize(state) {
@@ -19,6 +23,9 @@ export const useDisplayStore = defineStore('display', {
         height: state.device.height * state.device.zoom,
       }
     },
+    getGroupStatus(state) {
+      return (group: string) => state.groupStatus[group]
+    }
   },
   actions: {
     setDeviceByParent(parentWidth: number) {
@@ -27,5 +34,8 @@ export const useDisplayStore = defineStore('display', {
     setDevice(device: IDeviceInfo) {
       this.device = device
     },
+    saveGroupStatus(name: string, status: IGroupStatus) {
+      this.groupStatus[name] = status
+    }
   },
 })

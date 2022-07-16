@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import { watchEffect, defineEmits } from 'vue';
-import Icon from './Icon.vue';
+import { watchEffect, defineEmits } from 'vue'
+import Icon from './Icon.vue'
 
-const emit = defineEmits(['update:modelValue']);
+const emit = defineEmits(['update:modelValue'])
 
 interface ISelectProps {
   display?: 'inline' | 'block'
@@ -20,22 +20,23 @@ const handleChange = (val: string) => {
   emit('update:modelValue', val)
   isOpen = false
 }
-
 </script>
 
 <template>
-  <div
-    :class="['select', `select-display-${display}`]"
-    @click="isOpen = !isOpen"
-  >
+  <div :class="['select', `select-display-${display}`]" @click="isOpen = !isOpen">
     <div class="select-value">{{ showValue }}</div>
-    <div :class="['select-option-wrapper', { hide: !isOpen }]" v-click-outside="() => isOpen = false">
+    <div
+      :class="['select-option-wrapper', { hide: !isOpen }]"
+      v-click-outside="() => (isOpen = false)"
+    >
       <div
         :class="['select-option', { active: key === modelValue }]"
         v-for="(label, key) in options"
         :key="key"
         @click.stop="() => handleChange(key as string)"
-      >{{ label }}</div>
+      >
+        {{ label }}
+      </div>
     </div>
   </div>
 </template>
@@ -72,7 +73,7 @@ const handleChange = (val: string) => {
     background: $panel-dark-gradient;
     border-radius: $inner-radius;
     white-space: nowrap;
-    transition: all .3s;
+    transition: all 0.3s;
   }
 
   .select-option-wrapper {
@@ -86,7 +87,7 @@ const handleChange = (val: string) => {
     border-radius: 8px;
     box-shadow: $float-shadow;
     padding: 4px 6px;
-    transition: all .3s;
+    transition: all 0.3s;
     z-index: 999;
     min-width: 100%;
     border: 1px solid $theme;
@@ -94,7 +95,7 @@ const handleChange = (val: string) => {
     &.hide {
       pointer-events: none;
       opacity: 0;
-      transform: scale(.8);
+      transform: scale(0.8);
     }
 
     .select-option {

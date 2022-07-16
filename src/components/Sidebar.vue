@@ -13,7 +13,6 @@ interface ISidebarProps {
 const { activeNodePanel } = defineProps<ISidebarProps>()
 
 const pageStore = usePageStore()
-
 </script>
 
 <template>
