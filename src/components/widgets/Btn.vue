@@ -31,10 +31,10 @@ const { text, size = 'md', type = 'primary' } = defineProps<IBtnProps>()
 
   &-type-primary {
     color: $color;
-    background-color: $theme;
+    background: $theme-gradient;
 
     &:hover {
-      background-color: lighten($theme, 7%);
+      opacity: .8;
     }
   }
 }

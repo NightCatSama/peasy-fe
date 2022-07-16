@@ -31,24 +31,59 @@ export const usePositionStyle = (position?: IPosition) => {
   }
 }
 
-export const useBoxStyle = (box: IBox) => {
-  if (!box) return {}
+export const useSizeStyle = (size: ISize, direction?: string) => {
+  if (!size) return {}
 
   const isEditMode = getIsEditMode()
 
-  let height = box.height
-  if (box.isSection && box.height?.slice(-1) === '%') {
-    const n = parseFloat(box.height)
-    height = isEditMode ? `${useDisplayStore().device.height * (n / 100)}px` : `${n}vh`
+  let flexStyles: any = {}
+
+  let width = size.width
+  if (size.width === 'stretch') {
+    size.width = ''
+    if (direction === 'row') {
+      flexStyles.flexGrow = 1
+      flexStyles.flexShrink = 1
+    } else {
+      flexStyles.alignSelf = 'stretch'
+    }
+  }
+
+  let height = size.height
+  let minHeight = size.minHeight
+  let maxHeight = size.maxHeight
+  // 不存在则证明是 section
+  if (!direction) {
+    if (size.height?.slice?.(-1) === '%') {
+      const n = parseFloat(size.height)
+      height = isEditMode ? `${useDisplayStore().device.height * (n / 100)}px` : `${n}vh`
+    }
+    if (size.minHeight?.slice?.(-1) === '%') {
+      const n = parseFloat(size.minHeight)
+      minHeight = isEditMode ? `${useDisplayStore().device.height * (n / 100)}px` : `${n}vh`
+    }
+    if (size.maxHeight?.slice?.(-1) === '%') {
+      const n = parseFloat(size.maxHeight)
+      maxHeight = isEditMode ? `${useDisplayStore().device.height * (n / 100)}px` : `${n}vh`
+    }
+  } else if (size.height === 'stretch') {
+    height = ''
+    if (direction === 'column') {
+      flexStyles.flexGrow = 1
+      flexStyles.flexShrink = 1
+    } else {
+      flexStyles.alignSelf = 'stretch'
+    }
   }
 
   return {
-    width: box.width,
+    width,
     height,
-    minWidth: box.minWidth,
-    minHeight: box.minHeight,
-    flex: box.stretch ? 1 : 'none',
-    flexShrink: box.stretch ? 1 : 0,
+    minWidth: size.minWidth,
+    minHeight,
+    maxWidth: size.maxWidth,
+    maxHeight,
+    ...flexStyles,
   }
 }
 

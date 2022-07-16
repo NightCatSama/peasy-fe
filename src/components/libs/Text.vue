@@ -2,14 +2,13 @@
 import { usePositionStyle, useStyle } from '@/utils/style'
 
 interface ITextProps {
-  color: string
+  direction?: 'row' | 'column'
   text: string
   position?: IPosition
 }
-const { color, text, position } = defineProps<ITextProps>()
+const { text, position } = defineProps<ITextProps>()
 
 const style = $computed(() => useStyle({
-  color,
   ...usePositionStyle(position),
 }))
 </script>

@@ -1,18 +1,19 @@
 <script setup lang="ts">
-import { useStyle, useBoxStyle, useContainerStyle, useLayoutStyle, usePositionStyle } from '@/utils/style'
+import { useStyle, useSizeStyle, useContainerStyle, useLayoutStyle, usePositionStyle } from '@/utils/style'
 
 interface IBlockProps {
+  direction?: 'row' | 'column'
   position: IPosition
-  box: IBox
+  size: ISize
   layout: ILayout
   container: IContainer
 }
 
-const { position, box, layout, container } = defineProps<IBlockProps>()
+const { position, size, layout, container, direction } = defineProps<IBlockProps>()
 
 const style = $computed(() => useStyle({
   ...usePositionStyle(position),
-  ...useBoxStyle(box),
+  ...useSizeStyle(size, direction),
   ...useLayoutStyle(layout),
   ...useContainerStyle(container),
 }))

@@ -13,7 +13,7 @@ interface ISidebarProps {
 const { activeNodePanel } = defineProps<ISidebarProps>()
 
 const pageStore = usePageStore()
-const { activeConfigData } = storeToRefs(pageStore)
+
 </script>
 
 <template>
@@ -23,7 +23,7 @@ const { activeConfigData } = storeToRefs(pageStore)
     </div>
     <div class="operator-panel">
       <div class="top">
-        <div class="operator-item">
+        <div class="operator-item add-item">
           <Icon
             :size="26"
             name="add"
@@ -42,7 +42,7 @@ const { activeConfigData } = storeToRefs(pageStore)
 .sidebar {
   width: 60px;
   flex-shrink: 0;
-  background-color: $panel-sidebar;
+  background: $panel-sidebar;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -74,6 +74,10 @@ const { activeConfigData } = storeToRefs(pageStore)
   .operator-item {
     &:not(:last-child) {
       margin-bottom: 10px;
+    }
+
+    &.add-item :deep(.icon) {
+      background: $panel;
     }
   }
 }

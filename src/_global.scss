@@ -1,12 +1,23 @@
 $theme: #3e7ce8;
 $panel: #2d2f31;
 $panel-light: #5b5e64;
+$panel-dark: darken($panel, 5%);
 $panel-header: #404040;
 $panel-sidebar: #4c4c4c;
-
 $bg-default: #202124;
+
+$theme-gradient: linear-gradient(lighten($theme, 7%), $theme);
+$panel-gradient: linear-gradient(lighten($panel, 7%), $panel);
+$panel-light-gradient: linear-gradient(lighten($panel-light, 7%), $panel-light);
+$panel-dark-gradient: linear-gradient(lighten($panel-dark, 4%), $panel-dark);
+$panel-header-gradient: linear-gradient(lighten($panel-header, 7%), $panel-header);
+$panel-sidebar-gradient: linear-gradient(lighten($panel-sidebar, 7%), $panel-sidebar);
+$bg-default-gradient: linear-gradient(lighten($bg-default, 7%), $bg-default);
+
 $color: #cecece;
 $border: rgba(#5a5a5c, 0.7);
+
+$item-bg: #404040;
 
 $radius: 12px;
 $shadow: 0 0 20px 5px rgba(0, 0, 0, 0.16);
@@ -15,3 +26,18 @@ $float-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.36), 1px 1px 2px 0 rgb(255, 255, 255,
 
 $header-height: 64px;
 $config-width: 300px;
+
+// beautiful scrollbar
+$black: #000;
+$white: #fff;
+$tr: transparent;
+$blue: #3da8f5;
+$red: #d71345;
+$yellow: #ffaf38;
+$green: #00B281;
+$cyan: #2fbdb3;
+$purple: #7973c9;
+$pink: #f7acbc;
+$brown: #7b5d5f;
+$orange: #f47920;
+$roseate: #f05b72;

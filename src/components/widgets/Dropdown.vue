@@ -28,7 +28,7 @@ const { disabled, triggers = ['click'] } = defineProps<IDropdownProps>()
     padding: 12px 16px;
     border-radius: 8px;
     color: $color;
-    background-color: $panel;
+    background: $panel;
     border: none;
     box-shadow: none;
   }

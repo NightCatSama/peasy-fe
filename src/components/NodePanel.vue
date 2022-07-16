@@ -17,7 +17,7 @@ const { addSection } = pageStore
           v-for="(template, key) in list"
           class="element-item"
           :name="template.name"
-          @click="() => addSection({ ...template, name: template.name + `${Math.random() * 100}` })"
+          @click="() => addSection({ ...template, name: template.name + `${~~(Math.random() * 100)}` })"
         ></Element>
       </div>
     </section>
@@ -31,7 +31,7 @@ const { addSection } = pageStore
   height: 100%;
   overflow-y: auto;
   flex-shrink: 0;
-  background-color: $panel;
+  background: $panel;
   padding: 15px 24px;
 
   .title {

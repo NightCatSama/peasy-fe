@@ -20,6 +20,7 @@ const contentRef = ref<HTMLDivElement | null>(null)
 
 const pz = ref<PanZoom | null>(null)
 let isSmoothing = $ref(false)
+let isMove = $ref(false)
 
 const wrapperSize = reactive({
   width: 0,
@@ -30,6 +31,8 @@ const setWrapperSize = () => {
   wrapperSize.width = wrapperRef.value?.clientWidth || 0
   wrapperSize.height = wrapperRef.value?.clientHeight || 0
 }
+
+
 
 onMounted(() => {
   setWrapperSize()
@@ -52,6 +55,9 @@ onMounted(() => {
   pz.value.on('zoom', (e: any) => {
     const { scale } = e.getTransform()
     device.value.zoom = scale
+  })
+  pz.value.on('panend', (e) => {
+    isMove = true
   })
   handleLocationPage()
 })
@@ -98,8 +104,9 @@ const handleLocationPage = (immediate = false) => {
 
   if (immediate !== true) {
     isSmoothing = true
-    setTimeout(() => (isSmoothing = false), 300)
+    setTimeout(() => isSmoothing = false, 300)
   }
+  isMove = false
 
   const { width, height } = wrapperSize
   const rect = contentRef.value!.getBoundingClientRect()
@@ -129,12 +136,12 @@ useKeyPress('space', (e) => {
 <template>
   <div class="edit-section" @click="hideNodePanel">
     <div ref="wrapperRef" class="edit-wrapper">
-      <div ref="contentRef" class="edit-content" :style="editContentStyle">
+      <div ref="contentRef" v-show="!noPageData" class="edit-content" :style="editContentStyle">
         <slot></slot>
       </div>
     </div>
     <div class="no-data" v-if="noPageData">TODO: 没有数据，提示左侧「+」</div>
-    <Icon class="focus-btn" name="focus" :size="26" @click="handleLocationPage"></Icon>
+    <Icon :class="['focus-btn', { active: isMove }]" name="focus" :size="26" @click="handleLocationPage"></Icon>
   </div>
 </template>
 
@@ -161,6 +168,9 @@ useKeyPress('space', (e) => {
       position: relative;
       display: flex;
       flex-direction: column;
+      border-radius: 6px;
+      overflow: hidden;
+      background: #fff;
     }
   }
 
@@ -178,11 +188,12 @@ useKeyPress('space', (e) => {
     right: 20px;
     bottom: 20px;
     padding: 8px;
-    opacity: 0.6;
+    opacity: 0.3;
     transition: all 0.3s;
+    background: $panel-light;
 
-    &:hover {
-      opacity: 1;
+    &:hover, &.active {
+      opacity: 0.8;
     }
   }
 }

@@ -19,6 +19,7 @@ const allKey = Symbol('all')
 <template>
   <TransitionGroup name="fade" class="section-list" tag="div">
     <div
+      v-if="allPageData.length"
       :key="allKey"
       :class="['section-item', { active: isActiveAllSection }]"
       @click="handleSectionItemClick(null)"
@@ -51,16 +52,13 @@ const allKey = Symbol('all')
     width: 32px;
     height: 32px;
     border-radius: 4px;
-    background-color: transparent;
-    background-color: transparent;
     display: flex;
     justify-content: center;
     align-items: center;
     font-size: 16px;
     text-shadow: $text-shadow;
     opacity: 0.8;
-    background-color: $bg-default;
-    // font-weight: bold;
+    background: $bg-default-gradient;
     cursor: pointer;
     transition: all 0.3s, transform 0.3s 0.1s;
 
@@ -70,7 +68,7 @@ const allKey = Symbol('all')
 
     &.active {
       color: $bg-default;
-      background-color: $theme;
+      background: $theme-gradient;
       text-shadow: none;
       font-weight: bold;
       box-shadow: $float-shadow;

@@ -17,6 +17,8 @@ interface CNode {
   children?: CNode[]
 }
 
+type GroupType = 'text' | 'size' | 'layout' | 'font' | 'container' | 'position' | 'animation'
+
 /** 当前配置中的组件 */
 interface ConfigData {
   /** 组件名称 */
@@ -25,53 +27,23 @@ interface ConfigData {
   desc?: string
   /** 组件配置数据 */
   node: CNode
-  groups: ConfigGroup[]
-}
-
-/** 组件 - 组配置参数 */
-interface ConfigGroup {
-  /** 配置组标题 */
-  title: string
-  /** 配置组描述 */
-  desc?: string
-  /** 配置参数 */
-  params: ConfigNode[]
-}
-
-/** 组件 - 单项配置参数 */
-interface ConfigNode {
-  /** 参数名称 */
-  label: string
-  /** 参数描述 */
-  desc?: string
-  /** 参数类型 */
-  type: 'string' | 'textarea' | 'number' | 'color' | 'length' | 'position' | 'select'
-  /** select 类型时的可选值 */
-  options?: {
-    [key: string]: label
-  }
-  /** 数值限制 */
-  min?: number
-  max?: number
-  /** 验证 */
-  validator?: (value: string) => boolean
-  get: () => any
-  set: (val: any) => any
+  /** 支持的配置组 */
+  groups: GroupType[]
 }
 
 /** 尺寸信息 */
-interface IBox {
-  width?: string | 'auto'
-  height?: string | 'auto'
-  minWidth?: string
-  minHeight?: string
-  stretch?: boolean
-  isSection?: boolean
+interface ISize {
+  width?: string | 'auto' | 'stretch'
+  height?: string | 'auto' | 'stretch'
+  minWidth?: string | 'auto'
+  minHeight?: string | 'auto'
+  maxWidth?: string | 'none'
+  maxHeight?: string | 'none'
 }
 
 /** 容器的布局信息 */
 interface ILayout {
-  direction: 'row' | 'column' | 'row-reverse' | 'column-reverse'
+  direction: 'row' | 'column'
   justify: 'start' | 'end' | 'center' | 'space-between' | 'space-around'
   align: 'start' | 'end' | 'center' | 'stretch' | 'baseline'
 }

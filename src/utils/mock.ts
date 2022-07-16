@@ -1,3 +1,5 @@
+import { getDefaultLayout, getDefaultSize } from "./defaultConfig"
+
 export const getMockBlock = (type?: CNode['type']): CNode => {
   const t = type || 'component'
   return {
@@ -8,18 +10,11 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
       position: {
         type: 'relative',
       },
-      box: {
-        height: '100%',
-        isSection: type === 'section',
-      },
-      layout: {
-        direction: 'row',
-        justify: 'center',
-        align: 'center',
-      },
+      size: getDefaultSize('section'),
+      layout: getDefaultLayout(),
       container: {
         type: 'color',
-        backgroundColor: 'pink',
+        backgroundColor: 'transparent',
       },
     },
     children: [
@@ -33,16 +28,8 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
             left: '0',
             top: '0',
           },
-          box: {
-            width: '80%',
-            height: '100%',
-            stretch: true,
-          },
-          layout: {
-            direction: 'row',
-            justify: 'center',
-            align: 'start',
-          } as ILayout,
+          size: getDefaultSize('component', { width: '50%' }),
+          layout: getDefaultLayout(),
           container: {
             type: 'color',
             backgroundColor: '#fff',
@@ -70,8 +57,7 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
         name: `${t}-title-${~~(Math.random() * 1000)}`,
         component: 'Text',
         props: {
-          text: 'Hello',
-          color: `#${Math.random().toString(16).slice(2, 8)}`,
+          text: 'Hello NightCat',
           position: {
             type: 'absolute',
             left: '0',
@@ -85,7 +71,6 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
         component: 'Text',
         props: {
           text: 'Hello',
-          color: `#${Math.random().toString(16).slice(2, 8)}`,
           position: {
             type: 'relative',
             left: '0',

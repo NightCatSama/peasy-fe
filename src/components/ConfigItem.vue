@@ -14,27 +14,27 @@ const { configure } = defineProps<IConfigItemProps>()
         <input
           type="text"
           :value="configure.get()"
-          @input="e => configure.set((e.target as HTMLInputElement).value)"
+          @input="(e: any) => configure.set((e.target as HTMLInputElement).value)"
         />
       </div>
       <div v-else-if="configure.type === 'length'">
         <input
           type="text"
           :value="configure.get()"
-          @change="e => configure.set((e.target as HTMLInputElement).value)"
+          @change="(e: any) => configure.set((e.target as HTMLInputElement).value)"
         />
       </div>
       <div v-else-if="configure.type === 'color'">
         <input
           type="color"
           :value="configure.get()"
-          @input="e => configure.set((e.target as HTMLInputElement).value)"
+          @input="(e: any) => configure.set((e.target as HTMLInputElement).value)"
         />
       </div>
       <div v-else-if="configure.type === 'select'">
         <select
           :value="configure.get()"
-          @change="e => configure.set((e.target as HTMLInputElement).value)"
+          @change="(e: any) => configure.set((e.target as HTMLInputElement).value)"
         >
           <option v-for="(label, value) in configure.options" :value="value">{{ label }}</option>
         </select>
@@ -43,7 +43,7 @@ const { configure } = defineProps<IConfigItemProps>()
         <textarea
           type="text"
           :value="configure.get()"
-          @input="e => configure.set((e.target as HTMLInputElement).value)"
+          @input="(e: any) => configure.set((e.target as HTMLInputElement).value)"
         />
       </div>
     </div>

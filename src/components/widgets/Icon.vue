@@ -1,12 +1,14 @@
 <script setup lang="ts">
 import AddIcon from '@/assets/add.svg'
 import FocusIcon from '@/assets/focus.svg'
-import DeviceSm from '@/assets/device-sm.svg'
-import DeviceMd from '@/assets/device-md.svg'
-import DeviceLg from '@/assets/device-lg.svg'
+import DeviceSmIcon from '@/assets/device-sm.svg'
+import DeviceMdIcon from '@/assets/device-md.svg'
+import DeviceLgIcon from '@/assets/device-lg.svg'
+import CheckIcon from '@/assets/check.svg'
+import DownIcon from '@/assets/down.svg'
 
 interface IIconProps {
-  name: 'add' | 'focus' | 'device-sm' | 'device-md' | 'device-lg'
+  name: 'add' | 'focus' | 'device-sm' | 'device-md' | 'device-lg' | 'check' | 'down'
   type?: 'circle' | 'pure'
   size?: number
   active?: boolean
@@ -15,9 +17,11 @@ interface IIconProps {
 const iconMap = {
   add: AddIcon,
   focus: FocusIcon,
-  'device-sm': DeviceSm,
-  'device-md': DeviceMd,
-  'device-lg': DeviceLg,
+  'device-sm': DeviceSmIcon,
+  'device-md': DeviceMdIcon,
+  'device-lg': DeviceLgIcon,
+  check: CheckIcon,
+  down: DownIcon,
 }
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()
@@ -27,12 +31,11 @@ const style = $ref({
   height: size + 'px',
 })
 
-const IconComp: any = iconMap[name]
 </script>
 
 <template>
-  <div :class="['icon', `icon-type-${type}`]">
-    <IconComp :class="['icon-inner', { active }]" :style="style"></IconComp>
+  <div :class="['icon', `icon-type-${type}`, { active }]">
+    <component :is="iconMap[name]" :class="['icon-inner', { active }]" :style="style"></component>
   </div>
 </template>
 
@@ -45,15 +48,14 @@ const IconComp: any = iconMap[name]
   &-type-circle {
     padding: 4px;
     border-radius: 50%;
-    background-color: $panel;
   }
 
   .icon-inner {
-    transition: transform 0.8s, color 0.3s 0.3s;
+    transition: all 0.3s, transform 0.6s;
 
     &.active {
       color: $theme;
-      transform: rotateY(540deg);
+      transform: rotateY(360deg);
     }
   }
 }

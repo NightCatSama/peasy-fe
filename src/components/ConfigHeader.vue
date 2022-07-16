@@ -91,7 +91,7 @@ const setDeviceBySize = (width: number, height: number) => {
   width: 100%;
   height: $header-height;
   flex-shrink: 0;
-  background-color: $panel-header;
+  background: $panel-header;
   padding: 10px 24px;
   display: flex;
   align-items: center;
@@ -133,27 +133,27 @@ const setDeviceBySize = (width: number, height: number) => {
     display: flex;
     justify-content: center;
     align-items: center;
-    background-color: $panel-light;
+    background: $panel-light-gradient;
     margin: 0 5px;
     cursor: pointer;
     transition: all 0.3s;
 
     &:hover {
-      background-color: lighten($panel-light, 7%);
+      opacity: .8;
     }
   }
 
   .size {
     height: 36px;
     padding: 0 18px;
-    font-size: 16px;
+    font-size: 14px;
     border-radius: 18px;
   }
 
   .zoom {
-    height: 34px;
-    width: 34px;
-    font-size: 12px;
+    height: 32px;
+    width: 32px;
+    font-size: 11px;
     border-radius: 200px;
   }
 
@@ -190,22 +190,21 @@ const setDeviceBySize = (width: number, height: number) => {
       height: 42px;
       font-size: 10px;
       color: $panel;
-      background-color: $panel-light;
+      background: $panel-light-gradient;
       border-radius: 5px;
       cursor: pointer;
-      transition: all 0.3s;
 
       &:not(:last-child) {
         margin-right: 8px;
       }
 
       &:hover {
-        background-color: #999;
+        background: lighten($panel-light, 17%);
       }
 
       &.active {
-        background-color: #999;
-        color: #e3e3e3;
+        background: lighten($panel-light, 17%);
+        color: $white;
       }
 
       .device-text {

@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { mande } from 'mande'
 import { cloneDeep } from 'lodash'
 import { getMockBlock } from '@/utils/mock'
-import { getConfig } from '@/config'
+import { ComponentGroup } from '@/config'
 
 const api = mande('http://192.168.2.161:3030/api/page')
 
@@ -23,7 +23,7 @@ export const usePageStore = defineStore('page', {
     activeSection: null as string | null,
   }),
   getters: {
-    activeConfigData: (state) => (state.activeNode ? getConfig(state.activeNode) : null),
+    activeNodeGroups: (state) => (state.activeNode ? ComponentGroup[state.activeNode.component] : null),
     isActiveAllSection: (state) => state.activeSection === null,
     pageData: (state): typeof state.allPageData => {
       if (!state.activeSection) return state.allPageData

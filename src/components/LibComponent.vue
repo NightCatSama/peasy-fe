@@ -4,10 +4,11 @@ import { storeToRefs } from 'pinia'
 import { ref, watch } from 'vue'
 
 interface ILibComponentProps {
-  item: any
+  parent?: CNode
+  item: CNode
 }
 
-const { item } = defineProps<ILibComponentProps>()
+const { parent, item } = defineProps<ILibComponentProps>()
 const pageStore = usePageStore()
 const { setActiveNode } = pageStore
 const { activeNode } = storeToRefs(pageStore)
@@ -33,9 +34,10 @@ watch(activeNode, (newNode) => {
     @mousedown="mousedownTime = Date.now()"
     :is="item.component"
     v-bind="item.props || {}"
+    :direction="parent?.props?.layout?.direction"
   >
     <template v-if="item.children">
-      <LibComponent v-for="subItem in item.children" :item="subItem"></LibComponent>
+      <LibComponent v-for="subItem in item.children" :item="subItem" :parent="item"></LibComponent>
     </template>
   </Component>
 </template>
