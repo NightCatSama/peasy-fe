@@ -17,19 +17,8 @@ interface CNode {
   children?: CNode[]
 }
 
-type GroupType = 'text' | 'size' | 'layout' | 'font' | 'container' | 'position' | 'animation'
-
-/** 当前配置中的组件 */
-interface ConfigData {
-  /** 组件名称 */
-  name: string
-  /** 组件描述 */
-  desc?: string
-  /** 组件配置数据 */
-  node: CNode
-  /** 支持的配置组 */
-  groups: GroupType[]
-}
+/** 支持的分组名 */
+type GroupType = 'basic' | 'size' | 'layout' | 'font' | 'container' | 'position' | 'animation'
 
 /** 尺寸信息 */
 interface ISize {

@@ -1,12 +1,13 @@
 <script setup lang="ts">
+import { ITextBasicType } from '@/config';
 import { usePositionStyle, useStyle } from '@/utils/style'
 
 interface ITextProps {
   direction?: 'row' | 'column'
-  text: string
+  basic: ITextBasicType
   position?: IPosition
 }
-const { text, position } = defineProps<ITextProps>()
+const { basic, position } = defineProps<ITextProps>()
 
 const style = $computed(() =>
   useStyle({
@@ -16,7 +17,7 @@ const style = $computed(() =>
 </script>
 
 <template>
-  <div class="text" :style="style">{{ text }}</div>
+  <div class="text" :style="style">{{ basic.text }}</div>
 </template>
 
 <style scoped>

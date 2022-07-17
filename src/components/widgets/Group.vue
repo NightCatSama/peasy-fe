@@ -28,13 +28,6 @@ onUpdated(() => {
       <span class="title">{{ title }}</span>
       <span class="info-op">
         <Icon
-          v-if="canAdvanced"
-          @click="showAdvanced = !showAdvanced"
-          name="advanced"
-          :size="16"
-          type="pure"
-        />
-        <Icon
           :class="{ rotate: collapsed }"
           @click="collapsed = !collapsed"
           name="down"
@@ -45,6 +38,9 @@ onUpdated(() => {
     </div>
     <div class="content" v-collapse="collapsed">
       <slot :showAdvanced="showAdvanced"></slot>
+      <div class="advanced-switch" v-if="canAdvanced" @click="showAdvanced = !showAdvanced">
+        <span>{{ !showAdvanced ? 'Advanced Options' : 'Hide Advanced Options' }}</span>
+      </div>
     </div>
   </div>
 </template>
@@ -91,13 +87,42 @@ onUpdated(() => {
     display: flex;
     flex-direction: column;
 
-    :deep(.item) {
-      display: flex;
+    .advanced-switch {
+      position: relative;
+      display: inline-flex;
+      align-self: flex-start;
       align-items: center;
-      min-height: 32px;
-      &:not(:last-child) {
-        margin-bottom: 10px;
+      justify-content: center;
+      font-size: 12px;
+      color: darken($color, 30%);
+      cursor: pointer;
+      user-select: none;
+      opacity: .4;
+      transition: all .3s;
+
+      &:hover {
+        opacity: .8;
       }
+    }
+  }
+}
+
+:deep(.item) {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  min-height: 32px;
+  margin-bottom: 10px;
+  .label {
+    flex: 1;
+    font-size: 14px;
+    margin-right: 10px;
+  }
+  &.column {
+    flex-direction: column;
+    align-items: flex-start;
+    .label {
+      margin-bottom: 10px;
     }
   }
 }

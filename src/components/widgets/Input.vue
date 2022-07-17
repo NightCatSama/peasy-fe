@@ -6,13 +6,15 @@ import Select from './Select.vue'
 const emit = defineEmits(['update:modelValue'])
 
 interface IInputProps {
-  type?: 'text' | 'number'
+  type?: 'text' | 'number' | 'textarea'
   modelValue?: string
   disabled?: boolean
   suffix?: SuffixType[]
+  placeholder?: string
+  realTime?: boolean
 }
 
-const { type = 'text', modelValue = '', suffix, disabled } = defineProps<IInputProps>()
+const { type = 'text', modelValue = '', suffix, disabled, realTime } = defineProps<IInputProps>()
 
 let inputValue = $ref(modelValue)
 let suffixInValue = $ref(suffix?.[0] ?? '')
@@ -27,7 +29,7 @@ const suffixMap = {
   none: 'Unlimited',
   stretch: 'Stretch',
 }
-const hideInput = $computed(() => !isUnitType(suffixInValue))
+const hideInput = $computed(() => type === 'number' && !isUnitType(suffixInValue))
 
 const getSuffixText = $computed(() => (suffixType: SuffixType) => {
   return suffixMap[suffixType]
@@ -84,22 +86,31 @@ const handleSuffixClick = (key: SuffixType) => {
   emit('update:modelValue', getValueBySuffix(key))
   nextTick(() => inputRef?.focus?.())
 }
+
+const handleInput = (e: any) => {
+  console.log(realTime)
+  realTime && handleChange(e)
+}
 </script>
 
 <template>
   <div :class="['input-wrapper', { disabled, focus }]">
-    <input
+    <component
+      :is="type === 'textarea' ? 'textarea' : 'input'"
       ref="inputRef"
       v-show="!hideInput"
       :type="'text'"
       :value="inputValue"
       :disabled="disabled"
+      :placeholder="placeholder"
+      :rows="4"
       @keyup.enter="handleChange"
       @focus="focus = true"
       @blur="(e: Event) => {
         focus = false
         handleChange(e)
       }"
+      @input.stop.prevent="handleInput"
     />
     <template v-if="suffixInValue && suffix">
       <Select
@@ -133,17 +144,29 @@ const handleSuffixClick = (key: SuffixType) => {
     border-color: $theme;
   }
 
-  input {
+  input, textarea {
     background: $tr;
     border: none;
     outline: none;
     color: $color;
     width: 100%;
     padding: 0 12px;
+    font-family: $font-family;
 
     &[disabled] {
       cursor: not-allowed;
     }
+
+    &::placeholder {
+      font-size: 12px;
+      opacity: .6;
+    }
+  }
+
+  textarea {
+    padding: 8px;
+    resize: none;
+    line-height: 1.4;
   }
 
   .suffix {

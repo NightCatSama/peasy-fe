@@ -28,7 +28,6 @@ const editContentStyle = $computed(() => {
 
 const pz = ref<PanZoom | null>(null)
 let isSmoothing = $ref(false)
-let isMove = $ref(false)
 
 const wrapperSize = reactive({
   width: 0,
@@ -62,7 +61,6 @@ onMounted(() => {
     device.value.zoom = e.getTransform().scale
     emitter.emit('updateMoveable')
   })
-  pz.value.on('panend', () => isMove = true)
   pz.value.on('pan', () => emitter.emit('updateMoveable'))
   handleLocationPage()
 })
@@ -99,20 +97,30 @@ const handleLocationPage = (immediate = false) => {
     isSmoothing = true
     setTimeout(() => (isSmoothing = false), 300)
   }
-  isMove = false
+
+  let x, y, left = 0, top = 0
+
+  const activeElem = activeNode && document.querySelector('.lib-component.active') as HTMLDivElement
 
   const { width, height } = wrapperSize
   const rect = contentRef.value!.getBoundingClientRect()
   const w = rect.width
   const h = rect.height
-  const x = (width - w) / 2
-  const y = h < height ? (height - h) / 2 : 0
+  x = (width - w) / 2
+  y = h < height ? (height - h) / 2 : 0
 
+  // 先将页面完全居中
   immediate === true ? pz.value!.moveTo(x, y) : pz.value!.smoothMoveTo(x, y)
 
+  if (activeElem) {
+    const activeRect = activeElem.getBoundingClientRect()
+    left = (activeRect.left - rect.left) - ((wrapperSize.width - activeRect.width) / 2)
+    top = (activeRect.top - rect.top) - ((wrapperSize.height - activeRect.height) / 2)
+  }
+
   wrapperRef.value?.scrollTo({
-    top: 0,
-    left: 0,
+    top,
+    left,
     behavior: 'smooth',
   })
 }
@@ -126,10 +134,6 @@ const hideNodePanel = (e: Event) => {
   }
   emitter.emit('switchNodePanel', false)
 }
-useKeyPress('space', (e) => {
-  e.preventDefault()
-  handleLocationPage()
-})
 </script>
 
 <template>
@@ -141,7 +145,7 @@ useKeyPress('space', (e) => {
     </div>
     <div class="no-data" v-if="noPageData">TODO: 没有数据，提示左侧「+」</div>
     <Icon
-      :class="['focus-btn', { active: isMove }]"
+      :class="['focus-btn']"
       name="focus"
       :size="26"
       @click="() => handleLocationPage()"

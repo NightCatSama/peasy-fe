@@ -7,9 +7,10 @@ import DeviceLgIcon from '@/assets/device-lg.svg'
 import CheckIcon from '@/assets/check.svg'
 import DownIcon from '@/assets/down.svg'
 import AdvancedIcon from '@/assets/advanced.svg'
+import MoreIcon from '@/assets/more.svg'
 
 interface IIconProps {
-  name: 'add' | 'focus' | 'device-sm' | 'device-md' | 'device-lg' | 'check' | 'down' | 'advanced'
+  name: 'add' | 'focus' | 'device-sm' | 'device-md' | 'device-lg' | 'check' | 'down' | 'advanced' | 'more'
   type?: 'circle' | 'pure'
   size?: number
   active?: boolean
@@ -24,6 +25,7 @@ const iconMap = {
   check: CheckIcon,
   down: DownIcon,
   advanced: AdvancedIcon,
+  more: MoreIcon,
 }
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()
@@ -42,6 +44,7 @@ const style = $ref({
 
 <style lang="scss" scoped>
 .icon {
+  position: relative;
   display: inline-flex;
   flex-direction: column;
   justify-content: center;

@@ -1,8 +1,6 @@
 <script setup lang="ts">
-import { reactive } from 'vue'
 import Group from '../widgets/Group.vue'
-import Tabs from '../widgets/Tabs.vue'
-import Input from '../widgets/Input.vue'
+import InputItem from '@/components/configs/items/InputItem.vue'
 import { fixedPoint, getUnit } from '@/utils/sizeHelper';
 interface ISizeGroupProps {
   node: CNode
@@ -64,25 +62,21 @@ const list: any = $computed(() => [
   },
 ])
 
-const handleChange = (val: string, handler: any) => {
-  handler(fixedPoint(val))
-}
 </script>
 
 <template>
   <Group title="Size" class="size-group" :can-advanced="true">
     <template #default="{ showAdvanced }">
       <template v-for="(item, index) in list" :key="item.name">
-        <div class="item" v-if="!item.hide && (!item.isAdvanced || showAdvanced)">
-          <span class="label">{{ item.name }}</span>
-          <Input
-            class="size-input"
-            type="number"
-            :model-value="item.value"
-            :suffix="item.suffix"
-            @update:model-value="val => handleChange(val, item.setValue)"
-          ></Input>
-        </div>
+        <InputItem
+          v-if="!item.hide && (!item.isAdvanced || showAdvanced)"
+          :label="item.name"
+          :model-value="item.value"
+          :suffix="item.suffix"
+          :type="item.type"
+          @update:model-value="item.setValue"
+        >
+        </InputItem>
       </template>
     </template>
   </Group>
@@ -93,33 +87,6 @@ const handleChange = (val: string, handler: any) => {
   .label {
     flex: 1;
     margin-right: 8px;
-  }
-  .size-input {
-    width: $item-width;
-    flex: none;
-    transition: all 0.3s;
-
-    &.hide {
-      opacity: 0;
-      transform: scale(0.9);
-      pointer-events: none;
-    }
-  }
-  .size-check {
-    display: flex;
-    justify-content: flex-end;
-    align-items: center;
-    margin-left: 10px;
-
-    :deep(.icon) {
-      background: $bg-default;
-      opacity: 0.5;
-      transition: all 0.5s;
-
-      &.active {
-        opacity: 1;
-      }
-    }
   }
 }
 </style>

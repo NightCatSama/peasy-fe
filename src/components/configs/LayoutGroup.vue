@@ -1,9 +1,8 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
-import Input from '../widgets/Input.vue'
 import Tabs from '../widgets/Tabs.vue'
-import Select from '../widgets/Select.vue'
 import { useLayoutStyle } from '@/utils/style'
+import SelectItem from './items/SelectItem.vue'
 interface ILayoutGroupProps {
   node: CNode
   layout: ILayout
@@ -40,14 +39,8 @@ const previewStyle = $computed(() => useLayoutStyle(layout))
         @change="(key) => (layout.direction = key)"
       ></Tabs>
     </div>
-    <div class="item">
-      <div class="label">Main-Axis Align</div>
-      <Select v-model="layout.justify" :options="justifyMap"></Select>
-    </div>
-    <div class="item">
-      <div class="label">Cross-Axis Align</div>
-      <Select v-model="layout.align" :options="alignMap"></Select>
-    </div>
+    <SelectItem label="Main-Axis Align" v-model="layout.justify" :options="justifyMap"></SelectItem>
+    <SelectItem label="Cross-Axis Align" v-model="layout.align" :options="alignMap"></SelectItem>
     <div class="align-preview" data-title="Preview" :style="previewStyle">
       <div class="align-preview-item">1</div>
       <div class="align-preview-item">2</div>

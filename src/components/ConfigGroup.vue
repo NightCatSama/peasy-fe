@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
+import BasicGroup from './configs/BasicGroup.vue';
 import LayoutGroup from './configs/LayoutGroup.vue'
 import SizeGroup from './configs/SizeGroup.vue'
 
@@ -13,9 +14,9 @@ const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
 
 const componentNameMap: { [type in GroupType]: any | null } = {
+  basic: BasicGroup,
   size: SizeGroup,
   position: null,
-  text: null,
   layout: LayoutGroup,
   font: null,
   container: null,

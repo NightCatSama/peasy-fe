@@ -41,8 +41,9 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
             name: `${t}-title-${~~(Math.random() * 1000)}`,
             component: 'Text',
             props: {
-              text: 'Hello Child',
-              color: `#${Math.random().toString(16).slice(2, 8)}`,
+              basic: {
+                text: 'Hello World',
+              },
               position: {
                 type: 'relative',
                 left: '0',
@@ -55,8 +56,9 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
             name: `${t}-title-${~~(Math.random() * 1000)}`,
             component: 'Text',
             props: {
-              text: 'Hello Child',
-              color: `#${Math.random().toString(16).slice(2, 8)}`,
+              basic: {
+                text: 'Hello Next World',
+              },
               position: {
                 type: 'relative',
                 left: '0',

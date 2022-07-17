@@ -131,9 +131,8 @@ onBeforeUnmount(() => {
     top: 0;
     width: 100%;
     height: 100%;
-    // background: rgba(0, 0, 0, 0.15);
     pointer-events: none;
-    border: 5px dashed $theme;
+    border: 2px dashed rgba($theme, 70%);
     z-index: 99;
     box-sizing: border-box;
   }
