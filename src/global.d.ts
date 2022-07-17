@@ -64,3 +64,8 @@ interface IContainer {
   backgroundImage?: string
   backgroundSize?: 'cover' | 'contain' | 'auto'
 }
+
+/** 单位 */
+type UnitType = '%' | 'px' | 'rem'
+/** 支持的全部选项 */
+type SuffixType = UnitType | 'auto' | 'none' | 'stretch'

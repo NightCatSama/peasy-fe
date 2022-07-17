@@ -84,7 +84,7 @@ onMounted(() => {
     height: 100%;
     transform: translateX(-100%);
     transition: all 0.5s;
-    z-index: 999;
+    z-index: 9999;
 
     &.show {
       transform: translateX(0);

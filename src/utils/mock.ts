@@ -65,7 +65,7 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
             },
           },
         ],
-      }
+      },
     ],
   }
 }

@@ -7,13 +7,12 @@ import Avatar from './widgets/Avatar.vue'
 import { useDisplayStore } from '@/stores/display'
 import Dropdown from './widgets/Dropdown.vue'
 import Icon from './widgets/Icon.vue'
-import { presetDevice } from '@/utils/device'
 import { onMounted, ref, watchEffect } from 'vue'
 import Slider from './widgets/Slider.vue'
 
 const displayStore = useDisplayStore()
 const { device } = storeToRefs(displayStore)
-const { setDevice } = displayStore
+const { setDevice, curPresetDeviceList } = displayStore
 
 const name = $ref('index')
 
@@ -23,18 +22,21 @@ const text = $computed(
 
 const zoomText = $computed(() => `${Math.round(device.value.zoom * 100)}%`)
 
-const desktop = $ref(presetDevice.desktop)
+const desktop = $ref(curPresetDeviceList)
 
 const hoverIndex = ref(-1)
 const activeIndex = $computed(() =>
-  presetDevice.desktop.findIndex((d) => device.value.width === d[0] && device.value.height === d[1])
+  curPresetDeviceList.findIndex(
+    (d: number[]) => device.value.width === d[0] && device.value.height === d[1]
+  )
 )
 
-const setDeviceBySize = (width: number, height: number) => {
+const setDeviceBySize = (size: number[]) => {
   setDevice({
-    width,
-    height,
+    width: size[0],
+    height: size[1],
     zoom: device.value.zoom,
+    fontSize: size[2],
   })
 }
 </script>
@@ -53,7 +55,7 @@ const setDeviceBySize = (width: number, height: number) => {
             <div class="title">
               Options
               <span class="device-size" v-if="hoverIndex > -1">
-                {{ desktop[hoverIndex].join(' × ') }}
+                {{ desktop[hoverIndex][0] + ' × ' + desktop[hoverIndex][1] }}
               </span>
             </div>
             <div class="device-list">
@@ -62,7 +64,7 @@ const setDeviceBySize = (width: number, height: number) => {
                 v-for="(item, index) in desktop"
                 :key="index"
                 v-hover="(isHover: boolean) => hoverIndex = isHover ? index : -1"
-                @click="setDeviceBySize(item[0], item[1])"
+                @click="setDeviceBySize(item)"
               >
                 <Icon v-if="index === 0" name="device-sm" type="pure" :size="28" />
                 <Icon v-else-if="index === 1" name="device-md" type="pure" :size="28" />

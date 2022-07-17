@@ -19,12 +19,10 @@ const { device } = storeToRefs(displayStore)
 const wrapperRef = ref<HTMLDivElement | null>(null)
 const contentRef = ref<HTMLDivElement | null>(null)
 
-// TODO: 后续可根据分辨率配置
-let roomFontSize = $ref(16)
 const editContentStyle = $computed(() => {
   return {
     width: `${device.value.width}px`,
-    fontSize: roomFontSize + 'px',
+    fontSize: `${device.value.fontSize}px`,
   }
 })
 
@@ -61,12 +59,11 @@ onMounted(() => {
     },
   })
   pz.value.on('zoom', (e: any) => {
-    const { scale } = e.getTransform()
-    device.value.zoom = scale
+    device.value.zoom = e.getTransform().scale
+    emitter.emit('updateMoveable')
   })
-  pz.value.on('panend', (e) => {
-    isMove = true
-  })
+  pz.value.on('panend', () => isMove = true)
+  pz.value.on('pan', () => emitter.emit('updateMoveable'))
   handleLocationPage()
 })
 
@@ -82,15 +79,9 @@ watchEffect(() => {
   }
 })
 
-watch(
-  pageData,
-  (_, oldData) => {
-    if (!isSmoothing && oldData.length === 1) {
-      nextTick(() => handleLocationPage(true))
-    }
-  },
-  { deep: true }
-)
+watch(pageData, () => {
+  emitter.emit('updateMoveable')
+}, { flush: 'post', deep: true })
 
 onUnmounted(() => {
   window.removeEventListener('resize', setWrapperSize)

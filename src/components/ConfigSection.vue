@@ -13,9 +13,9 @@ const { activeNode, activeNodeGroups } = storeToRefs(pageStore)
       <div class="title">{{ activeNode.name }}</div>
       <div class="content">
         <ConfigGroup
-          v-for="(groupType, key) in activeNodeGroups"
+          v-for="(groupType, index) in activeNodeGroups"
           :group-type="groupType"
-          :key="groupType"
+          :key="groupType + activeNode.name"
         ></ConfigGroup>
       </div>
     </div>

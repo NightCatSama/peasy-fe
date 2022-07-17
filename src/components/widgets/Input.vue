@@ -1,10 +1,9 @@
 <script setup lang="ts">
-import { watchEffect, defineEmits, nextTick } from 'vue'
+import { fixedPointToNumber, isUnitType } from '@/utils/sizeHelper';
+import { watchEffect, defineEmits, nextTick, watch } from 'vue'
 import Select from './Select.vue'
 
 const emit = defineEmits(['update:modelValue'])
-
-type SuffixType = 'px' | '%' | 'auto' | 'none' | 'stretch'
 
 interface IInputProps {
   type?: 'text' | 'number'
@@ -16,32 +15,31 @@ interface IInputProps {
 const { type = 'text', modelValue = '', suffix, disabled } = defineProps<IInputProps>()
 
 let inputValue = $ref(modelValue)
-let suffixInValue = $ref('')
+let suffixInValue = $ref(suffix?.[0] ?? '')
 let focus = $ref(false)
 let inputRef = $ref<HTMLInputElement | null>(null)
 let memoryNumberValue = $ref(0)
-
-watchEffect(() => (memoryNumberValue = parseFloat(inputValue) || memoryNumberValue))
-
 const suffixMap = {
   px: 'px',
   '%': '%',
+  rem: 'rem',
   auto: 'Adaptive',
   none: 'Unlimited',
   stretch: 'Stretch',
 }
-
-const hideInput = $computed(() => ['auto', 'none', 'stretch'].includes(suffixInValue))
+const hideInput = $computed(() => !isUnitType(suffixInValue))
 
 const getSuffixText = $computed(() => (suffixType: SuffixType) => {
   return suffixMap[suffixType]
 })
 
-const getValueBySuffix = $computed(() => (suffixType: string) => {
+const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
+  const val = isUnitType(suffixType) ? (fixedPointToNumber(inputValue) || memoryNumberValue) : ''
   return (
     {
-      px: (parseFloat(inputValue) || memoryNumberValue) + 'px',
-      '%': (parseFloat(inputValue) || memoryNumberValue) + '%',
+      px: `${val}px`,
+      '%': `${val}%`,
+      rem: `${val}rem`,
       auto: 'auto',
       none: 'none',
       stretch: 'stretch',
@@ -51,16 +49,24 @@ const getValueBySuffix = $computed(() => (suffixType: string) => {
 
 watchEffect(() => {
   if (suffix && suffix.length > 0 && modelValue) {
-    suffixInValue = suffix[0]
+    if (suffixInValue) {
+
+    } else {
+      suffixInValue = suffix[0]
+    }
+    let newSuffixInValue = suffixInValue
     suffix.some((s: string) => {
       if (modelValue.slice(-s.length) === s) {
-        suffixInValue = s
+        newSuffixInValue = s
         return true
       }
     })
-    if (suffixInValue) {
-      inputValue = modelValue.slice(0, -suffixInValue.length)
+    if (newSuffixInValue !== suffixInValue) {
+      // 切到无数值选项时记录数值，切回来后恢复
+      memoryNumberValue = !isUnitType(newSuffixInValue) ? fixedPointToNumber(inputValue) || 0 : memoryNumberValue
+      suffixInValue = newSuffixInValue
     }
+    inputValue = modelValue.slice(0, -suffixInValue.length)
   }
 })
 
@@ -71,10 +77,10 @@ const handleChange = (event: Event) => {
     value = '' + (parseFloat(value) || 0)
   }
   inputValue = value
-  emit('update:modelValue', getValueBySuffix(suffixInValue))
+  emit('update:modelValue', getValueBySuffix(suffixInValue as SuffixType))
 }
 
-const handleSuffixClick = (key: string) => {
+const handleSuffixClick = (key: SuffixType) => {
   emit('update:modelValue', getValueBySuffix(key))
   nextTick(() => inputRef?.focus?.())
 }

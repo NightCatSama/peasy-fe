@@ -25,9 +25,12 @@ export const getDefaultLayout = (
   type: 'component' | 'section' = 'component',
   initConfig?: any
 ): ILayout => {
-  return {
-    direction: 'row',
-    justify: 'center',
-    align: 'center',
-  }
+  return Object.assign(
+    {
+      direction: 'row',
+      justify: 'center',
+      align: 'center',
+    },
+    initConfig
+  )
 }

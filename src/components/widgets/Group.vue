@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useDisplayStore } from '@/stores/display';
-import { onMounted, onUpdated, watchEffect } from 'vue';
+import { useDisplayStore } from '@/stores/display'
+import { onMounted, onUpdated, watchEffect } from 'vue'
 import Icon from './Icon.vue'
 interface IGroupProps {
   title: string

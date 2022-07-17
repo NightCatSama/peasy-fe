@@ -126,9 +126,11 @@ export default {
       mounted(el, binding) {
         let mousedownTime = 0
         el.__tap_cb__ = binding.value
-        const handleMousedown = () => mousedownTime = Date.now()
+        const isStop = binding.modifiers?.stop
+        const handleMousedown = () => (mousedownTime = Date.now())
         const handleClick = (e: any) => {
           if (Date.now() - mousedownTime < 300) {
+            isStop && e?.stopPropagation()
             el.__tap_cb__?.(e)
           }
         }
@@ -144,9 +146,9 @@ export default {
       },
       beforeUnmount(el) {
         el.__tap_rm__?.()
-        delete el.__tap_rm__;
-        delete el.__tap_cb__;
-      }
+        delete el.__tap_rm__
+        delete el.__tap_cb__
+      },
     })
   },
 }

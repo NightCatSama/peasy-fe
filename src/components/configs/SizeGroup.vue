@@ -3,6 +3,7 @@ import { reactive } from 'vue'
 import Group from '../widgets/Group.vue'
 import Tabs from '../widgets/Tabs.vue'
 import Input from '../widgets/Input.vue'
+import { fixedPoint, getUnit } from '@/utils/sizeHelper';
 interface ISizeGroupProps {
   node: CNode
   size: ISize
@@ -11,33 +12,37 @@ const { size, node } = defineProps<ISizeGroupProps>()
 
 const isSection = $computed(() => node.type === 'section')
 
-const list: any = reactive([
+const list: any = $computed(() => [
   {
     hide: isSection,
     name: 'Width',
     type: 'number',
     value: size.width,
-    suffix: ['px', '%', 'auto', 'stretch'],
+    setValue: (val: string) => (size.width = val),
+    suffix: ['px', '%', 'rem', 'auto', 'stretch'],
   },
   {
     name: 'Height',
     type: 'number',
     value: size.height,
-    suffix: isSection ? ['px', '%', 'auto'] : ['px', '%', 'auto', 'stretch'],
+    setValue: (val: string) => (size.height = val),
+    suffix: isSection ? ['px', '%', 'rem', 'auto'] : ['px', '%', 'rem', 'auto', 'stretch'],
   },
   {
     hide: isSection,
     name: 'Min W',
     type: 'number',
     value: size.minWidth,
-    suffix: ['px', '%', 'auto'],
+    setValue: (val: string) => (size.minWidth = val),
+    suffix: ['px', '%', 'rem', 'auto'],
     isAdvanced: true,
   },
   {
     name: 'Min H',
     type: 'number',
     value: size.minHeight,
-    suffix: ['px', '%', 'auto'],
+    setValue: (val: string) => (size.minHeight = val),
+    suffix: ['px', '%', 'rem', 'auto'],
     isAdvanced: true,
   },
   {
@@ -45,17 +50,23 @@ const list: any = reactive([
     name: 'Max W',
     type: 'number',
     value: size.maxWidth,
-    suffix: ['px', '%', 'none'],
+    setValue: (val: string) => (size.maxWidth = val),
+    suffix: ['px', '%', 'rem', 'none'],
     isAdvanced: true,
   },
   {
     name: 'Max H',
     type: 'number',
     value: size.maxHeight,
-    suffix: ['px', '%', 'none'],
+    setValue: (val: string) => (size.maxHeight = val),
+    suffix: ['px', '%', 'rem', 'none'],
     isAdvanced: true,
   },
 ])
+
+const handleChange = (val: string, handler: any) => {
+  handler(fixedPoint(val))
+}
 </script>
 
 <template>
@@ -67,8 +78,9 @@ const list: any = reactive([
           <Input
             class="size-input"
             type="number"
-            v-model="item.value"
+            :model-value="item.value"
             :suffix="item.suffix"
+            @update:model-value="val => handleChange(val, item.setValue)"
           ></Input>
         </div>
       </template>

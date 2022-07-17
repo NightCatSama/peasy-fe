@@ -1,5 +1,6 @@
 import { useDisplayStore } from '@/stores/display'
 import { computed, inject } from 'vue'
+import { covertSize } from './sizeHelper'
 
 const getIsEditMode = () => !!inject('isEditMode')
 
@@ -31,16 +32,27 @@ export const usePositionStyle = (position?: IPosition) => {
   }
 }
 
+/**
+ *
+ * @param size 尺寸信息
+ * @param direction 所处容器的方向，row 或 column，为 Section 时没有容器则为空
+ * @returns
+ */
 export const useSizeStyle = (size: ISize, direction?: string) => {
   if (!size) return {}
 
   const isEditMode = getIsEditMode()
+  const isSection = !direction
+
+  let width = covertSize(size.width, { isEditMode, isSection, isHeight: false })
+  let height = covertSize(size.height, { isEditMode, isSection, isHeight: true })
+  let minHeight = covertSize(size.minHeight, { isEditMode, isSection, isHeight: true })
+  let maxHeight = covertSize(size.maxHeight, { isEditMode, isSection, isHeight: true })
+
 
   let flexStyles: any = {}
-
-  let width = size.width
-  if (size.width === 'stretch') {
-    size.width = ''
+  if (width === 'stretch') {
+    width = ''
     if (direction === 'row') {
       flexStyles.flexGrow = 1
       flexStyles.flexShrink = 1
@@ -48,25 +60,7 @@ export const useSizeStyle = (size: ISize, direction?: string) => {
       flexStyles.alignSelf = 'stretch'
     }
   }
-
-  let height = size.height
-  let minHeight = size.minHeight
-  let maxHeight = size.maxHeight
-  // 不存在则证明是 section
-  if (!direction) {
-    if (size.height?.slice?.(-1) === '%') {
-      const n = parseFloat(size.height)
-      height = isEditMode ? `${useDisplayStore().device.height * (n / 100)}px` : `${n}vh`
-    }
-    if (size.minHeight?.slice?.(-1) === '%') {
-      const n = parseFloat(size.minHeight)
-      minHeight = isEditMode ? `${useDisplayStore().device.height * (n / 100)}px` : `${n}vh`
-    }
-    if (size.maxHeight?.slice?.(-1) === '%') {
-      const n = parseFloat(size.maxHeight)
-      maxHeight = isEditMode ? `${useDisplayStore().device.height * (n / 100)}px` : `${n}vh`
-    }
-  } else if (size.height === 'stretch') {
+  if (height === 'stretch') {
     height = ''
     if (direction === 'column') {
       flexStyles.flexGrow = 1

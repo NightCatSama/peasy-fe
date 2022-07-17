@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { usePageStore } from '@/stores/page'
+import { emitter } from '@/utils/event';
 import { storeToRefs } from 'pinia'
+import { nextTick } from 'vue';
 import Element from './widgets/Element.vue'
 
 const pageStore = usePageStore()
 const { pageData, modelData } = storeToRefs(pageStore)
 const { addSection } = pageStore
+
+const handleAddSection = (template: CNode) => {
+  let noPageData = pageData.value.length === 0
+  addSection({ ...template, name: template.name + `${~~(Math.random() * 100)}` })
+  noPageData && nextTick(() => emitter.emit('location', true))
+}
 </script>
 
 <template>
@@ -17,9 +25,7 @@ const { addSection } = pageStore
           v-for="(template, key) in list"
           class="element-item"
           :name="template.name"
-          @click="
-            () => addSection({ ...template, name: template.name + `${~~(Math.random() * 100)}` })
-          "
+          @click="handleAddSection(template)"
         ></Element>
       </div>
     </section>
