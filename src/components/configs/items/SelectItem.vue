@@ -16,7 +16,6 @@ const value = $computed({
     emit('update:modelValue', val)
   },
 })
-
 </script>
 
 <template>

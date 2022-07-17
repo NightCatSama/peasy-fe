@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
-import { isTextBasicType } from '@/config';
+import { isTextBasicType } from '@/config'
 interface IBasicGroupProps {
   node: CNode
   basic: any
@@ -14,19 +14,21 @@ const configs = $computed(() => {
   console.log(node, basic, isTextBasicType(node, basic))
   /** Text 组件 */
   if (isTextBasicType(node, basic)) {
-    return [{
-      component: InputItem,
-      props: {
-        label: 'Text',
-        type: 'textarea',
-        modelValue: basic.text,
-        placeholder: 'Displayed Text',
-        realTime: true,
+    return [
+      {
+        component: InputItem,
+        props: {
+          label: 'Text',
+          type: 'textarea',
+          modelValue: basic.text,
+          placeholder: 'Displayed Text',
+          realTime: true,
+        },
+        setValue: (val: string) => {
+          basic.text = val
+        },
       },
-      setValue: (val: string) => {
-        basic.text = val
-      }
-    }]
+    ]
   }
 })
 </script>
@@ -34,7 +36,11 @@ const configs = $computed(() => {
 <template>
   <Group title="Basic" class="basic-group" :default-collapsed="true">
     <template v-for="item in configs">
-      <component :is="item.component" v-bind="item.props" @update:model-value="item?.setValue"></component>
+      <component
+        :is="item.component"
+        v-bind="item.props"
+        @update:model-value="item?.setValue"
+      ></component>
     </template>
   </Group>
 </template>

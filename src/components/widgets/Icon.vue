@@ -10,7 +10,16 @@ import AdvancedIcon from '@/assets/advanced.svg'
 import MoreIcon from '@/assets/more.svg'
 
 interface IIconProps {
-  name: 'add' | 'focus' | 'device-sm' | 'device-md' | 'device-lg' | 'check' | 'down' | 'advanced' | 'more'
+  name:
+    | 'add'
+    | 'focus'
+    | 'device-sm'
+    | 'device-md'
+    | 'device-lg'
+    | 'check'
+    | 'down'
+    | 'advanced'
+    | 'more'
   type?: 'circle' | 'pure'
   size?: number
   active?: boolean

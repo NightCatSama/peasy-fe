@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
-import { fixedPoint, getUnit } from '@/utils/sizeHelper';
+
 interface ISizeGroupProps {
   node: CNode
   size: ISize
@@ -61,7 +61,6 @@ const list: any = $computed(() => [
     isAdvanced: true,
   },
 ])
-
 </script>
 
 <template>

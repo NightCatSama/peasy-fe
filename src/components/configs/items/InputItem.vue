@@ -6,7 +6,7 @@ type IInputProps = InstanceType<typeof Input>
 interface ISelectItemProps {
   label: string
   modelValue: string
-  placeholder: string
+  placeholder?: string
   suffix?: IInputProps['suffix']
   realTime?: boolean
   type?: IInputProps['type']
@@ -22,17 +22,12 @@ const value = $computed({
     emit('update:modelValue', val)
   },
 })
-
 </script>
 
 <template>
-  <div :class="['item', { 'column': restProps.type === 'textarea' }]">
+  <div :class="['item', { column: restProps.type === 'textarea' }]">
     <span class="label">{{ label }}</span>
-    <Input
-      class="input"
-      v-model="value"
-      v-bind="restProps"
-    ></Input>
+    <Input class="input" v-model="value" v-bind="restProps"></Input>
   </div>
 </template>
 

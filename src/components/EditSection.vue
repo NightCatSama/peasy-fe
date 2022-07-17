@@ -77,9 +77,13 @@ watchEffect(() => {
   }
 })
 
-watch(pageData, () => {
-  emitter.emit('updateMoveable')
-}, { flush: 'post', deep: true })
+watch(
+  pageData,
+  () => {
+    emitter.emit('updateMoveable')
+  },
+  { flush: 'post', deep: true }
+)
 
 onUnmounted(() => {
   window.removeEventListener('resize', setWrapperSize)
@@ -98,9 +102,13 @@ const handleLocationPage = (immediate = false) => {
     setTimeout(() => (isSmoothing = false), 300)
   }
 
-  let x, y, left = 0, top = 0
+  let x,
+    y,
+    left = 0,
+    top = 0
 
-  const activeElem = activeNode && document.querySelector('.lib-component.active') as HTMLDivElement
+  const activeElem =
+    activeNode && (document.querySelector('.lib-component.active') as HTMLDivElement)
 
   const { width, height } = wrapperSize
   const rect = contentRef.value!.getBoundingClientRect()
@@ -114,8 +122,8 @@ const handleLocationPage = (immediate = false) => {
 
   if (activeElem) {
     const activeRect = activeElem.getBoundingClientRect()
-    left = (activeRect.left - rect.left) - ((wrapperSize.width - activeRect.width) / 2)
-    top = (activeRect.top - rect.top) - ((wrapperSize.height - activeRect.height) / 2)
+    left = activeRect.left - rect.left - (wrapperSize.width - activeRect.width) / 2
+    top = activeRect.top - rect.top - (wrapperSize.height - activeRect.height) / 2
   }
 
   wrapperRef.value?.scrollTo({
@@ -144,12 +152,7 @@ const hideNodePanel = (e: Event) => {
       </div>
     </div>
     <div class="no-data" v-if="noPageData">TODO: 没有数据，提示左侧「+」</div>
-    <Icon
-      :class="['focus-btn']"
-      name="focus"
-      :size="26"
-      @click="() => handleLocationPage()"
-    ></Icon>
+    <Icon :class="['focus-btn']" name="focus" :size="26" @click="() => handleLocationPage()"></Icon>
   </div>
 </template>
 

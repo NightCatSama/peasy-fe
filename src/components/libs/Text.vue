@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { ITextBasicType } from '@/config';
+import { ITextBasicType } from '@/config'
 import { usePositionStyle, useStyle } from '@/utils/style'
 
 interface ITextProps {

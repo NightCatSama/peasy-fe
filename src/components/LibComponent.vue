@@ -72,13 +72,17 @@ watch(
           item.props.size.width = covertPXToUnit(
             elem.style.width,
             units.width,
-            parent && elem.parentElement ? elem.parentElement.clientWidth : useDisplayStore().device.width
+            parent && elem.parentElement
+              ? elem.parentElement.clientWidth
+              : useDisplayStore().device.width
           )
         if (units.height)
           item.props.size.height = covertPXToUnit(
             elem.style.height,
             units.height,
-            parent && elem.parentElement ? elem.parentElement.clientHeight : useDisplayStore().device.height
+            parent && elem.parentElement
+              ? elem.parentElement.clientHeight
+              : useDisplayStore().device.height
           )
       })
     }
@@ -88,18 +92,21 @@ watch(
   }
 )
 
-watch(isActive, (val) => {
-  const moveable = getMoveable()
-  if (!val && moveable) moveable.resizable = false
-}, {
-  flush: 'pre',
-})
+watch(
+  isActive,
+  (val) => {
+    const moveable = getMoveable()
+    if (!val && moveable) moveable.resizable = false
+  },
+  {
+    flush: 'pre',
+  }
+)
 
 onBeforeUnmount(() => {
   const moveable = getMoveable()
   if (isActive.value && moveable) moveable.resizable = false
 })
-
 </script>
 
 <template>

@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import { usePageStore } from '@/stores/page'
-import { emitter } from '@/utils/event';
+import { emitter } from '@/utils/event'
 import { storeToRefs } from 'pinia'
-import { nextTick } from 'vue';
+import { nextTick } from 'vue'
 import Element from './widgets/Element.vue'
 
 const pageStore = usePageStore()

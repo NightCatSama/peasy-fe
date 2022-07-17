@@ -1,6 +1,7 @@
 import { useDisplayStore } from '@/stores/display'
 
-export const isUnitType = (type: string): type is UnitType => (['%', 'px', 'rem'] as UnitType[]).includes(type as unknown as UnitType)
+export const isUnitType = (type: string): type is UnitType =>
+  (['%', 'px', 'rem'] as UnitType[]).includes(type as unknown as UnitType)
 
 export const getUnit = (s: string): UnitType | '' => {
   if (!s || typeof s !== 'string') return ''
@@ -17,7 +18,8 @@ export const getUnit = (s: string): UnitType | '' => {
 }
 
 /** 将数字格式化成保留两位小数 */
-export const fixedPointToNumber = (s: string | number, decimal = 2): number => +((parseFloat('' + s) || 0).toFixed(decimal))
+export const fixedPointToNumber = (s: string | number, decimal = 2): number =>
+  +(parseFloat('' + s) || 0).toFixed(decimal)
 
 /** 将带单位的数字字符串格式化成保留两位小数的字符串 */
 export const fixedPoint = (s: string): string => {
@@ -30,13 +32,17 @@ export const fixedPoint = (s: string): string => {
 export const covertPXToUnit = (s: string, unit: string, referSiz?: number) => {
   if (!isUnitType(unit)) return s
   else if (unit === 'px') return s
-  else if (unit === 'rem') return `${fixedPointToNumber(parseFloat(s) / useDisplayStore().curFootSize)}rem`
-  else if (unit === '%') return `${fixedPointToNumber(parseFloat(s) / (referSiz || 1) * 100)}%`
+  else if (unit === 'rem')
+    return `${fixedPointToNumber(parseFloat(s) / useDisplayStore().curFootSize)}rem`
+  else if (unit === '%') return `${fixedPointToNumber((parseFloat(s) / (referSiz || 1)) * 100)}%`
   return s
 }
 
 /** 将各种格式的宽高转换成当前场景可用的样式 */
-export const covertSize = (s?: string, options?: { isEditMode?: boolean, isSection?: boolean, isHeight?: boolean }) => {
+export const covertSize = (
+  s?: string,
+  options?: { isEditMode?: boolean; isSection?: boolean; isHeight?: boolean }
+) => {
   if (!s) return s
   const unit = getUnit(s)
   const n = parseFloat(s)
@@ -44,14 +50,16 @@ export const covertSize = (s?: string, options?: { isEditMode?: boolean, isSecti
   switch (unit) {
     case '%':
       return isEditMode
-        ? (isSection ? `${useDisplayStore().device[isHeight ? 'height' : 'width'] * (n / 100)}px` : s)
-        : (isSection ? `${n}${isHeight ? 'vh' : 'vw'}` : s)
+        ? isSection
+          ? `${useDisplayStore().device[isHeight ? 'height' : 'width'] * (n / 100)}px`
+          : s
+        : isSection
+        ? `${n}${isHeight ? 'vh' : 'vw'}`
+        : s
     case 'rem':
-      return isEditMode
-      ? `${useDisplayStore().device.fontSize * n}px`
-      : s
+      return isEditMode ? `${useDisplayStore().device.fontSize * n}px` : s
     case 'px':
-      default:
+    default:
       return s
   }
 }

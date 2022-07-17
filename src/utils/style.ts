@@ -49,7 +49,6 @@ export const useSizeStyle = (size: ISize, direction?: string) => {
   let minHeight = covertSize(size.minHeight, { isEditMode, isSection, isHeight: true })
   let maxHeight = covertSize(size.maxHeight, { isEditMode, isSection, isHeight: true })
 
-
   let flexStyles: any = {}
   if (width === 'stretch') {
     width = ''

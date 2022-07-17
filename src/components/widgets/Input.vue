@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { fixedPointToNumber, isUnitType } from '@/utils/sizeHelper';
+import { fixedPointToNumber, isUnitType } from '@/utils/sizeHelper'
 import { watchEffect, defineEmits, nextTick, watch } from 'vue'
 import Select from './Select.vue'
 
@@ -36,7 +36,7 @@ const getSuffixText = $computed(() => (suffixType: SuffixType) => {
 })
 
 const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
-  const val = isUnitType(suffixType) ? (fixedPointToNumber(inputValue) || memoryNumberValue) : ''
+  const val = isUnitType(suffixType) ? fixedPointToNumber(inputValue) || memoryNumberValue : ''
   return (
     {
       px: `${val}px`,
@@ -52,7 +52,6 @@ const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
 watchEffect(() => {
   if (suffix && suffix.length > 0 && modelValue) {
     if (suffixInValue) {
-
     } else {
       suffixInValue = suffix[0]
     }
@@ -65,7 +64,9 @@ watchEffect(() => {
     })
     if (newSuffixInValue !== suffixInValue) {
       // 切到无数值选项时记录数值，切回来后恢复
-      memoryNumberValue = !isUnitType(newSuffixInValue) ? fixedPointToNumber(inputValue) || 0 : memoryNumberValue
+      memoryNumberValue = !isUnitType(newSuffixInValue)
+        ? fixedPointToNumber(inputValue) || 0
+        : memoryNumberValue
       suffixInValue = newSuffixInValue
     }
     inputValue = modelValue.slice(0, -suffixInValue.length)
@@ -144,7 +145,8 @@ const handleInput = (e: any) => {
     border-color: $theme;
   }
 
-  input, textarea {
+  input,
+  textarea {
     background: $tr;
     border: none;
     outline: none;
@@ -159,7 +161,7 @@ const handleInput = (e: any) => {
 
     &::placeholder {
       font-size: 12px;
-      opacity: .6;
+      opacity: 0.6;
     }
   }
 

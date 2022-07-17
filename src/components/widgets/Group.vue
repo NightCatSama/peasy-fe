@@ -97,11 +97,11 @@ onUpdated(() => {
       color: darken($color, 30%);
       cursor: pointer;
       user-select: none;
-      opacity: .4;
-      transition: all .3s;
+      opacity: 0.4;
+      transition: all 0.3s;
 
       &:hover {
-        opacity: .8;
+        opacity: 0.8;
       }
     }
   }
