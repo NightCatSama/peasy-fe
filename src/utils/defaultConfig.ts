@@ -1,6 +1,6 @@
 export const getDefaultSize = (
   type: 'component' | 'section' = 'component',
-  initConfig?: any
+  initConfig?: Partial<ISize>
 ): ISize => {
   return Object.assign(
     type === 'component'
@@ -22,8 +22,7 @@ export const getDefaultSize = (
 }
 
 export const getDefaultLayout = (
-  type: 'component' | 'section' = 'component',
-  initConfig?: any
+  initConfig?: Partial<ILayout>
 ): ILayout => {
   return Object.assign(
     {
@@ -34,3 +33,19 @@ export const getDefaultLayout = (
     initConfig
   )
 }
+
+export const getDefaultFont = (
+  initConfig?: Partial<IFont>
+): IFont => {
+  return Object.assign(
+    {
+      fontSize: '2rem',
+      lineHeight: '1.16x',
+      color: '#333',
+      fontWeight: 'normal',
+      fontStyle: 'normal'
+    },
+    initConfig
+  )
+}
+

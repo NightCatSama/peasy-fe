@@ -6,7 +6,6 @@ import { useDisplayStore } from '@/stores/display'
 import Icon from './widgets/Icon.vue'
 import { emitter } from '@/utils/event'
 import panzoom, { PanZoom } from 'panzoom'
-import { useKeyPress } from 'ahooks-vue'
 
 const pageStore = usePageStore()
 const { setActiveNode } = pageStore

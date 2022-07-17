@@ -1,4 +1,4 @@
-import { getDefaultLayout, getDefaultSize } from './defaultConfig'
+import { getDefaultFont, getDefaultLayout, getDefaultSize } from './defaultConfig'
 
 export const getMockBlock = (type?: CNode['type']): CNode => {
   const t = type || 'component'
@@ -44,6 +44,7 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
               basic: {
                 text: 'Hello World',
               },
+              font: getDefaultFont(),
               position: {
                 type: 'relative',
                 left: '0',
@@ -59,6 +60,7 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
               basic: {
                 text: 'Hello Next World',
               },
+              font: getDefaultFont(),
               position: {
                 type: 'relative',
                 left: '0',
@@ -69,5 +71,24 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
         ],
       },
     ],
+  }
+}
+
+export const getMockText = (): CNode => {
+  return {
+    type: 'component',
+    name: `Text-${~~(Math.random() * 1000)}`,
+    component: 'Text',
+    props: {
+      basic: {
+        text: 'Hello Next World',
+      },
+      font: getDefaultFont(),
+      position: {
+        type: 'relative',
+        left: '0',
+        top: '0',
+      },
+    }
   }
 }

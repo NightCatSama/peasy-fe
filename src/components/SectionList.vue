@@ -5,11 +5,12 @@ import { storeToRefs } from 'pinia'
 import { nextTick } from 'vue'
 
 const pageStore = usePageStore()
-const { setActiveSection, removeSection } = pageStore
+const { setActiveSection, setActiveNode, removeSection } = pageStore
 const { activeSection, isActiveAllSection, allPageData } = storeToRefs(pageStore)
 
 const handleSectionItemClick = (item: CNode | null) => {
   setActiveSection(item)
+  setActiveNode(item)
   nextTick(() => emitter.emit('location'))
 }
 

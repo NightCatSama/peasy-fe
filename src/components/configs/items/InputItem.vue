@@ -27,7 +27,9 @@ const value = $computed({
 <template>
   <div :class="['item', { column: restProps.type === 'textarea' }]">
     <span class="label">{{ label }}</span>
-    <Input class="input" v-model="value" v-bind="restProps"></Input>
+    <Input class="input" v-model="value" v-bind="restProps">
+      <template #suffix><slot name="suffix"></slot></template>
+    </Input>
   </div>
 </template>
 

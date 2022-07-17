@@ -21,7 +21,7 @@ const { activeNode, pageData } = storeToRefs(pageStore)
 const componentRef = $ref(null)
 
 const setActive = () => {
-  setActiveNode(item)
+  setActiveNode(item, parent)
   emitter.emit('switchNodePanel', false)
 }
 

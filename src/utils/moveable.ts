@@ -10,6 +10,7 @@ export const getMoveable = () => {
   if (!containerElement) return null
 
   moveable = new Moveable(containerElement, {
+    draggable: false,
     origin: false,
     useResizeObserver: true,
     hideDefaultLines: true,

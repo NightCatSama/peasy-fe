@@ -20,6 +20,11 @@ interface CNode {
 /** 支持的分组名 */
 type GroupType = 'basic' | 'size' | 'layout' | 'font' | 'container' | 'position' | 'animation'
 
+/** 单位 */
+type UnitType = '%' | 'px' | 'rem' | 'x'
+/** 支持的全部选项 */
+type SuffixType = UnitType | 'auto' | 'none' | 'stretch'
+
 /** 尺寸信息 */
 interface ISize {
   width?: string | 'auto' | 'stretch'
@@ -54,7 +59,11 @@ interface IContainer {
   backgroundSize?: 'cover' | 'contain' | 'auto'
 }
 
-/** 单位 */
-type UnitType = '%' | 'px' | 'rem'
-/** 支持的全部选项 */
-type SuffixType = UnitType | 'auto' | 'none' | 'stretch'
+/** 字体样式 */
+interface IFont {
+  fontSize: string
+  lineHeight: string
+  color: string
+  fontWeight: 'normal' | 'bold' | '500' | '600' | '800' | '900'
+  fontStyle: 'normal' | 'italic'
+}

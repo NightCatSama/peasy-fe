@@ -25,6 +25,7 @@ const suffixMap = {
   px: 'px',
   '%': '%',
   rem: 'rem',
+  x: '×',
   auto: 'Adaptive',
   none: 'Unlimited',
   stretch: 'Stretch',
@@ -42,6 +43,7 @@ const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
       px: `${getVal()}px`,
       '%': `${getVal()}%`,
       rem: `${getVal()}rem`,
+      'x': `${getVal()}x`,
       auto: 'auto',
       none: 'none',
       stretch: 'stretch',
@@ -70,6 +72,8 @@ watchEffect(() => {
       suffixInValue = newSuffixInValue
     }
     inputValue = modelValue.slice(0, -suffixInValue.length)
+  } else {
+    inputValue = modelValue
   }
 })
 
@@ -88,10 +92,7 @@ const handleSuffixClick = (key: SuffixType) => {
   nextTick(() => inputRef?.focus?.())
 }
 
-const handleInput = (e: any) => {
-  console.log(realTime)
-  realTime && handleChange(e)
-}
+const handleInput = (e: any) => realTime && handleChange(e)
 </script>
 
 <template>
@@ -113,14 +114,16 @@ const handleInput = (e: any) => {
       }"
       @input.stop.prevent="handleInput"
     />
-    <template v-if="suffixInValue && suffix">
-      <Select
-        display="inline"
-        :model-value="suffixInValue"
-        :options="Object.fromEntries(suffix.map((s) => [s, getSuffixText(s)]))"
-        @update:model-value="handleSuffixClick"
-      ></Select>
-    </template>
+    <slot name="suffix">
+      <template v-if="suffixInValue && suffix">
+        <Select
+          display="inline"
+          :model-value="suffixInValue"
+          :options="Object.fromEntries(suffix.map((s) => [s, getSuffixText(s)]))"
+          @update:model-value="handleSuffixClick"
+        ></Select>
+      </template>
+    </slot>
   </div>
 </template>
 
@@ -128,7 +131,7 @@ const handleInput = (e: any) => {
 .input-wrapper {
   display: inline-flex;
   border-radius: $normal-radius;
-  padding: 2px;
+  padding: $item-gap;
   height: $item-height;
   background: $item-bg;
   border: 1px solid $item-bg;

@@ -11,7 +11,10 @@ const { addSection } = pageStore
 
 const handleAddSection = (template: CNode) => {
   let noPageData = pageData.value.length === 0
-  addSection({ ...template, name: template.name + `${~~(Math.random() * 100)}` })
+
+  if (template.type === 'section') {
+    addSection({ ...template, name: template.name + `${~~(Math.random() * 100)}` })
+  }
   noPageData && nextTick(() => emitter.emit('location', true))
 }
 </script>

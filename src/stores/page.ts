@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { mande } from 'mande'
 import { cloneDeep } from 'lodash'
-import { getMockBlock } from '@/utils/mock'
+import { getMockBlock, getMockText } from '@/utils/mock'
 import { ComponentGroup } from '@/config'
 
 const api = mande('http://localhost:3030/api/page')
@@ -14,6 +14,7 @@ export const usePageStore = defineStore('page', {
   state: () => ({
     allPageData: [] as CNode[],
     activeNode: null as CNode | null,
+    activeParentNode: null as CNode | null,
     modelData: {
       section: [],
       component: [],
@@ -42,7 +43,7 @@ export const usePageStore = defineStore('page', {
       // const { data } = await api.post<any>({})
       const data = {
         section: [getMockBlock('section'), getMockBlock('section'), getMockBlock('section')],
-        component: [],
+        component: [getMockText()],
         template: [],
       }
       this.modelData = data
@@ -55,8 +56,21 @@ export const usePageStore = defineStore('page', {
       const index = this.allPageData.indexOf(node)
       this.allPageData.splice(index, 1)
     },
-    setActiveNode(node?: CNode) {
+    setActiveNode(node?: CNode | null, parent?: CNode | null) {
       this.activeNode = node || null
+      this.activeParentNode = parent || null
+    },
+    deleteActiveNode() {
+      if (!this.activeNode) return
+      if (this.activeNode.type === 'section') {
+        if (this.activeNode.name === this.activeSection) {
+          this.activeSection = null
+        }
+        this.removeSection(this.activeNode)
+      } else {
+        this.activeParentNode?.children?.splice(this.activeParentNode?.children?.indexOf(this.activeNode), 1)
+        this.activeNode = null
+      }
     },
     async download() {
       const data = this.allPageData

@@ -11,7 +11,6 @@ const { node, basic } = defineProps<IBasicGroupProps>()
 const isSection = $computed(() => node.type === 'section')
 
 const configs = $computed(() => {
-  console.log(node, basic, isTextBasicType(node, basic))
   /** Text 组件 */
   if (isTextBasicType(node, basic)) {
     return [

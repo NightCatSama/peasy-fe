@@ -2,15 +2,20 @@
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import ConfigGroup from './ConfigGroup.vue'
+import Icon from './widgets/Icon.vue';
 
 const pageStore = usePageStore()
 const { activeNode, activeNodeGroups } = storeToRefs(pageStore)
+const { deleteActiveNode } = pageStore
 </script>
 
 <template>
   <div class="config-section">
     <div v-if="activeNode">
-      <div class="title">{{ activeNode.name }}</div>
+      <div class="header">
+        <div class="title">{{ activeNode.name }}</div>
+        <Icon class="delete-icon" name="delete" type="btn" :size="16" @click="deleteActiveNode"></Icon>
+      </div>
       <div class="content">
         <ConfigGroup
           v-for="(groupType, index) in activeNodeGroups"
@@ -32,14 +37,29 @@ const { activeNode, activeNodeGroups } = storeToRefs(pageStore)
   display: flex;
   flex-direction: column;
 
-  .title {
+  .header {
+    display: flex;
     padding: 24px;
-    font-size: 18px;
-    font-weight: bold;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
+    display: flex;
+    .title {
+      flex: 1;
+      font-size: 18px;
+      font-weight: bold;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .delete-icon {
+      width: 24px;
+      height: 24px;
+      border-radius: $normal-radius;
+      cursor: pointer;
+      color: $bg-default;
+      background: $red-gradient;
+      box-shadow: $float-shadow;
+    }
   }
+
 
   .no-data {
     font-size: 18px;

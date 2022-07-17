@@ -9,3 +9,7 @@ declare module '*.vue' {
   const component: DefineComponent<{}, {}, any>
   export default component
 }
+
+declare module '@ckpack/vue-color' {
+  export const Chrome: any
+}

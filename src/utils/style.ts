@@ -1,6 +1,6 @@
 import { useDisplayStore } from '@/stores/display'
 import { computed, inject } from 'vue'
-import { covertSize } from './sizeHelper'
+import { covertSize, getUnit } from './sizeHelper'
 
 const getIsEditMode = () => !!inject('isEditMode')
 
@@ -80,6 +80,7 @@ export const useSizeStyle = (size: ISize, direction?: string) => {
   }
 }
 
+/** 布局样式 */
 export const useLayoutStyle = (layout: ILayout) => {
   if (!layout) return {}
 
@@ -91,6 +92,7 @@ export const useLayoutStyle = (layout: ILayout) => {
   }
 }
 
+/** 容器样式 */
 export const useContainerStyle = (container: IContainer) => {
   if (!container) return {}
 
@@ -98,5 +100,18 @@ export const useContainerStyle = (container: IContainer) => {
     backgroundColor: container.type === 'color' ? container.backgroundColor : 'transparent',
     backgroundImage: container.type === 'image' ? `url(${container.backgroundColor})` : '',
     backgroundSize: container.backgroundSize,
+  }
+}
+
+/** 字体样式 */
+export const useFontStyle = (font: IFont) => {
+  if (!font) return {}
+
+  return {
+    fontSize: font.fontSize,
+    lineHeight: getUnit(font.lineHeight) === 'x' ? font.lineHeight.slice(0, -1) : font.lineHeight,
+    fontWeight: font.fontWeight,
+    fontStyle: font.fontStyle,
+    color: font.color,
   }
 }

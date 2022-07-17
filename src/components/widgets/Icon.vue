@@ -8,6 +8,7 @@ import CheckIcon from '@/assets/check.svg'
 import DownIcon from '@/assets/down.svg'
 import AdvancedIcon from '@/assets/advanced.svg'
 import MoreIcon from '@/assets/more.svg'
+import DeleteIcon from '@/assets/delete.svg'
 
 interface IIconProps {
   name:
@@ -20,7 +21,8 @@ interface IIconProps {
     | 'down'
     | 'advanced'
     | 'more'
-  type?: 'circle' | 'pure'
+    | 'delete'
+  type?: 'circle' | 'pure' | 'btn'
   size?: number
   active?: boolean
 }
@@ -35,6 +37,7 @@ const iconMap = {
   down: DownIcon,
   advanced: AdvancedIcon,
   more: MoreIcon,
+  delete: DeleteIcon,
 }
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()
@@ -61,6 +64,16 @@ const style = $ref({
   &-type-circle {
     padding: 4px;
     border-radius: 50%;
+  }
+
+  &-type-btn {
+    cursor: pointer;
+    border-radius: $normal-radius;
+    padding: 4px;
+
+    &:active {
+      opacity: .8;
+    }
   }
 
   .icon-inner {

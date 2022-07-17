@@ -49,7 +49,7 @@ const handleChange = (val: string) => {
 
   &-display-block {
     border-radius: $normal-radius;
-    padding: 2px;
+    padding: $item-gap;
     height: $item-height;
     background: $item-bg;
     border: 1px solid $item-bg;
