@@ -65,10 +65,9 @@ export const covertSize = (
 }
 
 /** TODO: 转换格式时，保持现有宽高不变 */
-export const covertSizeToOtherUnit = (s: string, newUnit: string, referSiz?: number): number => {
-  if (!s || !isUnitType(newUnit)) return fixedPointToNumber(s)
-  const unit = getUnit(s)
-  const n = parseFloat(s)
-  if (!isUnitType(unit)) return 0
+export const covertSizeToOtherUnit = (n: number, oldUnit: string, newUnit: string): number => {
+  if (!n || !isUnitType(oldUnit) || !isUnitType(newUnit)) return n
+  if (oldUnit === 'px' && newUnit === 'rem') return fixedPointToNumber(n / useDisplayStore().curFootSize)
+  if (oldUnit === 'rem' && newUnit === 'px') return fixedPointToNumber(n * useDisplayStore().curFootSize)
   return n
 }

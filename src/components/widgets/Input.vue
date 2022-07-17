@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { fixedPointToNumber, isUnitType } from '@/utils/sizeHelper'
+import { covertSizeToOtherUnit, fixedPointToNumber, isUnitType } from '@/utils/sizeHelper'
 import { watchEffect, defineEmits, nextTick, watch } from 'vue'
 import Select from './Select.vue'
 
@@ -36,12 +36,12 @@ const getSuffixText = $computed(() => (suffixType: SuffixType) => {
 })
 
 const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
-  const val = isUnitType(suffixType) ? fixedPointToNumber(inputValue) || memoryNumberValue : ''
+  const getVal = () => covertSizeToOtherUnit(fixedPointToNumber(inputValue) || memoryNumberValue, suffixInValue, suffixType)
   return (
     {
-      px: `${val}px`,
-      '%': `${val}%`,
-      rem: `${val}rem`,
+      px: `${getVal()}px`,
+      '%': `${getVal()}%`,
+      rem: `${getVal()}rem`,
       auto: 'auto',
       none: 'none',
       stretch: 'stretch',
