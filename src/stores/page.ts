@@ -3,6 +3,7 @@ import { mande } from 'mande'
 import { cloneDeep } from 'lodash'
 import { getMockBlock, getMockText } from '@/utils/mock'
 import { ComponentGroup } from '@/config'
+import { useDragStore } from './drag'
 
 const api = mande('http://localhost:3030/api/page')
 
@@ -32,8 +33,6 @@ export const usePageStore = defineStore('page', {
     } as ModelData,
     /** 当前展示的 Section，null 为全部 */
     activeSection: null as string | null,
-    /** 当前拖拽中的组件 */
-    dragNode: null as CNode | null,
   }),
   getters: {
     activeNodeGroups: (state) =>
@@ -71,21 +70,21 @@ export const usePageStore = defineStore('page', {
       }
       this.modelData = data
     },
-    setDragNode(node: CNode | null) {
-      this.dragNode = node
-    },
-    insertDragNode(parentNode: CNode, index: number) {
-      if (!this.dragNode) return
-      console.log('this.dragNode => ', this.dragNode)
-      let name = getUnitName(this.dragNode.name, this.nameMap)
-      parentNode.children?.splice(index, 0, cloneDeep({ ...this.dragNode, name }))
-      this.dragNode = null
+    insertDragNode(dragNode: CNode, parentNode: CNode, index: number) {
+      let name = getUnitName(dragNode.name, this.nameMap)
+      parentNode.children?.splice(index, 0, cloneDeep({ ...dragNode, name }))
     },
     swapNode(parentNode: CNode, index: number, targetIndex: number) {
-      if (!parentNode.children) return
+      const dropZone = useDragStore().dropZone
+      // console.log('parent', parentNode?.name, index);
+      // console.log('dropZone', dropZone?.name, targetIndex);
+      if (!parentNode?.children || !dropZone?.children) return
       const node = parentNode.children[index]
+      // console.log('node', node);
+
+      if (!node) return
       parentNode.children.splice(index, 1)
-      parentNode.children.splice(targetIndex, 0, node)
+      dropZone.children.splice(targetIndex, 0, node)
     },
     addSection(node: CNode, index?: number) {
       const insertIndex = index ?? this.allPageData.length

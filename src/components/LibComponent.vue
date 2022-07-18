@@ -5,9 +5,10 @@ import draggable from 'vuedraggable'
 import type { SortableEvent } from 'sortablejs'
 
 import { usePageStore } from '@/stores/page'
-import { useDisplayStore } from '@/stores/display'
+import { useDragStore } from '@/stores/drag'
 import { emitter } from '@/utils/event'
 import { getMoveable, useMoveable } from '@/utils/moveable'
+import { useDisplayStore } from '@/stores/display'
 
 interface ILibComponentProps {
   parent?: CNode
@@ -15,10 +16,17 @@ interface ILibComponentProps {
 }
 
 const { parent, item } = defineProps<ILibComponentProps>()
+
 const pageStore = usePageStore()
 const { setActiveNode, insertDragNode, swapNode } = pageStore
-const { activeNode, dragNode } = storeToRefs(pageStore)
+const { activeNode } = storeToRefs(pageStore)
+
+const dragStore = useDragStore()
+const { dragNode, dragType, dropZone } = storeToRefs(dragStore)
+const { setDropZone, setDragNode, getIsInDragNode } = dragStore
+
 const displayStore = useDisplayStore()
+const { displayMode } = storeToRefs(displayStore)
 
 const componentRef = ref(null)
 
@@ -66,11 +74,13 @@ onBeforeUnmount(() => {
 })
 
 /** 拖拽逻辑 */
-let inDraggable = $ref(false)
+let inDraggable = $computed(() => dropZone.value === item)
 const handleAddNode = (event: SortableEvent) => {
+  if (!dragNode.value) return
   // 新增组件
   if (event.pullMode === 'clone' && event.newIndex !== void 0) {
-    insertDragNode(item, event.newIndex)
+    insertDragNode(dragNode.value, item, event.newIndex)
+    setDragNode(null)
   }
 }
 
@@ -78,26 +88,36 @@ const handleSortNode = (event: SortableEvent) => {
   // 交互组件位置
   if (event.pullMode !== 'clone' && event.oldIndex !== void 0 && event.newIndex !== void 0) {
     swapNode(item, event.oldIndex, event.newIndex)
+    setDragNode(null)
   }
 }
 
-const componentElem = $computed(() => (componentRef.value as any).$el as HTMLElement)
-
 const isBlockComponent = $computed(() => item.component === 'Block')
 const dragEvents = $computed(() => (isBlockComponent ? {
-  dragover: (e: DragEvent) => {
-    if (dragNode && !inDraggable) {
-      inDraggable = true
-      // ;(e.currentTarget as HTMLDivElement)?.parentElement?.dispatchEvent(new Event('dragleave', { bubbles: true }))
+  dragenter: (e: DragEvent) => {
+    if (
+      dragNode.value &&
+      !inDraggable &&
+      !getIsInDragNode(item.name) &&
+      (e.target as HTMLDivElement)?.dataset?.name === item.name
+    ) {
+      setDropZone(item)
     }
   },
-  dragleave: (e: DragEvent) => {
-    inDraggable = false
-  },
-  drop: () => inDraggable = false,
   add: handleAddNode,
-  sort: handleSortNode,
+  end: handleSortNode,
 } : {}))
+
+const handleDragStart = (event: DragEvent, node: CNode) => {
+  if (dragNode.value) return
+  setDragNode(node, 'move')
+}
+
+/** 拖拽模式下阻止编辑窗口移动 */
+const preventMousedown = (e: MouseEvent) => {
+  if (displayMode.value !== 'drag') return
+  e.stopPropagation()
+}
 </script>
 
 <template>
@@ -112,9 +132,11 @@ const dragEvents = $computed(() => (isBlockComponent ? {
       ...item.props,
       direction: parent?.props?.layout?.direction,
     }"
-    :disabled="!dragNode && !isActive"
+    :disabled="displayMode !== 'drag'"
     :sort="true"
-    :ghost-class="dragNode ? 'ghost-clone' : 'ghost-sort'"
+    :ghost-class="dragNode && dragType === 'clone' ? 'ghost-clone' : 'ghost-move'"
+    :chosen-class="'chosen-clone'"
+    :data-name="item.name"
     v-tap.stop="setActive"
     v-on="dragEvents"
   >
@@ -122,7 +144,8 @@ const dragEvents = $computed(() => (isBlockComponent ? {
       <LibComponent
         :item="subItem"
         :parent="item"
-        @mousedown.stop=""
+        @mousedown="preventMousedown"
+        @dragstart="(event: DragEvent) => handleDragStart(event, subItem)"
       ></LibComponent>
     </template>
   </draggable>
@@ -156,8 +179,10 @@ const dragEvents = $computed(() => (isBlockComponent ? {
 
 <style lang="scss">
 .ghost-clone {
-  min-width: 80px;
-  min-height: 80px;
+  width: 100%;
+  height: 100%;
+  max-width: 80px;
+  max-height: 80px;
   overflow: hidden;
 
   &::after {
@@ -176,8 +201,12 @@ const dragEvents = $computed(() => (isBlockComponent ? {
     background: $panel-dark;
   }
 }
-.ghost-sort {
+.ghost-move {
   opacity: .5;
   outline: 2px dashed $theme;
+}
+.chosen-clone {
+  pointer-events: painted;
+  opacity: .3;
 }
 </style>

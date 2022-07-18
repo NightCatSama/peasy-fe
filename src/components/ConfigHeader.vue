@@ -11,7 +11,7 @@ import { onMounted, ref, watchEffect } from 'vue'
 import Slider from './widgets/Slider.vue'
 
 const displayStore = useDisplayStore()
-const { device } = storeToRefs(displayStore)
+const { device, displayMode } = storeToRefs(displayStore)
 const { setDevice, curPresetDeviceList } = displayStore
 
 const name = $ref('index')
@@ -46,6 +46,7 @@ const setDeviceBySize = (size: number[]) => {
     <div class="left">
       <div class="name">{{ name }}</div>
       <div class="ext">.html</div>
+      <h3 @click="displayMode = displayMode === 'drag' ? 'edit' : 'drag'">{{ displayMode }}</h3>
     </div>
     <div class="center">
       <Dropdown>
@@ -59,13 +60,9 @@ const setDeviceBySize = (size: number[]) => {
               </span>
             </div>
             <div class="device-list">
-              <div
-                :class="['device-item', { active: activeIndex === index }]"
-                v-for="(item, index) in desktop"
-                :key="index"
-                v-hover="(isHover: boolean) => hoverIndex = isHover ? index : -1"
-                @click="setDeviceBySize(item)"
-              >
+              <div :class="['device-item', { active: activeIndex === index }]" v-for="(item, index) in desktop"
+                :key="index" v-hover="(isHover: boolean) => hoverIndex = isHover ? index : -1"
+                @click="setDeviceBySize(item)">
                 <Icon v-if="index === 0" name="device-sm" type="pure" :size="28" />
                 <Icon v-else-if="index === 1" name="device-md" type="pure" :size="28" />
                 <Icon v-else name="device-lg" type="pure" :size="28" />

@@ -15,8 +15,11 @@ export interface IGroupStatus {
   advanced: boolean
 }
 
+export type DisplayMode = 'preview' | 'drag' | 'edit' | 'grid'
+
 export const useDisplayStore = defineStore('display', {
   state: () => ({
+    /** 预设 */
     presetDevice: {
       desktop: [
         [1280, 720, 16],
@@ -29,9 +32,20 @@ export const useDisplayStore = defineStore('display', {
         [414, 896, 13],
       ],
     },
+    /** 设备模式 */
     deviceType: 'desktop' as 'desktop' | 'mobile',
+    /** 当前模拟设备信息 */
     device: { width: 0, height: 0, zoom: 1, fontSize: 16 } as IDeviceInfo,
+    /** 编辑组的状态保存，避免每次切换都恢复 */
     groupStatus: {} as { [key: string]: IGroupStatus },
+    /**
+     * 当前页面展示模式
+     * edit: 编辑模式
+     * preview: 预览模式
+     * drag: 拖拽模式
+     * grid: 布局模式
+     */
+    displayMode: 'edit' as DisplayMode,
   }),
   getters: {
     realDeviceSize(state) {
@@ -60,5 +74,8 @@ export const useDisplayStore = defineStore('display', {
     saveGroupStatus(name: string, status: IGroupStatus) {
       this.groupStatus[name] = status
     },
+    setDisplayMode(mode: DisplayMode) {
+      this.displayMode = mode
+    }
   },
 })

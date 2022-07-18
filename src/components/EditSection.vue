@@ -6,6 +6,7 @@ import { useDisplayStore } from '@/stores/display'
 import Icon from './widgets/Icon.vue'
 import { emitter } from '@/utils/event'
 import panzoom, { PanZoom } from 'panzoom'
+import { useDragStore } from '@/stores/drag'
 
 const pageStore = usePageStore()
 const { setActiveNode } = pageStore
@@ -13,7 +14,10 @@ const { pageData, activeNode } = storeToRefs(pageStore)
 
 const displayStore = useDisplayStore()
 const { realDeviceSize, setDevice, setDeviceByParent } = displayStore
-const { device } = storeToRefs(displayStore)
+const { device, displayMode } = storeToRefs(displayStore)
+
+const dragStore = useDragStore()
+const { setDropZone } = dragStore
 
 const wrapperRef = ref<HTMLDivElement | null>(null)
 const contentRef = ref<HTMLDivElement | null>(null)
@@ -146,7 +150,12 @@ const hideMaterialsPanel = (e: Event) => {
 <template>
   <div class="edit-section" v-tap="hideMaterialsPanel">
     <div ref="wrapperRef" class="edit-wrapper">
-      <div ref="contentRef" v-show="!noPageData" class="edit-content" :style="editContentStyle">
+      <div
+        ref="contentRef"
+        v-show="!noPageData"
+        :class="['edit-content', `edit-content-${displayMode}`]"
+        :style="editContentStyle"
+      >
         <slot></slot>
       </div>
     </div>
@@ -211,5 +220,16 @@ const hideMaterialsPanel = (e: Event) => {
 }
 .focusing {
   transition: all 300ms ease-in-out;
+}
+</style>
+
+<style lang="scss">
+/** 编辑模式样式 */
+.edit-content {
+  &-drag {
+    .lib-component {
+      border: 4px solid rgba($red, .6);
+    }
+  }
 }
 </style>
