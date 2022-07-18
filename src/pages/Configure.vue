@@ -8,7 +8,7 @@ import ConfigSection from '@/components/ConfigSection.vue'
 import { downloadHtml } from '@/utils/download'
 import Sidebar from '@/components/Sidebar.vue'
 import ConfigHeader from '@/components/ConfigHeader.vue'
-import NodePanel from '@/components/NodePanel.vue'
+import MaterialsPanel from '@/components/MaterialsPanel.vue'
 import EditSection from '@/components/EditSection.vue'
 import { emitter } from '@/utils/event'
 
@@ -30,7 +30,7 @@ onMounted(() => {
   getAssetsData()
   getPageData()
 
-  emitter.on('switchNodePanel', (show: boolean) => {
+  emitter.on('switchMaterialsPanel', (show: boolean) => {
     showLeftPanel = show
   })
 })
@@ -39,8 +39,8 @@ onMounted(() => {
 <template>
   <div class="page">
     <Sidebar
-      :active-node-panel="showLeftPanel"
-      @change-node-panel="(val) => (showLeftPanel = val)"
+      :active-materials-panel="showLeftPanel"
+      @change-materials-panel="(val) => (showLeftPanel = val)"
     ></Sidebar>
     <div class="container">
       <ConfigHeader @download="handleDownload"></ConfigHeader>
@@ -48,7 +48,7 @@ onMounted(() => {
       <div class="content">
         <!-- 左侧模板/组件选择区域 -->
         <div :class="['left-panel', { show: showLeftPanel }]">
-          <NodePanel></NodePanel>
+          <MaterialsPanel></MaterialsPanel>
         </div>
         <!-- 页面编辑区 -->
         <EditSection>

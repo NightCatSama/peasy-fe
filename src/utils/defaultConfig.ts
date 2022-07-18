@@ -1,20 +1,20 @@
 export const getDefaultSize = (
-  type: 'component' | 'section' = 'component',
+  type: CNode['type'] = 'component',
   initConfig?: Partial<ISize>
 ): ISize => {
   return Object.assign(
     type === 'component'
       ? {
-          width: '100%',
-          height: '100%',
-          minWidth: '0px',
-          minHeight: '0px',
+          width: 'auto',
+          height: 'auto',
+          minWidth: '100px',
+          minHeight: '100px',
           maxHeight: 'none',
           maxWidth: 'none',
         }
       : {
           height: '100%',
-          minHeight: '0px',
+          minHeight: '100px',
           maxHeight: 'none',
         },
     initConfig || null

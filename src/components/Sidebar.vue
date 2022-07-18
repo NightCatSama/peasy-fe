@@ -7,10 +7,10 @@ import Icon from './widgets/Icon.vue'
 import SectionList from '@/components/SectionList.vue'
 
 interface ISidebarProps {
-  activeNodePanel: boolean
+  activeMaterialsPanel: boolean
 }
 
-const { activeNodePanel } = defineProps<ISidebarProps>()
+const { activeMaterialsPanel } = defineProps<ISidebarProps>()
 
 const pageStore = usePageStore()
 </script>
@@ -26,8 +26,8 @@ const pageStore = usePageStore()
           <Icon
             :size="26"
             name="add"
-            :active="activeNodePanel"
-            @click.native="$emit('change-node-panel', !activeNodePanel)"
+            :active="activeMaterialsPanel"
+            @click.native="$emit('change-materials-panel', !activeMaterialsPanel)"
           />
         </div>
         <SectionList />

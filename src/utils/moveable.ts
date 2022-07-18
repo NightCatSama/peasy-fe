@@ -1,5 +1,7 @@
+import { useDisplayStore } from '@/stores/display'
 import Moveable, { MoveableOptions } from 'moveable'
 import { emitter } from './event'
+import { covertPXToUnit, fixedPointToNumber, getUnit, isUnitType } from './sizeHelper'
 
 /** 全局实例 */
 let moveable: Moveable | null = null
@@ -32,3 +34,54 @@ export const setMoveableOptions = (options: MoveableOptions) => {
 }
 
 export const updateMoveableRect = () => moveable?.updateRect()
+
+export const useMoveable = (elem: HTMLDivElement, item: CNode) => {
+  const moveable = getMoveable()
+  if (!moveable) return
+
+  const disableWidth = item.type === 'section' || !isUnitType(getUnit(item.props.size?.width))
+  const disableHeight = !isUnitType(getUnit(item.props.size?.height))
+
+  if (disableWidth && disableHeight) return
+
+  /** 记录原先的单位 */
+  let units: { width?: string; height?: string } = {}
+
+  const renderDirections = disableWidth
+    ? ['s', 'n']
+    : disableHeight
+    ? ['w', 'e']
+    : ['n', 'nw', 'ne', 's', 'se', 'sw', 'e', 'w']
+
+  moveable.resizable = true
+  moveable.target = elem
+  moveable.renderDirections = renderDirections
+
+  moveable.off()
+  moveable.on('resizeStart', (e) => {
+    if (!disableWidth) units.width = getUnit(item.props.size.width)
+    if (!disableHeight) units.height = getUnit(item.props.size.height)
+  })
+  moveable.on('resize', (e) => {
+    if (units?.width) elem.style.width = fixedPointToNumber(e.width) + 'px'
+    if (units?.height) elem.style.height = fixedPointToNumber(e.height) + 'px'
+  })
+  moveable.on('resizeEnd', (e) => {
+    if (units.width)
+      item.props.size.width = covertPXToUnit(
+        elem.style.width,
+        units.width,
+        parent && elem.parentElement
+          ? elem.parentElement.clientWidth
+          : useDisplayStore().device.width
+      )
+    if (units.height)
+      item.props.size.height = covertPXToUnit(
+        elem.style.height,
+        units.height,
+        parent && elem.parentElement
+          ? elem.parentElement.clientHeight
+          : useDisplayStore().device.height
+      )
+  })
+}

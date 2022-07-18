@@ -39,7 +39,7 @@ const { deleteActiveNode } = pageStore
 
   .header {
     display: flex;
-    padding: 24px;
+    padding: 24px 16px;
     display: flex;
     .title {
       flex: 1;

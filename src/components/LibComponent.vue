@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { usePageStore } from '@/stores/page'
+import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
 import { storeToRefs } from 'pinia'
-import { onBeforeUnmount, ref, watch } from 'vue'
-import Moveable from 'moveable'
-import { covertPXToUnit, fixedPointToNumber, getUnit, isUnitType } from '@/utils/sizeHelper'
+import draggable from 'vuedraggable'
+import type { SortableEvent } from 'sortablejs'
+
+import { usePageStore } from '@/stores/page'
 import { useDisplayStore } from '@/stores/display'
 import { emitter } from '@/utils/event'
-import { getMoveable, updateMoveableRect } from '@/utils/moveable'
+import { getMoveable, useMoveable } from '@/utils/moveable'
 
 interface ILibComponentProps {
   parent?: CNode
@@ -15,14 +16,15 @@ interface ILibComponentProps {
 
 const { parent, item } = defineProps<ILibComponentProps>()
 const pageStore = usePageStore()
-const { setActiveNode } = pageStore
-const { activeNode, pageData } = storeToRefs(pageStore)
+const { setActiveNode, insertDragNode, swapNode } = pageStore
+const { activeNode, dragNode } = storeToRefs(pageStore)
+const displayStore = useDisplayStore()
 
-const componentRef = $ref(null)
+const componentRef = ref(null)
 
 const setActive = () => {
   setActiveNode(item, parent)
-  emitter.emit('switchNodePanel', false)
+  emitter.emit('switchMaterialsPanel', false)
 }
 
 let isActive = ref(false)
@@ -34,58 +36,13 @@ watch(
   isActive,
   (val) => {
     const moveable = getMoveable()
-    if (!moveable) return
+    if (!moveable || !val) return
 
-    if (val) {
-      const elem = document.querySelector('.lib-component.active') as HTMLDivElement
-      if (!elem) return
+    // 获取当前选中的元素，并去更新 moveable 示例
+    const elem = document.querySelector('.lib-component.active') as HTMLDivElement
+    if (!elem) return
 
-      const disableWidth = item.type === 'section' || !isUnitType(getUnit(item.props.size?.width))
-      const disableHeight = !isUnitType(getUnit(item.props.size?.height))
-
-      if (disableWidth && disableHeight) return
-
-      /** 记录原先的单位 */
-      let units: { width?: string; height?: string } = {}
-
-      const renderDirections = disableWidth
-        ? ['s', 'n']
-        : disableHeight
-        ? ['w', 'e']
-        : ['n', 'nw', 'ne', 's', 'se', 'sw', 'e', 'w']
-
-      moveable.resizable = true
-      moveable.target = elem
-      moveable.renderDirections = renderDirections
-
-      moveable.off()
-      moveable.on('resizeStart', (e) => {
-        if (!disableWidth) units.width = getUnit(item.props.size.width)
-        if (!disableHeight) units.height = getUnit(item.props.size.height)
-      })
-      moveable.on('resize', (e) => {
-        if (units?.width) elem.style.width = fixedPointToNumber(e.width) + 'px'
-        if (units?.height) elem.style.height = fixedPointToNumber(e.height) + 'px'
-      })
-      moveable.on('resizeEnd', (e) => {
-        if (units.width)
-          item.props.size.width = covertPXToUnit(
-            elem.style.width,
-            units.width,
-            parent && elem.parentElement
-              ? elem.parentElement.clientWidth
-              : useDisplayStore().device.width
-          )
-        if (units.height)
-          item.props.size.height = covertPXToUnit(
-            elem.style.height,
-            units.height,
-            parent && elem.parentElement
-              ? elem.parentElement.clientHeight
-              : useDisplayStore().device.height
-          )
-      })
-    }
+    useMoveable(elem, item)
   },
   {
     flush: 'post',
@@ -107,41 +64,120 @@ onBeforeUnmount(() => {
   const moveable = getMoveable()
   if (isActive.value && moveable) moveable.resizable = false
 })
+
+/** 拖拽逻辑 */
+let inDraggable = $ref(false)
+const handleAddNode = (event: SortableEvent) => {
+  // 新增组件
+  if (event.pullMode === 'clone' && event.newIndex !== void 0) {
+    insertDragNode(item, event.newIndex)
+  }
+}
+
+const handleSortNode = (event: SortableEvent) => {
+  // 交互组件位置
+  if (event.pullMode !== 'clone' && event.oldIndex !== void 0 && event.newIndex !== void 0) {
+    swapNode(item, event.oldIndex, event.newIndex)
+  }
+}
+
+const componentElem = $computed(() => (componentRef.value as any).$el as HTMLElement)
+
+const isBlockComponent = $computed(() => item.component === 'Block')
+const dragEvents = $computed(() => (isBlockComponent ? {
+  dragover: (e: DragEvent) => {
+    if (dragNode && !inDraggable) {
+      inDraggable = true
+      // ;(e.currentTarget as HTMLDivElement)?.parentElement?.dispatchEvent(new Event('dragleave', { bubbles: true }))
+    }
+  },
+  dragleave: (e: DragEvent) => {
+    inDraggable = false
+  },
+  drop: () => inDraggable = false,
+  add: handleAddNode,
+  sort: handleSortNode,
+} : {}))
 </script>
 
 <template>
-  <Component
+  <draggable
     ref="componentRef"
-    :class="['lib-component', { active: isActive }]"
+    :model-value="item.children || []"
+    :group="{ name: 'component', put: isBlockComponent ? true : false, pull: true }"
+    :class="['lib-component', { active: isActive, grading: inDraggable }]"
+    :item-key="'name'"
+    :tag="item.component"
+    :component-data="{
+      ...item.props,
+      direction: parent?.props?.layout?.direction,
+    }"
+    :disabled="!dragNode && !isActive"
+    :sort="true"
+    :ghost-class="dragNode ? 'ghost-clone' : 'ghost-sort'"
     v-tap.stop="setActive"
-    :is="item.component"
-    v-bind="item.props || {}"
-    :direction="parent?.props?.layout?.direction"
+    v-on="dragEvents"
   >
-    <template v-if="item.children">
-      <LibComponent v-for="subItem in item.children" :item="subItem" :parent="item"></LibComponent>
+    <template #item="{ element: subItem }">
+      <LibComponent
+        :item="subItem"
+        :parent="item"
+        @mousedown.stop=""
+      ></LibComponent>
     </template>
-  </Component>
+  </draggable>
 </template>
 
 <style lang="scss" scoped>
 .lib-component {
   cursor: default;
+
+  &.active {
+    position: relative;
+    cursor: default;
+    &:not(.snapshot)::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      border: 2px dashed rgba($theme, 70%);
+      z-index: 99;
+      box-sizing: border-box;
+    }
+  }
+  &.grading {
+    box-shadow: inset 0 0 0px 10px rgba($green, 40%);
+  }
 }
-.active {
-  position: relative;
-  cursor: default;
+</style>
+
+<style lang="scss">
+.ghost-clone {
+  min-width: 80px;
+  min-height: 80px;
+  overflow: hidden;
+
   &::after {
-    content: '';
+    content: 'Push Here';
+    font-size: 14px;
     position: absolute;
     left: 0;
     top: 0;
+    z-index: 1;
+    color: $color;
     width: 100%;
     height: 100%;
-    pointer-events: none;
-    border: 2px dashed rgba($theme, 70%);
-    z-index: 99;
-    box-sizing: border-box;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $panel-dark;
   }
+}
+.ghost-sort {
+  opacity: .5;
+  outline: 2px dashed $theme;
 }
 </style>

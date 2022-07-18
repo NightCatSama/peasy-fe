@@ -1,26 +1,26 @@
 import { getDefaultFont, getDefaultLayout, getDefaultSize } from './defaultConfig'
 
-export const getMockBlock = (type?: CNode['type']): CNode => {
-  const t = type || 'component'
+export const getMockBlock = (initType?: CNode['type']): CNode => {
+  const type = initType || 'component'
   return {
-    type: t,
-    name: `${t}-${~~(Math.random() * 1000)}`,
+    type: type,
+    name: type === 'component' ? 'Block' : 'Section',
     component: 'Block',
     props: {
       position: {
         type: 'relative',
       },
-      size: getDefaultSize('section'),
+      size: getDefaultSize(type),
       layout: getDefaultLayout(),
       container: {
         type: 'color',
-        backgroundColor: 'transparent',
+        backgroundColor: '#CCC',
       },
     },
-    children: [
+    children: type === 'component' ? [] : [
       {
         type: 'component',
-        name: `${t}-title-${~~(Math.random() * 1000)}`,
+        name: `${type}-Block`,
         component: 'Block',
         props: {
           position: {
@@ -38,7 +38,7 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
         children: [
           {
             type: 'component',
-            name: `${t}-title-${~~(Math.random() * 1000)}`,
+            name: `${type}-Text`,
             component: 'Text',
             props: {
               basic: {
@@ -54,7 +54,7 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
           },
           {
             type: 'component',
-            name: `${t}-title-${~~(Math.random() * 1000)}`,
+            name: `${type}-Text-2`,
             component: 'Text',
             props: {
               basic: {
@@ -77,7 +77,7 @@ export const getMockBlock = (type?: CNode['type']): CNode => {
 export const getMockText = (): CNode => {
   return {
     type: 'component',
-    name: `Text-${~~(Math.random() * 1000)}`,
+    name: 'Text',
     component: 'Text',
     props: {
       basic: {

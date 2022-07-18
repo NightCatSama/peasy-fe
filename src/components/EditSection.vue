@@ -134,17 +134,17 @@ const handleLocationPage = (immediate = false) => {
 
 // emitter
 emitter.on('location', (immediate?: boolean) => handleLocationPage(immediate))
-const hideNodePanel = (e: Event) => {
+const hideMaterialsPanel = (e: Event) => {
   const target = e.target as HTMLDivElement
   if (target?.classList.contains('edit-wrapper')) {
     setActiveNode()
   }
-  emitter.emit('switchNodePanel', false)
+  emitter.emit('switchMaterialsPanel', false)
 }
 </script>
 
 <template>
-  <div class="edit-section" v-tap="hideNodePanel">
+  <div class="edit-section" v-tap="hideMaterialsPanel">
     <div ref="wrapperRef" class="edit-wrapper">
       <div ref="contentRef" v-show="!noPageData" class="edit-content" :style="editContentStyle">
         <slot></slot>

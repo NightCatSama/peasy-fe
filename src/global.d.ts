@@ -15,6 +15,8 @@ interface CNode {
   props: any
   /** 包含的子组件 */
   children?: CNode[]
+  /** 组件封面图，在物料栏里展示 */
+  cover?: string
 }
 
 /** 支持的分组名 */

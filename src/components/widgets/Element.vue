@@ -1,15 +1,19 @@
 <script setup lang="ts">
+import LibComponent from '../LibComponent.vue';
 interface IElementProps {
-  image?: string
+  cover?: string
   name: string
 }
-const { image = 'https://avatars.githubusercontent.com/u/13888962?v=4', name } =
-  defineProps<IElementProps>()
+const {
+  cover = 'https://via.placeholder.com/600x400',
+  name,
+} = defineProps<IElementProps>()
+
 </script>
 
 <template>
   <div class="element">
-    <div class="image" :style="{ backgroundImage: `url(${image})` }" />
+    <div class="image" :style="{ backgroundImage: `url(${cover})` }"></div>
     <div class="name">{{ name }}</div>
   </div>
 </template>
@@ -23,8 +27,7 @@ const { image = 'https://avatars.githubusercontent.com/u/13888962?v=4', name } =
   .image {
     flex: 1;
     width: 100%;
-    border: 1px solid $border;
-    border-radius: $radius;
+    border-radius: $normal-radius;
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center center;
@@ -35,6 +38,12 @@ const { image = 'https://avatars.githubusercontent.com/u/13888962?v=4', name } =
       transform: scale(1.03);
       outline: 3px solid $theme;
     }
+  }
+
+  .wrapper {
+    width: 100%;
+    height: 100%;
+    overflow: hidden;
   }
 
   .name {
