@@ -24,6 +24,12 @@ const {
   flex-direction: column;
   justify-content: center;
 
+
+  &:hover .image {
+    transform: scale(1.03);
+    border: 2px solid $theme;
+  }
+
   .image {
     flex: 1;
     width: 100%;
@@ -33,17 +39,6 @@ const {
     background-position: center center;
     transition: all 0.3s;
     cursor: pointer;
-
-    &:hover {
-      transform: scale(1.03);
-      outline: 3px solid $theme;
-    }
-  }
-
-  .wrapper {
-    width: 100%;
-    height: 100%;
-    overflow: hidden;
   }
 
   .name {

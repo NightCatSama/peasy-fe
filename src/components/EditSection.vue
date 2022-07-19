@@ -10,17 +10,18 @@ import Icon from './widgets/Icon.vue'
 import { emitter } from '@/utils/event'
 import panzoom, { PanZoom } from 'panzoom'
 import { useDragStore } from '@/stores/drag'
+import { SortableEvent } from 'sortablejs'
 
 const pageStore = usePageStore()
-const { setActiveNode } = pageStore
+const { setActiveNode, addSection } = pageStore
 const { pageData, activeNode } = storeToRefs(pageStore)
 
 const displayStore = useDisplayStore()
-const { realDeviceSize, setDevice, setDeviceByParent } = displayStore
+const { setDeviceByParent } = displayStore
 const { device, displayMode } = storeToRefs(displayStore)
 
 const dragStore = useDragStore()
-const { setDropZone } = dragStore
+const { dragNode, dragType, dragNodeType } = storeToRefs(dragStore)
 
 const wrapperRef = ref<HTMLDivElement | null>(null)
 const contentRef = ref<HTMLDivElement | null>(null)
@@ -157,6 +158,15 @@ const hideMaterialsPanel = (e: Event) => {
   }
   emitter.emit('switchMaterialsPanel', false)
 }
+
+// draggable
+const dragEvents = $computed(() => (dragNode && dragNodeType.value === 'section' ? {
+  add: (event: SortableEvent) => {
+    if (!dragNode.value) return
+    addSection(dragNode.value, event.newIndex)
+  },
+} : {}))
+
 </script>
 
 <template>
@@ -168,11 +178,17 @@ const hideMaterialsPanel = (e: Event) => {
         :model-value="pageData || []"
         :item-key="'name'"
         :group="{ name: 'section', put: true, pull: false }"
+        :disabled="displayMode !== 'drag' || (dragNode && dragNodeType !== 'section')"
         :class="['edit-content', `edit-content-${displayMode}`]"
+        :ghost-class="dragNode && dragType === 'clone' ? 'ghost-clone-section' : 'ghost-move'"
         :style="editContentStyle"
+        v-on="dragEvents"
       >
         <template #item="{ element: item }">
-          <LibComponent :item="item" :key="item.name"></LibComponent>
+          <LibComponent
+            :item="item"
+            :key="item.name"
+          ></LibComponent>
         </template>
       </draggable>
     </div>
@@ -237,30 +253,5 @@ const hideMaterialsPanel = (e: Event) => {
 }
 .focusing {
   transition: all 300ms ease-in-out;
-}
-</style>
-
-<style lang="scss">
-/** 编辑模式样式 */
-.edit-content {
-  &-edit {
-    .lib-component {
-      transition: font-size .3s, transform .3s;
-    }
-  }
-  &-drag {
-    .lib-component {
-      transform: scale(.92);
-      transition: font-size .3s, transform .3s;
-
-      &.block {
-        box-shadow: $edit-shadow;
-      }
-
-      &.text {
-        outline: 3px dashed $pink;
-      }
-    }
-  }
 }
 </style>

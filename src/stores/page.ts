@@ -64,7 +64,7 @@ export const usePageStore = defineStore('page', {
     async getAssetsData() {
       // const { data } = await api.post<any>({})
       const data = {
-        section: [getMockBlock('section'), getMockBlock('section'), getMockBlock('section')],
+        section: [getMockBlock('section', 'Section-1'), getMockBlock('section', 'Section-2'), getMockBlock('section', 'Section-3')],
         component: [getMockText(), getMockBlock()],
         template: [],
       }
@@ -76,13 +76,11 @@ export const usePageStore = defineStore('page', {
     },
     swapNode(parentNode: CNode, index: number, targetIndex: number) {
       const dropZone = useDragStore().dropZone
-      // console.log('parent', parentNode?.name, index);
-      // console.log('dropZone', dropZone?.name, targetIndex);
       if (!parentNode?.children || !dropZone?.children) return
-      const node = parentNode.children[index]
-      // console.log('node', node);
 
+      const node = parentNode.children[index]
       if (!node) return
+
       parentNode.children.splice(index, 1)
       dropZone.children.splice(targetIndex, 0, node)
     },
@@ -91,11 +89,14 @@ export const usePageStore = defineStore('page', {
       let name = getUnitName(node.name, this.nameMap)
       this.allPageData.splice(insertIndex, 0, cloneDeep({ ...node, name }))
     },
-    addComponent(node: CNode) {
-    },
     removeSection(node: CNode) {
       const index = this.allPageData.indexOf(node)
       this.allPageData.splice(index, 1)
+    },
+    swapSection(index: number, targetIndex: number) {
+      const node = this.allPageData[index]
+      this.allPageData.splice(index, 1)
+      this.allPageData.splice(targetIndex, 0, node)
     },
     setActiveNode(node?: CNode | null, parent?: CNode | null) {
       this.activeNode = node || null

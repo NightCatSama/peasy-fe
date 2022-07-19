@@ -39,7 +39,7 @@ const pageStore = usePageStore()
 
 <style lang="scss" scoped>
 .sidebar {
-  width: 60px;
+  width: 64px;
   flex-shrink: 0;
   background: $panel-sidebar;
   display: flex;
@@ -56,7 +56,8 @@ const pageStore = usePageStore()
   .operator-panel {
     display: flex;
     flex-direction: column;
-    padding: 20px;
+    padding: 20px 0;
+    height: 100%;
   }
 
   .top {

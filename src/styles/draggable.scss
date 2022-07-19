@@ -1,0 +1,65 @@
+.ghost-clone {
+  &, &-section {
+    position: relative;
+    overflow: hidden;
+    transform: scaleX(.92)!important;
+    box-shadow: 0 0 6px 1px rgba($black, .1);
+  }
+  & {
+    width: 100%;
+    height: 100%;
+    max-width: 120px;
+    max-height: 120px;
+  }
+  &-section {
+    width: 100%;
+    height: 60px;
+    max-width: none;
+    max-height: none;
+
+    &:first-child {
+      margin-top: 20px;
+    }
+    &:last-child {
+      margin-bottom: 20px;
+    }
+  }
+
+  &::after, &-section::after {
+    content: 'Push Here';
+    font-size: 20px;
+    position: absolute;
+    left: 0;
+    top: 0;
+    z-index: 1;
+    color: $white;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background: $theme;
+    border-radius: $inner-radius;
+  }
+  &::after {
+    box-shadow: inset 0 0 0px 4px rgba($black, 20%);
+  }
+  &-section::after {
+    font-size: 24px;
+  }
+}
+.ghost-move {
+  opacity: .6;
+  outline: 2px dashed $theme;
+}
+.chosen-clone {
+  opacity: .3;
+}
+.section-item-ghost {
+  opacity: .5;
+  background: $panel-light-gradient!important;
+
+  .name {
+    display: none!important;
+  }
+}

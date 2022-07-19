@@ -25,11 +25,10 @@ let preDisplayMode = $ref<DisplayMode>('edit')
 const handleAddSection = (template: CNode) => {
   let noPageData = pageData.value.length === 0
 
-  if (template.type === 'section') {
-    addSection({ ...template, name: template.name + `${~~(Math.random() * 100)}` })
+  if (noPageData && template.type === 'section') {
+    addSection(template)
+    noPageData && nextTick(() => emitter.emit('location', true))
   }
-
-  noPageData && nextTick(() => emitter.emit('location', true))
 }
 
 const handleDragend = () => {
@@ -39,7 +38,7 @@ const handleDragend = () => {
 
 const handleDragStart = (event: DragEvent, data: CNode) => {
   const imgElem = (event.target as HTMLDivElement).querySelector('.image') as HTMLDivElement;
-  event.dataTransfer!.setDragImage(imgElem, imgElem.offsetWidth / 2, imgElem.offsetHeight / 2)
+  event.dataTransfer!.setDragImage(imgElem, 0, 0)
   setDragNode(data)
   preDisplayMode = displayMode.value
   setDisplayMode('drag')

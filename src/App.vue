@@ -7,6 +7,9 @@ import Page from './pages/Configure.vue'
 </template>
 
 <style lang="scss">
+@import '@/styles/draggable.scss';
+@import '@/styles/page.scss';
+
 #app {
   font-family: $font-family;
 }
