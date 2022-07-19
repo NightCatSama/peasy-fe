@@ -205,7 +205,7 @@ const handleLeaveTrash = (e: DragEvent) => {
     <div class="no-data" v-if="noPageData">TODO: 没有数据，提示左侧「+」</div>
     <Icon :class="['focus-btn']" name="focus" :size="26" @click="() => handleLocationPage()"></Icon>
     <Icon
-      v-if="dragNode && dragType === 'clone'"
+      v-if="dragNode && !noPageData && dragType === 'clone'"
       :class="['cancel-clone-btn', { active: isCancelDrag }]"
       name="delete"
       :size="40"
