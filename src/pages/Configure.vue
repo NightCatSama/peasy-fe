@@ -3,7 +3,6 @@ import { provide, onMounted } from 'vue'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 
-import LibComponent from '@/components/LibComponent.vue'
 import ConfigSection from '@/components/ConfigSection.vue'
 import { downloadHtml } from '@/utils/download'
 import Sidebar from '@/components/Sidebar.vue'
@@ -51,9 +50,7 @@ onMounted(() => {
           <MaterialsPanel></MaterialsPanel>
         </div>
         <!-- 页面编辑区 -->
-        <EditSection>
-          <LibComponent v-for="item in pageData" :item="item" :key="item.name"></LibComponent>
-        </EditSection>
+        <EditSection></EditSection>
         <!-- 右侧组件参数配置区 -->
         <div class="right">
           <ConfigSection></ConfigSection>

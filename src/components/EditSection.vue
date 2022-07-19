@@ -2,6 +2,9 @@
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import { onMounted, onUnmounted, reactive, watch, ref, watchEffect, nextTick } from 'vue'
+import draggable from 'vuedraggable'
+
+import LibComponent from '@/components/LibComponent.vue'
 import { useDisplayStore } from '@/stores/display'
 import Icon from './widgets/Icon.vue'
 import { emitter } from '@/utils/event'
@@ -22,6 +25,7 @@ const { setDropZone } = dragStore
 const wrapperRef = ref<HTMLDivElement | null>(null)
 const contentRef = ref<HTMLDivElement | null>(null)
 
+const contentElem = $computed(() => (contentRef.value as any)?.$el as HTMLDivElement || null)
 const editContentStyle = $computed(() => {
   return {
     width: `${device.value.width}px`,
@@ -46,7 +50,7 @@ onMounted(() => {
   setWrapperSize()
   setDeviceByParent(wrapperSize.width)
   window.addEventListener('resize', setWrapperSize, false)
-  pz.value = panzoom(contentRef.value!, {
+  pz.value = panzoom(contentElem!, {
     initialZoom: device.value.zoom,
     minZoom: 0.2,
     maxZoom: 2,
@@ -70,7 +74,7 @@ onMounted(() => {
 
 watchEffect(() => {
   const trans = pz.value?.getTransform()
-  const rect = contentRef.value?.getBoundingClientRect()
+  const rect = contentElem?.getBoundingClientRect()
   if (trans && rect && trans?.scale !== device.value.zoom) {
     pz.value?.zoomTo(
       trans!.x + rect.width / 2,
@@ -106,7 +110,7 @@ const noPageData = $computed(() => {
 
 /** 重置预览位置，居中显示 */
 const handleLocationPage = (immediate = false) => {
-  if (!contentRef.value || isSmoothing) return
+  if (!contentElem || isSmoothing) return
 
   if (immediate !== true) {
     isSmoothing = true
@@ -122,7 +126,7 @@ const handleLocationPage = (immediate = false) => {
     activeNode && (document.querySelector('.lib-component.active') as HTMLDivElement)
 
   const { width, height } = wrapperSize
-  const rect = contentRef.value!.getBoundingClientRect()
+  const rect = contentElem!.getBoundingClientRect()
   const w = rect.width
   const h = rect.height
   x = (width - w) / 2
@@ -158,14 +162,19 @@ const hideMaterialsPanel = (e: Event) => {
 <template>
   <div class="edit-section" v-tap="hideMaterialsPanel">
     <div ref="wrapperRef" class="edit-wrapper">
-      <div
+      <draggable
         ref="contentRef"
         v-show="!noPageData"
+        :model-value="pageData || []"
+        :item-key="'name'"
+        :group="{ name: 'section', put: true, pull: false }"
         :class="['edit-content', `edit-content-${displayMode}`]"
         :style="editContentStyle"
       >
-        <slot></slot>
-      </div>
+        <template #item="{ element: item }">
+          <LibComponent :item="item" :key="item.name"></LibComponent>
+        </template>
+      </draggable>
     </div>
     <div class="no-data" v-if="noPageData">TODO: 没有数据，提示左侧「+」</div>
     <Icon :class="['focus-btn']" name="focus" :size="26" @click="() => handleLocationPage()"></Icon>
