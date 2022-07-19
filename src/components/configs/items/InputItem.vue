@@ -12,8 +12,13 @@ interface ISelectItemProps {
   type?: IInputProps['type']
 }
 
-const { label, modelValue, ...props } = defineProps<ISelectItemProps>()
-const restProps = $(props)
+const { label, modelValue, type, placeholder, suffix, realTime } = defineProps<ISelectItemProps>()
+const restProps = $computed(() => ({
+  placeholder,
+  suffix,
+  realTime,
+  type
+}))
 const emit = defineEmits(['update:modelValue'])
 
 const value = $computed({
@@ -25,7 +30,7 @@ const value = $computed({
 </script>
 
 <template>
-  <div :class="['item', { column: restProps.type === 'textarea' }]">
+  <div :class="['item', { column: type === 'textarea' }]">
     <span class="label">{{ label }}</span>
     <Input class="input" v-model="value" v-bind="restProps">
       <template #suffix><slot name="suffix"></slot></template>

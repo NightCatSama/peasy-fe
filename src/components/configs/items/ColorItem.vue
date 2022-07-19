@@ -8,11 +8,8 @@ interface IColorItemProps {
   modelValue: string
 }
 
-const { label, modelValue, ...props } = defineProps<IColorItemProps>()
-const restProps = $(props)
+const { label, modelValue } = defineProps<IColorItemProps>()
 const emit = defineEmits(['update:modelValue'])
-
-let showColorPicker = $ref(false)
 
 const value = $computed({
   get: () => modelValue,
