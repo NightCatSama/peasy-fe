@@ -92,6 +92,11 @@ const { type = 'default', disabled, triggers = ['click'] } = defineProps<IDropdo
     .vc-chrome-color-wrap {
       width: 45px;
     }
+    .vc-hue-picker, .vc-alpha-picker {
+      background-color: $tr;
+      border: 2px solid $white;
+      box-shadow: 0 0 1px 2px rgba($black, .1);
+    }
   }
 }
 .v-popper__popper.v-popper__popper--show-from,

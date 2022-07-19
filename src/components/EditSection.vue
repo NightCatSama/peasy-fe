@@ -81,11 +81,19 @@ watchEffect(() => {
 })
 
 watch(
-  pageData,
+  [pageData],
   () => {
     emitter.emit('updateMoveable')
   },
   { flush: 'post', deep: true }
+)
+
+watch(
+  [displayMode],
+  () => {
+    setTimeout(() => emitter.emit('updateMoveable'), 300)
+  },
+  { flush: 'post' }
 )
 
 onUnmounted(() => {
@@ -226,9 +234,23 @@ const hideMaterialsPanel = (e: Event) => {
 <style lang="scss">
 /** 编辑模式样式 */
 .edit-content {
+  &-edit {
+    .lib-component {
+      transition: font-size .3s, transform .3s;
+    }
+  }
   &-drag {
     .lib-component {
-      border: 4px solid rgba($red, .6);
+      transform: scale(.92);
+      transition: font-size .3s, transform .3s;
+
+      &.block {
+        box-shadow: $edit-shadow;
+      }
+
+      &.text {
+        outline: 3px dashed $pink;
+      }
     }
   }
 }

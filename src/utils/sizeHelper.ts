@@ -34,6 +34,8 @@ export const fixedPoint = (s: string): string => {
 /** 将 px 转成其他格式 */
 export const covertPXToUnit = (s: string, unit: string, referSiz?: number) => {
   if (!isUnitType(unit)) return s
+  const nowUnit = getUnit(s)
+  if (nowUnit !== 'px') return s
   else if (unit === 'px') return s
   else if (unit === 'rem')
     return `${fixedPointToNumber(parseFloat(s) / useDisplayStore().curFootSize)}rem`

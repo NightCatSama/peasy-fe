@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch } from 'vue'
+import { onBeforeUnmount, onMounted, ref, watch, watchPostEffect } from 'vue'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
 import type { SortableEvent } from 'sortablejs'
@@ -35,30 +35,23 @@ const setActive = () => {
   emitter.emit('switchMaterialsPanel', false)
 }
 
-let isActive = ref(false)
-watch(activeNode, (newNode) => {
-  isActive.value = newNode === item
-})
+let isActive = $computed(() => activeNode.value === item)
 
-watch(
-  isActive,
-  (val) => {
+watchPostEffect(() => {
+  if (isActive) {
     const moveable = getMoveable()
-    if (!moveable || !val) return
 
+    if (!moveable) return
     // 获取当前选中的元素，并去更新 moveable 示例
     const elem = document.querySelector('.lib-component.active') as HTMLDivElement
     if (!elem) return
 
-    useMoveable(elem, item)
-  },
-  {
-    flush: 'post',
+    useMoveable(elem, item, parent)
   }
-)
+})
 
 watch(
-  isActive,
+  $$(isActive),
   (val) => {
     const moveable = getMoveable()
     if (!val && moveable) moveable.resizable = false
@@ -70,7 +63,7 @@ watch(
 
 onBeforeUnmount(() => {
   const moveable = getMoveable()
-  if (isActive.value && moveable) moveable.resizable = false
+  if (isActive && moveable) moveable.resizable = false
 })
 
 /** 拖拽逻辑 */
@@ -181,8 +174,8 @@ const preventMousedown = (e: MouseEvent) => {
 .ghost-clone {
   width: 100%;
   height: 100%;
-  max-width: 80px;
-  max-height: 80px;
+  max-width: 100px;
+  max-height: 100px;
   overflow: hidden;
 
   &::after {
@@ -202,7 +195,7 @@ const preventMousedown = (e: MouseEvent) => {
   }
 }
 .ghost-move {
-  opacity: .5;
+  opacity: .6;
   outline: 2px dashed $theme;
 }
 .chosen-clone {

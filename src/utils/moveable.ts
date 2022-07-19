@@ -35,7 +35,7 @@ export const setMoveableOptions = (options: MoveableOptions) => {
 
 export const updateMoveableRect = () => moveable?.updateRect()
 
-export const useMoveable = (elem: HTMLDivElement, item: CNode) => {
+export const useMoveable = (elem: HTMLDivElement, item: CNode, parent?: CNode) => {
   const moveable = getMoveable()
   if (!moveable) return
 
@@ -63,10 +63,12 @@ export const useMoveable = (elem: HTMLDivElement, item: CNode) => {
     if (!disableHeight) units.height = getUnit(item.props.size.height)
   })
   moveable.on('resize', (e) => {
+    console.log('e', e.width, e.height);
     if (units?.width) elem.style.width = fixedPointToNumber(e.width) + 'px'
     if (units?.height) elem.style.height = fixedPointToNumber(e.height) + 'px'
   })
   moveable.on('resizeEnd', (e) => {
+    console.log('end', e, elem.style.width)
     if (units.width)
       item.props.size.width = covertPXToUnit(
         elem.style.width,
