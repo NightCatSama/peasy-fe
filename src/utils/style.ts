@@ -1,6 +1,6 @@
 import { useDisplayStore } from '@/stores/display'
 import { computed, inject } from 'vue'
-import { covertSize, getUnit } from './sizeHelper'
+import { covertSize, fixedPointToNumber, getUnit } from './sizeHelper'
 
 const getIsEditMode = () => !!inject('isEditMode')
 
@@ -107,8 +107,12 @@ export const useContainerStyle = (container: IContainer) => {
 export const useFontStyle = (font: IFont) => {
   if (!font) return {}
 
+  const isEditMode = getIsEditMode()
+
   return {
-    fontSize: font.fontSize,
+    fontSize: isEditMode && getUnit(font.fontSize) === 'rem'
+      ? `${fixedPointToNumber(font.fontSize)}em`
+      : font.fontSize,
     lineHeight: getUnit(font.lineHeight) === 'x' ? font.lineHeight.slice(0, -1) : font.lineHeight,
     fontWeight: font.fontWeight,
     fontStyle: font.fontStyle,
