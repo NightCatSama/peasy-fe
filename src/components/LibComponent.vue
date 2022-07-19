@@ -22,7 +22,7 @@ const { setActiveNode, insertDragNode, swapNode } = pageStore
 const { activeNode } = storeToRefs(pageStore)
 
 const dragStore = useDragStore()
-const { dragNode, dragType, dropZone, dragNodeType } = storeToRefs(dragStore)
+const { dragNode, dragType, dropZone, dragNodeType, isCancelDrag } = storeToRefs(dragStore)
 const { setDropZone, setDragNode, getIsInDragNode } = dragStore
 
 const displayStore = useDisplayStore()
@@ -69,7 +69,7 @@ onBeforeUnmount(() => {
 /** 拖拽逻辑 */
 let inDraggable = $computed(() => dropZone.value === item)
 const handleAddNode = (event: SortableEvent) => {
-  if (!dragNode.value) return
+  if (!dragNode.value || isCancelDrag.value) return
   // 新增组件
   if (event.pullMode === 'clone' && event.newIndex !== void 0) {
     insertDragNode(dragNode.value, item, event.newIndex)

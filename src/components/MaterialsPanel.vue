@@ -42,6 +42,7 @@ const handleDragStart = (event: DragEvent, data: CNode) => {
   setDragNode(data)
   preDisplayMode = displayMode.value
   setDisplayMode('drag')
+  setTimeout(() => emitter.emit('switchMaterialsPanel', false), 100)
 }
 </script>
 
@@ -79,7 +80,7 @@ const handleDragStart = (event: DragEvent, data: CNode) => {
 <style lang="scss" scoped>
 .materials-panel {
   position: relative;
-  width: 320px;
+  width: $materials-panel-width;
   height: 100%;
   overflow-y: auto;
   flex-shrink: 0;

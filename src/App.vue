@@ -9,6 +9,7 @@ import Page from './pages/Configure.vue'
 <style lang="scss">
 @import '@/styles/draggable.scss';
 @import '@/styles/page.scss';
+@import '@/styles/animation.scss';
 
 #app {
   font-family: $font-family;

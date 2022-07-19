@@ -13,6 +13,8 @@ export const useDragStore = defineStore('drag', {
     dragType: 'clone' as 'clone' | 'move',
     /** 当前所处的拖拽空间 */
     dropZone: null as CNode | null,
+    /** 是否取消拖拽 */
+    isCancelDrag: false,
   }),
   getters: {
     /** 当前拖拽组件的类型 */
@@ -42,9 +44,13 @@ export const useDragStore = defineStore('drag', {
       this.dragNode = node
       this.dragType = dragType || 'clone'
       this.dropZone = null
+      this.isCancelDrag = false
     },
     setDropZone(node: CNode | null) {
       this.dropZone = node
+    },
+    setIsCancelDrag(isCancelDrag: boolean) {
+      this.isCancelDrag = isCancelDrag
     }
   },
 })

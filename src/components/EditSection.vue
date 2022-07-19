@@ -11,6 +11,7 @@ import { emitter } from '@/utils/event'
 import panzoom, { PanZoom } from 'panzoom'
 import { useDragStore } from '@/stores/drag'
 import { SortableEvent } from 'sortablejs'
+import { useSize } from 'ahooks-vue'
 
 const pageStore = usePageStore()
 const { setActiveNode, addSection } = pageStore
@@ -21,7 +22,8 @@ const { setDeviceByParent } = displayStore
 const { device, displayMode } = storeToRefs(displayStore)
 
 const dragStore = useDragStore()
-const { dragNode, dragType, dragNodeType } = storeToRefs(dragStore)
+const { dragNode, dragType, dragNodeType, isCancelDrag } = storeToRefs(dragStore)
+const { setIsCancelDrag } = dragStore
 
 const wrapperRef = ref<HTMLDivElement | null>(null)
 const contentRef = ref<HTMLDivElement | null>(null)
@@ -37,10 +39,11 @@ const editContentStyle = $computed(() => {
 const pz = ref<PanZoom | null>(null)
 let isSmoothing = $ref(false)
 
-const wrapperSize = reactive({
-  width: 0,
-  height: 0,
-})
+const wrapperSize = useSize(wrapperRef, {
+  onChange(size) {
+    console.log('wrapperSize change => ', size)
+  }
+}) as { width: number; height: number }
 
 const setWrapperSize = () => {
   wrapperSize.width = wrapperRef.value?.clientWidth || 0
@@ -49,7 +52,7 @@ const setWrapperSize = () => {
 
 onMounted(() => {
   setWrapperSize()
-  setDeviceByParent(wrapperSize.width)
+  setDeviceByParent(wrapperSize!.width)
   window.addEventListener('resize', setWrapperSize, false)
   pz.value = panzoom(contentElem!, {
     initialZoom: device.value.zoom,
@@ -162,10 +165,17 @@ const hideMaterialsPanel = (e: Event) => {
 // draggable
 const dragEvents = $computed(() => (dragNode && dragNodeType.value === 'section' ? {
   add: (event: SortableEvent) => {
-    if (!dragNode.value) return
+    console.log('isCancelDrag.value => ', isCancelDrag.value)
+    if (!dragNode.value || isCancelDrag.value) return
     addSection(dragNode.value, event.newIndex)
   },
 } : {}))
+
+const handleLeaveTrash = (e: DragEvent) => {
+  // NOTE: 不知道为啥在垃圾桶上松开后也会触发一次 dragleave 并且数据都是 0
+  if (!e.clientX && !e.clientY) return
+  setIsCancelDrag(false)
+}
 
 </script>
 
@@ -194,6 +204,14 @@ const dragEvents = $computed(() => (dragNode && dragNodeType.value === 'section'
     </div>
     <div class="no-data" v-if="noPageData">TODO: 没有数据，提示左侧「+」</div>
     <Icon :class="['focus-btn']" name="focus" :size="26" @click="() => handleLocationPage()"></Icon>
+    <Icon
+      v-if="dragNode && dragType === 'clone'"
+      :class="['cancel-clone-btn', { active: isCancelDrag }]"
+      name="delete"
+      :size="40"
+      @dragover="() => setIsCancelDrag(true)"
+      @dragleave="handleLeaveTrash"
+    ></Icon>
   </div>
 </template>
 
@@ -241,13 +259,46 @@ const dragEvents = $computed(() => (dragNode && dragNodeType.value === 'section'
     right: 20px;
     bottom: 20px;
     padding: 8px;
-    opacity: 0.3;
+    opacity: 0.5;
     transition: all 0.3s;
     background: $panel-light;
 
     &:hover,
     &.active {
-      opacity: 0.8;
+      opacity: 1;
+    }
+  }
+
+  .cancel-clone-btn {
+    position: absolute;
+    left: 20px;
+    bottom: 20px;
+    padding: 20px;
+    opacity: .8;
+    color: $red;
+    border: 4px dashed $red;
+    box-shadow: $shadow;
+    background: linear-gradient(rgba($white, .8), rgba($white, 1));
+    animation-name: shake;
+    transform-origin: center bottom;
+    animation-duration: 1.5s;
+    animation-fill-mode: both;
+    animation-iteration-count: infinite;
+    animation-delay: .2s;
+    transition: all 0s;
+    cursor: pointer;
+
+    &:hover,
+    &.active {
+      opacity: 1;
+      color: $white;
+      border: 4px solid $red;
+      background: $red-gradient;
+      animation: none;
+    }
+
+    :deep(*) {
+      pointer-events: none;
     }
   }
 }

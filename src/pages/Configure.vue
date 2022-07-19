@@ -23,7 +23,7 @@ const handleDownload = async () => {
   downloadHtml(res.data)
 }
 
-let showLeftPanel = $ref(true)
+let showLeftPanel = $ref(false)
 
 onMounted(() => {
   getAssetsData()
