@@ -5,6 +5,7 @@ import BasicGroup from './configs/BasicGroup.vue'
 import FontGroup from './configs/FontGroup.vue'
 import LayoutGroup from './configs/LayoutGroup.vue'
 import SizeGroup from './configs/SizeGroup.vue'
+import SpacingGroup from './configs/SpacingGroup.vue'
 
 interface IConfigGroupProps {
   groupType: GroupType
@@ -18,6 +19,7 @@ const componentNameMap: { [type in GroupType]: any | null } = {
   basic: BasicGroup,
   size: SizeGroup,
   font: FontGroup,
+  spacing: SpacingGroup,
   position: null,
   layout: LayoutGroup,
   container: null,

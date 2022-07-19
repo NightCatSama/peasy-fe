@@ -1,4 +1,4 @@
-import { getDefaultFont, getDefaultLayout, getDefaultSize } from './defaultConfig'
+import { getDefaultFont, getDefaultLayout, getDefaultSize, getDefaultSpacing } from './defaultConfig'
 
 export const getMockBlock = (initType?: CNode['type'], name?: string): CNode => {
   const type = initType || 'component'
@@ -12,6 +12,7 @@ export const getMockBlock = (initType?: CNode['type'], name?: string): CNode => 
       },
       size: getDefaultSize(type),
       layout: getDefaultLayout(),
+      spacing: getDefaultSpacing(),
       container: {
         type: 'color',
         backgroundColor: type === 'component' ? '#CCC' : '#FFF',
@@ -30,6 +31,7 @@ export const getMockBlock = (initType?: CNode['type'], name?: string): CNode => 
           },
           size: getDefaultSize('component', { width: '50%' }),
           layout: getDefaultLayout(),
+          spacing: getDefaultSpacing(),
           container: {
             type: 'color',
             backgroundColor: 'pink',

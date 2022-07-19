@@ -20,7 +20,7 @@ interface CNode {
 }
 
 /** 支持的分组名 */
-type GroupType = 'basic' | 'size' | 'layout' | 'font' | 'container' | 'position' | 'animation'
+type GroupType = 'basic' | 'size' | 'layout' | 'font' | 'spacing' | 'container' | 'position' | 'animation'
 
 /** 单位 */
 type UnitType = '%' | 'px' | 'rem' | 'x'
@@ -68,4 +68,10 @@ interface IFont {
   color: string
   fontWeight: 'normal' | 'bold' | '500' | '600' | '800' | '900'
   fontStyle: 'normal' | 'italic'
+}
+
+/** 间距信息 */
+interface ISpacing {
+  margin: [number, number, number, number]
+  padding: [number, number, number, number]
 }

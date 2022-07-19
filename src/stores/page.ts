@@ -50,7 +50,7 @@ export const usePageStore = defineStore('page', {
   actions: {
     async getPageData() {
       // const { data } = await api.post<any>({})
-      this.allPageData = []
+      this.allPageData = [getMockBlock('section')]
     },
     async getAssetsData() {
       // const { data } = await api.post<any>({})

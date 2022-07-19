@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide, onMounted } from 'vue'
+import { provide, onMounted, nextTick } from 'vue'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 

@@ -60,6 +60,9 @@ const { deleteActiveNode } = pageStore
     }
   }
 
+  .content {
+    padding-bottom: 44px;
+  }
 
   .no-data {
     font-size: 18px;

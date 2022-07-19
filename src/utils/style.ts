@@ -119,3 +119,13 @@ export const useFontStyle = (font: IFont) => {
     color: font.color,
   }
 }
+
+/** 字体样式 */
+export const useSpacingStyle = (spacing: ISpacing) => {
+  if (!spacing) return {}
+
+  return {
+    margin: spacing.margin.map((n: number) => `${n}px`).join(' '),
+    padding: spacing.padding.map((n: number) => `${n}px`).join(' '),
+  }
+}

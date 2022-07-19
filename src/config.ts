@@ -1,6 +1,6 @@
 export const ComponentGroup: { [componentName: string]: GroupType[] } = {
-  Block: ['layout', 'size', 'position', 'container'],
-  Text: ['basic', 'font', 'position'],
+  Block: ['layout', 'size', 'spacing'],
+  Text: ['basic', 'font',],
 }
 
 export interface ITextBasicType {

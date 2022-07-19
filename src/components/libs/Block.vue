@@ -5,6 +5,7 @@ import {
   useContainerStyle,
   useLayoutStyle,
   usePositionStyle,
+useSpacingStyle,
 } from '@/utils/style'
 
 interface IBlockProps {
@@ -12,10 +13,11 @@ interface IBlockProps {
   position: IPosition
   size: ISize
   layout: ILayout
+  spacing: ISpacing
   container: IContainer
 }
 
-const { position, size, layout, container, direction } = defineProps<IBlockProps>()
+const { position, size, layout, container, direction, spacing } = defineProps<IBlockProps>()
 
 const style = $computed(() =>
   useStyle({
@@ -23,6 +25,7 @@ const style = $computed(() =>
     ...useSizeStyle(size, direction),
     ...useLayoutStyle(layout),
     ...useContainerStyle(container),
+    ...useSpacingStyle(spacing),
   })
 )
 </script>

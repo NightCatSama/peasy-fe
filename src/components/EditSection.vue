@@ -39,11 +39,11 @@ const editContentStyle = $computed(() => {
 const pz = ref<PanZoom | null>(null)
 let isSmoothing = $ref(false)
 
-const wrapperSize = useSize(wrapperRef, {
-  onChange(size) {
-    console.log('wrapperSize change => ', size)
-  }
-}) as { width: number; height: number }
+const noPageData = $computed(() => {
+  return pageData.value.length === 0
+})
+
+const wrapperSize = useSize(wrapperRef) as { width: number; height: number }
 
 const setWrapperSize = () => {
   wrapperSize.width = wrapperRef.value?.clientWidth || 0
@@ -73,7 +73,6 @@ onMounted(() => {
     emitter.emit('updateMoveable')
   })
   pz.value.on('pan', () => emitter.emit('updateMoveable'))
-  handleLocationPage()
 })
 
 watchEffect(() => {
@@ -104,12 +103,14 @@ watch(
   { flush: 'post' }
 )
 
+watch(() => noPageData, (newValue, oldValue) => {
+  if (!newValue && oldValue) {
+    setTimeout(() => handleLocationPage(true))
+  }
+}, { flush: 'post' })
+
 onUnmounted(() => {
   window.removeEventListener('resize', setWrapperSize)
-})
-
-const noPageData = $computed(() => {
-  return pageData.value.length === 0
 })
 
 /** 重置预览位置，居中显示 */
@@ -165,7 +166,6 @@ const hideMaterialsPanel = (e: Event) => {
 // draggable
 const dragEvents = $computed(() => (dragNode && dragNodeType.value === 'section' ? {
   add: (event: SortableEvent) => {
-    console.log('isCancelDrag.value => ', isCancelDrag.value)
     if (!dragNode.value || isCancelDrag.value) return
     addSection(dragNode.value, event.newIndex)
   },

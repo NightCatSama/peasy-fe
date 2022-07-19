@@ -24,10 +24,8 @@ let preDisplayMode = $ref<DisplayMode>('edit')
 
 const handleAddSection = (template: CNode) => {
   let noPageData = pageData.value.length === 0
-
   if (noPageData && template.type === 'section') {
     addSection(template)
-    noPageData && nextTick(() => emitter.emit('location', true))
   }
 }
 
