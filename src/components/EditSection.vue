@@ -208,7 +208,7 @@ const handleLeaveTrash = (e: DragEvent) => {
       v-if="dragNode && !noPageData && dragType === 'clone'"
       :class="['cancel-clone-btn', { active: isCancelDrag }]"
       name="delete"
-      :size="40"
+      :size="24"
       @dragover="() => setIsCancelDrag(true)"
       @dragleave="handleLeaveTrash"
     ></Icon>
@@ -273,7 +273,7 @@ const handleLeaveTrash = (e: DragEvent) => {
     position: absolute;
     left: 20px;
     bottom: 20px;
-    padding: 20px;
+    padding: 16px;
     opacity: .8;
     color: $red;
     border: 4px dashed $red;

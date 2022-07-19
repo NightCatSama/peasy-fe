@@ -14,7 +14,7 @@ const { pageData, modelData } = storeToRefs(pageStore)
 const { addSection } = pageStore
 
 const dragStore = useDragStore()
-const { setDragNode } = dragStore
+const { setDragNode, setIsCancelDrag } = dragStore
 
 const displayStore = useDisplayStore()
 const { displayMode } = storeToRefs(displayStore)
@@ -34,6 +34,7 @@ const handleAddSection = (template: CNode) => {
 const handleDragend = () => {
   setDragNode(null)
   setDisplayMode(preDisplayMode)
+  setIsCancelDrag(false)
 }
 
 const handleDragStart = (event: DragEvent, data: CNode) => {
