@@ -40,8 +40,8 @@ export const getDefaultFont = (
   return Object.assign(
     {
       fontSize: '2rem',
-      lineHeight: '1.16x',
-      color: '#333',
+      lineHeight: '1.26x',
+      color: '#232323',
       fontWeight: 'normal',
       fontStyle: 'normal'
     },

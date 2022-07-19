@@ -1,0 +1,32 @@
+import { cloneDeep } from 'lodash'
+
+const getUnitName = (originName: string, nameMap: { [key: string]: CNode }): string => {
+  let name = originName
+  let i = 1
+  while (nameMap[name]) {
+    name = `${originName}-${i}`
+    i++
+  }
+  return name
+}
+
+/**
+ * 将节点和子节点的名字设置为唯一的
+ * @param node 节点
+ * @param nameMap 已存在的名字映射
+ */
+export const formatNodeByUniqueName = (node: CNode, nameMap: { [key: string]: CNode }): CNode => {
+  const newNode = cloneDeep(node)
+  let pendingNodeList = [newNode]
+  while (pendingNodeList.length) {
+    const node = pendingNodeList.shift()!
+    if (node.name in nameMap) {
+      node.name = getUnitName(node.name, nameMap)
+      nameMap[node.name] = node
+    }
+    if (node.children) {
+      pendingNodeList = pendingNodeList.concat(node.children)
+    }
+  }
+  return newNode
+}

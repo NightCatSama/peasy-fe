@@ -20,9 +20,7 @@ const style = $computed(() =>
 </script>
 
 <template>
-  <div class="text" :style="style">
-    {{ basic.text }}
-  </div>
+  <div class="text" :style="style">{{ basic.text }}</div>
 </template>
 
 <style scoped>

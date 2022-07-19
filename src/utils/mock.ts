@@ -14,7 +14,7 @@ export const getMockBlock = (initType?: CNode['type'], name?: string): CNode => 
       layout: getDefaultLayout(),
       container: {
         type: 'color',
-        backgroundColor: '#CCC',
+        backgroundColor: type === 'component' ? '#CCC' : '#FFF',
       },
     },
     children: type === 'component' ? [] : [
@@ -32,40 +32,23 @@ export const getMockBlock = (initType?: CNode['type'], name?: string): CNode => 
           layout: getDefaultLayout(),
           container: {
             type: 'color',
-            backgroundColor: '#fff',
+            backgroundColor: 'pink',
           },
         },
-        children: [
-          {
-            type: 'component',
-            name: `${type}-Text`,
-            component: 'Text',
-            props: {
-              basic: {
-                text: name || 'Hello World',
-              },
-              font: getDefaultFont(),
-              position: {
-                type: 'relative',
-                left: '0',
-                top: '0',
-              },
-            },
-          },
-        ],
+        children: [getMockText(name)],
       },
     ],
   }
 }
 
-export const getMockText = (): CNode => {
+export const getMockText = (text?: string): CNode => {
   return {
     type: 'component',
     name: 'Text',
     component: 'Text',
     props: {
       basic: {
-        text: 'Hello Next World',
+        text: text || 'Text',
       },
       font: getDefaultFont(),
       position: {

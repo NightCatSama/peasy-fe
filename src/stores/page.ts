@@ -4,21 +4,12 @@ import { cloneDeep } from 'lodash'
 import { getMockBlock, getMockText } from '@/utils/mock'
 import { ComponentGroup } from '@/config'
 import { useDragStore } from './drag'
+import { formatNodeByUniqueName } from '@/utils/node'
 
 const api = mande('http://localhost:3030/api/page')
 
 type ModelData = {
   [key in CNode['type']]: CNode[]
-}
-
-const getUnitName = (originName: string, nameMap: { [key: string]: CNode }): string => {
-  let name = originName
-  let i = 1
-  while (nameMap[name]) {
-    name = `${originName}-${i}`
-    i++
-  }
-  return name
 }
 
 export const usePageStore = defineStore('page', {
@@ -70,9 +61,15 @@ export const usePageStore = defineStore('page', {
       }
       this.modelData = data
     },
+    async download() {
+      const data = this.allPageData
+      const res = await api.post<any>({
+        data,
+      })
+      return res
+    },
     insertDragNode(dragNode: CNode, parentNode: CNode, index: number) {
-      let name = getUnitName(dragNode.name, this.nameMap)
-      parentNode.children?.splice(index, 0, cloneDeep({ ...dragNode, name }))
+      parentNode.children?.splice(index, 0, formatNodeByUniqueName(dragNode, this.nameMap))
     },
     swapNode(parentNode: CNode, index: number, targetIndex: number) {
       const dropZone = useDragStore().dropZone
@@ -86,8 +83,7 @@ export const usePageStore = defineStore('page', {
     },
     addSection(node: CNode, index?: number) {
       const insertIndex = index ?? this.allPageData.length
-      let name = getUnitName(node.name, this.nameMap)
-      this.allPageData.splice(insertIndex, 0, cloneDeep({ ...node, name }))
+      this.allPageData.splice(insertIndex, 0, formatNodeByUniqueName(node, this.nameMap))
     },
     removeSection(node: CNode) {
       const index = this.allPageData.indexOf(node)
@@ -113,13 +109,6 @@ export const usePageStore = defineStore('page', {
         this.activeParentNode?.children?.splice(this.activeParentNode?.children?.indexOf(this.activeNode), 1)
         this.activeNode = null
       }
-    },
-    async download() {
-      const data = this.allPageData
-      const res = await api.post<any>({
-        data,
-      })
-      return res
     },
     setActiveSection(node: CNode | null) {
       this.activeSection = node ? node.name : null

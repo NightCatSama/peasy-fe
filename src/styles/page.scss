@@ -13,7 +13,7 @@
         height: 100%;
         position: absolute;
         z-index: 1;
-        outline: 1px solid rgba($theme, 50%);
+        outline: 2px solid rgba($theme, 50%);
         pointer-events: none;
       }
     }
@@ -23,6 +23,7 @@
     .lib-component {
       transform: scale(.92);
       transition: font-size .3s, transform .3s;
+      z-index: 9;
 
       &.block::after {
         content: '';
@@ -32,7 +33,7 @@
         height: 100%;
         position: absolute;
         z-index: 1;
-        box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, .1), inset 0 0 0 4px rgba($theme, 50%), inset 0 0 0 8px $white;
+        box-shadow: 2px 2px 10px 1px rgba(0, 0, 0, .1), inset 0 0 0 3px rgba($theme, 50%);
         pointer-events: none;
       }
 

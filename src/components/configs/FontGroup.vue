@@ -3,12 +3,14 @@ import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
 import SelectItem from '@/components/configs/items/SelectItem.vue'
 import ColorItem from './items/ColorItem.vue';
+import { usePageStore } from '@/stores/page';
 
 interface IFontGroupProps {
   node: CNode
   font: IFont
 }
 const { font, node } = defineProps<IFontGroupProps>()
+const { deleteActiveNode } = usePageStore()
 
 const isSection = $computed(() => node.type === 'section')
 
@@ -17,7 +19,13 @@ const fontSetting: any = $computed(() => ({
     name: 'Font Size',
     type: 'number',
     value: font.fontSize,
-    setValue: (val: string) => (font.fontSize = val),
+    setValue: (val: string) => {
+      if (val === '') {
+        deleteActiveNode()
+        return
+      }
+      font.fontSize = val
+    },
     suffix: ['px', 'rem'],
   },
   lineHeight: {
