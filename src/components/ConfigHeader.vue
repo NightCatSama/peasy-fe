@@ -46,7 +46,7 @@ const setDeviceBySize = (size: number[]) => {
     <div class="left">
       <div class="name">{{ name }}</div>
       <div class="ext">.html</div>
-      <h3 @click="displayMode = displayMode === 'drag' ? 'edit' : 'drag'">{{ displayMode }}</h3>
+      <p @click="displayMode = displayMode === 'drag' ? 'edit' : 'drag'" :style="{ marginLeft: 40 + 'px' }">TODO: {{ displayMode }}</p>
     </div>
     <div class="center">
       <Dropdown>
