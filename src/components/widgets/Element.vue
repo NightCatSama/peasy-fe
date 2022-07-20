@@ -5,7 +5,7 @@ interface IElementProps {
   name: string
 }
 const {
-  cover = 'https://via.placeholder.com/600x400',
+  cover = 'https://www.fillmurray.com/640/360',
   name,
 } = defineProps<IElementProps>()
 

@@ -1,13 +1,10 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
-import InputItem from '@/components/configs/items/InputItem.vue'
-import SelectItem from '@/components/configs/items/SelectItem.vue'
-import ColorItem from './items/ColorItem.vue';
-import { usePageStore } from '@/stores/page';
 import { fixedPointToNumber } from '@/utils/sizeHelper';
+import { PageNode } from '@/config';
 
 interface IFontGroupProps {
-  node: CNode
+  node: PageNode
   spacing: ISpacing
 }
 const { spacing, node } = defineProps<IFontGroupProps>()

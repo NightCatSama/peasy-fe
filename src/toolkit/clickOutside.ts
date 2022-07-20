@@ -1,4 +1,4 @@
-import { App, DirectiveBinding, VNode } from 'vue'
+import { App, DirectiveBinding } from 'vue'
 
 function validate(binding: DirectiveBinding<any>) {
   if (typeof binding.value !== 'function') {

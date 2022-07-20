@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
-import { isTextBasicType } from '@/config'
+import { PageNode, isTextBasicType } from '@/config'
+
 interface IBasicGroupProps {
-  node: CNode
+  node: PageNode
   basic: any
 }
 const { node, basic } = defineProps<IBasicGroupProps>()

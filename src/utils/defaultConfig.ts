@@ -1,5 +1,7 @@
+import { PageNode } from "@/config"
+
 export const getDefaultSize = (
-  type: CNode['type'] = 'component',
+  type: PageNode['type'] = 'component',
   initConfig?: Partial<ISize>
 ): ISize => Object.assign(
   type === 'component'

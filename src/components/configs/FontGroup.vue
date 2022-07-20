@@ -4,15 +4,14 @@ import InputItem from '@/components/configs/items/InputItem.vue'
 import SelectItem from '@/components/configs/items/SelectItem.vue'
 import ColorItem from './items/ColorItem.vue';
 import { usePageStore } from '@/stores/page';
+import { PageNode } from '@/config';
 
 interface IFontGroupProps {
-  node: CNode
+  node: PageNode
   font: IFont
 }
 const { font, node } = defineProps<IFontGroupProps>()
 const { deleteActiveNode } = usePageStore()
-
-const isSection = $computed(() => node.type === 'section')
 
 const fontSetting: any = $computed(() => ({
   fontSize: {

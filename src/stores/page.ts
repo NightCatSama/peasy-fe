@@ -2,21 +2,21 @@ import { defineStore } from 'pinia'
 import { mande } from 'mande'
 import { cloneDeep } from 'lodash'
 import { getMockBlock, getMockText } from '@/utils/mock'
-import { ComponentGroup } from '@/config'
+import { PageNode, ComponentGroup, ComponentName } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
 
 const api = mande('http://localhost:3030/api/page')
 
 type ModelData = {
-  [key in CNode['type']]: CNode[]
+  [key in PageNode['type']]: PageNode[]
 }
 
 export const usePageStore = defineStore('page', {
   state: () => ({
-    allPageData: [] as CNode[],
-    activeNode: null as CNode | null,
-    activeParentNode: null as CNode | null,
+    allPageData: [] as PageNode[],
+    activeNode: null as PageNode | null,
+    activeParentNode: null as PageNode | null,
     modelData: {
       section: [],
       component: [],
@@ -27,7 +27,7 @@ export const usePageStore = defineStore('page', {
   }),
   getters: {
     activeNodeGroups: (state) =>
-      state.activeNode ? ComponentGroup[state.activeNode.component] : null,
+      state.activeNode ? ComponentGroup[state.activeNode.component as ComponentName] : null,
     isActiveAllSection: (state) => state.activeSection === null,
     pageData: (state): typeof state.allPageData => {
       if (!state.activeSection) return state.allPageData
@@ -35,9 +35,9 @@ export const usePageStore = defineStore('page', {
       const pageData = state.allPageData.find((item) => item.name === state.activeSection)
       return pageData ? [pageData] : state.allPageData
     },
-    nameMap: (state): { [key: string]: CNode } => {
-      const nameMap: { [key: string]: CNode } = {}
-      const dfs = (nodes: CNode[]) => {
+    nameMap: (state): { [key: string]: PageNode } => {
+      const nameMap: { [key: string]: PageNode } = {}
+      const dfs = (nodes: PageNode[]) => {
         nodes.forEach((item) => {
           nameMap[item.name] = item
           if (item.children) dfs(item.children)
@@ -68,10 +68,10 @@ export const usePageStore = defineStore('page', {
       })
       return res
     },
-    insertDragNode(dragNode: CNode, parentNode: CNode, index: number) {
+    insertDragNode(dragNode: PageNode, parentNode: PageNode, index: number) {
       parentNode.children?.splice(index, 0, formatNodeByUniqueName(dragNode, this.nameMap))
     },
-    swapNode(parentNode: CNode, index: number, targetIndex: number) {
+    swapNode(parentNode: PageNode, index: number, targetIndex: number) {
       const dropZone = useDragStore().dropZone
       if (!parentNode?.children || !dropZone?.children) return
 
@@ -81,11 +81,11 @@ export const usePageStore = defineStore('page', {
       parentNode.children.splice(index, 1)
       dropZone.children.splice(targetIndex, 0, node)
     },
-    addSection(node: CNode, index?: number) {
+    addSection(node: PageNode, index?: number) {
       const insertIndex = index ?? this.allPageData.length
       this.allPageData.splice(insertIndex, 0, formatNodeByUniqueName(node, this.nameMap))
     },
-    removeSection(node: CNode) {
+    removeSection(node: PageNode) {
       const index = this.allPageData.indexOf(node)
       this.allPageData.splice(index, 1)
     },
@@ -94,7 +94,7 @@ export const usePageStore = defineStore('page', {
       this.allPageData.splice(index, 1)
       this.allPageData.splice(targetIndex, 0, node)
     },
-    setActiveNode(node?: CNode | null, parent?: CNode | null) {
+    setActiveNode(node?: PageNode | null, parent?: PageNode | null) {
       this.activeNode = node || null
       this.activeParentNode = parent || null
     },
@@ -110,7 +110,7 @@ export const usePageStore = defineStore('page', {
         this.activeNode = null
       }
     },
-    setActiveSection(node: CNode | null) {
+    setActiveSection(node: PageNode | null) {
       this.activeSection = node ? node.name : null
     },
   },

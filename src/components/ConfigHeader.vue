@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { useHover } from 'ahooks-vue'
 import { storeToRefs } from 'pinia'
 
 import Btn from './widgets/Btn.vue'
@@ -7,7 +6,7 @@ import Avatar from './widgets/Avatar.vue'
 import { useDisplayStore } from '@/stores/display'
 import Dropdown from './widgets/Dropdown.vue'
 import Icon from './widgets/Icon.vue'
-import { onMounted, ref, watchEffect } from 'vue'
+import { ref } from 'vue'
 import Slider from './widgets/Slider.vue'
 
 const displayStore = useDisplayStore()

@@ -1,6 +1,7 @@
+import { PageNode } from '@/config'
 import { cloneDeep } from 'lodash'
 
-const getUnitName = (originName: string, nameMap: { [key: string]: CNode }): string => {
+const getUnitName = (originName: string, nameMap: { [key: string]: PageNode }): string => {
   let name = originName
   let i = 1
   while (nameMap[name]) {
@@ -15,7 +16,7 @@ const getUnitName = (originName: string, nameMap: { [key: string]: CNode }): str
  * @param node 节点
  * @param nameMap 已存在的名字映射
  */
-export const formatNodeByUniqueName = (node: CNode, nameMap: { [key: string]: CNode }): CNode => {
+export const formatNodeByUniqueName = (node: PageNode, nameMap: { [key: string]: PageNode }): PageNode => {
   const newNode = cloneDeep(node)
   let pendingNodeList = [newNode]
   while (pendingNodeList.length) {

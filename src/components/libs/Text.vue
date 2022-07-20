@@ -1,19 +1,21 @@
 <script setup lang="ts">
 import { ITextBasicType } from '@/config'
-import { useFontStyle, usePositionStyle, useStyle } from '@/utils/style'
+import { useFontStyle, usePositionStyle, useSpacingStyle, useStyle } from '@/utils/style'
 
 interface ITextProps {
   direction?: 'row' | 'column'
   basic: ITextBasicType
   font: IFont
-  position?: IPosition
+  spacing: ISpacing
+  // position?: IPosition
 }
-const { basic, font, position } = defineProps<ITextProps>()
+const { basic, font, spacing } = defineProps<ITextProps>()
 
 const style = $computed(() =>
   useStyle({
-    ...usePositionStyle(position),
+    // ...usePositionStyle(position),
     ...useFontStyle(font),
+    ...useSpacingStyle(spacing)
   })
 )
 

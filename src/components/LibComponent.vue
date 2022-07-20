@@ -7,12 +7,13 @@ import type { SortableEvent } from 'sortablejs'
 import { usePageStore } from '@/stores/page'
 import { useDragStore } from '@/stores/drag'
 import { emitter } from '@/utils/event'
-import { getMoveable, useMoveable } from '@/utils/moveable'
+import { disabledMoveable, getMoveable, useMoveable } from '@/utils/moveable'
 import { useDisplayStore } from '@/stores/display'
+import { PageNode } from '@/config'
 
 interface ILibComponentProps {
-  parent?: CNode
-  item: CNode
+  parent?: PageNode
+  item: PageNode
 }
 
 const { parent, item } = defineProps<ILibComponentProps>()
@@ -49,22 +50,14 @@ watchPostEffect(() => {
     useMoveable(elem, item, parent)
   }
 })
-
 watch(
   $$(isActive),
-  (val) => {
-    const moveable = getMoveable()
-    if (!val && moveable) moveable.resizable = false
-  },
+  (val) => !val && disabledMoveable(),
   {
     flush: 'pre',
   }
 )
-
-onBeforeUnmount(() => {
-  const moveable = getMoveable()
-  if (isActive && moveable) moveable.resizable = false
-})
+onBeforeUnmount(() => isActive && disabledMoveable())
 
 /** 拖拽逻辑 */
 let inDraggable = $computed(() => dropZone.value === item)
@@ -100,7 +93,7 @@ const dragEvents = $computed(() => (isBlockComponent ? {
   end: handleSortNode,
 } : {}))
 
-const handleDragStart = (event: DragEvent, node: CNode) => {
+const handleDragStart = (event: DragEvent, node: PageNode) => {
   if (dragNode.value) return
   setDragNode(node, 'move')
 }

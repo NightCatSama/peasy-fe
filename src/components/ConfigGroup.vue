@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { GroupType } from '@/config'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import BasicGroup from './configs/BasicGroup.vue'

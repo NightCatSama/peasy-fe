@@ -3,13 +3,13 @@ import Group from '../widgets/Group.vue'
 import Tabs from '../widgets/Tabs.vue'
 import { useLayoutStyle } from '@/utils/style'
 import SelectItem from './items/SelectItem.vue'
+import { PageNode } from '@/config';
+
 interface ILayoutGroupProps {
-  node: CNode
+  node: PageNode
   layout: ILayout
 }
 const { layout, node } = defineProps<ILayoutGroupProps>()
-
-const isSection = $computed(() => node.type === 'section')
 
 const justifyMap: { [key in ILayout['justify']]: string } = {
   start: 'Start',

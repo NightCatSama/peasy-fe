@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
+import { PageNode } from '@/config';
 
 interface ISizeGroupProps {
-  node: CNode
+  node: PageNode
   size: ISize
 }
 const { size, node } = defineProps<ISizeGroupProps>()

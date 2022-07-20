@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { PageNode } from '@/config'
 import { useDisplayStore } from '@/stores/display'
 import { useDragStore } from '@/stores/drag'
 import { usePageStore } from '@/stores/page'
@@ -19,7 +20,7 @@ const { device, displayMode } = storeToRefs(displayStore)
 const dragStore = useDragStore()
 const { dragNode, dragType, dragNodeType } = storeToRefs(dragStore)
 
-const handleSectionItemClick = (item: CNode | null) => {
+const handleSectionItemClick = (item: PageNode | null) => {
   setActiveSection(item)
   setActiveNode(item)
   nextTick(() => emitter.emit('location'))

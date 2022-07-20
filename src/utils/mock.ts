@@ -1,15 +1,13 @@
+import { PageNode } from '@/config'
 import { getDefaultFont, getDefaultLayout, getDefaultSize, getDefaultSpacing } from './defaultConfig'
 
-export const getMockBlock = (initType?: CNode['type'], name?: string): CNode => {
+export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNode<'Block'> => {
   const type = initType || 'component'
   return {
     type: type,
     name: name || (type === 'component' ? 'Block' : 'Section'),
     component: 'Block',
     props: {
-      position: {
-        type: 'relative',
-      },
       size: getDefaultSize(type),
       layout: getDefaultLayout(),
       spacing: getDefaultSpacing(),
@@ -24,11 +22,6 @@ export const getMockBlock = (initType?: CNode['type'], name?: string): CNode => 
         name: `${type}-Block`,
         component: 'Block',
         props: {
-          position: {
-            type: 'relative',
-            left: '0',
-            top: '0',
-          },
           size: getDefaultSize('component', { width: '50%' }),
           layout: getDefaultLayout(),
           spacing: getDefaultSpacing(),
@@ -38,12 +31,12 @@ export const getMockBlock = (initType?: CNode['type'], name?: string): CNode => 
           },
         },
         children: [getMockText(name)],
-      },
+      } as PageNode<'Block'>,
     ],
   }
 }
 
-export const getMockText = (text?: string): CNode => {
+export const getMockText = (text?: string): PageNode<'Text'> => {
   return {
     type: 'component',
     name: 'Text',
@@ -53,11 +46,7 @@ export const getMockText = (text?: string): CNode => {
         text: text || 'Text',
       },
       font: getDefaultFont(),
-      position: {
-        type: 'relative',
-        left: '0',
-        top: '0',
-      },
+      spacing: getDefaultSpacing(),
     }
   }
 }

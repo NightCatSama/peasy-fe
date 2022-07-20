@@ -1,3 +1,4 @@
+import { PageNode } from '@/config'
 import { useDisplayStore } from '@/stores/display'
 import Moveable, { MoveableOptions } from 'moveable'
 import { emitter } from './event'
@@ -35,14 +36,25 @@ export const setMoveableOptions = (options: MoveableOptions) => {
 
 export const updateMoveableRect = () => moveable?.updateRect()
 
-export const useMoveable = (elem: HTMLDivElement, item: CNode, parent?: CNode) => {
+export const disabledMoveable = () => {
+  const moveable = getMoveable()
+  if (!moveable) return
+
+  moveable.resizable = false
+  moveable.off()
+}
+
+export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageNode) => {
   const moveable = getMoveable()
   if (!moveable) return
 
   const disableWidth = item.type === 'section' || !isUnitType(getUnit(item.props.size?.width))
   const disableHeight = !isUnitType(getUnit(item.props.size?.height))
 
-  if (disableWidth && disableHeight) return
+  if (disableWidth && disableHeight) {
+    disabledMoveable()
+    return
+  }
 
   /** 记录原先的单位 */
   let units: { width?: string; height?: string } = {}

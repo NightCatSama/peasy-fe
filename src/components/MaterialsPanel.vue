@@ -8,6 +8,7 @@ import { storeToRefs } from 'pinia'
 import Element from './widgets/Element.vue'
 import { useDragStore } from '@/stores/drag'
 import { DisplayMode, useDisplayStore } from '@/stores/display'
+import { PageNode } from '@/config'
 
 const pageStore = usePageStore()
 const { pageData, modelData } = storeToRefs(pageStore)
@@ -22,7 +23,7 @@ const { setDisplayMode } = displayStore
 
 let preDisplayMode = $ref<DisplayMode>('edit')
 
-const handleAddSection = (template: CNode) => {
+const handleAddSection = (template: PageNode) => {
   let noPageData = pageData.value.length === 0
   if (noPageData && template.type === 'section') {
     addSection(template)
@@ -35,7 +36,7 @@ const handleDragend = () => {
   setIsCancelDrag(false)
 }
 
-const handleDragStart = (event: DragEvent, data: CNode) => {
+const handleDragStart = (event: DragEvent, data: PageNode) => {
   const imgElem = (event.target as HTMLDivElement).querySelector('.image') as HTMLDivElement;
   event.dataTransfer!.setDragImage(imgElem, 0, 0)
   setDragNode(data)
@@ -43,6 +44,7 @@ const handleDragStart = (event: DragEvent, data: CNode) => {
   setDisplayMode('drag')
   setTimeout(() => emitter.emit('switchMaterialsPanel', false), 100)
 }
+
 </script>
 
 <template>

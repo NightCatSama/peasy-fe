@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import { onMounted, onUnmounted, reactive, watch, ref, watchEffect, nextTick } from 'vue'
 import draggable from 'vuedraggable'
+import panzoom, { PanZoom } from 'panzoom'
+import { SortableEvent } from 'sortablejs'
+import { useSize } from 'ahooks-vue'
 
 import LibComponent from '@/components/LibComponent.vue'
+import { usePageStore } from '@/stores/page'
 import { useDisplayStore } from '@/stores/display'
 import Icon from './widgets/Icon.vue'
 import { emitter } from '@/utils/event'
-import panzoom, { PanZoom } from 'panzoom'
 import { useDragStore } from '@/stores/drag'
-import { SortableEvent } from 'sortablejs'
-import { useSize } from 'ahooks-vue'
 
 const pageStore = usePageStore()
 const { setActiveNode, addSection } = pageStore
