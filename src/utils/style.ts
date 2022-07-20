@@ -93,13 +93,29 @@ export const useLayoutStyle = (layout: ILayout) => {
 }
 
 /** 容器样式 */
-export const useContainerStyle = (container: IContainer) => {
-  if (!container) return {}
+export const useBorderStyle = (border: IBorder) => {
+  if (!border) return {}
+
+  const getBorder = (data: string | any[], index: number) =>
+    Array.isArray(data) ? data[index] : data
+
+  const [borderTop, borderRight, borderBottom, borderLeft] = Array.from(new Array(4), (_, i) => [
+    getBorder(border.borderWidth, i),
+    getBorder(border.borderStyle, i),
+    getBorder(border.borderColor, i)
+  ].join(' '))
+
+  const getBorderRadius = (radius: string) => radius === 'circle' ? '50%' : radius
 
   return {
-    backgroundColor: container.type === 'color' ? container.backgroundColor : 'transparent',
-    backgroundImage: container.type === 'image' ? `url(${container.backgroundColor})` : '',
-    backgroundSize: container.backgroundSize,
+    borderTop,
+    borderRight,
+    borderBottom,
+    borderLeft,
+    borderRadius:
+      Array.isArray(border.borderRadius)
+        ? border.borderRadius.map(getBorderRadius).join(' ')
+        : getBorderRadius(border.borderRadius),
   }
 }
 

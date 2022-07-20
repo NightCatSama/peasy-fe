@@ -53,3 +53,13 @@ export const getDefaultSpacing = (
   margin: [0, 0, 0, 0],
   padding: [0, 0, 0, 0],
 }, initConfig)
+
+export const getDefaultBorder = (
+  initConfig?: Partial<IBorder>
+): IBorder => Object.assign({
+  borderWidth: new Array(4).fill('0px'),
+  borderStyle: new Array(4).fill('solid'),
+  borderColor: new Array(4).fill('#000'),
+  borderRadius: '0px',
+}, initConfig)
+

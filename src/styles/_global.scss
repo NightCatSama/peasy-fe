@@ -34,6 +34,7 @@ $panel-dark: darken($panel, 5%);
 $panel-header: #404040;
 $panel-sidebar: #4c4c4c;
 $bg-default: #202124;
+$panel-content: darken($panel, 2.5%);
 
 $item-bg: $panel-header;
 
@@ -44,6 +45,7 @@ $panel-dark-gradient: linear-gradient(lighten($panel-dark, 4%), $panel-dark);
 $panel-header-gradient: linear-gradient(lighten($panel-header, 7%), $panel-header);
 $panel-sidebar-gradient: linear-gradient(lighten($panel-sidebar, 7%), $panel-sidebar);
 $bg-default-gradient: linear-gradient(lighten($bg-default, 7%), $bg-default);
+$panel-content-gradient: linear-gradient(lighten($panel-content, 6%), $panel-content);
 
 $color: #cecece;
 $border: rgba(#5a5a5c, 0.7);
@@ -51,6 +53,7 @@ $border: rgba(#5a5a5c, 0.7);
 $inner-radius: 4px;
 $normal-radius: 6px;
 $radius: 12px;
+
 $shadow: 0 0 20px 5px rgba(0, 0, 0, 0.16);
 $text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.6);
 $bulge-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.36);

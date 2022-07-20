@@ -6,6 +6,7 @@ import DeviceMdIcon from '@/assets/device-md.svg'
 import DeviceLgIcon from '@/assets/device-lg.svg'
 import CheckIcon from '@/assets/check.svg'
 import DownIcon from '@/assets/down.svg'
+import CaretDownIcon from '@/assets/caret-down.svg'
 import AdvancedIcon from '@/assets/advanced.svg'
 import MoreIcon from '@/assets/more.svg'
 import DeleteIcon from '@/assets/delete.svg'
@@ -22,6 +23,7 @@ interface IIconProps {
     | 'advanced'
     | 'more'
     | 'delete'
+    | 'caret-down'
   type?: 'circle' | 'pure' | 'btn'
   size?: number
   active?: boolean
@@ -38,6 +40,7 @@ const iconMap = {
   advanced: AdvancedIcon,
   more: MoreIcon,
   delete: DeleteIcon,
+  'caret-down': CaretDownIcon,
 }
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()

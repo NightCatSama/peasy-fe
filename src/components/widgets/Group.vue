@@ -81,7 +81,7 @@ onUpdated(() => {
   }
 
   .content {
-    background: darken($panel, 3%);
+    background: $panel-content;
     padding: 10px 16px 10px;
     transition: all 0.3s;
     display: flex;

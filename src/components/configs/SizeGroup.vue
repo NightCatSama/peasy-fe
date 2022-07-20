@@ -29,7 +29,7 @@ const list: any = $computed(() => [
   },
   {
     hide: isSection,
-    name: 'Min W',
+    name: 'Min Width',
     type: 'number',
     value: size.minWidth,
     setValue: (val: string) => (size.minWidth = val),
@@ -37,7 +37,7 @@ const list: any = $computed(() => [
     isAdvanced: true,
   },
   {
-    name: 'Min H',
+    name: 'Min Height',
     type: 'number',
     value: size.minHeight,
     setValue: (val: string) => (size.minHeight = val),
@@ -46,7 +46,7 @@ const list: any = $computed(() => [
   },
   {
     hide: isSection,
-    name: 'Max W',
+    name: 'Max Width',
     type: 'number',
     value: size.maxWidth,
     setValue: (val: string) => (size.maxWidth = val),
@@ -54,7 +54,7 @@ const list: any = $computed(() => [
     isAdvanced: true,
   },
   {
-    name: 'Max H',
+    name: 'Max Height',
     type: 'number',
     value: size.maxHeight,
     setValue: (val: string) => (size.maxHeight = val),
@@ -65,7 +65,7 @@ const list: any = $computed(() => [
 </script>
 
 <template>
-  <Group title="Size" class="size-group" :can-advanced="true">
+  <Group title="Size" class="size-group" :can-advanced="true" :default-collapsed="false">
     <template #default="{ showAdvanced }">
       <template v-for="(item, index) in list" :key="item.name">
         <InputItem

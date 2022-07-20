@@ -32,6 +32,11 @@ const previewStyle = $computed(() => useLayoutStyle(layout))
 
 <template>
   <Group title="Layout" class="layout-group" :default-collapsed="true">
+    <div class="align-preview" data-title="Preview" :style="previewStyle">
+      <div class="align-preview-item">1</div>
+      <div class="align-preview-item">2</div>
+      <div class="align-preview-item">3</div>
+    </div>
     <div class="item">
       <Tabs
         :data="{ row: 'Row', column: 'Column' }"
@@ -41,11 +46,6 @@ const previewStyle = $computed(() => useLayoutStyle(layout))
     </div>
     <SelectItem label="Main-Axis Align" v-model="layout.justify" :options="justifyMap"></SelectItem>
     <SelectItem label="Cross-Axis Align" v-model="layout.align" :options="alignMap"></SelectItem>
-    <div class="align-preview" data-title="Preview" :style="previewStyle">
-      <div class="align-preview-item">1</div>
-      <div class="align-preview-item">2</div>
-      <div class="align-preview-item">3</div>
-    </div>
   </Group>
 </template>
 

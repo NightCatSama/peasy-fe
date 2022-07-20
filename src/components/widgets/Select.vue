@@ -7,10 +7,11 @@ const emit = defineEmits(['update:modelValue'])
 interface ISelectProps {
   display?: 'inline' | 'block'
   modelValue: string
+  disabled?: boolean
   options: { [key: string]: string }
 }
 
-const { display = 'block', options, modelValue } = defineProps<ISelectProps>()
+const { display = 'block', disabled, options, modelValue } = defineProps<ISelectProps>()
 
 let isOpen = $ref(false)
 
@@ -23,7 +24,7 @@ const handleChange = (val: string) => {
 </script>
 
 <template>
-  <div :class="['select', `select-display-${display}`]" @click="isOpen = !isOpen">
+  <div :class="['select', `select-display-${display}`]" @click="!disabled && (isOpen = !isOpen)">
     <div class="select-value">{{ showValue }}</div>
     <div
       :class="['select-option-wrapper', { hide: !isOpen }]"

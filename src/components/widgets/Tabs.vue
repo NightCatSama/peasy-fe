@@ -14,7 +14,7 @@ const { data, activeKey } = defineProps<ITabsProps>()
       :key="key"
       @click="$emit('change', key)"
     >
-      {{ value }}
+      <slot name="option" :key="key" :value="value">{{ value }}</slot>
     </div>
   </div>
 </template>
@@ -23,7 +23,7 @@ const { data, activeKey } = defineProps<ITabsProps>()
 .tabs {
   flex: 1;
   display: flex;
-  height: 36px;
+  min-height: 36px;
   padding: 4px;
   border-radius: $normal-radius;
   border: 1px solid rgba($panel-light, 0.5);

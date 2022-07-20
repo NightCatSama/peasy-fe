@@ -2,7 +2,7 @@
 import {
   useStyle,
   useSizeStyle,
-  useContainerStyle,
+  useBorderStyle,
   useLayoutStyle,
   usePositionStyle,
 useSpacingStyle,
@@ -14,17 +14,17 @@ interface IBlockProps {
   size: ISize
   layout: ILayout
   spacing: ISpacing
-  container: IContainer
+  border: IBorder
 }
 
-const { size, layout, container, direction, spacing } = defineProps<IBlockProps>()
+const { size, layout, border, direction, spacing } = defineProps<IBlockProps>()
 
 const style = $computed(() =>
   useStyle({
     // ...usePositionStyle(position),
     ...useSizeStyle(size, direction),
     ...useLayoutStyle(layout),
-    ...useContainerStyle(container),
+    ...useBorderStyle(border),
     ...useSpacingStyle(spacing),
   })
 )
@@ -34,4 +34,5 @@ const style = $computed(() =>
   <div :class="'block'" :style="style"><slot></slot></div>
 </template>
 
-<style scoped></style>
+<style scoped>
+</style>

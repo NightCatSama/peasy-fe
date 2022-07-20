@@ -52,7 +52,7 @@ const fontStyleMap: { [key in IFont['fontStyle']]: string } = {
 </script>
 
 <template>
-  <Group title="Size" class="size-group" :can-advanced="true">
+  <Group title="Size" class="size-group" :can-advanced="true" :default-collapsed="false">
     <template #default="{ showAdvanced }">
       <InputItem
         :label="fontSetting.fontSize.name"

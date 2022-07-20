@@ -47,10 +47,10 @@ const allPadding = $computed({
 </script>
 
 <template>
-  <Group title="Spacing" class="spacing-group" :can-advanced="false">
-    <div class="spacing-block" data-text="MARGIN">
+  <Group title="Spacing" class="spacing-group" :can-advanced="false" :default-collapsed="false">
+    <div class="spacing-block" data-text="Margin">
       <div class="margin-sign"></div>
-      <div class="inner-block" data-text="PADDING">
+      <div class="inner-block" data-text="Padding">
         <div class="padding-sign"></div>
         <input
           v-for="(val, i) in spacing.padding"
@@ -85,7 +85,7 @@ const allPadding = $computed({
   position: absolute;
   color: rgba($panel-light, 70%);
   font-size: 14px;
-  transform: scale(.8);
+  transform: scale(.9);
 }
 $gapX: 44px;
 $gapY: 30px;

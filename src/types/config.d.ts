@@ -1,7 +1,7 @@
 /** 单位 */
 type UnitType = '%' | 'px' | 'rem' | 'x'
 /** 支持的全部选项 */
-type SuffixType = UnitType | 'auto' | 'none' | 'stretch'
+type SuffixType = UnitType | 'auto' | 'none' | 'stretch' | 'circle' | 'refined'
 
 /** 尺寸信息 */
 interface ISize {
@@ -44,13 +44,16 @@ interface IPosition {
   bottom?: number
 }
 
-/** TODO: 容器信息 */
-interface IContainer {
-  type: 'color' | 'image'
-  backgroundColor?: string
-  backgroundImage?: string
-  backgroundSize?: 'cover' | 'contain' | 'auto'
+/** 容器信息 */
+type BorderStyle = 'none' | 'solid' | 'dashed' | 'dotted' | 'double'
+interface IBorder {
+  borderWidth: [string, string, string, string]
+  borderStyle: [BorderStyle, BorderStyle, BorderStyle, BorderStyle]
+  borderColor: [string, string, string, string]
+  borderRadius: string | 'circle' | [string, string, string, string]
 }
+
+interface IContainer {}
 
 /** TODO: 动效 */
 interface IAnimation {}

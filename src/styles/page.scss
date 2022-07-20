@@ -3,9 +3,10 @@
   // 编辑模式
   &-edit {
     .lib-component {
+      position: relative;
       transition: font-size .3s, transform .3s, box-shadow .2s;
 
-      &:not(.active):hover::after {
+      &:not(.active):hover::before {
         content: '';
         left: 0;
         top: 0;
@@ -21,6 +22,7 @@
   // 拖拽模式
   &-drag {
     .lib-component {
+      position: relative;
       transform: scale(.92);
       transition: font-size .3s, transform .3s;
       z-index: 9;

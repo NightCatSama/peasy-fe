@@ -5,7 +5,7 @@ import ConfigGroup from './ConfigGroup.vue'
 import Icon from './widgets/Icon.vue';
 
 const pageStore = usePageStore()
-const { activeNode, activeNodeGroups } = storeToRefs(pageStore)
+const { allPageData, activeNode, activeNodeGroups } = storeToRefs(pageStore)
 const { deleteActiveNode } = pageStore
 </script>
 
@@ -24,7 +24,32 @@ const { deleteActiveNode } = pageStore
         ></ConfigGroup>
       </div>
     </div>
-    <div class="no-data" v-else>TODO: 点击左侧组件</div>
+    <div class="layers" v-else>
+      <div class="header">
+        <div class="title">Layers</div>
+      </div>
+      <div class="content layers-content">
+        <div :style="{ marginBottom: '20px', color: 'pink' }">TODO: 后续替换成 Tree</div>
+        <div
+          v-for="(item, index) in allPageData"
+          :key="item.name"
+        >
+          {{ item.name }}
+          <div
+            v-if="item.children"
+            v-for="subItem in item.children"
+            :style="{ marginLeft: 20 + 'px' }"
+          >
+            - {{ subItem.name }}
+            <div
+              v-if="subItem.children"
+              v-for="son in subItem.children"
+              :style="{ marginLeft: 40 + 'px' }"
+            >- {{ son.name }}</div>
+          </div>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -39,14 +64,16 @@ const { deleteActiveNode } = pageStore
 
   .header {
     display: flex;
-    padding: 24px 16px;
+    padding: 20px 16px;
     display: flex;
+
     .title {
       flex: 1;
       font-size: 18px;
       font-weight: bold;
       white-space: nowrap;
       overflow: hidden;
+      color: $yellow;
       text-overflow: ellipsis;
     }
     .delete-icon {
@@ -64,11 +91,18 @@ const { deleteActiveNode } = pageStore
     padding-bottom: 44px;
   }
 
-  .no-data {
+  .layers {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+  }
+
+  .layers-content {
     font-size: 18px;
-    opacity: 0.5;
-    align-self: center;
-    margin-top: 80px;
+    padding: 16px;
+    background: $panel-content;
+    flex: 1;
+    overflow: auto;
   }
 }
 </style>

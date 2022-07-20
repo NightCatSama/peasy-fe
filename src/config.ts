@@ -1,6 +1,6 @@
 export const ComponentGroup = {
-  Block: ['layout', 'size', 'spacing', 'container'] as const,
-  Text: ['basic', 'font', 'spacing'] as const,
+  Block: ['layout', 'size', 'spacing', 'border'] as const,
+  Text: ['basic', 'font', 'spacing', 'border'] as const,
 } as const
 
 /** 支持的分组名 */
@@ -10,6 +10,7 @@ export type GroupType =
   'layout' |
   'font' |
   'spacing' |
+  'border' |
   'container' |
   'position' |
   'animation'
@@ -27,6 +28,7 @@ export interface GroupPropType<T extends ComponentName = any> {
   layout: ILayout
   font: IFont
   spacing: ISpacing
+  border: IBorder
   container: IContainer
   position: IPosition
   animation: IAnimation

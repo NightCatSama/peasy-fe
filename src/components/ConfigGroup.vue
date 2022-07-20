@@ -3,6 +3,7 @@ import { GroupType } from '@/config'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import BasicGroup from './configs/BasicGroup.vue'
+import BorderGroup from './configs/BorderGroup.vue'
 import FontGroup from './configs/FontGroup.vue'
 import LayoutGroup from './configs/LayoutGroup.vue'
 import SizeGroup from './configs/SizeGroup.vue'
@@ -23,6 +24,7 @@ const componentNameMap: { [type in GroupType]: any | null } = {
   spacing: SpacingGroup,
   position: null,
   layout: LayoutGroup,
+  border: BorderGroup,
   container: null,
   animation: null,
 }

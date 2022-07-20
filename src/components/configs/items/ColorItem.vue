@@ -24,7 +24,7 @@ const test = () => emit('update:modelValue', value)
 
 <template>
   <div :class="['color-item']">
-    <InputItem type="text" label="Color" v-model="value">
+    <InputItem type="text" :label="label" v-model="value">
       <template #suffix>
         <Dropdown type="color-picker" :skidding="20" @apply-hide="test">
           <div class="color-item" :style="{ background: modelValue }"></div>

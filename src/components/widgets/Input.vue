@@ -26,6 +26,8 @@ const suffixMap = {
   '%': '%',
   rem: 'rem',
   x: '×',
+  circle: 'Circle',
+  refined: 'Refined',
   auto: 'Adaptive',
   none: 'Unlimited',
   stretch: 'Stretch',
@@ -44,6 +46,8 @@ const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
       '%': `${getVal()}%`,
       rem: `${getVal()}rem`,
       'x': `${getVal()}x`,
+      circle: 'circle',
+      refined: 'refined',
       auto: 'auto',
       none: 'none',
       stretch: 'stretch',
@@ -120,6 +124,7 @@ const handleInput = (e: any) => realTime && handleChange(e)
           display="inline"
           :model-value="suffixInValue"
           :options="Object.fromEntries(suffix.map((s) => [s, getSuffixText(s)]))"
+          :disabled="disabled || suffix.length <= 1"
           @update:model-value="handleSuffixClick"
         ></Select>
       </template>

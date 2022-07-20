@@ -1,5 +1,5 @@
 import { PageNode } from '@/config'
-import { getDefaultFont, getDefaultLayout, getDefaultSize, getDefaultSpacing } from './defaultConfig'
+import { getDefaultBorder, getDefaultFont, getDefaultLayout, getDefaultSize, getDefaultSpacing } from './defaultConfig'
 
 export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNode<'Block'> => {
   const type = initType || 'component'
@@ -11,10 +11,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
       size: getDefaultSize(type),
       layout: getDefaultLayout(),
       spacing: getDefaultSpacing(),
-      container: {
-        type: 'color',
-        backgroundColor: type === 'component' ? '#CCC' : '#FFF',
-      },
+      border: getDefaultBorder(),
     },
     children: type === 'component' ? [] : [
       {
@@ -25,10 +22,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
           size: getDefaultSize('component', { width: '50%' }),
           layout: getDefaultLayout(),
           spacing: getDefaultSpacing(),
-          container: {
-            type: 'color',
-            backgroundColor: 'pink',
-          },
+          border: getDefaultBorder(),
         },
         children: [getMockText(name)],
       } as PageNode<'Block'>,
@@ -47,6 +41,7 @@ export const getMockText = (text?: string): PageNode<'Text'> => {
       },
       font: getDefaultFont(),
       spacing: getDefaultSpacing(),
+      border: getDefaultBorder(),
     }
   }
 }
