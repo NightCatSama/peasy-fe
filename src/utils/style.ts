@@ -145,3 +145,15 @@ export const useSpacingStyle = (spacing: ISpacing) => {
     padding: spacing.padding.map((n: number) => `${n}px`).join(' '),
   }
 }
+
+export const useContainerStyle = (container: IContainer) => {
+  if (!container) return {}
+
+  return {
+    backgroundColor: container.backgroundColor,
+    backgroundImage: container.backgroundImage ? `url(${container.backgroundImage})` : '',
+    backgroundPosition: container.backgroundPosition,
+    backgroundRepeat: container.backgroundRepeat,
+    backgroundSize: container.backgroundSize,
+  }
+}

@@ -19,7 +19,7 @@ interface ILibComponentProps {
 const { parent, item } = defineProps<ILibComponentProps>()
 
 const pageStore = usePageStore()
-const { setActiveNode, insertDragNode, swapNode } = pageStore
+const { setActiveNode, insertNode, swapNode } = pageStore
 const { activeNode } = storeToRefs(pageStore)
 
 const dragStore = useDragStore()
@@ -65,7 +65,7 @@ const handleAddNode = (event: SortableEvent) => {
   if (!dragNode.value || isCancelDrag.value) return
   // 新增组件
   if (event.pullMode === 'clone' && event.newIndex !== void 0) {
-    insertDragNode(dragNode.value, item, event.newIndex)
+    insertNode(dragNode.value, item, event.newIndex)
     setDragNode(null)
   }
 }
@@ -152,9 +152,10 @@ const preventMousedown = (e: MouseEvent) => {
       width: 100%;
       height: 100%;
       pointer-events: none;
-      border: 3px dashed rgba($theme, 80%);
+      // border: 3px dashed rgba($theme, 80%);
       z-index: 99;
       box-sizing: border-box;
+      background: rgba($black, 0.06);
     }
   }
   &.grading {

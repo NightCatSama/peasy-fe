@@ -24,8 +24,7 @@ const { setDisplayMode } = displayStore
 let preDisplayMode = $ref<DisplayMode>('edit')
 
 const handleAddSection = (template: PageNode) => {
-  let noPageData = pageData.value.length === 0
-  if (noPageData && template.type === 'section') {
+  if (template.type === 'section') {
     addSection(template)
   }
 }

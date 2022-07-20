@@ -20,12 +20,26 @@ let showAdvanced = $ref(status ? status.advanced : false)
 onUpdated(() => {
   saveGroupStatus(title, { collapsed, advanced: showAdvanced })
 })
+
+const iconName = {
+  Layout: 'layout',
+  Size: 'size',
+  Spacing: 'spacing',
+  Border: 'border',
+  Font: 'font',
+  Container: 'container',
+  Basic: 'basic'
+} as any
+
 </script>
 
 <template>
   <div class="group">
     <div class="info">
-      <span class="title">{{ title }}</span>
+      <span class="title" @click="collapsed = !collapsed">
+        <Icon class="icon" :name="iconName[title]" :size="14"></Icon>
+        <span>{{ title }}</span>
+      </span>
       <span class="info-op">
         <Icon
           :class="{ rotate: collapsed }"
@@ -58,8 +72,17 @@ onUpdated(() => {
     align-items: center;
 
     .title {
+      display: flex;
+      align-items: center;
       font-size: 18px;
       font-weight: bold;
+      color: lighten($color, 15%);
+      user-select: none;
+      cursor: default;
+
+      .icon {
+        margin-right: 8px;
+      }
     }
 
     .info-op {

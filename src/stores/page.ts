@@ -68,7 +68,7 @@ export const usePageStore = defineStore('page', {
       })
       return res
     },
-    insertDragNode(dragNode: PageNode, parentNode: PageNode, index: number) {
+    insertNode(dragNode: PageNode, parentNode: PageNode, index: number) {
       parentNode.children?.splice(index, 0, formatNodeByUniqueName(dragNode, this.nameMap))
     },
     swapNode(parentNode: PageNode, index: number, targetIndex: number) {
@@ -107,7 +107,15 @@ export const usePageStore = defineStore('page', {
         this.removeSection(this.activeNode)
       } else {
         this.activeParentNode?.children?.splice(this.activeParentNode?.children?.indexOf(this.activeNode), 1)
-        this.activeNode = null
+      }
+      this.activeNode = null
+    },
+    copyActiveNode() {
+      if (!this.activeNode) return
+      if (this.activeNode.type === 'section') {
+        this.addSection(this.activeNode)
+      } else if (this.activeParentNode) {
+        this.insertNode(this.activeNode, this.activeParentNode, this.activeParentNode?.children?.length!)
       }
     },
     setActiveSection(node: PageNode | null) {

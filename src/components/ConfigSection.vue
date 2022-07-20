@@ -6,7 +6,7 @@ import Icon from './widgets/Icon.vue';
 
 const pageStore = usePageStore()
 const { allPageData, activeNode, activeNodeGroups } = storeToRefs(pageStore)
-const { deleteActiveNode } = pageStore
+const { deleteActiveNode, copyActiveNode } = pageStore
 </script>
 
 <template>
@@ -14,7 +14,8 @@ const { deleteActiveNode } = pageStore
     <div v-if="activeNode">
       <div class="header">
         <div class="title">{{ activeNode.name }}</div>
-        <Icon class="delete-icon" name="delete" type="btn" :size="16" @click="deleteActiveNode"></Icon>
+        <Icon class="icon copy-icon" name="copy" type="btn" :size="16" @click="copyActiveNode"></Icon>
+        <Icon class="icon delete-icon" name="delete" type="btn" :size="16" @click="deleteActiveNode"></Icon>
       </div>
       <div class="content">
         <ConfigGroup
@@ -76,14 +77,22 @@ const { deleteActiveNode } = pageStore
       color: $yellow;
       text-overflow: ellipsis;
     }
-    .delete-icon {
+    .icon {
       width: 24px;
       height: 24px;
       border-radius: $normal-radius;
       cursor: pointer;
-      color: $bg-default;
-      background: $red-gradient;
       box-shadow: $float-shadow;
+      margin-left: 12px;
+
+      &.delete-icon {
+        color: $bg-default;
+        background: $red-gradient;
+      }
+      &.copy-icon {
+        color: $bg-default;
+        background: $panel-light-gradient;
+      }
     }
   }
 

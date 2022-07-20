@@ -10,6 +10,18 @@ import CaretDownIcon from '@/assets/caret-down.svg'
 import AdvancedIcon from '@/assets/advanced.svg'
 import MoreIcon from '@/assets/more.svg'
 import DeleteIcon from '@/assets/delete.svg'
+import LineIcon from '@/assets/line.svg'
+import DashedIcon from '@/assets/dashed.svg'
+import DottedIcon from '@/assets/dotted.svg'
+import LineDoubleIcon from '@/assets/line-double.svg'
+import LayoutIcon from '@/assets/layout.svg'
+import SizeIcon from '@/assets/size.svg'
+import SpacingIcon from '@/assets/spacing.svg'
+import BorderIcon from '@/assets/border.svg'
+import FontIcon from '@/assets/font.svg'
+import ContainerIcon from '@/assets/container.svg'
+import CopyIcon from '@/assets/copy.svg'
+import BasicIcon from '@/assets/basic.svg'
 
 interface IIconProps {
   name:
@@ -24,6 +36,18 @@ interface IIconProps {
     | 'more'
     | 'delete'
     | 'caret-down'
+    | 'line'
+    | 'dashed'
+    | 'dotted'
+    | 'line-double'
+    | 'layout'
+    | 'size'
+    | 'spacing'
+    | 'border'
+    | 'font'
+    | 'container'
+    | 'copy'
+    | 'basic'
   type?: 'circle' | 'pure' | 'btn'
   size?: number
   active?: boolean
@@ -41,6 +65,18 @@ const iconMap = {
   more: MoreIcon,
   delete: DeleteIcon,
   'caret-down': CaretDownIcon,
+  line: LineIcon,
+  dashed: DashedIcon,
+  dotted: DottedIcon,
+  'line-double': LineDoubleIcon,
+  layout: LayoutIcon,
+  size: SizeIcon,
+  spacing: SpacingIcon,
+  border: BorderIcon,
+  font: FontIcon,
+  container: ContainerIcon,
+  copy: CopyIcon,
+  basic: BasicIcon
 }
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()

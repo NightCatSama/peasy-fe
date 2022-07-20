@@ -44,8 +44,8 @@ interface IPosition {
   bottom?: number
 }
 
-/** 容器信息 */
-type BorderStyle = 'none' | 'solid' | 'dashed' | 'dotted' | 'double'
+/** 边框信息 */
+type BorderStyle = 'solid' | 'dashed' | 'dotted' | 'double'
 interface IBorder {
   borderWidth: [string, string, string, string]
   borderStyle: [BorderStyle, BorderStyle, BorderStyle, BorderStyle]
@@ -53,7 +53,18 @@ interface IBorder {
   borderRadius: string | 'circle' | [string, string, string, string]
 }
 
-interface IContainer {}
+/** 背景信息 */
+interface IContainer {
+  backgroundType: 'color' | 'image' | 'gradient'
+  backgroundColor: string
+  backgroundImage: string
+  backgroundSize: 'cover' | 'contain' | 'auto'
+  backgroundPosition: string
+  backgroundRepeat: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat'
+  overflow: 'visible' | 'hidden' | 'scroll' | 'auto'
+  boxShadow: string
+  opacity: number
+}
 
 /** TODO: 动效 */
 interface IAnimation {}

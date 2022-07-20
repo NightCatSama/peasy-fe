@@ -63,3 +63,16 @@ export const getDefaultBorder = (
   borderRadius: '0px',
 }, initConfig)
 
+export const getDefaultContainer = (
+  initConfig?: Partial<IContainer>
+): IContainer => Object.assign({
+  backgroundType: 'color',
+  backgroundColor: '#fff',
+  backgroundImage: '',
+  backgroundSize: 'auto',
+  backgroundPosition: 'center',
+  backgroundRepeat: 'no-repeat',
+  overflow: 'visible',
+  boxShadow: '',
+  opacity: 1
+}, initConfig)

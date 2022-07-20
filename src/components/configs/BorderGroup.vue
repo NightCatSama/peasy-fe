@@ -58,10 +58,10 @@ const showList: any = $computed(() => {
           border.borderStyle.splice(curShowBorderIndex, 1, value)
         }
       },
-      options: ['none', 'solid', 'dashed', 'dotted', 'double'],
+      options: ['solid', 'dashed', 'dotted', 'double'],
     },
     borderRadius: {
-      name: 'Border Radius',
+      name: 'Corner Radius',
       type: 'number',
       value: isRefinedRadius ? 'refined' : border.borderRadius,
       setValue: (val: string) => {
@@ -110,10 +110,10 @@ const boxStyles = $computed(() => {
 
 <template>
   <Group
-    title="Container"
+    title="Border"
     class="border-group"
     :can-advanced="false"
-    :default-collapsed="true"
+    :default-collapsed="false"
   >
     <div class="spacing-block" data-text="Preview">
       <div class="inner-block" :style="boxStyles">
@@ -153,8 +153,11 @@ const boxStyles = $computed(() => {
           :active-key="item.value"
           @change="(key) => item.setValue(key)"
         >
-          <template #option="{ value }">
-            <Icon name="delete" :size="12"></Icon>
+          <template #option="{ key }">
+            <Icon v-if="key === 'solid'" name="line" :size="16"></Icon>
+            <Icon v-if="key === 'dashed'" name="dashed" :size="16"></Icon>
+            <Icon v-if="key === 'dotted'" name="dotted" :size="16"></Icon>
+            <Icon v-if="key === 'double'" name="line-double" :size="16"></Icon>
           </template>
         </Tabs>
       </div>
@@ -290,6 +293,7 @@ $gapY: 30px;
     justify-content: center;
     align-items: center;
     color: $color;
+    border-radius: $inner-radius;
 
     &.active {
       color: $white;

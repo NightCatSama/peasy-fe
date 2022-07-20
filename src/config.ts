@@ -1,5 +1,5 @@
 export const ComponentGroup = {
-  Block: ['layout', 'size', 'spacing', 'border'] as const,
+  Block: ['layout', 'size', 'spacing', 'border', 'container'] as const,
   Text: ['basic', 'font', 'spacing', 'border'] as const,
 } as const
 
