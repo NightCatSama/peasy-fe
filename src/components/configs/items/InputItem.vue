@@ -35,6 +35,7 @@ const value = $computed({
     <Input class="input" v-model="value" v-bind="restProps">
       <template #suffix><slot name="suffix"></slot></template>
     </Input>
+    <slot></slot>
   </div>
 </template>
 

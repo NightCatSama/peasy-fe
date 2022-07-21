@@ -22,27 +22,28 @@ const test = () => emit('update:modelValue', value)
 </script>
 
 <template>
-  <div :class="['color-item']">
-    <InputItem type="text" :label="label" v-model="value">
-      <template #suffix>
-        <Dropdown type="color-picker" :skidding="20" @apply-hide="test">
-          <div class="color-item" :style="{ background: modelValue }"></div>
-          <template #content>
-            <Chrome v-model="value"></Chrome>
-          </template>
-        </Dropdown>
-      </template>
-    </InputItem>
-  </div>
+  <InputItem type="text" :label="label" v-model="value">
+    <template #suffix>
+      <Dropdown type="color-picker" :skidding="20" @apply-hide="test">
+        <div class="color-preview" :style="{ background: modelValue }"></div>
+        <template #content>
+          <Chrome v-model="value"></Chrome>
+        </template>
+      </Dropdown>
+    </template>
+    <slot></slot>
+  </InputItem>
 </template>
 
 <style lang="scss" scoped>
 .item {
+  display: flex;
+  align-items: center;
   .label {
     flex: 1;
   }
 
-  .color-item {
+  .color-preview {
     width: 26px;
     height: 100%;
     cursor: pointer;

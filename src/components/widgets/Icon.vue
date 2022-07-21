@@ -20,6 +20,7 @@ import SpacingIcon from '@/assets/spacing.svg'
 import BorderIcon from '@/assets/border.svg'
 import FontIcon from '@/assets/font.svg'
 import ContainerIcon from '@/assets/container.svg'
+import BackgroundIcon from '@/assets/background.svg'
 import CopyIcon from '@/assets/copy.svg'
 import BasicIcon from '@/assets/basic.svg'
 import QuestionIcon from '@/assets/question.svg'
@@ -47,6 +48,7 @@ interface IIconProps {
     | 'border'
     | 'font'
     | 'container'
+    | 'background'
     | 'copy'
     | 'basic'
     | 'question'
@@ -80,6 +82,7 @@ const iconMap = {
   copy: CopyIcon,
   basic: BasicIcon,
   question: QuestionIcon,
+  background: BackgroundIcon,
 }
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()
@@ -119,7 +122,7 @@ const style = $ref({
   }
 
   .icon-inner {
-    transition: all 0.3s, transform 0.6s;
+    transition: all 0.3s;
 
     &.active {
       color: $theme;

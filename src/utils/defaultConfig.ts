@@ -52,7 +52,7 @@ export const getDefaultFont = (initConfig?: Partial<IFont>): IFont =>
   Object.assign(
     {
       fontSize: '2rem',
-      lineHeight: '1.26x',
+      lineHeight: '126%',
       color: '#232323',
       fontWeight: 'normal',
       fontStyle: 'normal',
@@ -80,7 +80,7 @@ export const getDefaultBorder = (initConfig?: Partial<IBorder>): IBorder =>
     initConfig
   )
 
-export const getDefaultContainer = (initConfig?: Partial<IContainer>): IContainer =>
+export const getDefaultBackground = (initConfig?: Partial<IBackground>): IBackground =>
   Object.assign(
     {
       backgroundType: 'image',
@@ -89,11 +89,18 @@ export const getDefaultContainer = (initConfig?: Partial<IContainer>): IContaine
       backgroundSize: 'auto',
       backgroundPosition: 'center',
       backgroundRepeat: 'no-repeat',
+      backgroundGradientAngle: 180,
+      backgroundGradient: [],
+    },
+    initConfig
+  )
+
+  export const getDefaultContainer = (initConfig?: Partial<IContainer>): IContainer =>
+  Object.assign(
+    {
       overflow: 'visible',
       boxShadow: '',
       opacity: 1,
-      backgroundGradientAngle: 0,
-      backgroundGradient: [],
     },
     initConfig
   )

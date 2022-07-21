@@ -27,6 +27,7 @@ const iconName = {
   Spacing: 'spacing',
   Border: 'border',
   Font: 'font',
+  Background: 'background',
   Container: 'container',
   Basic: 'basic',
 } as any

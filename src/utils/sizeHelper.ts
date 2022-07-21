@@ -1,7 +1,7 @@
 import { useDisplayStore } from '@/stores/display'
 
 export const isUnitType = (type: string): type is UnitType =>
-  (['%', 'px', 'rem', 'x'] as UnitType[]).includes(type as unknown as UnitType)
+  (['%', 'px', 'rem'] as UnitType[]).includes(type as unknown as UnitType)
 
 export const getUnit = (s: string): UnitType | '' => {
   if (!s || typeof s !== 'string') return ''
@@ -13,9 +13,6 @@ export const getUnit = (s: string): UnitType | '' => {
   }
   if (s.slice(-1) === '%') {
     return '%'
-  }
-  if (s.slice(-1) === 'x') {
-    return 'x'
   }
   return ''
 }

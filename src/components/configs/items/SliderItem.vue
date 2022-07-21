@@ -33,6 +33,7 @@ const value = $computed({
       {{ value }}
     </div>
     <Slider class="slider" v-model="value" :contained="true" v-bind="$attrs"></Slider>
+    <slot></slot>
   </div>
 </template>
 

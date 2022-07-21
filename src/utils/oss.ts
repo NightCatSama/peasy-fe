@@ -8,7 +8,7 @@ const client = new OSS({
   bucket: 'peasy',
 })
 
-export const put = async (file: File) => {
+export const upload = async (file: File) => {
   try {
     const res = await client.put(uuidv4(), file)
     return res.url

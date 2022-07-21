@@ -1,5 +1,6 @@
-import { PageNode } from '@/config'
+import { PageNode, PropsTypes } from '@/config'
 import {
+  getDefaultBackground,
   getDefaultBasic,
   getDefaultBorder,
   getDefaultContainer,
@@ -20,7 +21,8 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
       layout: getDefaultLayout(),
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),
-      container: getDefaultContainer({
+      container: getDefaultContainer(),
+      background: getDefaultBackground({
         backgroundType: 'image',
         backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4',
       }),
@@ -39,7 +41,8 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                 spacing: getDefaultSpacing(),
                 border: getDefaultBorder(),
                 container: getDefaultContainer(),
-              },
+                background: getDefaultBackground(),
+              } as PropsTypes<'Block'>,
               children: [getMockText(name)],
             } as PageNode<'Block'>,
           ],

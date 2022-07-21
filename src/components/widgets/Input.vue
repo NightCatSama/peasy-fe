@@ -167,7 +167,7 @@ const handleInput = (e: any) => realTime && handleChange(e)
     color: darken($color, 20%);
     width: 100%;
     padding: 0 12px;
-    font-size: 16px;
+    font-size: 14px;
     font-family: $font-family;
 
     &[disabled] {
@@ -180,6 +180,7 @@ const handleInput = (e: any) => realTime && handleChange(e)
   }
 
   textarea {
+    font-size: 16px;
     padding: 8px;
     resize: none;
     line-height: 1.4;

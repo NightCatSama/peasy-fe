@@ -9,6 +9,7 @@ import LayoutGroup from './configs/LayoutGroup.vue'
 import SizeGroup from './configs/SizeGroup.vue'
 import SpacingGroup from './configs/SpacingGroup.vue'
 import ContainerGroup from './configs/ContainerGroup.vue'
+import BackgroundGroup from './configs/BackgroundGroup.vue'
 
 interface IConfigGroupProps {
   groupType: GroupType
@@ -26,6 +27,7 @@ const componentNameMap: { [type in GroupType]: any | null } = {
   position: null,
   layout: LayoutGroup,
   border: BorderGroup,
+  background: BackgroundGroup,
   container: ContainerGroup,
   animation: null,
 }

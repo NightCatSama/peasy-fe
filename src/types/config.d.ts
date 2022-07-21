@@ -1,5 +1,5 @@
 /** 单位 */
-type UnitType = '%' | 'px' | 'rem' | 'x'
+type UnitType = '%' | 'px' | 'rem'
 /** 支持的全部选项 */
 type SuffixType = UnitType | 'auto' | 'none' | 'stretch' | 'circle' | 'refined'
 
@@ -53,8 +53,7 @@ interface IBorder {
   borderRadius: string | 'circle' | [string, string, string, string]
 }
 
-/** 背景信息 */
-interface IContainer {
+interface IBackground {
   backgroundType: 'color' | 'image' | 'gradient'
   /** 背景色 */
   backgroundColor: string
@@ -66,6 +65,10 @@ interface IContainer {
   /** 背景过渡色 */
   backgroundGradientAngle: number
   backgroundGradient: { color: string; percentage: number }[]
+}
+
+/** 背景信息 */
+interface IContainer {
   overflow: 'visible' | 'hidden' | 'scroll' | 'auto'
   boxShadow: string
   opacity: number

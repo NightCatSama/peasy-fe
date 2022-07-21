@@ -131,7 +131,7 @@ export const useFontStyle = (font: IFont) => {
       isEditMode && getUnit(font.fontSize) === 'rem'
         ? `${fixedPointToNumber(font.fontSize)}em`
         : font.fontSize,
-    lineHeight: getUnit(font.lineHeight) === 'x' ? font.lineHeight.slice(0, -1) : font.lineHeight,
+    lineHeight: font.lineHeight,
     fontWeight: font.fontWeight,
     fontStyle: font.fontStyle,
     color: font.color,
@@ -148,34 +148,35 @@ export const useSpacingStyle = (spacing: ISpacing) => {
   }
 }
 
-export const useContainerStyle = (container: IContainer) => {
-  if (!container) return {}
+export const useBackgroundStyle = (background: IBackground) => {
+  if (!background) return {}
 
-  let backgroundStyles
-
-  if (container.backgroundType === 'color') {
-    backgroundStyles = {
-      backgroundColor: container.backgroundColor,
+  if (background.backgroundType === 'color') {
+    return {
+      backgroundColor: background.backgroundColor,
     }
-  } else if (container.backgroundType === 'image') {
-    backgroundStyles = {
-      backgroundImage: container.backgroundImage ? `url(${container.backgroundImage})` : '',
-      backgroundPosition: container.backgroundPosition,
-      backgroundRepeat: container.backgroundRepeat,
-      backgroundSize: container.backgroundSize,
+  } else if (background.backgroundType === 'image') {
+    return {
+      backgroundImage: background.backgroundImage ? `url(${background.backgroundImage})` : '',
+      backgroundPosition: background.backgroundPosition,
+      backgroundRepeat: background.backgroundRepeat,
+      backgroundSize: background.backgroundSize,
     }
-  } else if (container.backgroundType === 'gradient') {
-    backgroundStyles = {
+  } else if (background.backgroundType === 'gradient') {
+    return {
       backgroundImage: `linear-gradient(${
-        container.backgroundGradientAngle
+        background.backgroundGradientAngle
       }deg, ${
-        container.backgroundGradient.map(({ color, percentage }) => `${color} ${percentage}%`)
+        background.backgroundGradient.map(({ color, percentage }) => `${color} ${percentage}%`)
       })`,
     }
   }
+}
+
+export const useContainerStyle = (container: IContainer) => {
+  if (!container) return {}
 
   return {
-    ...backgroundStyles,
     opacity: container.opacity,
     overflow: container.overflow,
     boxShadow: container.boxShadow,
