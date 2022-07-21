@@ -21,7 +21,8 @@ interface IBlockProps {
   container: IContainer
 }
 
-const { size, layout, border, direction, spacing, background, container } = defineProps<IBlockProps>()
+const { size, layout, border, direction, spacing, background, container } =
+  defineProps<IBlockProps>()
 
 const style = $computed(() =>
   useStyle({

@@ -12,6 +12,7 @@ import { useDisplayStore } from '@/stores/display'
 import Icon from './widgets/Icon.vue'
 import { emitter } from '@/utils/event'
 import { useDragStore } from '@/stores/drag'
+import { disabledMoveable } from '@/utils/moveable'
 
 const pageStore = usePageStore()
 const { setActiveNode, addSection } = pageStore
@@ -98,7 +99,11 @@ watch(
 watch(
   [displayMode],
   () => {
-    setTimeout(() => emitter.emit('updateMoveable'), 300)
+    if (displayMode.value === 'preview') {
+      disabledMoveable()
+    } else {
+      setTimeout(() => emitter.emit('updateMoveable'), 300)
+    }
   },
   { flush: 'post' }
 )

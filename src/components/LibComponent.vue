@@ -40,6 +40,8 @@ let isActive = $computed(() => activeNode.value === item)
 
 watchPostEffect(() => {
   if (isActive) {
+    if (displayMode.value === 'preview') return
+
     const moveable = getMoveable()
 
     if (!moveable) return
@@ -140,27 +142,6 @@ const preventMousedown = (e: MouseEvent) => {
 .lib-component {
   cursor: default;
 
-  &.active {
-    position: relative;
-    cursor: default;
-
-    &:not(.snapshot)::after {
-      content: '';
-      position: absolute;
-      left: 50%;
-      top: 50%;
-      width: 100%;
-      height: 100%;
-      pointer-events: none;
-      outline: 3px dashed rgba($theme, 80%);
-      z-index: 999;
-      box-sizing: content-box;
-      border-width: inherit;
-      border-color: transparent;
-      border-style: solid;
-      transform: translate(-50%, -50%);
-    }
-  }
   &.grading {
   }
 }

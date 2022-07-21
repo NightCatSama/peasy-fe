@@ -46,7 +46,10 @@ const setDeviceBySize = (size: number[]) => {
       <div class="name">{{ name }}</div>
       <div class="ext">.html</div>
       <p
-        @click="displayMode = displayMode === 'drag' ? 'edit' : 'drag'"
+        @click="
+          displayMode =
+            displayMode === 'drag' ? 'edit' : displayMode === 'edit' ? 'preview' : 'drag'
+        "
         :style="{ marginLeft: 40 + 'px' }"
       >
         TODO: {{ displayMode }}

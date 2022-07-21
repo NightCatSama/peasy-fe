@@ -126,9 +126,7 @@ export const usePageStore = defineStore('page', {
         this.insertNode(
           this.activeNode,
           this.activeParentNode,
-          index !== void 0 && index > -1
-            ? index
-            : this.activeParentNode?.children?.length!
+          index !== void 0 && index > -1 ? index : this.activeParentNode?.children?.length!
         )
       }
     },

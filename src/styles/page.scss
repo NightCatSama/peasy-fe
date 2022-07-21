@@ -17,6 +17,28 @@
         outline: 2px solid rgba($theme, 50%);
         pointer-events: none;
       }
+
+      &.active {
+        position: relative;
+        cursor: default;
+
+        &:not(.snapshot)::after {
+          content: '';
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          width: 100%;
+          height: 100%;
+          pointer-events: none;
+          outline: 2px dashed rgba($theme, 60%);
+          box-sizing: content-box;
+          border-width: inherit;
+          border-color: transparent;
+          border-style: solid;
+          transform: translate(-50%, -50%);
+          z-index: 999;
+        }
+      }
     }
   }
   // 拖拽模式

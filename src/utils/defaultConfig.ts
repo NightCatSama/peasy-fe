@@ -95,7 +95,7 @@ export const getDefaultBackground = (initConfig?: Partial<IBackground>): IBackgr
     initConfig
   )
 
-  export const getDefaultContainer = (initConfig?: Partial<IContainer>): IContainer =>
+export const getDefaultContainer = (initConfig?: Partial<IContainer>): IContainer =>
   Object.assign(
     {
       overflow: 'visible',

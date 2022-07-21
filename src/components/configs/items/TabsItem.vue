@@ -18,11 +18,7 @@ const handleChange = (val: string) => {
 <template>
   <div class="item">
     <div class="label">{{ label }}</div>
-    <Tabs
-      :data="data"
-      :model-value="modelValue"
-      @update:model-value="(key) => handleChange(key)"
-    >
+    <Tabs :data="data" :model-value="modelValue" @update:model-value="(key) => handleChange(key)">
       <template #option="props"><slot name="option" v-bind="props"></slot></template>
     </Tabs>
   </div>

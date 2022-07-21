@@ -166,9 +166,9 @@ export const useBackgroundStyle = (background: IBackground) => {
     return {
       backgroundImage: `linear-gradient(${
         background.backgroundGradientAngle
-      }deg, ${
-        background.backgroundGradient.map(({ color, percentage }) => `${color} ${percentage}%`)
-      })`,
+      }deg, ${background.backgroundGradient.map(
+        ({ color, percentage }) => `${color} ${percentage}%`
+      )})`,
     }
   }
 }

@@ -11,6 +11,14 @@ interface IContainerGroupProps {
 }
 const { container, node } = defineProps<IContainerGroupProps>()
 
+const presetShadow = $computed(() => [
+  '0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08)',
+  '0 2px 2px 0 rgba(0,0,0,0.14), 0 3px 1px -2px rgba(0,0,0,0.12), 0 1px 5px 0 rgba(0,0,0,0.2)',
+  '0 2px 5px 0 rgba(0,0,0,0.26), 0 2px 10px 0 rgba(0,0,0,0.16)',
+  '5px 5px 50px 10px rgba(158,155,158,0.15)',
+  '0 6px 6px rgba(10,16,20,.15), 0 0 52px rgba(10,16,20,.12)',
+  '0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.2)',
+])
 </script>
 
 <template>
@@ -27,33 +35,55 @@ const { container, node } = defineProps<IContainerGroupProps>()
       :options="{ visible: 'Visible', hidden: 'Hidden', scroll: 'Scroll', auto: 'Auto' }"
       v-model="container.overflow"
     ></SelectItem>
-    <!-- TODO: 换成 box shadow 模块 -->
-    <TabsItem
-      label="Box Shadow"
-      :data="[
-        {
-          key: '0 0 10px 3px rgba(0, 0, 0, .16)',
-          value: 'Float',
-        },
-        {
-          key: '0 0 20px 5px rgba(0, 0, 0, 0.16)',
-          value: 'Bigger',
-        },
-        {
-          key: '1px 1px 3px 1px rgba(0, 0, 0, 0.36)',
-          value: 'Bulge',
-        },
-      ]"
-      v-model="container.boxShadow"
-    ></TabsItem>
+    <div class="item shadow-item">
+      <div class="label">Shadow</div>
+      <div class="shadow-preview">
+        <div
+          v-for="(shadow, index) in presetShadow"
+          :key="index"
+          class="shadow-preview-item"
+          @click="container.boxShadow = shadow"
+        >
+          <div class="inner" :style="{ boxShadow: shadow }"></div>
+        </div>
+      </div>
+    </div>
   </Group>
 </template>
 
 <style lang="scss" scoped>
 .container-group {
-  .label {
-    flex: 1;
-    margin-right: 8px;
+  .shadow-item {
+    align-items: flex-start;
+    flex-direction: column;
+
+    .label {
+      margin: 10px 0;
+    }
+
+    .shadow-preview {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+
+      &-item {
+        margin-right: 10px;
+        margin-bottom: 10px;
+        width: 78px;
+        height: 78px;
+        border-radius: $normal-radius;
+        background: $color;
+        padding: 20px;
+        cursor: pointer;
+
+        .inner {
+          width: 100%;
+          height: 100%;
+          border-radius: $inner-radius;
+          background: $white-gradient;
+        }
+      }
+    }
   }
 }
 </style>

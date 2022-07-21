@@ -19,13 +19,16 @@ const { background, node } = defineProps<IBackgroundGroupProps>()
 const updateBackgroundType = (type: 'color' | 'image' | 'gradient') => {
   background.backgroundType = type
   if (type === 'gradient') {
-    background.backgroundGradient = [{
-      color: '#fff',
-      percentage: 0,
-    }, {
-      color: '#000',
-      percentage: 100,
-    }]
+    background.backgroundGradient = [
+      {
+        color: '#fff',
+        percentage: 0,
+      },
+      {
+        color: '#000',
+        percentage: 100,
+      },
+    ]
   }
 }
 
@@ -141,27 +144,37 @@ const uploadImage = async (e: InputEvent) => {
         <div class="item" v-if="background.backgroundGradient.length > 0">
           <Slider
             width="100%"
-            :model-value="background.backgroundGradient.map(item => item.percentage)"
+            :model-value="background.backgroundGradient.map((item) => item.percentage)"
             :min="0"
             :max="100"
             :contained="true"
-            :dot-options="background.backgroundGradient.map(item => ({
-              disabled: false,
-              style: { background: item.color },
-            }))"
-            :process="(dotsPos) => dotsPos.slice(0, -1).map(
-              (_, i) =>
-                [dotsPos[i], dotsPos[i + 1], { background: `linear-gradient(90deg, ${
-                  background.backgroundGradient[i].color
-                }, ${
-                  background.backgroundGradient[i + 1].color
-                })` }]
-            )"
-            @update:model-value="(values) => {
-              background.backgroundGradient.forEach((item, index) => {
-                item.percentage = values[index]
-              })
-            }"
+            :dot-options="
+              background.backgroundGradient.map((item) => ({
+                disabled: false,
+                style: { background: item.color },
+              }))
+            "
+            :process="
+              (dotsPos) =>
+                dotsPos
+                  .slice(0, -1)
+                  .map((_, i) => [
+                    dotsPos[i],
+                    dotsPos[i + 1],
+                    {
+                      background: `linear-gradient(90deg, ${
+                        background.backgroundGradient[i].color
+                      }, ${background.backgroundGradient[i + 1].color})`,
+                    },
+                  ])
+            "
+            @update:model-value="
+              (values) => {
+                background.backgroundGradient.forEach((item, index) => {
+                  item.percentage = values[index]
+                })
+              }
+            "
           ></Slider>
         </div>
         <ColorItem
@@ -218,7 +231,8 @@ const uploadImage = async (e: InputEvent) => {
       }
     }
 
-    .upload-btn, .question-icon {
+    .upload-btn,
+    .question-icon {
       &:hover {
         color: $theme;
       }
@@ -234,7 +248,7 @@ const uploadImage = async (e: InputEvent) => {
     cursor: pointer;
 
     &.disabled {
-      opacity: .5;
+      opacity: 0.5;
       border: 1px solid $panel-light;
       color: $panel-light;
       cursor: not-allowed;
