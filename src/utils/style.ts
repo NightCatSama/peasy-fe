@@ -3,6 +3,7 @@ import { computed, inject } from 'vue'
 import { covertSize, fixedPointToNumber, getUnit } from './sizeHelper'
 
 const getIsEditMode = () => !!inject('isEditMode')
+const getDisplayMode = () => useDisplayStore().displayMode || 'preview'
 
 export const useStyle = (styles: any) => {
   for (let key in styles) {
@@ -134,6 +135,8 @@ export const useFontStyle = (font: IFont) => {
     lineHeight: font.lineHeight,
     fontWeight: font.fontWeight,
     fontStyle: font.fontStyle,
+    textDecoration: font.textDecoration,
+    textAlign: font.textAlign,
     color: font.color,
   }
 }
@@ -178,7 +181,11 @@ export const useContainerStyle = (container: IContainer) => {
 
   return {
     opacity: container.opacity,
-    overflow: container.overflow,
+    overflow:
+      getIsEditMode() &&
+      getDisplayMode() !== 'preview'
+        ? 'visible'
+        : container.overflow,
     boxShadow: container.boxShadow,
   }
 }

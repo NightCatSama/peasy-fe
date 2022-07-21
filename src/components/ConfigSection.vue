@@ -5,8 +5,12 @@ import ConfigGroup from './ConfigGroup.vue'
 import Icon from './widgets/Icon.vue'
 
 const pageStore = usePageStore()
-const { allPageData, activeNode, activeNodeGroups } = storeToRefs(pageStore)
-const { deleteActiveNode, copyActiveNode } = pageStore
+const { allPageData, activeNode, activeParentNode, activeNodeGroups } = storeToRefs(pageStore)
+const { setActiveParentNodeToActive, deleteActiveNode, copyActiveNode } = pageStore
+
+const setParentNodeActive = () => {
+   setActiveParentNodeToActive()
+}
 </script>
 
 <template>
@@ -15,10 +19,20 @@ const { deleteActiveNode, copyActiveNode } = pageStore
       <div class="header">
         <div class="title">{{ activeNode.name }}</div>
         <Icon
+          v-if="activeParentNode"
+          class="icon copy-icon"
+          name="bold"
+          type="btn"
+          :size="16"
+          v-tooltip="'Parent Node'"
+          @click="setParentNodeActive"
+        ></Icon>
+        <Icon
           class="icon copy-icon"
           name="copy"
           type="btn"
           :size="16"
+          v-tooltip="'Copy Node'"
           @click="copyActiveNode"
         ></Icon>
         <Icon
@@ -26,6 +40,7 @@ const { deleteActiveNode, copyActiveNode } = pageStore
           name="delete"
           type="btn"
           :size="16"
+          v-tooltip="'Delete Node'"
           @click="deleteActiveNode"
         ></Icon>
       </div>

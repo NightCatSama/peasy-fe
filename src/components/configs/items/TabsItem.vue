@@ -2,12 +2,13 @@
 import Tabs, { ITabItem } from '@/components/widgets/Tabs.vue'
 
 interface ITabsItemProps {
-  label: string
-  modelValue: string
+  label?: string
+  modelValue?: string
   data: { [key: string]: string } | string[] | ITabItem[]
+  iconMap?: { [key: string]: any }
 }
 
-const { label, modelValue, data } = defineProps<ITabsItemProps>()
+const { label, modelValue, data, iconMap } = defineProps<ITabsItemProps>()
 const emit = defineEmits(['update:modelValue'])
 
 const handleChange = (val: string) => {
@@ -18,7 +19,7 @@ const handleChange = (val: string) => {
 <template>
   <div class="item">
     <div class="label">{{ label }}</div>
-    <Tabs :data="data" :model-value="modelValue" @update:model-value="(key) => handleChange(key)">
+    <Tabs :data="data" :model-value="modelValue" :icon-map="iconMap" @update:model-value="(key) => handleChange(key)">
       <template #option="props"><slot name="option" v-bind="props"></slot></template>
     </Tabs>
   </div>

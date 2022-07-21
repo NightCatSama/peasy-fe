@@ -27,6 +27,8 @@ interface IFont {
   color: string
   fontWeight: 'normal' | 'bold' | '500' | '600' | '800' | '900'
   fontStyle: 'normal' | 'italic'
+  textDecoration: 'none' | 'underline' | 'line-through'
+  textAlign: 'left' | 'right' | 'center' | 'justify'
 }
 
 /** 间距信息，上右下左 */
@@ -54,7 +56,7 @@ interface IBorder {
 }
 
 interface IBackground {
-  backgroundType: 'color' | 'image' | 'gradient'
+  backgroundType: 'none' | 'color' | 'image' | 'gradient'
   /** 背景色 */
   backgroundColor: string
   /** 背景图 */

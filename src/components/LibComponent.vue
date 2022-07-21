@@ -19,7 +19,7 @@ interface ILibComponentProps {
 const { parent, item } = defineProps<ILibComponentProps>()
 
 const pageStore = usePageStore()
-const { setActiveNode, insertNode, swapNode } = pageStore
+const { setActiveNode, insertNode, swapNode, addActiveParentChain } = pageStore
 const { activeNode } = storeToRefs(pageStore)
 
 const dragStore = useDragStore()
@@ -31,8 +31,9 @@ const { displayMode } = storeToRefs(displayStore)
 
 const componentRef = ref(null)
 
-const setActive = () => {
+const setActive = (e: Event) => {
   setActiveNode(item, parent)
+  ;(e.target as HTMLDivElement).parentElement!.dispatchEvent(new Event('active-node', { bubbles: true }))
   emitter.emit('switchMaterialsPanel', false)
 }
 
@@ -76,6 +77,7 @@ const handleSortNode = (event: SortableEvent) => {
 }
 
 const isBlockComponent = $computed(() => item.component === 'Block')
+const scrollList: HTMLDivElement[] = []
 const dragEvents = $computed(() =>
   isBlockComponent
     ? {
@@ -91,9 +93,25 @@ const dragEvents = $computed(() =>
         },
         add: handleAddNode,
         end: handleSortNode,
+        scroll: (e: Event) => {
+          scrollList.push(e.target as HTMLDivElement)
+        },
+        'active-node': () => {
+          addActiveParentChain(item);
+        }
       }
     : {}
 )
+
+watch(() => displayMode.value, (val) => {
+  if (val !== 'preview' && scrollList.length > 0) {
+    scrollList.forEach(el => {
+      el.scrollLeft = 0
+      el.scrollTop = 0
+    })
+    scrollList.length = 0
+  }
+})
 
 const handleDragStart = (event: DragEvent, node: PageNode) => {
   if (dragNode.value) return

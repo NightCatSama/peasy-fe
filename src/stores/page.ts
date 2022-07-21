@@ -8,20 +8,25 @@ import { formatNodeByUniqueName } from '@/utils/node'
 
 const api = mande('http://localhost:3030/api/page')
 
-type ModelData = {
+type MaterialData = {
   [key in PageNode['type']]: PageNode[]
 }
 
 export const usePageStore = defineStore('page', {
   state: () => ({
     allPageData: [] as PageNode[],
+    // 当前激活的节点
     activeNode: null as PageNode | null,
+    // 当前激活的节点的父节点
     activeParentNode: null as PageNode | null,
-    modelData: {
+    // 当前激活的节点到最顶层的节点链
+    activeParentChain: [] as PageNode[],
+    /** 物料数据 */
+    materialData: {
       section: [],
       component: [],
       template: [],
-    } as ModelData,
+    } as MaterialData,
     /** 当前展示的 Section，null 为全部 */
     activeSection: null as string | null,
   }),
@@ -63,7 +68,7 @@ export const usePageStore = defineStore('page', {
         component: [getMockText(), getMockBlock()],
         template: [],
       }
-      this.modelData = data
+      this.materialData = data
     },
     async download() {
       const data = this.allPageData
@@ -72,9 +77,16 @@ export const usePageStore = defineStore('page', {
       })
       return res
     },
+    /** 插入 Component 组件 */
     insertNode(dragNode: PageNode, parentNode: PageNode, index: number) {
       parentNode.children?.splice(index, 0, formatNodeByUniqueName(dragNode, this.nameMap))
     },
+    /**
+     * 拖拽交换两个 Component 组件的位置，放置的新位置为 DragStore 的 dropZone
+     * @param parentNode 旧组件的父组件
+     * @param index 旧组件的索引
+     * @param targetIndex 组件的新索引
+     */
     swapNode(parentNode: PageNode, index: number, targetIndex: number) {
       const dropZone = useDragStore().dropZone
       if (!parentNode?.children || !dropZone?.children) return
@@ -85,23 +97,40 @@ export const usePageStore = defineStore('page', {
       parentNode.children.splice(index, 1)
       dropZone.children.splice(targetIndex, 0, node)
     },
+    /** 添加 Section */
     addSection(node: PageNode, index?: number) {
       const insertIndex = index ?? this.allPageData.length
       this.allPageData.splice(insertIndex, 0, formatNodeByUniqueName(node, this.nameMap))
     },
+    /** 移除 Section */
     removeSection(node: PageNode) {
       const index = this.allPageData.indexOf(node)
       this.allPageData.splice(index, 1)
     },
+    /** 交换两个 Section 的位置 */
     swapSection(index: number, targetIndex: number) {
       const node = this.allPageData[index]
       this.allPageData.splice(index, 1)
       this.allPageData.splice(targetIndex, 0, node)
     },
+    /** 设置当前激活节点 */
     setActiveNode(node?: PageNode | null, parent?: PageNode | null) {
       this.activeNode = node || null
       this.activeParentNode = parent || null
+      this.activeParentChain.length = 0
     },
+    /** 设置当前激活节点的父节点设置为激活节点 */
+    setActiveParentNodeToActive() {
+      if (!this.activeParentNode) return
+      this.activeNode = this.activeParentNode
+      this.activeParentChain.shift()
+      this.activeParentNode = this.activeParentChain?.[0] || null
+    },
+    /** 添加节点链 */
+    addActiveParentChain(node: PageNode) {
+      this.activeParentChain.push(node)
+    },
+    /** 移除当前节点 */
     deleteActiveNode() {
       if (!this.activeNode) return
       if (this.activeNode.type === 'section') {
@@ -110,13 +139,22 @@ export const usePageStore = defineStore('page', {
         }
         this.removeSection(this.activeNode)
       } else {
+        const index = this.activeParentNode?.children?.indexOf(this.activeNode)!
         this.activeParentNode?.children?.splice(
-          this.activeParentNode?.children?.indexOf(this.activeNode),
+          index,
           1
         )
+        // 若仍存在同层节点，则自动切换过去
+        if (this.activeParentNode?.children?.length) {
+          this.activeNode = this.activeParentNode.children[Math.max(0, index - 1)]
+          return
+        }
       }
       this.activeNode = null
+      this.activeParentNode = null
+      this.activeParentChain = []
     },
+    /** 复制当前激活节点 */
     copyActiveNode() {
       if (!this.activeNode) return
       if (this.activeNode.type === 'section') {
@@ -130,6 +168,7 @@ export const usePageStore = defineStore('page', {
         )
       }
     },
+    /** 设置当前展示的 Section */
     setActiveSection(node: PageNode | null) {
       this.activeSection = node ? node.name : null
     },

@@ -151,13 +151,15 @@ const handleLocationPage = (immediate = false) => {
 
   if (activeElem) {
     const activeRect = activeElem.getBoundingClientRect()
-    left = activeRect.left - rect.left - (wrapperSize.width - activeRect.width) / 2
-    top = activeRect.top - rect.top - (wrapperSize.height - activeRect.height) / 2
+    left = activeRect.left - rect.left - (wrapperSize.width - activeRect.width) / 2 + Math.min(x, 0)
+    top = activeRect.top - rect.top - (wrapperSize.height - activeRect.height) / 2 + Math.min(y, 0)
   }
 
+  // console.log('left', left, top);
+
   wrapperRef.value?.scrollTo({
-    top: Math.min(top, 0),
-    left: Math.min(left, 0),
+    top: Math.max(top, 0),
+    left: Math.max(left, 0),
     behavior: 'smooth',
   })
 }

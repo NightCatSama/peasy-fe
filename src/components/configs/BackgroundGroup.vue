@@ -54,147 +54,144 @@ const uploadImage = async (e: InputEvent) => {
 </script>
 
 <template>
-  <Group title="Background" class="background-group" :can-advanced="true" :default-collapsed="true">
-    <template #default="{ showAdvanced }">
-      <SelectItem
-        :model-value="background.backgroundType"
-        :label="'Background'"
-        :options="{
-          color: 'Color',
-          image: 'Image',
-          gradient: 'Gradient',
-        }"
-        @update:model-value="updateBackgroundType"
-      ></SelectItem>
+  <Group title="Background" class="background-group" :can-advanced="false" :default-collapsed="true">
+    <SelectItem
+      :model-value="background.backgroundType"
+      :label="'Background'"
+      :options="{
+        none: 'None',
+        color: 'Color',
+        image: 'Image',
+        gradient: 'Gradient',
+      }"
+      @update:model-value="updateBackgroundType"
+    ></SelectItem>
 
-      <!-- 背景色设置 -->
-      <ColorItem
-        v-if="background.backgroundType === 'color'"
-        :model-value="background.backgroundColor"
-        :label="'Background Color'"
-        @update:model-value="(color) => (background.backgroundColor = color)"
-      ></ColorItem>
+    <!-- 背景色设置 -->
+    <ColorItem
+      v-if="background.backgroundType === 'color'"
+      :model-value="background.backgroundColor"
+      :label="'Background Color'"
+      @update:model-value="(color) => (background.backgroundColor = color)"
+    ></ColorItem>
 
-      <!-- 背景图设置 -->
-      <template v-if="background.backgroundType === 'image'">
-        <InputItem
-          :model-value="background.backgroundImage"
-          :label="'Image Link'"
-          :type="'textarea'"
-          :placeholder="'https://'"
-          @update:model-value="(image) => (background.backgroundImage = image)"
-        >
-          <template #suffix>
-            <div class="upload-wrapper">
-              <div class="upload-btn">
-                Upload
-                <input
-                  type="file"
-                  class="upload-btn-input"
-                  accept=".jpg, .jpeg, .png .gif .webp"
-                  @change="uploadImage"
-                />
-              </div>
-              <Icon
-                name="question"
-                class="question-icon"
-                :size="13"
-                v-tooltip="{ content: 'Stability not guaranteed' }"
-              ></Icon>
+    <!-- 背景图设置 -->
+    <template v-if="background.backgroundType === 'image'">
+      <InputItem
+        :model-value="background.backgroundImage"
+        :label="'Image Link'"
+        :type="'textarea'"
+        :placeholder="'https://'"
+        @update:model-value="(image) => (background.backgroundImage = image)"
+      >
+        <template #suffix>
+          <div class="upload-wrapper">
+            <div class="upload-btn">
+              Upload
+              <input
+                type="file"
+                class="upload-btn-input"
+                accept=".jpg, .jpeg, .png .gif .webp"
+                @change="uploadImage"
+              />
             </div>
-          </template>
-        </InputItem>
-        <TabsItem
-          label="Background Size"
-          :data="{ cover: 'Cover', contain: 'Contain', auto: 'Auto' }"
-          v-model="background.backgroundSize"
-        ></TabsItem>
-        <template v-if="showAdvanced">
-          <!-- TODO: 换成方向图标 -->
-          <TabsItem
-            label="Background Position"
-            :data="{ left: 'Left', center: 'Center', right: 'Right' }"
-            v-model="background.backgroundPosition"
-          ></TabsItem>
-          <!-- TODO: 换成 repeat 图标 -->
-          <TabsItem
-            label="Background Repeat"
-            :data="{
-              repeat: 'Repeat',
-              'repeat-x': 'Only-X',
-              'repeat-y': 'Only-Y',
-              'no-repeat': 'None',
-            }"
-            v-model="background.backgroundRepeat"
-          ></TabsItem>
+            <Icon
+              name="question"
+              class="question-icon"
+              :size="13"
+              v-tooltip="{ content: 'Stability not guaranteed' }"
+            ></Icon>
+          </div>
         </template>
-      </template>
+      </InputItem>
+      <TabsItem
+        label="Background Size"
+        :data="{ cover: 'Cover', contain: 'Contain', auto: 'Auto' }"
+        v-model="background.backgroundSize"
+      ></TabsItem>
+      <!-- TODO: 换成方向图标 -->
+      <TabsItem
+        label="Background Position"
+        :data="{ left: 'Left', center: 'Center', right: 'Right' }"
+        v-model="background.backgroundPosition"
+      ></TabsItem>
+      <!-- TODO: 换成 repeat 图标 -->
+      <TabsItem
+        label="Background Repeat"
+        :data="{
+          repeat: 'Repeat',
+          'repeat-x': 'Only-X',
+          'repeat-y': 'Only-Y',
+          'no-repeat': 'None',
+        }"
+        v-model="background.backgroundRepeat"
+      ></TabsItem>
+    </template>
 
-      <!-- 背景渐变设置 -->
-      <template v-if="background.backgroundType === 'gradient'">
-        <SliderItem
-          label="Angle"
-          type="angle"
-          v-model="background.backgroundGradientAngle"
+    <!-- 背景渐变设置 -->
+    <template v-if="background.backgroundType === 'gradient'">
+      <SliderItem
+        label="Angle"
+        type="angle"
+        v-model="background.backgroundGradientAngle"
+        :min="0"
+        :max="360"
+        :interval="1"
+      >
+      </SliderItem>
+      <div class="item" v-if="background.backgroundGradient.length > 0">
+        <Slider
+          width="100%"
+          :model-value="background.backgroundGradient.map((item) => item.percentage)"
           :min="0"
-          :max="360"
-          :interval="1"
-        >
-        </SliderItem>
-        <div class="item" v-if="background.backgroundGradient.length > 0">
-          <Slider
-            width="100%"
-            :model-value="background.backgroundGradient.map((item) => item.percentage)"
-            :min="0"
-            :max="100"
-            :contained="true"
-            :dot-options="
-              background.backgroundGradient.map((item) => ({
-                disabled: false,
-                style: { background: item.color },
-              }))
-            "
-            :process="
-              (dotsPos) =>
-                dotsPos
-                  .slice(0, -1)
-                  .map((_, i) => [
-                    dotsPos[i],
-                    dotsPos[i + 1],
-                    {
-                      background: `linear-gradient(90deg, ${
-                        background.backgroundGradient[i].color
-                      }, ${background.backgroundGradient[i + 1].color})`,
-                    },
-                  ])
-            "
-            @update:model-value="
-              (values) => {
-                background.backgroundGradient.forEach((item, index) => {
-                  item.percentage = values[index]
-                })
-              }
-            "
-          ></Slider>
-        </div>
-        <ColorItem
-          v-for="(color, index) in background.backgroundGradient"
-          :model-value="color.color"
-          :label="`Color ${index + 1}`"
-          @update:model-value="(color) => (background.backgroundGradient[index].color = color)"
-        >
-          <Icon
-            :class="['delete-color-btn', { disabled: background.backgroundGradient.length <= 2 }]"
-            type="circle"
-            name="line"
-            :size="8"
-            @click="deleteColor(index)"
-          ></Icon>
-        </ColorItem>
-        <div class="item">
-          <div class="add-color-btn" @click="handleAddColor">Add Color</div>
-        </div>
-      </template>
+          :max="100"
+          :contained="true"
+          :dot-options="
+            background.backgroundGradient.map((item) => ({
+              disabled: false,
+              style: { background: item.color },
+            }))
+          "
+          :process="
+            (dotsPos) =>
+              dotsPos
+                .slice(0, -1)
+                .map((_, i) => [
+                  dotsPos[i],
+                  dotsPos[i + 1],
+                  {
+                    background: `linear-gradient(90deg, ${
+                      background.backgroundGradient[i].color
+                    }, ${background.backgroundGradient[i + 1].color})`,
+                  },
+                ])
+          "
+          @update:model-value="
+            (values) => {
+              background.backgroundGradient.forEach((item, index) => {
+                item.percentage = values[index]
+              })
+            }
+          "
+        ></Slider>
+      </div>
+      <ColorItem
+        v-for="(color, index) in background.backgroundGradient"
+        :model-value="color.color"
+        :label="`Color ${index + 1}`"
+        @update:model-value="(color) => (background.backgroundGradient[index].color = color)"
+      >
+        <Icon
+          :class="['delete-color-btn', { disabled: background.backgroundGradient.length <= 2 }]"
+          type="circle"
+          name="line"
+          :size="8"
+          @click="deleteColor(index)"
+        ></Icon>
+      </ColorItem>
+      <div class="item">
+        <div class="add-color-btn" @click="handleAddColor">Add Color</div>
+      </div>
     </template>
   </Group>
 </template>

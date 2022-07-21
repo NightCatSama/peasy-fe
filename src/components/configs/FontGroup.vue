@@ -5,6 +5,7 @@ import SelectItem from '@/components/configs/items/SelectItem.vue'
 import ColorItem from './items/ColorItem.vue'
 import { usePageStore } from '@/stores/page'
 import { PageNode } from '@/config'
+import TabsItem from './items/TabsItem.vue'
 
 interface IFontGroupProps {
   node: PageNode
@@ -45,10 +46,27 @@ const fontWeightMap: { [key in IFont['fontWeight']]: string } = {
   900: '900',
 }
 
-const fontStyleMap: { [key in IFont['fontStyle']]: string } = {
-  normal: 'Normal',
-  italic: 'Italic',
-}
+const fontTabs = $computed(() => [{
+  key: 'bold',
+  icon: 'bold',
+  isActive: font.fontWeight === 'bold',
+  setValue: (val: boolean) => font.fontWeight = val ? 'bold' : 'normal'
+}, {
+  key: 'italic',
+  icon: 'italic',
+  isActive: font.fontStyle === 'italic',
+  setValue: (val: boolean) => font.fontStyle = val ? 'italic' : 'normal'
+}, {
+  key: 'underline',
+  icon: 'underline',
+  isActive: font.textDecoration === 'underline',
+  setValue: (val: boolean) => font.textDecoration = val ? 'underline' : 'none'
+}, {
+  key: 'line-through',
+  icon: 'line-through',
+  isActive: font.textDecoration === 'line-through',
+  setValue: (val: boolean) => font.textDecoration = val ? 'line-through' : 'none'
+}])
 </script>
 
 <template>
@@ -62,26 +80,34 @@ const fontStyleMap: { [key in IFont['fontStyle']]: string } = {
         @update:model-value="fontSetting.fontSize.setValue"
       />
       <ColorItem label="Color" v-model="font.color"></ColorItem>
-      <InputItem
-        v-if="showAdvanced"
-        :label="fontSetting.lineHeight.name"
-        :model-value="fontSetting.lineHeight.value"
-        :suffix="fontSetting.lineHeight.suffix"
-        :type="fontSetting.lineHeight.type"
-        @update:model-value="fontSetting.lineHeight.setValue"
-      />
-      <SelectItem
-        v-if="showAdvanced"
-        label="Font Weight"
-        v-model="font.fontWeight"
-        :options="fontWeightMap"
-      ></SelectItem>
-      <SelectItem
-        v-if="showAdvanced"
-        label="Font Style"
-        v-model="font.fontStyle"
-        :options="fontStyleMap"
-      ></SelectItem>
+      <template v-if="showAdvanced">
+        <TabsItem
+          :data="['left', 'center', 'right', 'justify']"
+          v-model="font.textAlign"
+          :icon-map="{ left: 'align-left', center: 'align-center', right: 'align-right', justify: 'align-justify' }"
+        ></TabsItem>
+        <TabsItem
+          :data="fontTabs.map(item => ({
+            key: item.icon,
+            value: item.icon,
+            active: item.isActive,
+            onClick: item.setValue
+          }))"
+          :icon-map="Object.fromEntries(fontTabs.map(item => [item.key, item.icon]))"
+        ></TabsItem>
+        <InputItem
+          :label="fontSetting.lineHeight.name"
+          :model-value="fontSetting.lineHeight.value"
+          :suffix="fontSetting.lineHeight.suffix"
+          :type="fontSetting.lineHeight.type"
+          @update:model-value="fontSetting.lineHeight.setValue"
+        />
+        <SelectItem
+          label="Font Weight"
+          v-model="font.fontWeight"
+          :options="fontWeightMap"
+        ></SelectItem>
+       </template>
     </template>
   </Group>
 </template>

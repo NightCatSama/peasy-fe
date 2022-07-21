@@ -15,7 +15,7 @@ provide('isEditMode', true)
 
 const pageStore = usePageStore()
 
-const { pageData, modelData } = storeToRefs(pageStore)
+const { pageData, materialData } = storeToRefs(pageStore)
 const { addSection, getAssetsData, getPageData, download } = pageStore
 
 const handleDownload = async () => {

@@ -56,6 +56,8 @@ export const getDefaultFont = (initConfig?: Partial<IFont>): IFont =>
       color: '#232323',
       fontWeight: 'normal',
       fontStyle: 'normal',
+      textDecoration: 'none',
+      textAlign: 'left',
     },
     initConfig
   )
@@ -83,7 +85,7 @@ export const getDefaultBorder = (initConfig?: Partial<IBorder>): IBorder =>
 export const getDefaultBackground = (initConfig?: Partial<IBackground>): IBackground =>
   Object.assign(
     {
-      backgroundType: 'color',
+      backgroundType: 'none',
       backgroundColor: '#FFFFFF',
       backgroundImage: '',
       backgroundSize: 'auto',

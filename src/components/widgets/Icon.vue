@@ -24,6 +24,14 @@ import BackgroundIcon from '@/assets/background.svg'
 import CopyIcon from '@/assets/copy.svg'
 import BasicIcon from '@/assets/basic.svg'
 import QuestionIcon from '@/assets/question.svg'
+import ItalicIcon from '@/assets/italic.svg'
+import BoldIcon from '@/assets/bold.svg'
+import UnderlineIcon from '@/assets/underline.svg'
+import LineThroughIcon from '@/assets/line-through.svg'
+import AlignLeftIcon from '@/assets/align-left.svg'
+import AlignCenterIcon from '@/assets/align-center.svg'
+import AlignRightIcon from '@/assets/align-right.svg'
+import AlignJustifyIcon from '@/assets/align-justify.svg'
 
 interface IIconProps {
   name:
@@ -52,6 +60,14 @@ interface IIconProps {
     | 'copy'
     | 'basic'
     | 'question'
+    | 'italic'
+    | 'bold'
+    | 'underline'
+    | 'through'
+    | 'align-left'
+    | 'align-center'
+    | 'align-right'
+    | 'align-justify'
   type?: 'circle' | 'pure' | 'btn'
   size?: number
   active?: boolean
@@ -83,6 +99,14 @@ const iconMap = {
   basic: BasicIcon,
   question: QuestionIcon,
   background: BackgroundIcon,
+  italic: ItalicIcon,
+  bold: BoldIcon,
+  underline: UnderlineIcon,
+  'line-through': LineThroughIcon,
+  'align-left': AlignLeftIcon,
+  'align-center': AlignCenterIcon,
+  'align-right': AlignRightIcon,
+  'align-justify': AlignJustifyIcon,
 }
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()

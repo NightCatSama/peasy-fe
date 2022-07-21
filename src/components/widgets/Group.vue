@@ -135,7 +135,9 @@ const iconName = {
   display: flex;
   align-items: center;
   min-height: 32px;
-  margin-bottom: 10px;
+  &:not(:last-child) {
+    margin-bottom: 10px;
+  }
   .label {
     flex: 1;
     font-size: 14px;

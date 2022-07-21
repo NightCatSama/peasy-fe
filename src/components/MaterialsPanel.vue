@@ -11,7 +11,7 @@ import { DisplayMode, useDisplayStore } from '@/stores/display'
 import { PageNode } from '@/config'
 
 const pageStore = usePageStore()
-const { pageData, modelData } = storeToRefs(pageStore)
+const { pageData, materialData } = storeToRefs(pageStore)
 const { addSection } = pageStore
 
 const dragStore = useDragStore()
@@ -47,7 +47,7 @@ const handleDragStart = (event: DragEvent, data: PageNode) => {
 
 <template>
   <div class="materials-panel">
-    <section v-for="(list, key) in modelData" v-show="key !== 'template'">
+    <section v-for="(list, key) in materialData" v-show="key !== 'template'">
       <div class="title">{{ key.toLocaleUpperCase() }}</div>
       <draggable
         class="element-list"
