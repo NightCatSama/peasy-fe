@@ -21,7 +21,7 @@ const configs = $computed(() => {
           label: 'Text',
           type: 'textarea',
           modelValue: basic.text,
-          placeholder: 'Displayed Text',
+          placeholder: 'Text nodes will be automatically removed when empty.',
           realTime: true,
         },
         setValue: (val: string) => {

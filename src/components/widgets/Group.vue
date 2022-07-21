@@ -148,4 +148,26 @@ const iconName = {
     }
   }
 }
+
+:deep(.divider) {
+  position: relative;
+  margin: 16px 0 24px;
+  height: 0;
+  opacity: 1;
+  border: 1px solid rgba($panel-light, 50%);
+  outline: none;
+  overflow: visible;
+
+  &::after {
+    content: attr(data-text);
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: $panel-content;
+    padding: 0 8px;
+    color: rgba($color, 50%);
+    z-index: 1;
+  }
+}
 </style>

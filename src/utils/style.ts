@@ -164,6 +164,14 @@ export const useContainerStyle = (container: IContainer) => {
       backgroundRepeat: container.backgroundRepeat,
       backgroundSize: container.backgroundSize,
     }
+  } else if (container.backgroundType === 'gradient') {
+    backgroundStyles = {
+      backgroundImage: `linear-gradient(${
+        container.backgroundGradientAngle
+      }deg, ${
+        container.backgroundGradient.map(({ color, percentage }) => `${color} ${percentage}%`)
+      })`,
+    }
   }
 
   return {

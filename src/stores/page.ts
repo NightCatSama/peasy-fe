@@ -122,10 +122,13 @@ export const usePageStore = defineStore('page', {
       if (this.activeNode.type === 'section') {
         this.addSection(this.activeNode)
       } else if (this.activeParentNode) {
+        const index = this.activeParentNode?.children?.indexOf(this.activeNode)
         this.insertNode(
           this.activeNode,
           this.activeParentNode,
-          this.activeParentNode?.children?.length!
+          index !== void 0 && index > -1
+            ? index
+            : this.activeParentNode?.children?.length!
         )
       }
     },

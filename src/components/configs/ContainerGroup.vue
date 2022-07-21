@@ -18,6 +18,15 @@ const { container, node } = defineProps<IContainerGroupProps>()
 
 const updateBackgroundType = (type: 'color' | 'image' | 'gradient') => {
   container.backgroundType = type
+  if (type === 'gradient') {
+    container.backgroundGradient = [{
+      color: '#fff',
+      percentage: 0,
+    }, {
+      color: '#000',
+      percentage: 100,
+    }]
+  }
 }
 
 const uploadImage = async (e: InputEvent) => {
@@ -42,12 +51,16 @@ const uploadImage = async (e: InputEvent) => {
         }"
         @update:model-value="updateBackgroundType"
       ></SelectItem>
+
+      <!-- 背景色设置 -->
       <ColorItem
         v-if="container.backgroundType === 'color'"
         :model-value="container.backgroundColor"
         :label="'Background Color'"
         @update:model-value="(color) => (container.backgroundColor = color)"
       ></ColorItem>
+
+      <!-- 背景图设置 -->
       <template v-if="container.backgroundType === 'image'">
         <InputItem
           :model-value="container.backgroundImage"
@@ -69,6 +82,7 @@ const uploadImage = async (e: InputEvent) => {
               </div>
               <Icon
                 name="question"
+                class="question-icon"
                 :size="13"
                 v-tooltip="{ content: 'Stability not guaranteed' }"
               ></Icon>
@@ -100,7 +114,28 @@ const uploadImage = async (e: InputEvent) => {
           ></TabsItem>
         </template>
       </template>
+
+      <!-- 背景渐变设置 -->
+      <template v-if="container.backgroundType === 'gradient'">
+        <SliderItem
+          label="Angle"
+          type="angle"
+          v-model="container.backgroundGradientAngle"
+          :min="0"
+          :max="360"
+          :interval="1"
+        ></SliderItem>
+        <ColorItem
+          v-for="(color, index) in container.backgroundGradient"
+          :model-value="color.color"
+          :label="`Color ${index + 1}`"
+          @update:model-value="(color) => (container.backgroundGradient[index].color = color)"
+        ></ColorItem>
+      </template>
+
+      <!-- 更多其他设置 -->
       <template v-if="showAdvanced">
+        <hr class="divider" data-text="More Setting" />
         <!-- TODO: 换成 Overflow 图标 -->
         <TabsItem
           label="Overflow"
@@ -160,9 +195,6 @@ const uploadImage = async (e: InputEvent) => {
       position: relative;
       margin-right: 4px;
 
-      &:hover {
-        color: $theme;
-      }
       &-input {
         position: absolute;
         left: 0;
@@ -170,6 +202,12 @@ const uploadImage = async (e: InputEvent) => {
         width: 100%;
         height: 100%;
         opacity: 0;
+      }
+    }
+
+    .upload-btn, .question-icon {
+      &:hover {
+        color: $theme;
       }
     }
   }

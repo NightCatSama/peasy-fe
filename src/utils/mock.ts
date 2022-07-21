@@ -1,5 +1,6 @@
 import { PageNode } from '@/config'
 import {
+  getDefaultBasic,
   getDefaultBorder,
   getDefaultContainer,
   getDefaultFont,
@@ -51,9 +52,7 @@ export const getMockText = (text?: string): PageNode<'Text'> => {
     name: 'Text',
     component: 'Text',
     props: {
-      basic: {
-        text: text || 'Text',
-      },
+      basic: getDefaultBasic('Text'),
       font: getDefaultFont(),
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),

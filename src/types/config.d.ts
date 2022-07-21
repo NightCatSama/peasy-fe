@@ -56,11 +56,16 @@ interface IBorder {
 /** 背景信息 */
 interface IContainer {
   backgroundType: 'color' | 'image' | 'gradient'
+  /** 背景色 */
   backgroundColor: string
+  /** 背景图 */
   backgroundImage: string
   backgroundSize: 'cover' | 'contain' | 'auto'
   backgroundPosition: string
   backgroundRepeat: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat'
+  /** 背景过渡色 */
+  backgroundGradientAngle: number
+  backgroundGradient: { color: string; percentage: number }[]
   overflow: 'visible' | 'hidden' | 'scroll' | 'auto'
   boxShadow: string
   opacity: number

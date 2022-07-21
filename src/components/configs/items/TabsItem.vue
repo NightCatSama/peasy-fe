@@ -30,8 +30,12 @@ const handleChange = (val: string) => {
 
 <style lang="scss" scoped>
 .item {
+  flex-direction: column;
+  align-items: stretch;
+
   .label {
     display: none;
+    margin-bottom: 10px;
   }
 }
 </style>

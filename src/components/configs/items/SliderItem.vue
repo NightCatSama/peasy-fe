@@ -5,11 +5,12 @@ type SliderPropType = Partial<InstanceType<typeof Slider>>
 
 interface ISliderItemProps extends SliderPropType {
   label: string
+  type?: 'text' | 'angle'
   modelValue: SliderPropType['modelValue']
 }
 
 const props = defineProps<ISliderItemProps>()
-const { label, modelValue } = props
+const { label, type = 'text', modelValue } = $(props)
 const emit = defineEmits(['update:modelValue'])
 
 const value = $computed({
@@ -23,6 +24,14 @@ const value = $computed({
 <template>
   <div class="item">
     <div class="label">{{ label }}</div>
+    <div :class="['value', `value-type-${type}`]">
+      <div
+        v-if="type === 'angle'"
+        class="angle-point"
+        :style="{ transform: `rotate(${(value as number) - 90}deg)` }"
+      ></div>
+      {{ value }}
+    </div>
     <Slider class="slider" v-model="value" :contained="true" v-bind="$attrs"></Slider>
   </div>
 </template>
@@ -32,6 +41,53 @@ const value = $computed({
   .label {
     flex: none;
     margin-right: 10px;
+  }
+
+  .value {
+    position: relative;
+    width: 36px;
+    padding: 2px 4px;
+    font-size: 14px;
+    border-radius: $normal-radius;
+    color: $color;
+    background: $panel-gradient;
+    margin-right: 10px;
+    text-align: center;
+
+    $angleSize: 28px;
+
+    &-type-angle {
+      width: $angleSize;
+      height: $angleSize;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: 50%;
+      background: $bg-default;
+      font-size: 12px;
+      color: rgba($color, 30%);
+    }
+
+    .angle-point {
+      position: absolute;
+      left: 50%;
+      top: 50%;
+      width: $angleSize * 0.5;
+      height: 4px;
+      margin-top: -2px;
+      transform-origin: center left;
+
+      &::after {
+        content: '';
+        position: absolute;
+        width: 4px;
+        height: 4px;
+        right: 0;
+        top: 0;
+        border-radius: 50%;
+        background-color: $white;
+      }
+    }
   }
 
   .slider {

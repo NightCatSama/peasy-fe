@@ -1,4 +1,20 @@
-import { PageNode } from '@/config'
+import { ComponentName, GroupPropType, PageNode } from '@/config'
+
+export const getDefaultBasic = <
+  T extends ComponentName = any,
+  P extends Partial<GroupPropType['basic'][T]> = any
+>(
+  component: T,
+  initConfig?: P
+): P => {
+  let obj: Partial<GroupPropType['basic'][T]> = {}
+  if (component === 'Text') {
+    obj = {
+      text: 'Title Text',
+    }
+  }
+  return Object.assign(obj, initConfig)
+}
 
 export const getDefaultSize = (
   type: PageNode['type'] = 'component',
@@ -67,8 +83,8 @@ export const getDefaultBorder = (initConfig?: Partial<IBorder>): IBorder =>
 export const getDefaultContainer = (initConfig?: Partial<IContainer>): IContainer =>
   Object.assign(
     {
-      backgroundType: 'color',
-      backgroundColor: 'transparent',
+      backgroundType: 'image',
+      backgroundColor: '#FFFFFF',
       backgroundImage: '',
       backgroundSize: 'auto',
       backgroundPosition: 'center',
@@ -76,6 +92,8 @@ export const getDefaultContainer = (initConfig?: Partial<IContainer>): IContaine
       overflow: 'visible',
       boxShadow: '',
       opacity: 1,
+      backgroundGradientAngle: 0,
+      backgroundGradient: [],
     },
     initConfig
   )

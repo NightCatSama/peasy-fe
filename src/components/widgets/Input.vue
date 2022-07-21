@@ -164,9 +164,10 @@ const handleInput = (e: any) => realTime && handleChange(e)
     background: $tr;
     border: none;
     outline: none;
-    color: $color;
+    color: darken($color, 20%);
     width: 100%;
     padding: 0 12px;
+    font-size: 16px;
     font-family: $font-family;
 
     &[disabled] {
