@@ -147,15 +147,18 @@ const preventMousedown = (e: MouseEvent) => {
     &:not(.snapshot)::after {
       content: '';
       position: absolute;
-      left: 0;
-      top: 0;
+      left: 50%;
+      top: 50%;
       width: 100%;
       height: 100%;
       pointer-events: none;
-      // border: 3px dashed rgba($theme, 80%);
-      z-index: 99;
-      box-sizing: border-box;
-      background: rgba($black, 0.06);
+      outline: 3px dashed rgba($theme, 80%);
+      z-index: 999;
+      box-sizing: content-box;
+      border-width: inherit;
+      border-color: transparent;
+      border-style: solid;
+      transform: translate(-50%, -50%);
     }
   }
   &.grading {

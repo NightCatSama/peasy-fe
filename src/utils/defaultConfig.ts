@@ -83,7 +83,7 @@ export const getDefaultBorder = (initConfig?: Partial<IBorder>): IBorder =>
 export const getDefaultBackground = (initConfig?: Partial<IBackground>): IBackground =>
   Object.assign(
     {
-      backgroundType: 'image',
+      backgroundType: 'color',
       backgroundColor: '#FFFFFF',
       backgroundImage: '',
       backgroundSize: 'auto',

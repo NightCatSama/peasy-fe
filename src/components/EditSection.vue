@@ -243,7 +243,7 @@ const handleLeaveTrash = (e: DragEvent) => {
       display: flex;
       flex-direction: column;
       border-radius: $normal-radius;
-      overflow: hidden;
+      overflow: visible;
       background: #fff;
       color: black;
     }
