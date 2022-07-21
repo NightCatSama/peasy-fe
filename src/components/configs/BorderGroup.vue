@@ -1,13 +1,13 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
-import { fixedPoint, fixedPointToNumber } from '@/utils/sizeHelper';
-import { PageNode } from '@/config';
-import InputItem from './items/InputItem.vue';
-import SelectItem from './items/SelectItem.vue';
-import ColorItem from './items/ColorItem.vue';
-import Tabs from '../widgets/Tabs.vue';
-import Icon from '../widgets/Icon.vue';
-import TabsItem from './items/TabsItem.vue';
+import { fixedPoint, fixedPointToNumber } from '@/utils/sizeHelper'
+import { PageNode } from '@/config'
+import InputItem from './items/InputItem.vue'
+import SelectItem from './items/SelectItem.vue'
+import ColorItem from './items/ColorItem.vue'
+import Tabs from '../widgets/Tabs.vue'
+import Icon from '../widgets/Icon.vue'
+import TabsItem from './items/TabsItem.vue'
 
 interface IFontGroupProps {
   node: PageNode
@@ -25,7 +25,8 @@ const showList: any = $computed(() => {
     borderWidth: {
       name: 'Border Width',
       type: 'number',
-      value: curShowBorderIndex > -1 ? border.borderWidth[curShowBorderIndex] : border.borderWidth[0],
+      value:
+        curShowBorderIndex > -1 ? border.borderWidth[curShowBorderIndex] : border.borderWidth[0],
       setValue: (val: string) => {
         const value = fixedPoint(val)
         if (curShowBorderIndex === -1) {
@@ -39,7 +40,8 @@ const showList: any = $computed(() => {
     borderColor: {
       name: 'Border Color',
       type: 'color',
-      value: curShowBorderIndex > -1 ? border.borderColor[curShowBorderIndex] : border.borderColor[0],
+      value:
+        curShowBorderIndex > -1 ? border.borderColor[curShowBorderIndex] : border.borderColor[0],
       setValue: (value: string) => {
         if (curShowBorderIndex === -1) {
           border.borderColor = [value, value, value, value]
@@ -51,7 +53,8 @@ const showList: any = $computed(() => {
     borderStyle: {
       name: 'Border Style',
       type: 'select',
-      value: curShowBorderIndex > -1 ? border.borderStyle[curShowBorderIndex] : border.borderStyle[0],
+      value:
+        curShowBorderIndex > -1 ? border.borderStyle[curShowBorderIndex] : border.borderStyle[0],
       setValue: (value: BorderStyle) => {
         if (curShowBorderIndex === -1) {
           border.borderStyle = [value, value, value, value]
@@ -70,17 +73,17 @@ const showList: any = $computed(() => {
           border.borderRadius = new Array(4).fill(
             border.borderRadius === 'circle' ? '0px' : border.borderRadius
           ) as any
-        } else  {
+        } else {
           border.borderRadius = val
         }
       },
-      suffix: ['px', 'circle', 'refined']
+      suffix: ['px', 'circle', 'refined'],
     },
   }
 })
 
 const handleInput = (e: InputEvent) => {
-  const elem = (e.target as HTMLInputElement)
+  const elem = e.target as HTMLInputElement
   const value = elem.value
   if (value.length > 4) {
     elem.value = value.slice(0, 4)
@@ -90,32 +93,28 @@ const handleInput = (e: InputEvent) => {
 }
 
 const handleChange = (e: InputEvent, setValue: (val: string) => void) => {
-  const elem = (e.target as HTMLInputElement)
+  const elem = e.target as HTMLInputElement
   const value = elem.value
   setValue(fixedPointToNumber(value) + 'px')
 }
 
 const boxStyles = $computed(() => {
-  const getBorderRadius = (radius: string) => radius === 'circle' ? '50%' : radius
+  const getBorderRadius = (radius: string) => (radius === 'circle' ? '50%' : radius)
   return {
     [curShowBorderIndex === -1
       ? 'borderColor'
-      : ['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'][curShowBorderIndex]
-    ]: curShowBorderIndex === -1 ? '#DDD' : '#3e7ce8',
+      : ['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'][
+          curShowBorderIndex
+        ]]: curShowBorderIndex === -1 ? '#DDD' : '#3e7ce8',
     borderRadius: Array.isArray(border.borderRadius)
-        ? border.borderRadius.map(getBorderRadius).join(' ')
-        : getBorderRadius(border.borderRadius),
+      ? border.borderRadius.map(getBorderRadius).join(' ')
+      : getBorderRadius(border.borderRadius),
   }
 })
 </script>
 
 <template>
-  <Group
-    title="Border"
-    class="border-group"
-    :can-advanced="false"
-    :default-collapsed="false"
-  >
+  <Group title="Border" class="border-group" :can-advanced="false" :default-collapsed="false">
     <div class="spacing-block" data-text="Preview">
       <div class="inner-block" :style="boxStyles">
         <Icon
@@ -125,9 +124,16 @@ const boxStyles = $computed(() => {
           :class="['border-btn', 'border-btn-' + dir, { active: curShowBorderIndex === i }]"
           @click="curShowBorderIndex = i"
         ></Icon>
-        <div :class="['all-btn', { active: curShowBorderIndex === -1 }]" @click="curShowBorderIndex = -1">{{
-          curShowBorderIndex === -1 ? 'All' : ['Top', 'Right', 'Bottom', 'Left'][curShowBorderIndex]
-        }}</div>
+        <div
+          :class="['all-btn', { active: curShowBorderIndex === -1 }]"
+          @click="curShowBorderIndex = -1"
+        >
+          {{
+            curShowBorderIndex === -1
+              ? 'All'
+              : ['Top', 'Right', 'Bottom', 'Left'][curShowBorderIndex]
+          }}
+        </div>
       </div>
       <input
         v-for="(val, i) in border.borderRadius"
@@ -178,7 +184,7 @@ const boxStyles = $computed(() => {
   position: absolute;
   color: rgba($panel-light, 70%);
   font-size: 14px;
-  transform: scale(.8);
+  transform: scale(0.8);
 }
 $gapX: 44px;
 $gapY: 30px;
@@ -205,7 +211,7 @@ $gapY: 30px;
     position: relative;
     width: 100%;
     height: 100%;
-    opacity: .8;
+    opacity: 0.8;
     border-width: 3px;
     border-style: solid;
   }
@@ -222,7 +228,9 @@ $gapY: 30px;
     transform-origin: center;
     text-align: center;
 
-    &, &:focus, &:active {
+    &,
+    &:focus,
+    &:active {
       outline: none;
       border: none;
     }
@@ -289,7 +297,7 @@ $gapY: 30px;
     height: 28px;
     background: $panel-light-gradient;
     cursor: pointer;
-    transition: all .3s;
+    transition: all 0.3s;
     display: flex;
     justify-content: center;
     align-items: center;

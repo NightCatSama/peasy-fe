@@ -42,7 +42,7 @@ const dragEvents = $computed(() => ({
       addSection(dragNode.value, event.newIndex! - (showAllItem ? 1 : 0))
     }
   },
-  start: () => inDraggable = true,
+  start: () => (inDraggable = true),
   end: (event: SortableEvent) => {
     // 交互组件位置
     if (event.pullMode !== 'clone' && event.oldIndex !== void 0 && event.newIndex !== void 0) {
@@ -55,7 +55,10 @@ const dragEvents = $computed(() => ({
 
 <template>
   <draggable
-    :class="['section-list', { 'section-list-drag': inDraggable || (dragType === 'clone' && dragNodeType === 'section') }]"
+    :class="[
+      'section-list',
+      { 'section-list-drag': inDraggable || (dragType === 'clone' && dragNodeType === 'section') },
+    ]"
     :item-key="'name'"
     :group="{ name: 'section', put: true, pull: true }"
     :disabled="dragNode && dragNodeType !== 'section'"
@@ -63,7 +66,7 @@ const dragEvents = $computed(() => ({
     :model-value="allPageData || []"
     :component-data="{
       tag: 'transition-group',
-      name: 'fade'
+      name: 'fade',
     }"
     v-on="dragEvents"
   >
@@ -116,7 +119,8 @@ const dragEvents = $computed(() => ({
     }
   }
 
-  .section-item, &:deep(.section-item-ghost) {
+  .section-item,
+  &:deep(.section-item-ghost) {
     width: 32px;
     height: 32px;
     border-radius: $normal-radius;

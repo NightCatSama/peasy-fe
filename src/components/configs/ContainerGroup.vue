@@ -2,13 +2,13 @@
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
 import SelectItem from '@/components/configs/items/SelectItem.vue'
-import ColorItem from './items/ColorItem.vue';
-import { usePageStore } from '@/stores/page';
-import { PageNode } from '@/config';
-import Icon from '../widgets/Icon.vue';
-import { put } from '@/utils/oss';
-import TabsItem from './items/TabsItem.vue';
-import SliderItem from './items/SliderItem.vue';
+import ColorItem from './items/ColorItem.vue'
+import { usePageStore } from '@/stores/page'
+import { PageNode } from '@/config'
+import Icon from '../widgets/Icon.vue'
+import { put } from '@/utils/oss'
+import TabsItem from './items/TabsItem.vue'
+import SliderItem from './items/SliderItem.vue'
 
 interface IContainerGroupProps {
   node: PageNode
@@ -27,7 +27,6 @@ const uploadImage = async (e: InputEvent) => {
     container.backgroundImage = url as string
   }
 }
-
 </script>
 
 <template>
@@ -35,11 +34,11 @@ const uploadImage = async (e: InputEvent) => {
     <template #default="{ showAdvanced }">
       <SelectItem
         :model-value="container.backgroundType"
-        :label='"Background"'
+        :label="'Background'"
         :options="{
-          'color': 'Color',
-          'image': 'Image',
-          'gradient': 'Gradient'
+          color: 'Color',
+          image: 'Image',
+          gradient: 'Gradient',
         }"
         @update:model-value="updateBackgroundType"
       ></SelectItem>
@@ -47,7 +46,7 @@ const uploadImage = async (e: InputEvent) => {
         v-if="container.backgroundType === 'color'"
         :model-value="container.backgroundColor"
         :label="'Background Color'"
-        @update:model-value="color => container.backgroundColor = color"
+        @update:model-value="(color) => (container.backgroundColor = color)"
       ></ColorItem>
       <template v-if="container.backgroundType === 'image'">
         <InputItem
@@ -55,7 +54,7 @@ const uploadImage = async (e: InputEvent) => {
           :label="'Image Link'"
           :type="'textarea'"
           :placeholder="'https://'"
-          @update:model-value="image => container.backgroundImage = image"
+          @update:model-value="(image) => (container.backgroundImage = image)"
         >
           <template #suffix>
             <div class="upload-wrapper">
@@ -68,7 +67,11 @@ const uploadImage = async (e: InputEvent) => {
                   @change="uploadImage"
                 />
               </div>
-              <Icon name="question" :size="13" v-tooltip="{ content: 'Stability not guaranteed' }"></Icon>
+              <Icon
+                name="question"
+                :size="13"
+                v-tooltip="{ content: 'Stability not guaranteed' }"
+              ></Icon>
             </div>
           </template>
         </InputItem>
@@ -91,7 +94,7 @@ const uploadImage = async (e: InputEvent) => {
               repeat: 'Repeat',
               'repeat-x': 'Only-X',
               'repeat-y': 'Only-Y',
-              'no-repeat': 'None'
+              'no-repeat': 'None',
             }"
             v-model="container.backgroundRepeat"
           ></TabsItem>
@@ -114,16 +117,20 @@ const uploadImage = async (e: InputEvent) => {
         <!-- TODO: 换成 box shadow 模块 -->
         <TabsItem
           label="Box Shadow"
-          :data="[{
-            key: '0 0 10px 3px rgba(0, 0, 0, .16)',
-            value: 'Float'
-          }, {
-            key: '0 0 20px 5px rgba(0, 0, 0, 0.16)',
-            value: 'Bigger'
-          }, {
-            key: '1px 1px 3px 1px rgba(0, 0, 0, 0.36)',
-            value: 'Bulge'
-          }]"
+          :data="[
+            {
+              key: '0 0 10px 3px rgba(0, 0, 0, .16)',
+              value: 'Float',
+            },
+            {
+              key: '0 0 20px 5px rgba(0, 0, 0, 0.16)',
+              value: 'Bigger',
+            },
+            {
+              key: '1px 1px 3px 1px rgba(0, 0, 0, 0.36)',
+              value: 'Bulge',
+            },
+          ]"
           v-model="container.boxShadow"
         ></TabsItem>
       </template>

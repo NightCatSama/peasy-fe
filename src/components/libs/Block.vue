@@ -5,8 +5,8 @@ import {
   useBorderStyle,
   useLayoutStyle,
   usePositionStyle,
-useSpacingStyle,
-useContainerStyle,
+  useSpacingStyle,
+  useContainerStyle,
 } from '@/utils/style'
 
 interface IBlockProps {
@@ -37,5 +37,4 @@ const style = $computed(() =>
   <div :class="'block'" :style="style"><slot></slot></div>
 </template>
 
-<style scoped>
-</style>
+<style scoped></style>

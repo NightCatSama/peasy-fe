@@ -45,7 +45,7 @@ export const usePageStore = defineStore('page', {
       }
       dfs(state.allPageData)
       return nameMap
-    }
+    },
   },
   actions: {
     async getPageData() {
@@ -55,7 +55,11 @@ export const usePageStore = defineStore('page', {
     async getAssetsData() {
       // const { data } = await api.post<any>({})
       const data = {
-        section: [getMockBlock('section', 'Section-1'), getMockBlock('section', 'Section-2'), getMockBlock('section', 'Section-3')],
+        section: [
+          getMockBlock('section', 'Section-1'),
+          getMockBlock('section', 'Section-2'),
+          getMockBlock('section', 'Section-3'),
+        ],
         component: [getMockText(), getMockBlock()],
         template: [],
       }
@@ -106,7 +110,10 @@ export const usePageStore = defineStore('page', {
         }
         this.removeSection(this.activeNode)
       } else {
-        this.activeParentNode?.children?.splice(this.activeParentNode?.children?.indexOf(this.activeNode), 1)
+        this.activeParentNode?.children?.splice(
+          this.activeParentNode?.children?.indexOf(this.activeNode),
+          1
+        )
       }
       this.activeNode = null
     },
@@ -115,7 +122,11 @@ export const usePageStore = defineStore('page', {
       if (this.activeNode.type === 'section') {
         this.addSection(this.activeNode)
       } else if (this.activeParentNode) {
-        this.insertNode(this.activeNode, this.activeParentNode, this.activeParentNode?.children?.length!)
+        this.insertNode(
+          this.activeNode,
+          this.activeParentNode,
+          this.activeParentNode?.children?.length!
+        )
       }
     },
     setActiveSection(node: PageNode | null) {

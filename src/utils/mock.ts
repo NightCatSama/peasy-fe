@@ -1,5 +1,12 @@
 import { PageNode } from '@/config'
-import { getDefaultBorder, getDefaultContainer, getDefaultFont, getDefaultLayout, getDefaultSize, getDefaultSpacing } from './defaultConfig'
+import {
+  getDefaultBorder,
+  getDefaultContainer,
+  getDefaultFont,
+  getDefaultLayout,
+  getDefaultSize,
+  getDefaultSpacing,
+} from './defaultConfig'
 
 export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNode<'Block'> => {
   const type = initType || 'component'
@@ -14,24 +21,27 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
       border: getDefaultBorder(),
       container: getDefaultContainer({
         backgroundType: 'image',
-        backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4'
+        backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4',
       }),
     },
-    children: type === 'component' ? [] : [
-      {
-        type: 'component',
-        name: `${type}-Block`,
-        component: 'Block',
-        props: {
-          size: getDefaultSize('component', { width: '50%' }),
-          layout: getDefaultLayout(),
-          spacing: getDefaultSpacing(),
-          border: getDefaultBorder(),
-          container: getDefaultContainer(),
-        },
-        children: [getMockText(name)],
-      } as PageNode<'Block'>,
-    ],
+    children:
+      type === 'component'
+        ? []
+        : [
+            {
+              type: 'component',
+              name: `${type}-Block`,
+              component: 'Block',
+              props: {
+                size: getDefaultSize('component', { width: '50%' }),
+                layout: getDefaultLayout(),
+                spacing: getDefaultSpacing(),
+                border: getDefaultBorder(),
+                container: getDefaultContainer(),
+              },
+              children: [getMockText(name)],
+            } as PageNode<'Block'>,
+          ],
   }
 }
 
@@ -47,6 +57,6 @@ export const getMockText = (text?: string): PageNode<'Text'> => {
       font: getDefaultFont(),
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),
-    }
+    },
   }
 }

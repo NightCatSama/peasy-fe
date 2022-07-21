@@ -4,8 +4,8 @@ import { defineStore } from 'pinia'
 export const useDragStore = defineStore('drag', {
   state: () => ({
     /** 当前拖拽中的组件，如果是 move 模式，则只为拖拽元素的父节点 */
-    dragNode: null as (PageNode | null),
-    dragParentNode: null as (PageNode | null),
+    dragNode: null as PageNode | null,
+    dragParentNode: null as PageNode | null,
     /**
      * 当前拖拽的类型
      * clone: 从物料库拖拽出来
@@ -36,9 +36,9 @@ export const useDragStore = defineStore('drag', {
       return nameMap
     },
     /** 判断该组件名是否在拖拽组件中 */
-    getIsInDragNode: function() {
+    getIsInDragNode: function () {
       return (name: string) => this.dragNodeChildNameMap[name]
-    }
+    },
   },
   actions: {
     setDragNode(node: PageNode | null, dragType?: 'clone' | 'move') {
@@ -52,6 +52,6 @@ export const useDragStore = defineStore('drag', {
     },
     setIsCancelDrag(isCancelDrag: boolean) {
       this.isCancelDrag = isCancelDrag
-    }
+    },
   },
 })

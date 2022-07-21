@@ -99,23 +99,24 @@ export const useBorderStyle = (border: IBorder) => {
   const getBorder = (data: string | any[], index: number) =>
     Array.isArray(data) ? data[index] : data
 
-  const [borderTop, borderRight, borderBottom, borderLeft] = Array.from(new Array(4), (_, i) => [
-    getBorder(border.borderWidth, i),
-    getBorder(border.borderStyle, i),
-    getBorder(border.borderColor, i)
-  ].join(' '))
+  const [borderTop, borderRight, borderBottom, borderLeft] = Array.from(new Array(4), (_, i) =>
+    [
+      getBorder(border.borderWidth, i),
+      getBorder(border.borderStyle, i),
+      getBorder(border.borderColor, i),
+    ].join(' ')
+  )
 
-  const getBorderRadius = (radius: string) => radius === 'circle' ? '50%' : radius
+  const getBorderRadius = (radius: string) => (radius === 'circle' ? '50%' : radius)
 
   return {
     borderTop,
     borderRight,
     borderBottom,
     borderLeft,
-    borderRadius:
-      Array.isArray(border.borderRadius)
-        ? border.borderRadius.map(getBorderRadius).join(' ')
-        : getBorderRadius(border.borderRadius),
+    borderRadius: Array.isArray(border.borderRadius)
+      ? border.borderRadius.map(getBorderRadius).join(' ')
+      : getBorderRadius(border.borderRadius),
   }
 }
 
@@ -126,9 +127,10 @@ export const useFontStyle = (font: IFont) => {
   const isEditMode = getIsEditMode()
 
   return {
-    fontSize: isEditMode && getUnit(font.fontSize) === 'rem'
-      ? `${fixedPointToNumber(font.fontSize)}em`
-      : font.fontSize,
+    fontSize:
+      isEditMode && getUnit(font.fontSize) === 'rem'
+        ? `${fixedPointToNumber(font.fontSize)}em`
+        : font.fontSize,
     lineHeight: getUnit(font.lineHeight) === 'x' ? font.lineHeight.slice(0, -1) : font.lineHeight,
     fontWeight: font.fontWeight,
     fontStyle: font.fontStyle,
@@ -153,7 +155,7 @@ export const useContainerStyle = (container: IContainer) => {
 
   if (container.backgroundType === 'color') {
     backgroundStyles = {
-      backgroundColor: container.backgroundColor
+      backgroundColor: container.backgroundColor,
     }
   } else if (container.backgroundType === 'image') {
     backgroundStyles = {

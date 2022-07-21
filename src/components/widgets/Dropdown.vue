@@ -60,16 +60,20 @@ const { type = 'default', disabled, triggers = ['click'] } = defineProps<IDropdo
     .v-popper__arrow-inner {
       border-color: lighten($panel-dark, 10%);
     }
-    .vc-chrome, .vc-chrome-body {
+    .vc-chrome,
+    .vc-chrome-body {
       background-color: $panel-dark;
       border-radius: $inner-radius;
     }
     .vc-chrome-active-color {
       border-radius: 50%;
-      border: 1px solid rgba($white, .5);
+      border: 1px solid rgba($white, 0.5);
     }
-    .vc-hue, .vc-alpha, .vc-alpha-checkboard-wrap, .vc-alpha-gradient {
-      border-radius: $normal-radius!important;
+    .vc-hue,
+    .vc-alpha,
+    .vc-alpha-checkboard-wrap,
+    .vc-alpha-gradient {
+      border-radius: $normal-radius !important;
     }
     .vc-input__input {
       height: 24px;
@@ -92,10 +96,11 @@ const { type = 'default', disabled, triggers = ['click'] } = defineProps<IDropdo
     .vc-chrome-color-wrap {
       width: 45px;
     }
-    .vc-hue-picker, .vc-alpha-picker {
+    .vc-hue-picker,
+    .vc-alpha-picker {
       background-color: $tr;
       border: 2px solid $white;
-      box-shadow: 0 0 1px 2px rgba($black, .1);
+      box-shadow: 0 0 1px 2px rgba($black, 0.1);
     }
   }
 }

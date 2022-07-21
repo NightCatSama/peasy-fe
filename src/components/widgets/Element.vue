@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import LibComponent from '../LibComponent.vue';
+import LibComponent from '../LibComponent.vue'
 interface IElementProps {
   cover?: string
   name: string
 }
-const {
-  cover = 'https://www.fillmurray.com/640/360',
-  name,
-} = defineProps<IElementProps>()
-
+const { cover = 'https://www.fillmurray.com/640/360', name } = defineProps<IElementProps>()
 </script>
 
 <template>
@@ -23,7 +19,6 @@ const {
   display: flex;
   flex-direction: column;
   justify-content: center;
-
 
   &:hover .image {
     transform: scale(1.03);

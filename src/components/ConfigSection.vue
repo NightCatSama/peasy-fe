@@ -2,7 +2,7 @@
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import ConfigGroup from './ConfigGroup.vue'
-import Icon from './widgets/Icon.vue';
+import Icon from './widgets/Icon.vue'
 
 const pageStore = usePageStore()
 const { allPageData, activeNode, activeNodeGroups } = storeToRefs(pageStore)
@@ -14,8 +14,20 @@ const { deleteActiveNode, copyActiveNode } = pageStore
     <div v-if="activeNode">
       <div class="header">
         <div class="title">{{ activeNode.name }}</div>
-        <Icon class="icon copy-icon" name="copy" type="btn" :size="16" @click="copyActiveNode"></Icon>
-        <Icon class="icon delete-icon" name="delete" type="btn" :size="16" @click="deleteActiveNode"></Icon>
+        <Icon
+          class="icon copy-icon"
+          name="copy"
+          type="btn"
+          :size="16"
+          @click="copyActiveNode"
+        ></Icon>
+        <Icon
+          class="icon delete-icon"
+          name="delete"
+          type="btn"
+          :size="16"
+          @click="deleteActiveNode"
+        ></Icon>
       </div>
       <div class="content">
         <ConfigGroup
@@ -31,10 +43,7 @@ const { deleteActiveNode, copyActiveNode } = pageStore
       </div>
       <div class="content layers-content">
         <div :style="{ marginBottom: '20px', color: 'pink' }">TODO: 后续替换成 Tree</div>
-        <div
-          v-for="(item, index) in allPageData"
-          :key="item.name"
-        >
+        <div v-for="(item, index) in allPageData" :key="item.name">
           {{ item.name }}
           <div
             v-if="item.children"
@@ -46,7 +55,9 @@ const { deleteActiveNode, copyActiveNode } = pageStore
               v-if="subItem.children"
               v-for="son in subItem.children"
               :style="{ marginLeft: 40 + 'px' }"
-            >- {{ son.name }}</div>
+            >
+              - {{ son.name }}
+            </div>
           </div>
         </div>
       </div>

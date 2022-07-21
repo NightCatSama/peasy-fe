@@ -28,7 +28,7 @@ const { setIsCancelDrag } = dragStore
 const wrapperRef = ref<HTMLDivElement | null>(null)
 const contentRef = ref<HTMLDivElement | null>(null)
 
-const contentElem = $computed(() => (contentRef.value as any)?.$el as HTMLDivElement || null)
+const contentElem = $computed(() => ((contentRef.value as any)?.$el as HTMLDivElement) || null)
 const editContentStyle = $computed(() => {
   return {
     width: `${device.value.width}px`,
@@ -103,11 +103,15 @@ watch(
   { flush: 'post' }
 )
 
-watch(() => noPageData, (newValue, oldValue) => {
-  if (!newValue && oldValue) {
-    setTimeout(() => handleLocationPage(true))
-  }
-}, { flush: 'post' })
+watch(
+  () => noPageData,
+  (newValue, oldValue) => {
+    if (!newValue && oldValue) {
+      setTimeout(() => handleLocationPage(true))
+    }
+  },
+  { flush: 'post' }
+)
 
 onUnmounted(() => {
   window.removeEventListener('resize', setWrapperSize)
@@ -164,19 +168,22 @@ const hideMaterialsPanel = (e: Event) => {
 }
 
 // draggable
-const dragEvents = $computed(() => (dragNode && dragNodeType.value === 'section' ? {
-  add: (event: SortableEvent) => {
-    if (!dragNode.value || isCancelDrag.value) return
-    addSection(dragNode.value, event.newIndex)
-  },
-} : {}))
+const dragEvents = $computed(() =>
+  dragNode && dragNodeType.value === 'section'
+    ? {
+        add: (event: SortableEvent) => {
+          if (!dragNode.value || isCancelDrag.value) return
+          addSection(dragNode.value, event.newIndex)
+        },
+      }
+    : {}
+)
 
 const handleLeaveTrash = (e: DragEvent) => {
   // NOTE: 不知道为啥在垃圾桶上松开后也会触发一次 dragleave 并且数据都是 0
   if (!e.clientX && !e.clientY) return
   setIsCancelDrag(false)
 }
-
 </script>
 
 <template>
@@ -195,10 +202,7 @@ const handleLeaveTrash = (e: DragEvent) => {
         v-on="dragEvents"
       >
         <template #item="{ element: item }">
-          <LibComponent
-            :item="item"
-            :key="item.name"
-          ></LibComponent>
+          <LibComponent :item="item" :key="item.name"></LibComponent>
         </template>
       </draggable>
     </div>
@@ -274,17 +278,17 @@ const handleLeaveTrash = (e: DragEvent) => {
     left: 20px;
     bottom: 20px;
     padding: 16px;
-    opacity: .8;
+    opacity: 0.8;
     color: $red;
     border: 4px dashed $red;
     box-shadow: $shadow;
-    background: linear-gradient(rgba($white, .8), rgba($white, 1));
+    background: linear-gradient(rgba($white, 0.8), rgba($white, 1));
     animation-name: shake;
     transform-origin: center bottom;
     animation-duration: 1.5s;
     animation-fill-mode: both;
     animation-iteration-count: infinite;
-    animation-delay: .2s;
+    animation-delay: 0.2s;
     transition: all 0s;
     cursor: pointer;
 

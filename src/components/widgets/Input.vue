@@ -39,13 +39,18 @@ const getSuffixText = $computed(() => (suffixType: SuffixType) => {
 })
 
 const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
-  const getVal = () => covertSizeToOtherUnit(fixedPointToNumber(inputValue) || memoryNumberValue, suffixInValue, suffixType)
+  const getVal = () =>
+    covertSizeToOtherUnit(
+      fixedPointToNumber(inputValue) || memoryNumberValue,
+      suffixInValue,
+      suffixType
+    )
   return (
     {
       px: `${getVal()}px`,
       '%': `${getVal()}%`,
       rem: `${getVal()}rem`,
-      'x': `${getVal()}x`,
+      x: `${getVal()}x`,
       circle: 'circle',
       refined: 'refined',
       auto: 'auto',

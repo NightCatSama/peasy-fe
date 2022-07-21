@@ -50,13 +50,9 @@ watchPostEffect(() => {
     useMoveable(elem, item, parent)
   }
 })
-watch(
-  $$(isActive),
-  (val) => !val && disabledMoveable(),
-  {
-    flush: 'pre',
-  }
-)
+watch($$(isActive), (val) => !val && disabledMoveable(), {
+  flush: 'pre',
+})
 onBeforeUnmount(() => isActive && disabledMoveable())
 
 /** 拖拽逻辑 */
@@ -78,20 +74,24 @@ const handleSortNode = (event: SortableEvent) => {
 }
 
 const isBlockComponent = $computed(() => item.component === 'Block')
-const dragEvents = $computed(() => (isBlockComponent ? {
-  dragenter: (e: DragEvent) => {
-    if (
-      dragNode.value &&
-      !inDraggable &&
-      !getIsInDragNode(item.name) &&
-      (e.target as HTMLDivElement)?.dataset?.name === item.name
-    ) {
-      setDropZone(item)
-    }
-  },
-  add: handleAddNode,
-  end: handleSortNode,
-} : {}))
+const dragEvents = $computed(() =>
+  isBlockComponent
+    ? {
+        dragenter: (e: DragEvent) => {
+          if (
+            dragNode.value &&
+            !inDraggable &&
+            !getIsInDragNode(item.name) &&
+            (e.target as HTMLDivElement)?.dataset?.name === item.name
+          ) {
+            setDropZone(item)
+          }
+        },
+        add: handleAddNode,
+        end: handleSortNode,
+      }
+    : {}
+)
 
 const handleDragStart = (event: DragEvent, node: PageNode) => {
   if (dragNode.value) return

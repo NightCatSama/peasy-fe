@@ -16,7 +16,10 @@ const getUnitName = (originName: string, nameMap: { [key: string]: PageNode }): 
  * @param node 节点
  * @param nameMap 已存在的名字映射
  */
-export const formatNodeByUniqueName = (node: PageNode, nameMap: { [key: string]: PageNode }): PageNode => {
+export const formatNodeByUniqueName = (
+  node: PageNode,
+  nameMap: { [key: string]: PageNode }
+): PageNode => {
   const newNode = cloneDeep(node)
   let pendingNodeList = [newNode]
   while (pendingNodeList.length) {

@@ -114,7 +114,7 @@ const style = $ref({
     padding: 4px;
 
     &:active {
-      opacity: .8;
+      opacity: 0.8;
     }
   }
 

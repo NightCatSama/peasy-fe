@@ -2,9 +2,9 @@
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
 import SelectItem from '@/components/configs/items/SelectItem.vue'
-import ColorItem from './items/ColorItem.vue';
-import { usePageStore } from '@/stores/page';
-import { PageNode } from '@/config';
+import ColorItem from './items/ColorItem.vue'
+import { usePageStore } from '@/stores/page'
+import { PageNode } from '@/config'
 
 interface IFontGroupProps {
   node: PageNode
@@ -33,7 +33,7 @@ const fontSetting: any = $computed(() => ({
     value: font.lineHeight,
     setValue: (val: string) => (font.lineHeight = val),
     suffix: ['px', 'rem', 'x'],
-  }
+  },
 }))
 
 const fontWeightMap: { [key in IFont['fontWeight']]: string } = {
@@ -70,8 +70,18 @@ const fontStyleMap: { [key in IFont['fontStyle']]: string } = {
         :type="fontSetting.lineHeight.type"
         @update:model-value="fontSetting.lineHeight.setValue"
       />
-      <SelectItem v-if="showAdvanced" label="Font Weight" v-model="font.fontWeight" :options="fontWeightMap"></SelectItem>
-      <SelectItem v-if="showAdvanced" label="Font Style" v-model="font.fontStyle" :options="fontStyleMap"></SelectItem>
+      <SelectItem
+        v-if="showAdvanced"
+        label="Font Weight"
+        v-model="font.fontWeight"
+        :options="fontWeightMap"
+      ></SelectItem>
+      <SelectItem
+        v-if="showAdvanced"
+        label="Font Style"
+        v-model="font.fontStyle"
+        :options="fontStyleMap"
+      ></SelectItem>
     </template>
   </Group>
 </template>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
-import { fixedPointToNumber } from '@/utils/sizeHelper';
-import { PageNode } from '@/config';
+import { fixedPointToNumber } from '@/utils/sizeHelper'
+import { PageNode } from '@/config'
 
 interface IFontGroupProps {
   node: PageNode
@@ -10,7 +10,7 @@ interface IFontGroupProps {
 const { spacing, node } = defineProps<IFontGroupProps>()
 
 const handleInput = (e: InputEvent) => {
-  const elem = (e.target as HTMLInputElement)
+  const elem = e.target as HTMLInputElement
   const value = elem.value
   if (value.length > 4) {
     elem.value = value.slice(0, 4)
@@ -19,18 +19,14 @@ const handleInput = (e: InputEvent) => {
   }
 }
 const handleChange = (e: InputEvent, setValue: (val: number) => void) => {
-  const elem = (e.target as HTMLInputElement)
+  const elem = e.target as HTMLInputElement
   const value = elem.value
   setValue(fixedPointToNumber(value))
 }
 const allPadding = $computed({
   get: () => {
     const { padding } = spacing
-    if (
-      padding[0] === padding[1] &&
-      padding[1] === padding[2] &&
-      padding[2] === padding[3]
-    ) {
+    if (padding[0] === padding[1] && padding[1] === padding[2] && padding[2] === padding[3]) {
       return padding[0]
     }
     return '-'
@@ -42,7 +38,7 @@ const allPadding = $computed({
     } else {
       spacing.padding = [value, value, value, value]
     }
-  }
+  },
 })
 </script>
 
@@ -85,7 +81,7 @@ const allPadding = $computed({
   position: absolute;
   color: rgba($panel-light, 70%);
   font-size: 14px;
-  transform: scale(.9);
+  transform: scale(0.9);
 }
 $gapX: 44px;
 $gapY: 30px;
@@ -132,10 +128,8 @@ $inputH: 14px;
     position: absolute;
     top: 0;
     left: 0;
-    box-shadow:
-      (268px * 0.5 - 2px) 0 0 4px $panel-light,
-      (268px * 0.5 - 2px) (150px - 2px) 0 4px $panel-light,
-      0 (150px * 0.5 - 2px) 0 4px $panel-light,
+    box-shadow: (268px * 0.5 - 2px) 0 0 4px $panel-light,
+      (268px * 0.5 - 2px) (150px - 2px) 0 4px $panel-light, 0 (150px * 0.5 - 2px) 0 4px $panel-light,
       (268px - 2px) (150px * 0.5 - 2px) 0 4px $panel-light;
   }
 
@@ -148,11 +142,8 @@ $inputH: 14px;
     margin: auto;
     top: -1px;
     left: -1px;
-    box-shadow:
-      (178px * 0.5 - 2px) 0 0 2px $theme,
-      (178px * 0.5 - 2px) (88px - 2px) 0 2px $theme,
-      0 (88px * 0.5 - 2px) 0 2px $theme,
-      (178px - 2px) (88px * 0.5 - 2px) 0 2px $theme;
+    box-shadow: (178px * 0.5 - 2px) 0 0 2px $theme, (178px * 0.5 - 2px) (88px - 2px) 0 2px $theme,
+      0 (88px * 0.5 - 2px) 0 2px $theme, (178px - 2px) (88px * 0.5 - 2px) 0 2px $theme;
   }
 
   .spacing-input {
@@ -167,7 +158,9 @@ $inputH: 14px;
     transform-origin: center;
     text-align: center;
 
-    &, &:focus, &:active {
+    &,
+    &:focus,
+    &:active {
       outline: none;
       border: none;
     }

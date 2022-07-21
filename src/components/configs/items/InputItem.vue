@@ -17,7 +17,7 @@ const restProps = $computed(() => ({
   placeholder,
   suffix,
   realTime,
-  type
+  type,
 }))
 const emit = defineEmits(['update:modelValue'])
 

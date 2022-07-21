@@ -5,15 +5,15 @@ export const ComponentGroup = {
 
 /** 支持的分组名 */
 export type GroupType =
-  'basic' |
-  'size' |
-  'layout' |
-  'font' |
-  'spacing' |
-  'border' |
-  'container' |
-  'position' |
-  'animation'
+  | 'basic'
+  | 'size'
+  | 'layout'
+  | 'font'
+  | 'spacing'
+  | 'border'
+  | 'container'
+  | 'position'
+  | 'animation'
 
 export interface ITextBasicType {
   text: string
@@ -21,7 +21,7 @@ export interface ITextBasicType {
 
 export interface GroupPropType<T extends ComponentName = any> {
   basic: {
-    'Text': ITextBasicType
+    Text: ITextBasicType
     [key: string]: any
   }[T]
   size: ISize
@@ -36,7 +36,10 @@ export interface GroupPropType<T extends ComponentName = any> {
 
 export type ComponentGroupType = typeof ComponentGroup
 export type ComponentName = keyof ComponentGroupType
-export type PropsTypes<T extends ComponentName> = Pick<GroupPropType<T>, ComponentGroupType[T][number]>
+export type PropsTypes<T extends ComponentName> = Pick<
+  GroupPropType<T>,
+  ComponentGroupType[T][number]
+>
 
 /** 单个可配置的组件 */
 export interface PageNode<T extends ComponentName = any> {

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { Chrome } from '@ckpack/vue-color'
-import InputItem from './InputItem.vue';
-import Dropdown from '@/components/widgets/Dropdown.vue';
+import InputItem from './InputItem.vue'
+import Dropdown from '@/components/widgets/Dropdown.vue'
 
 interface IColorItemProps {
   label: string
@@ -14,12 +14,11 @@ const emit = defineEmits(['update:modelValue'])
 const value = $computed({
   get: () => modelValue,
   set: (val: any) => {
-    emit('update:modelValue', val.hex8 ? val.hex8.slice(-2) === 'FF' ? val.hex : val.hex8 : val)
+    emit('update:modelValue', val.hex8 ? (val.hex8.slice(-2) === 'FF' ? val.hex : val.hex8) : val)
   },
 })
 
 const test = () => emit('update:modelValue', value)
-
 </script>
 
 <template>
@@ -50,7 +49,7 @@ const test = () => emit('update:modelValue', value)
     border-radius: 4px;
     white-space: nowrap;
     transition: all 0.3s;
-    border: 1px solid rgba($white, .4);
+    border: 1px solid rgba($white, 0.4);
   }
 }
 </style>

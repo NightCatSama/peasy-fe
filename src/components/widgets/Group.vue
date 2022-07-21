@@ -28,9 +28,8 @@ const iconName = {
   Border: 'border',
   Font: 'font',
   Container: 'container',
-  Basic: 'basic'
+  Basic: 'basic',
 } as any
-
 </script>
 
 <template>

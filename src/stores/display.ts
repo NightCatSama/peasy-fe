@@ -76,6 +76,6 @@ export const useDisplayStore = defineStore('display', {
     },
     setDisplayMode(mode: DisplayMode) {
       this.displayMode = mode
-    }
+    },
   },
 })

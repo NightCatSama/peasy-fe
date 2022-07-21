@@ -1,9 +1,10 @@
 .ghost-clone {
-  &, &-section {
+  &,
+  &-section {
     position: relative;
     overflow: hidden;
-    transform: scaleX(.92)!important;
-    box-shadow: 0 0 6px 1px rgba($black, .1);
+    transform: scaleX(0.92) !important;
+    box-shadow: 0 0 6px 1px rgba($black, 0.1);
   }
   & {
     width: 100%;
@@ -25,7 +26,8 @@
     }
   }
 
-  &::after, &-section::after {
+  &::after,
+  &-section::after {
     content: 'Push Here';
     font-size: 20px;
     position: absolute;
@@ -49,17 +51,17 @@
   }
 }
 .ghost-move {
-  opacity: .6;
+  opacity: 0.6;
   outline: 2px dashed $theme;
 }
 .chosen-clone {
-  opacity: .3;
+  opacity: 0.3;
 }
 .section-item-ghost {
-  opacity: .5;
-  background: $panel-light-gradient!important;
+  opacity: 0.5;
+  background: $panel-light-gradient !important;
 
   .name {
-    display: none!important;
+    display: none !important;
   }
 }

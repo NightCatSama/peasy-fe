@@ -14,9 +14,9 @@ const { data, activeKey } = defineProps<ITabsProps>()
 
 const list: ITabItem[] = $computed(() => {
   if (Array.isArray(data)) {
-    return data.map((item: string | ITabItem) => (
+    return data.map((item: string | ITabItem) =>
       typeof item === 'string' ? { key: item, value: item } : item
-    ))
+    )
   } else {
     return Object.keys(data).map((key: string) => ({ key, value: data[key] }))
   }
@@ -26,7 +26,7 @@ const list: ITabItem[] = $computed(() => {
 <template>
   <div class="tabs">
     <div
-      v-for="(item) in list"
+      v-for="item in list"
       :key="item.key"
       :class="['tab-item', { active: activeKey === item.key }]"
       @click="$emit('change', item.key)"

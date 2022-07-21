@@ -36,14 +36,13 @@ const handleDragend = () => {
 }
 
 const handleDragStart = (event: DragEvent, data: PageNode) => {
-  const imgElem = (event.target as HTMLDivElement).querySelector('.image') as HTMLDivElement;
+  const imgElem = (event.target as HTMLDivElement).querySelector('.image') as HTMLDivElement
   event.dataTransfer!.setDragImage(imgElem, 0, 0)
   setDragNode(data)
   preDisplayMode = displayMode.value
   setDisplayMode('drag')
   setTimeout(() => emitter.emit('switchMaterialsPanel', false), 100)
 }
-
 </script>
 
 <template>

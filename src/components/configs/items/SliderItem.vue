@@ -9,7 +9,7 @@ interface ISliderItemProps extends SliderPropType {
 }
 
 const props = defineProps<ISliderItemProps>()
-const { label, modelValue } = props;
+const { label, modelValue } = props
 const emit = defineEmits(['update:modelValue'])
 
 const value = $computed({
@@ -23,12 +23,7 @@ const value = $computed({
 <template>
   <div class="item">
     <div class="label">{{ label }}</div>
-    <Slider
-      class="slider"
-      v-model="value"
-      :contained="true"
-      v-bind="$attrs"
-    ></Slider>
+    <Slider class="slider" v-model="value" :contained="true" v-bind="$attrs"></Slider>
   </div>
 </template>
 

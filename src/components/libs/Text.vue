@@ -1,6 +1,12 @@
 <script setup lang="ts">
 import { ITextBasicType } from '@/config'
-import { useBorderStyle, useFontStyle, usePositionStyle, useSpacingStyle, useStyle } from '@/utils/style'
+import {
+  useBorderStyle,
+  useFontStyle,
+  usePositionStyle,
+  useSpacingStyle,
+  useStyle,
+} from '@/utils/style'
 
 interface ITextProps {
   direction?: 'row' | 'column'
@@ -17,10 +23,9 @@ const style = $computed(() =>
     // ...usePositionStyle(position),
     ...useFontStyle(font),
     ...useSpacingStyle(spacing),
-    ...useBorderStyle(border)
+    ...useBorderStyle(border),
   })
 )
-
 </script>
 
 <template>
