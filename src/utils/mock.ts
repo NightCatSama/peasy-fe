@@ -12,7 +12,10 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
       layout: getDefaultLayout(),
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),
-      container: getDefaultContainer(),
+      container: getDefaultContainer({
+        backgroundType: 'image',
+        backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4'
+      }),
     },
     children: type === 'component' ? [] : [
       {

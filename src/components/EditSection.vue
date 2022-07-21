@@ -3,7 +3,7 @@ import { storeToRefs } from 'pinia'
 import { onMounted, onUnmounted, reactive, watch, ref, watchEffect, nextTick } from 'vue'
 import draggable from 'vuedraggable'
 import panzoom, { PanZoom } from 'panzoom'
-import { SortableEvent } from 'sortablejs'
+import type { SortableEvent } from 'sortablejs'
 import { useSize } from 'ahooks-vue'
 
 import LibComponent from '@/components/LibComponent.vue'

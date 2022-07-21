@@ -1,0 +1,37 @@
+<script setup lang="ts">
+import Tabs, { ITabItem } from '@/components/widgets/Tabs.vue'
+
+interface ITabsItemProps {
+  label: string
+  modelValue: string
+  data: { [key: string]: string } | string[] | ITabItem[]
+}
+
+const { label, modelValue, data } = defineProps<ITabsItemProps>()
+const emit = defineEmits(['update:modelValue'])
+
+const handleChange = (val: string) => {
+  emit('update:modelValue', val)
+}
+</script>
+
+<template>
+  <div class="item">
+    <div class="label">{{ label }}</div>
+    <Tabs
+      :data="data"
+      :active-key="modelValue"
+      @change="(key) => handleChange(key)"
+    >
+      <template #option="props"><slot name="option" v-bind="props"></slot></template>
+    </Tabs>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.item {
+  .label {
+    display: none;
+  }
+}
+</style>

@@ -5,7 +5,7 @@ import { useDragStore } from '@/stores/drag'
 import { usePageStore } from '@/stores/page'
 import { emitter } from '@/utils/event'
 import { storeToRefs } from 'pinia'
-import { SortableEvent } from 'sortablejs'
+import type { SortableEvent } from 'sortablejs'
 import { nextTick } from 'vue'
 import draggable from 'vuedraggable'
 

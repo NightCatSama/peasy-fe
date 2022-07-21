@@ -149,11 +149,25 @@ export const useSpacingStyle = (spacing: ISpacing) => {
 export const useContainerStyle = (container: IContainer) => {
   if (!container) return {}
 
+  let backgroundStyles
+
+  if (container.backgroundType === 'color') {
+    backgroundStyles = {
+      backgroundColor: container.backgroundColor
+    }
+  } else if (container.backgroundType === 'image') {
+    backgroundStyles = {
+      backgroundImage: container.backgroundImage ? `url(${container.backgroundImage})` : '',
+      backgroundPosition: container.backgroundPosition,
+      backgroundRepeat: container.backgroundRepeat,
+      backgroundSize: container.backgroundSize,
+    }
+  }
+
   return {
-    backgroundColor: container.backgroundColor,
-    backgroundImage: container.backgroundImage ? `url(${container.backgroundImage})` : '',
-    backgroundPosition: container.backgroundPosition,
-    backgroundRepeat: container.backgroundRepeat,
-    backgroundSize: container.backgroundSize,
+    ...backgroundStyles,
+    opacity: container.opacity,
+    overflow: container.overflow,
+    boxShadow: container.boxShadow,
   }
 }

@@ -134,6 +134,7 @@ const handleInput = (e: any) => realTime && handleChange(e)
 
 <style lang="scss" scoped>
 .input-wrapper {
+  position: relative;
   display: inline-flex;
   border-radius: $normal-radius;
   padding: $item-gap;
@@ -168,7 +169,6 @@ const handleInput = (e: any) => realTime && handleChange(e)
     }
 
     &::placeholder {
-      font-size: 12px;
       opacity: 0.6;
     }
   }

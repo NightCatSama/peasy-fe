@@ -7,6 +7,7 @@ import SelectItem from './items/SelectItem.vue';
 import ColorItem from './items/ColorItem.vue';
 import Tabs from '../widgets/Tabs.vue';
 import Icon from '../widgets/Icon.vue';
+import TabsItem from './items/TabsItem.vue';
 
 interface IFontGroupProps {
   node: PageNode
@@ -147,20 +148,20 @@ const boxStyles = $computed(() => {
         :suffix="item.suffix"
         @update:model-value="item.setValue"
       ></InputItem>
-      <div class="item" v-else-if="item.type === 'select'">
-        <Tabs
-          :data="Object.fromEntries(item.options.map((key: string) => [key, key]))"
-          :active-key="item.value"
-          @change="(key) => item.setValue(key)"
-        >
-          <template #option="{ key }">
-            <Icon v-if="key === 'solid'" name="line" :size="16"></Icon>
-            <Icon v-if="key === 'dashed'" name="dashed" :size="16"></Icon>
-            <Icon v-if="key === 'dotted'" name="dotted" :size="16"></Icon>
-            <Icon v-if="key === 'double'" name="line-double" :size="16"></Icon>
-          </template>
-        </Tabs>
-      </div>
+      <TabsItem
+        v-else-if="item.type === 'select'"
+        :label="item.name"
+        :data="Object.fromEntries(item.options.map((key: string) => [key, key]))"
+        :model-value="item.value"
+        @update:model-value="item.setValue"
+      >
+        <template #option="{ key }">
+          <Icon v-if="key === 'solid'" name="line" :size="16"></Icon>
+          <Icon v-if="key === 'dashed'" name="dashed" :size="16"></Icon>
+          <Icon v-if="key === 'dotted'" name="dotted" :size="16"></Icon>
+          <Icon v-if="key === 'double'" name="line-double" :size="16"></Icon>
+        </template>
+      </TabsItem>
       <ColorItem
         v-else-if="item.type === 'color'"
         :label="item.name"

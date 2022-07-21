@@ -1,20 +1,37 @@
+<script lang="ts">
+export interface ITabItem {
+  key: string
+  value: string
+}
+</script>
+
 <script setup lang="ts">
 interface ITabsProps {
-  data: { [key: string]: string }
+  data: { [key: string]: string } | string[] | ITabItem[]
   activeKey: string
 }
 const { data, activeKey } = defineProps<ITabsProps>()
+
+const list: ITabItem[] = $computed(() => {
+  if (Array.isArray(data)) {
+    return data.map((item: string | ITabItem) => (
+      typeof item === 'string' ? { key: item, value: item } : item
+    ))
+  } else {
+    return Object.keys(data).map((key: string) => ({ key, value: data[key] }))
+  }
+})
 </script>
 
 <template>
   <div class="tabs">
     <div
-      :class="['tab-item', { active: activeKey === key }]"
-      v-for="(value, key) in data"
-      :key="key"
-      @click="$emit('change', key)"
+      v-for="(item) in list"
+      :key="item.key"
+      :class="['tab-item', { active: activeKey === item.key }]"
+      @click="$emit('change', item.key)"
     >
-      <slot name="option" :key="key" :value="value">{{ value }}</slot>
+      <slot name="option" :key="item.key" :value="item.value">{{ item.value }}</slot>
     </div>
   </div>
 </template>

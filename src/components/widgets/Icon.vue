@@ -22,6 +22,7 @@ import FontIcon from '@/assets/font.svg'
 import ContainerIcon from '@/assets/container.svg'
 import CopyIcon from '@/assets/copy.svg'
 import BasicIcon from '@/assets/basic.svg'
+import QuestionIcon from '@/assets/question.svg'
 
 interface IIconProps {
   name:
@@ -48,6 +49,7 @@ interface IIconProps {
     | 'container'
     | 'copy'
     | 'basic'
+    | 'question'
   type?: 'circle' | 'pure' | 'btn'
   size?: number
   active?: boolean
@@ -76,7 +78,8 @@ const iconMap = {
   font: FontIcon,
   container: ContainerIcon,
   copy: CopyIcon,
-  basic: BasicIcon
+  basic: BasicIcon,
+  question: QuestionIcon,
 }
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()

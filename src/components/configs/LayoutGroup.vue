@@ -4,6 +4,7 @@ import Tabs from '../widgets/Tabs.vue'
 import { useLayoutStyle } from '@/utils/style'
 import SelectItem from './items/SelectItem.vue'
 import { PageNode } from '@/config';
+import TabsItem from './items/TabsItem.vue';
 
 interface ILayoutGroupProps {
   node: PageNode
@@ -31,19 +32,18 @@ const previewStyle = $computed(() => useLayoutStyle(layout))
 </script>
 
 <template>
-  <Group title="Layout" class="layout-group" :default-collapsed="true">
+  <Group title="Layout" class="layout-group" :default-collapsed="false">
     <div class="align-preview" data-title="Preview" :style="previewStyle">
       <div class="align-preview-item">1</div>
       <div class="align-preview-item">2</div>
       <div class="align-preview-item">3</div>
     </div>
-    <div class="item">
-      <Tabs
-        :data="{ row: 'Row', column: 'Column' }"
-        :active-key="layout.direction"
-        @change="(key) => (layout.direction = key)"
-      ></Tabs>
-    </div>
+    <TabsItem
+      :label="'Direction'"
+      :data="{ row: 'Row', column: 'Column' }"
+      v-model="layout.direction"
+    >
+    </TabsItem>
     <SelectItem label="Main-Axis Align" v-model="layout.justify" :options="justifyMap"></SelectItem>
     <SelectItem label="Cross-Axis Align" v-model="layout.align" :options="alignMap"></SelectItem>
   </Group>

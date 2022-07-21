@@ -67,7 +67,7 @@ export const getDefaultContainer = (
   initConfig?: Partial<IContainer>
 ): IContainer => Object.assign({
   backgroundType: 'color',
-  backgroundColor: '#fff',
+  backgroundColor: 'transparent',
   backgroundImage: '',
   backgroundSize: 'auto',
   backgroundPosition: 'center',
