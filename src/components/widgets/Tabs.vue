@@ -8,9 +8,9 @@ export interface ITabItem {
 <script setup lang="ts">
 interface ITabsProps {
   data: { [key: string]: string } | string[] | ITabItem[]
-  activeKey: string
+  modelValue: string
 }
-const { data, activeKey } = defineProps<ITabsProps>()
+const { data, modelValue } = defineProps<ITabsProps>()
 
 const list: ITabItem[] = $computed(() => {
   if (Array.isArray(data)) {
@@ -28,8 +28,8 @@ const list: ITabItem[] = $computed(() => {
     <div
       v-for="item in list"
       :key="item.key"
-      :class="['tab-item', { active: activeKey === item.key }]"
-      @click="$emit('change', item.key)"
+      :class="['tab-item', { active: modelValue === item.key }]"
+      @click="$emit('update:model-value', item.key)"
     >
       <slot name="option" :key="item.key" :value="item.value">{{ item.value }}</slot>
     </div>
