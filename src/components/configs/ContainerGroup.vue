@@ -19,6 +19,9 @@ const presetShadow = $computed(() => [
   '0 6px 6px rgba(10,16,20,.15), 0 0 52px rgba(10,16,20,.12)',
   '0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.2)',
 ])
+
+const curShadowIndex = $computed(() => presetShadow.indexOf(container.boxShadow))
+
 </script>
 
 <template>
@@ -41,8 +44,8 @@ const presetShadow = $computed(() => [
         <div
           v-for="(shadow, index) in presetShadow"
           :key="index"
-          class="shadow-preview-item"
-          @click="container.boxShadow = shadow"
+          :class="['shadow-preview-item', { active: curShadowIndex === index }]"
+          @click="container.boxShadow = curShadowIndex === index ? '' : shadow"
         >
           <div class="inner" :style="{ boxShadow: shadow }"></div>
         </div>
@@ -67,6 +70,7 @@ const presetShadow = $computed(() => [
       justify-content: space-between;
 
       &-item {
+        position: relative;
         margin-right: 10px;
         margin-bottom: 10px;
         width: 78px;
@@ -75,12 +79,28 @@ const presetShadow = $computed(() => [
         background: $color;
         padding: 20px;
         cursor: pointer;
+        overflow: hidden;
 
         .inner {
+          position: relative;
           width: 100%;
           height: 100%;
           border-radius: $inner-radius;
           background: $white-gradient;
+          overflow: hidden;
+        }
+
+        $edge: 8px;
+        &.active .inner::after {
+          content: '';
+          position: absolute;
+          right: -$edge;
+          top: -$edge;
+          width: $edge * 2;
+          height: $edge * 2;
+          background: $theme;
+          transform: rotate(45deg);
+          box-shadow: $shadow;
         }
       }
     }

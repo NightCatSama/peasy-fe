@@ -156,8 +156,8 @@ const handleLocationPage = (immediate = false) => {
   }
 
   wrapperRef.value?.scrollTo({
-    top,
-    left,
+    top: Math.min(top, 0),
+    left: Math.min(left, 0),
     behavior: 'smooth',
   })
 }

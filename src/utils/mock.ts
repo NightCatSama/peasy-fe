@@ -59,6 +59,7 @@ export const getMockText = (text?: string): PageNode<'Text'> => {
       font: getDefaultFont(),
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),
+      background: getDefaultBackground(),
     },
   }
 }

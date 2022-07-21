@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import { ITextBasicType } from '@/config'
 import {
+  useBackgroundStyle,
   useBorderStyle,
   useFontStyle,
   usePositionStyle,
@@ -14,9 +15,10 @@ interface ITextProps {
   font: IFont
   spacing: ISpacing
   border: IBorder
+  background: IBackground
   // position?: IPosition
 }
-const { basic, font, spacing, border } = defineProps<ITextProps>()
+const { basic, font, spacing, border, background } = defineProps<ITextProps>()
 
 const style = $computed(() =>
   useStyle({
@@ -24,6 +26,7 @@ const style = $computed(() =>
     ...useFontStyle(font),
     ...useSpacingStyle(spacing),
     ...useBorderStyle(border),
+    ...useBackgroundStyle(background),
   })
 )
 </script>

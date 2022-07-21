@@ -1,6 +1,6 @@
 export const ComponentGroup = {
   Block: ['layout', 'size', 'spacing', 'border', 'background', 'container'] as const,
-  Text: ['basic', 'font', 'spacing', 'border'] as const,
+  Text: ['basic', 'font', 'spacing', 'border', 'background'] as const,
 } as const
 
 /** 支持的分组名 */
