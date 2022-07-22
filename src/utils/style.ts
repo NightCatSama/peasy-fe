@@ -14,6 +14,7 @@ export const useStyle = (styles: any) => {
   return styles
 }
 
+/** 定位样式 */
 export const usePositionStyle = (position?: IPosition) => {
   if (!position) return {}
 
@@ -26,10 +27,6 @@ export const usePositionStyle = (position?: IPosition) => {
     left: isAbsPosition && position.left !== void 0 ? position.left : '',
     right: isAbsPosition && position.top !== void 0 ? position.right : '',
     bottom: isAbsPosition && position.left !== void 0 ? position.bottom : '',
-    marginLeft: !isAbsPosition && position.left !== void 0 ? position.left : '',
-    marginTop: !isAbsPosition && position.top !== void 0 ? position.top : '',
-    marginRight: !isAbsPosition && position.right !== void 0 ? position.right : '',
-    marginBottom: !isAbsPosition && position.bottom !== void 0 ? position.bottom : '',
   }
 }
 
@@ -151,6 +148,7 @@ export const useSpacingStyle = (spacing: ISpacing) => {
   }
 }
 
+/** 背景样式 */
 export const useBackgroundStyle = (background: IBackground) => {
   if (!background) return {}
 
@@ -176,6 +174,7 @@ export const useBackgroundStyle = (background: IBackground) => {
   }
 }
 
+/** 容器样式 */
 export const useContainerStyle = (container: IContainer) => {
   if (!container) return {}
 

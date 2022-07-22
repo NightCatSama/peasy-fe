@@ -37,6 +37,7 @@ onMounted(() => {
 
 <template>
   <div class="page">
+    <!-- 左侧操作栏 -->
     <Sidebar
       :active-materials-panel="showLeftPanel"
       @change-materials-panel="(val) => (showLeftPanel = val)"

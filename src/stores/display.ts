@@ -48,6 +48,7 @@ export const useDisplayStore = defineStore('display', {
     displayMode: 'edit' as DisplayMode,
   }),
   getters: {
+    /** 当前展示的宽高（缩放后） */
     realDeviceSize(state) {
       return {
         width: state.device.width * state.device.zoom,

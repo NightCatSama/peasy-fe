@@ -1,9 +1,10 @@
-export const ComponentGroup = {
+/** 组件对应支持的配置分组 */
+export const ComponentPropsGroup = {
   Block: ['layout', 'size', 'spacing', 'border', 'background', 'container'] as const,
   Text: ['basic', 'font', 'spacing', 'border', 'background'] as const,
 } as const
 
-/** 支持的分组名 */
+/** 支持的配置分组名 */
 export type GroupType =
   | 'basic'
   | 'size'
@@ -16,10 +17,12 @@ export type GroupType =
   | 'position'
   | 'animation'
 
+/** Text 组件基础配置 */
 export interface ITextBasicType {
   text: string
 }
 
+/** 配置对应约束类型 */
 export interface GroupPropType<T extends ComponentName = any> {
   basic: {
     Text: ITextBasicType
@@ -36,11 +39,13 @@ export interface GroupPropType<T extends ComponentName = any> {
   animation: IAnimation
 }
 
-export type ComponentGroupType = typeof ComponentGroup
-export type ComponentName = keyof ComponentGroupType
+export type ComponentPropsGroupType = typeof ComponentPropsGroup
+export type ComponentName = keyof ComponentPropsGroupType
+
+/** 将配置分组名和约束类型相对应 */
 export type PropsTypes<T extends ComponentName> = Pick<
   GroupPropType<T>,
-  ComponentGroupType[T][number]
+  ComponentPropsGroupType[T][number]
 >
 
 /** 单个可配置的组件 */

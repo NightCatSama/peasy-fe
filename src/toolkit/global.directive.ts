@@ -122,6 +122,7 @@ export default {
       },
     })
 
+    /** 判断元素是否被快速点击（300ms） */
     app.directive('tap', {
       mounted(el, binding) {
         let mousedownTime = 0

@@ -26,13 +26,13 @@ const { size, layout, border, direction, spacing, background, container } =
 
 const style = $computed(() =>
   useStyle({
-    // ...usePositionStyle(position),
     ...useSizeStyle(size, direction),
     ...useLayoutStyle(layout),
     ...useBorderStyle(border),
     ...useSpacingStyle(spacing),
     ...useBackgroundStyle(background),
     ...useContainerStyle(container),
+    // ...usePositionStyle(position),
   })
 )
 </script>

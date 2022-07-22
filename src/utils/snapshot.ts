@@ -1,5 +1,6 @@
 import html2canvas from 'html2canvas'
 
+/** 生成截图 */
 export const createMaterialSnapshot = (el: HTMLElement, options?: any) => {
   return html2canvas(el, {
     scale: 1,

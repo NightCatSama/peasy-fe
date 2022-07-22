@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { mande } from 'mande'
 import { cloneDeep } from 'lodash'
 import { getMockBlock, getMockText } from '@/utils/mock'
-import { PageNode, ComponentGroup, ComponentName } from '@/config'
+import { PageNode, ComponentPropsGroup, ComponentName } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
 
@@ -31,15 +31,18 @@ export const usePageStore = defineStore('page', {
     activeSection: null as string | null,
   }),
   getters: {
+    /** 当前激活节点对应的配置数据 */
     activeNodeGroups: (state) =>
-      state.activeNode ? ComponentGroup[state.activeNode.component as ComponentName] : null,
+      state.activeNode ? ComponentPropsGroup[state.activeNode.component as ComponentName] : null,
     isActiveAllSection: (state) => state.activeSection === null,
+    /** 当前预览的展示数据 */
     pageData: (state): typeof state.allPageData => {
       if (!state.activeSection) return state.allPageData
 
       const pageData = state.allPageData.find((item) => item.name === state.activeSection)
       return pageData ? [pageData] : state.allPageData
     },
+    /** 所有组件的命名列表 */
     nameMap: (state): { [key: string]: PageNode } => {
       const nameMap: { [key: string]: PageNode } = {}
       const dfs = (nodes: PageNode[]) => {

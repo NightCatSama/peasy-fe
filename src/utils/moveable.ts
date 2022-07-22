@@ -7,6 +7,10 @@ import { covertPXToUnit, fixedPointToNumber, getUnit, isUnitType } from './sizeH
 /** 全局实例 */
 let moveable: Moveable | null = null
 
+/**
+ * 获取 moveable 示例，首次调用会初始化
+ * @returns Moveable 实例
+ */
 export const getMoveable = () => {
   if (moveable) return moveable
   const containerElement = document.querySelector('.edit-section') as HTMLDivElement
@@ -27,15 +31,10 @@ export const getMoveable = () => {
   return moveable
 }
 
-export const setMoveableOptions = (options: MoveableOptions) => {
-  if (!moveable) return
-  for (let key in options) {
-    ;(moveable as any)[key] = (options as any)[key]
-  }
-}
-
+/** 同步更新 moveable 操作区域 */
 export const updateMoveableRect = () => moveable?.updateRect()
 
+/** 禁用 moveable */
 export const disabledMoveable = () => {
   const moveable = getMoveable()
   if (!moveable) return
@@ -44,6 +43,7 @@ export const disabledMoveable = () => {
   moveable.off()
 }
 
+/** 启用 moveable */
 export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageNode) => {
   const moveable = getMoveable()
   if (!moveable) return

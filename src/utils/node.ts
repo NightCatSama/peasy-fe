@@ -1,7 +1,8 @@
 import { PageNode } from '@/config'
 import { cloneDeep } from 'lodash'
 
-const getUnitName = (originName: string, nameMap: { [key: string]: PageNode }): string => {
+/** 生成唯一的节点 name */
+const createUnitName = (originName: string, nameMap: { [key: string]: PageNode }): string => {
   let name = originName
   let i = 1
   while (nameMap[name]) {
@@ -25,7 +26,7 @@ export const formatNodeByUniqueName = (
   while (pendingNodeList.length) {
     const node = pendingNodeList.shift()!
     if (node.name in nameMap) {
-      node.name = getUnitName(node.name, nameMap)
+      node.name = createUnitName(node.name, nameMap)
       nameMap[node.name] = node
     }
     if (node.children) {
