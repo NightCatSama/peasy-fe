@@ -13,10 +13,11 @@ import Icon from './widgets/Icon.vue'
 import { emitter } from '@/utils/event'
 import { useDragStore } from '@/stores/drag'
 import { disabledMoveable } from '@/utils/moveable'
+import Btn from './widgets/Btn.vue'
 
 const pageStore = usePageStore()
-const { setActiveNode, addSection } = pageStore
-const { pageData, activeNode } = storeToRefs(pageStore)
+const { setActiveNode, addSection, setActiveParentNodeToActive, setActiveNodeToRound, getActiveNodeRound } = pageStore
+const { pageData, activeNode, activeParentNode } = storeToRefs(pageStore)
 
 const displayStore = useDisplayStore()
 const { setDeviceByParent } = displayStore
@@ -223,6 +224,37 @@ const handleLeaveTrash = (e: DragEvent) => {
       @dragover="() => setIsCancelDrag(true)"
       @dragleave="handleLeaveTrash"
     ></Icon>
+    <div class="node-operation" v-if="activeNode">
+      <Btn
+        class="prev-btn"
+        text="Prev Node"
+        type="text"
+        color="default"
+        size="sm"
+        icon="top-circle"
+        :disabled="!getActiveNodeRound(-1)"
+        @click="setActiveNodeToRound(-1)"
+      ></Btn>
+      <Btn
+        class="next-btn"
+        text="Next Node"
+        type="text"
+        color="default"
+        size="sm"
+        icon="top-circle"
+        :disabled="!getActiveNodeRound(1)"
+        @click="setActiveNodeToRound(1)"
+      ></Btn>
+      <Btn
+        text="Parent Node"
+        type="text"
+        color="default"
+        size="sm"
+        icon="top-circle"
+        :disabled="activeParentNode === null"
+        @click="setActiveParentNodeToActive"
+      ></Btn>
+    </div>
   </div>
 </template>
 
@@ -273,6 +305,7 @@ const handleLeaveTrash = (e: DragEvent) => {
     opacity: 0.5;
     transition: all 0.3s;
     background: $panel-light;
+    cursor: pointer;
 
     &:hover,
     &.active {
@@ -310,6 +343,22 @@ const handleLeaveTrash = (e: DragEvent) => {
 
     :deep(*) {
       pointer-events: none;
+    }
+  }
+
+  .node-operation {
+    display: flex;
+    align-items: center;
+    justify-content: flex-end;
+    position: absolute;
+    right: 80px;
+    bottom: 10px;
+
+    .prev-btn :deep(.icon) {
+      transform: rotate(-45deg);
+    }
+    .next-btn :deep(.icon) {
+      transform: rotate(45deg);
     }
   }
 }

@@ -32,6 +32,7 @@ import AlignLeftIcon from '@/assets/align-left.svg'
 import AlignCenterIcon from '@/assets/align-center.svg'
 import AlignRightIcon from '@/assets/align-right.svg'
 import AlignJustifyIcon from '@/assets/align-justify.svg'
+import TopCircleIcon from '@/assets/top-circle.svg'
 
 interface IIconProps {
   name:
@@ -68,6 +69,7 @@ interface IIconProps {
     | 'align-center'
     | 'align-right'
     | 'align-justify'
+    | 'top-circle'
   type?: 'circle' | 'pure' | 'btn'
   size?: number
   active?: boolean
@@ -107,6 +109,7 @@ const iconMap = {
   'align-center': AlignCenterIcon,
   'align-right': AlignRightIcon,
   'align-justify': AlignJustifyIcon,
+  'top-circle': TopCircleIcon,
 }
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()
@@ -146,7 +149,7 @@ const style = $ref({
   }
 
   .icon-inner {
-    transition: all 0.3s;
+    transition: fill 0.3s;
 
     &.active {
       color: $theme;

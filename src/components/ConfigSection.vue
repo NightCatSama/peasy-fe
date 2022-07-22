@@ -3,46 +3,34 @@ import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import ConfigGroup from './ConfigGroup.vue'
 import Icon from './widgets/Icon.vue'
+import Btn from './widgets/Btn.vue';
 
 const pageStore = usePageStore()
 const { allPageData, activeNode, activeParentNode, activeNodeGroups } = storeToRefs(pageStore)
 const { setActiveParentNodeToActive, deleteActiveNode, copyActiveNode } = pageStore
-
-const setParentNodeActive = () => {
-   setActiveParentNodeToActive()
-}
 </script>
 
 <template>
   <div class="config-section">
     <div v-if="activeNode">
       <div class="header">
-        <div class="title">{{ activeNode.name }}</div>
-        <Icon
-          v-if="activeParentNode"
-          class="icon copy-icon"
-          name="bold"
-          type="btn"
-          :size="16"
-          v-tooltip="'Parent Node'"
-          @click="setParentNodeActive"
-        ></Icon>
-        <Icon
-          class="icon copy-icon"
-          name="copy"
-          type="btn"
-          :size="16"
-          v-tooltip="'Copy Node'"
-          @click="copyActiveNode"
-        ></Icon>
-        <Icon
-          class="icon delete-icon"
-          name="delete"
-          type="btn"
-          :size="16"
-          v-tooltip="'Delete Node'"
-          @click="deleteActiveNode"
-        ></Icon>
+        <div class="config-info">
+          <div class="title">{{ activeNode.name }}</div>
+          <Icon
+            class="icon copy-icon"
+            name="copy"
+            :size="16"
+            v-tooltip="'Copy Node'"
+            @click="copyActiveNode"
+          ></Icon>
+          <Icon
+            class="icon delete-icon"
+            name="delete"
+            :size="16"
+            v-tooltip="'Delete Node'"
+            @click="deleteActiveNode"
+          ></Icon>
+        </div>
       </div>
       <div class="content">
         <ConfigGroup
@@ -91,8 +79,8 @@ const setParentNodeActive = () => {
 
   .header {
     display: flex;
-    padding: 20px 16px;
-    display: flex;
+    padding: 16px 16px 10px;
+    flex-direction: column;
 
     .title {
       flex: 1;
@@ -106,19 +94,29 @@ const setParentNodeActive = () => {
     .icon {
       width: 24px;
       height: 24px;
-      border-radius: $normal-radius;
       cursor: pointer;
-      box-shadow: $float-shadow;
-      margin-left: 12px;
+      margin-left: 4px;
+      transition: all .1s;
 
       &.delete-icon {
-        color: $bg-default;
-        background: $red-gradient;
+        color: $color;
+
+        &:hover {
+          color: $red;
+        }
       }
       &.copy-icon {
-        color: $bg-default;
-        background: $panel-light-gradient;
+        color: $color;
+
+        &:hover {
+          color: $theme;
+        }
       }
+    }
+
+    .config-info {
+      display: flex;
+      margin-bottom: 12px;
     }
   }
 

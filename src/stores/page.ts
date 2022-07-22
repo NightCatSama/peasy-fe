@@ -54,6 +54,15 @@ export const usePageStore = defineStore('page', {
       dfs(state.allPageData)
       return nameMap
     },
+    getActiveNodeRound: (state) => (change: number): PageNode | null => {
+      if (!state.activeParentNode || !state.activeNode) return null
+      const index = state.activeParentNode.children?.indexOf(state.activeNode)!
+      if (index === -1) return null
+      const newIndex = index + change
+      if (newIndex < 0 || newIndex >= state.activeParentNode.children!.length) return null
+      console.log('state.activeParentNode.children![newIndex] => ', state.activeParentNode.children![newIndex])
+      return state.activeParentNode.children![newIndex]
+    }
   },
   actions: {
     async getPageData() {
@@ -128,6 +137,13 @@ export const usePageStore = defineStore('page', {
       this.activeNode = this.activeParentNode
       this.activeParentChain.shift()
       this.activeParentNode = this.activeParentChain?.[0] || null
+    },
+    setActiveNodeToRound(change: number) {
+      if (!this.activeParentNode || !this.activeNode) return
+      const node = this.getActiveNodeRound(change)
+      if (node) {
+        this.activeNode = node
+      }
     },
     /** 添加节点链 */
     addActiveParentChain(node: PageNode) {

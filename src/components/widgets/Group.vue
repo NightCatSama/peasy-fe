@@ -142,6 +142,9 @@ const iconName = {
     flex: 1;
     font-size: 14px;
     margin-right: 10px;
+    &.short {
+      flex: none;
+    }
   }
   &.column {
     flex-direction: column;

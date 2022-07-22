@@ -51,9 +51,8 @@ watch(() => isActive, () => {
   }
 }, { flush: 'post' })
 
-watch($$(isActive), (val) => !val && disabledMoveable(), {
-  flush: 'pre',
-})
+watch(() => isActive, () => !isActive && disabledMoveable(), { flush: 'pre' })
+
 onBeforeUnmount(() => isActive && disabledMoveable())
 
 /** 拖拽逻辑 */
@@ -148,6 +147,7 @@ const preventMousedown = (e: MouseEvent) => {
       <LibComponent
         :item="subItem"
         :parent="item"
+        :key="subItem.name"
         @mousedown="preventMousedown"
         @dragstart="(event: DragEvent) => handleDragStart(event, subItem)"
       ></LibComponent>

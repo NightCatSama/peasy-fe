@@ -9,6 +9,7 @@ import { upload } from '@/utils/oss'
 import TabsItem from './items/TabsItem.vue'
 import SliderItem from './items/SliderItem.vue'
 import Slider from '../widgets/Slider.vue'
+import PositionTable from '../widgets/PositionTable.vue'
 
 interface IBackgroundGroupProps {
   node: PageNode
@@ -109,23 +110,23 @@ const uploadImage = async (e: InputEvent) => {
         :data="{ cover: 'Cover', contain: 'Contain', auto: 'Auto' }"
         v-model="background.backgroundSize"
       ></TabsItem>
-      <!-- TODO: 换成方向图标 -->
-      <TabsItem
-        label="Background Position"
-        :data="{ left: 'Left', center: 'Center', right: 'Right' }"
-        v-model="background.backgroundPosition"
-      ></TabsItem>
-      <!-- TODO: 换成 repeat 图标 -->
-      <TabsItem
+      <div class="item">
+        <div class="label">Background Position</div>
+        <PositionTable
+          v-model="background.backgroundPosition"
+          :options="['left top', 'top', 'right top', 'left', 'center', 'right', 'left bottom', 'bottom', 'right bottom']"
+        ></PositionTable>
+      </div>
+      <SelectItem
         label="Background Repeat"
-        :data="{
+        :options="{
           repeat: 'Repeat',
-          'repeat-x': 'Only-X',
-          'repeat-y': 'Only-Y',
+          'repeat-x': 'Repeat-X',
+          'repeat-y': 'Repeat-Y',
           'no-repeat': 'None',
         }"
         v-model="background.backgroundRepeat"
-      ></TabsItem>
+      ></SelectItem>
     </template>
 
     <!-- 背景渐变设置 -->
