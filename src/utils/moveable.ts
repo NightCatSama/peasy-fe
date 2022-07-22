@@ -61,9 +61,10 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
   /** 记录原先的单位 */
   let units: { width?: string; height?: string } = {}
 
-  const renderDirections = disableWidth && disableHeight
-    ? []
-    : disableWidth
+  const renderDirections =
+    disableWidth && disableHeight
+      ? []
+      : disableWidth
       ? ['s', 'n']
       : disableHeight
       ? ['w', 'e']

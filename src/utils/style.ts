@@ -178,10 +178,7 @@ export const useContainerStyle = (container: IContainer) => {
   return {
     opacity: container.opacity,
     overflow:
-      getIsEditMode() &&
-      getDisplayMode() !== 'preview'
-        ? container.overflow
-        : container.overflow,
+      getIsEditMode() && getDisplayMode() !== 'preview' ? container.overflow : container.overflow,
     boxShadow: container.boxShadow,
   }
 }

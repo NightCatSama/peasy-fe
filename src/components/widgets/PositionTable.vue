@@ -18,7 +18,7 @@ const handleClick = (key: string) => {
   <div class="position-table">
     <div
       :class="['position-item', { active: key === modelValue }]"
-      v-for="(key) in options"
+      v-for="key in options"
       :key="key"
       @click="() => handleClick(key)"
     ></div>

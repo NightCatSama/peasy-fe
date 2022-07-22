@@ -62,7 +62,16 @@ interface IBackground {
   /** 背景图 */
   backgroundImage: string
   backgroundSize: 'cover' | 'contain' | 'auto'
-  backgroundPosition: 'left top' | 'top' | 'right top' | 'left' | 'center' | 'right' | 'left bottom' | 'bottom' | 'right bottom'
+  backgroundPosition:
+    | 'left top'
+    | 'top'
+    | 'right top'
+    | 'left'
+    | 'center'
+    | 'right'
+    | 'left bottom'
+    | 'bottom'
+    | 'right bottom'
   backgroundRepeat: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat'
   /** 背景过渡色 */
   backgroundGradientAngle: number

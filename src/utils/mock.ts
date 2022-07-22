@@ -22,8 +22,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),
       container: getDefaultContainer(),
-      background: getDefaultBackground({
-      }),
+      background: getDefaultBackground({}),
     },
     children:
       type === 'component'

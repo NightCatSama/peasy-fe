@@ -33,25 +33,35 @@ const componentRef = ref(null)
 
 const setActive = (e: Event) => {
   setActiveNode(item, parent)
-  ;(e.target as HTMLDivElement).parentElement!.dispatchEvent(new Event('active-node', { bubbles: true }))
+  ;(e.target as HTMLDivElement).parentElement!.dispatchEvent(
+    new Event('active-node', { bubbles: true })
+  )
   emitter.emit('switchMaterialsPanel', false)
 }
 
 let isActive = $computed(() => activeNode.value === item)
 
-watch(() => isActive, () => {
-  if (isActive) {
-    if (displayMode.value === 'preview') return
-    const moveable = getMoveable()
-    if (!moveable) return
-    // 获取当前选中的元素，并去更新 moveable 示例
-    const elem = (componentRef?.value as any)?.$el as HTMLDivElement
-    if (!elem) return
-    useMoveable(elem, item, parent)
-  }
-}, { flush: 'post' })
+watch(
+  () => isActive,
+  () => {
+    if (isActive) {
+      if (displayMode.value === 'preview') return
+      const moveable = getMoveable()
+      if (!moveable) return
+      // 获取当前选中的元素，并去更新 moveable 示例
+      const elem = (componentRef?.value as any)?.$el as HTMLDivElement
+      if (!elem) return
+      useMoveable(elem, item, parent)
+    }
+  },
+  { flush: 'post' }
+)
 
-watch(() => isActive, () => !isActive && disabledMoveable(), { flush: 'pre' })
+watch(
+  () => isActive,
+  () => !isActive && disabledMoveable(),
+  { flush: 'pre' }
+)
 
 onBeforeUnmount(() => isActive && disabledMoveable())
 
@@ -95,21 +105,25 @@ const dragEvents = $computed(() =>
           scrollList.add(elem)
         },
         'active-node': () => {
-          addActiveParentChain(item);
-        }
+          addActiveParentChain(item)
+        },
       }
     : {}
 )
 
-watch([displayMode, activeNode], () => {
-  if (scrollList.size > 0) {
-    scrollList.forEach(el => {
-      el.scrollLeft = 0
-      el.scrollTop = 0
-    })
-    scrollList.clear()
-  }
-}, { flush: 'pre' })
+watch(
+  [displayMode, activeNode],
+  () => {
+    if (scrollList.size > 0) {
+      scrollList.forEach((el) => {
+        el.scrollLeft = 0
+        el.scrollTop = 0
+      })
+      scrollList.clear()
+    }
+  },
+  { flush: 'pre' }
+)
 
 const handleDragStart = (event: DragEvent, node: PageNode) => {
   if (dragNode.value) return

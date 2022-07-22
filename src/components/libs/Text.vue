@@ -29,14 +29,10 @@ const style = $computed(() =>
     ...useBackgroundStyle(background),
   })
 )
-
 </script>
 
 <template>
-  <div
-    class="text"
-    :style="style"
-  >{{ basic.text }}</div>
+  <div class="text" :style="style">{{ basic.text }}</div>
 </template>
 
 <style scoped>

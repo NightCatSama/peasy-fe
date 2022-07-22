@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import Icon from './Icon.vue';
+import Icon from './Icon.vue'
 
 interface IBtnProps {
   text: string
@@ -9,8 +9,14 @@ interface IBtnProps {
   icon?: InstanceType<typeof Icon>['name']
   disabled?: boolean
 }
-const { text, size = 'md', type = 'btn', color = 'primary', icon, disabled } = defineProps<IBtnProps>()
-
+const {
+  text,
+  size = 'md',
+  type = 'btn',
+  color = 'primary',
+  icon,
+  disabled,
+} = defineProps<IBtnProps>()
 </script>
 
 <template>
@@ -29,7 +35,7 @@ const { text, size = 'md', type = 'btn', color = 'primary', icon, disabled } = d
   transition: all 0.3s;
 
   &.disabled {
-    opacity: .5;
+    opacity: 0.5;
     cursor: not-allowed;
     user-select: none;
   }
@@ -39,7 +45,6 @@ const { text, size = 'md', type = 'btn', color = 'primary', icon, disabled } = d
   }
 
   &-type-text {
-
     &.primary {
       color: $theme;
 

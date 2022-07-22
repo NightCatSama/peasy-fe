@@ -43,7 +43,8 @@ export const covertPXToUnit = (s: string, unit: string, referSiz?: number) => {
   else if (unit === 'rem')
     return `${fixedPointToNumber(parseFloat(s) / useDisplayStore().curFootSize)}rem`
   else if (unit === '%') return `${fixedPointToNumber((parseFloat(s) / (referSiz || 100)) * 100)}%`
-  else if (unit === 'vw') return `${fixedPointToNumber((parseFloat(s) * (100 / useDisplayStore().device.width)))}vw`
+  else if (unit === 'vw')
+    return `${fixedPointToNumber(parseFloat(s) * (100 / useDisplayStore().device.width))}vw`
   return s
 }
 
@@ -66,8 +67,8 @@ export const covertSize = (
           ? `${useDisplayStore().device[type] * (n / 100)}px`
           : s
         : isSection
-          ? `${n}${type === 'height' ? 'vh' : 'vw'}`
-          : s
+        ? `${n}${type === 'height' ? 'vh' : 'vw'}`
+        : s
     case 'rem':
       return isEditMode ? `${useDisplayStore().device.fontSize * n}px` : s
     case 'vw':
@@ -83,14 +84,15 @@ export const covertSizeToOtherUnit = (n: number, oldUnit: string, newUnit: strin
   if (!n || !isUnitType(oldUnit) || !isUnitType(newUnit) || oldUnit === newUnit) return n
   if (oldUnit === 'px') {
     if (newUnit === 'rem') return fixedPointToNumber(n / useDisplayStore().curFootSize)
-    if (newUnit === 'vw') return fixedPointToNumber((n * (100 / useDisplayStore().device.width)))
+    if (newUnit === 'vw') return fixedPointToNumber(n * (100 / useDisplayStore().device.width))
     return n
   }
 
   // 如果是其他格式进行转换，则先转为 px，再重复调用转换一次
-  const toPx = oldUnit === 'rem'
-    ? fixedPointToNumber(n * useDisplayStore().curFootSize)
-    : oldUnit === 'vw'
+  const toPx =
+    oldUnit === 'rem'
+      ? fixedPointToNumber(n * useDisplayStore().curFootSize)
+      : oldUnit === 'vw'
       ? fixedPointToNumber(n / (100 / useDisplayStore().device.width))
       : n
   if (newUnit === 'vw' || newUnit === 'rem') return covertSizeToOtherUnit(toPx, 'px', newUnit)

@@ -3,7 +3,7 @@ import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import ConfigGroup from './ConfigGroup.vue'
 import Icon from './widgets/Icon.vue'
-import Btn from './widgets/Btn.vue';
+import Btn from './widgets/Btn.vue'
 
 const pageStore = usePageStore()
 const { allPageData, activeNode, activeParentNode, activeNodeGroups } = storeToRefs(pageStore)
@@ -96,7 +96,7 @@ const { setActiveParentNodeToActive, deleteActiveNode, copyActiveNode } = pageSt
       height: 24px;
       cursor: pointer;
       margin-left: 4px;
-      transition: all .1s;
+      transition: all 0.1s;
 
       &.delete-icon {
         color: $color;

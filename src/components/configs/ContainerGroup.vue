@@ -21,7 +21,6 @@ const presetShadow = $computed(() => [
 ])
 
 const curShadowIndex = $computed(() => presetShadow.indexOf(container.boxShadow))
-
 </script>
 
 <template>

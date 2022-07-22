@@ -8,7 +8,7 @@ export interface ITabItem {
 </script>
 
 <script setup lang="ts">
-import Icon from './Icon.vue';
+import Icon from './Icon.vue'
 interface ITabsProps {
   data: { [key: string]: string } | string[] | ITabItem[]
   modelValue?: string
@@ -25,7 +25,6 @@ const list: ITabItem[] = $computed(() => {
     return Object.keys(data).map((key: string) => ({ key, value: data[key] }))
   }
 })
-
 </script>
 
 <template>
@@ -34,10 +33,12 @@ const list: ITabItem[] = $computed(() => {
       v-for="item in list"
       :key="item.key"
       :class="['tab-item', { active: modelValue === item.key || item.active }]"
-      @click="() => {
-        $emit('update:model-value', item.key)
-        item.onClick?.(!item.active)
-      }"
+      @click="
+        () => {
+          $emit('update:model-value', item.key)
+          item.onClick?.(!item.active)
+        }
+      "
     >
       <slot name="option" :key="item.key" :value="item.value">
         <template v-if="iconMap && iconMap[item.key]">

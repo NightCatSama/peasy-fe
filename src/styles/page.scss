@@ -14,7 +14,7 @@
         height: 100%;
         position: absolute;
         z-index: 1;
-        box-shadow: inset 0 0 0 1px rgba($theme, .7);
+        box-shadow: inset 0 0 0 1px rgba($theme, 0.7);
         pointer-events: none;
       }
 
@@ -51,7 +51,8 @@
       transition: font-size 0.3s, transform 0.3s;
       z-index: 9;
 
-      &.block::after, &.text::after {
+      &.block::after,
+      &.text::after {
         content: '';
         left: 0;
         top: 0;

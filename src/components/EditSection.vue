@@ -16,7 +16,13 @@ import { disabledMoveable } from '@/utils/moveable'
 import Btn from './widgets/Btn.vue'
 
 const pageStore = usePageStore()
-const { setActiveNode, addSection, setActiveParentNodeToActive, setActiveNodeToRound, getActiveNodeRound } = pageStore
+const {
+  setActiveNode,
+  addSection,
+  setActiveParentNodeToActive,
+  setActiveNodeToRound,
+  getActiveNodeRound,
+} = pageStore
 const { pageData, activeNode, activeParentNode } = storeToRefs(pageStore)
 
 const displayStore = useDisplayStore()

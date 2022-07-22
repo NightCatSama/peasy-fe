@@ -55,7 +55,12 @@ const uploadImage = async (e: InputEvent) => {
 </script>
 
 <template>
-  <Group title="Background" class="background-group" :can-advanced="false" :default-collapsed="true">
+  <Group
+    title="Background"
+    class="background-group"
+    :can-advanced="false"
+    :default-collapsed="true"
+  >
     <SelectItem
       :model-value="background.backgroundType"
       :label="'Background'"
@@ -114,7 +119,17 @@ const uploadImage = async (e: InputEvent) => {
         <div class="label">Background Position</div>
         <PositionTable
           v-model="background.backgroundPosition"
-          :options="['left top', 'top', 'right top', 'left', 'center', 'right', 'left bottom', 'bottom', 'right bottom']"
+          :options="[
+            'left top',
+            'top',
+            'right top',
+            'left',
+            'center',
+            'right',
+            'left bottom',
+            'bottom',
+            'right bottom',
+          ]"
         ></PositionTable>
       </div>
       <SelectItem
@@ -155,17 +170,15 @@ const uploadImage = async (e: InputEvent) => {
           "
           :process="
             (dotsPos) =>
-              dotsPos
-                .slice(0, -1)
-                .map((_, i) => [
-                  dotsPos[i],
-                  dotsPos[i + 1],
-                  {
-                    background: `linear-gradient(90deg, ${
-                      background.backgroundGradient[i].color
-                    }, ${background.backgroundGradient[i + 1].color})`,
-                  },
-                ])
+              dotsPos.slice(0, -1).map((_, i) => [
+                dotsPos[i],
+                dotsPos[i + 1],
+                {
+                  background: `linear-gradient(90deg, ${background.backgroundGradient[i].color}, ${
+                    background.backgroundGradient[i + 1].color
+                  })`,
+                },
+              ])
           "
           @update:model-value="
             (values) => {

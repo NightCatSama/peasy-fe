@@ -46,27 +46,32 @@ const fontWeightMap: { [key in IFont['fontWeight']]: string } = {
   900: '900',
 }
 
-const fontTabs = $computed(() => [{
-  key: 'bold',
-  icon: 'bold',
-  isActive: font.fontWeight === 'bold',
-  setValue: (val: boolean) => font.fontWeight = val ? 'bold' : 'normal'
-}, {
-  key: 'italic',
-  icon: 'italic',
-  isActive: font.fontStyle === 'italic',
-  setValue: (val: boolean) => font.fontStyle = val ? 'italic' : 'normal'
-}, {
-  key: 'underline',
-  icon: 'underline',
-  isActive: font.textDecoration === 'underline',
-  setValue: (val: boolean) => font.textDecoration = val ? 'underline' : 'none'
-}, {
-  key: 'line-through',
-  icon: 'line-through',
-  isActive: font.textDecoration === 'line-through',
-  setValue: (val: boolean) => font.textDecoration = val ? 'line-through' : 'none'
-}])
+const fontTabs = $computed(() => [
+  {
+    key: 'bold',
+    icon: 'bold',
+    isActive: font.fontWeight === 'bold',
+    setValue: (val: boolean) => (font.fontWeight = val ? 'bold' : 'normal'),
+  },
+  {
+    key: 'italic',
+    icon: 'italic',
+    isActive: font.fontStyle === 'italic',
+    setValue: (val: boolean) => (font.fontStyle = val ? 'italic' : 'normal'),
+  },
+  {
+    key: 'underline',
+    icon: 'underline',
+    isActive: font.textDecoration === 'underline',
+    setValue: (val: boolean) => (font.textDecoration = val ? 'underline' : 'none'),
+  },
+  {
+    key: 'line-through',
+    icon: 'line-through',
+    isActive: font.textDecoration === 'line-through',
+    setValue: (val: boolean) => (font.textDecoration = val ? 'line-through' : 'none'),
+  },
+])
 </script>
 
 <template>
@@ -84,16 +89,23 @@ const fontTabs = $computed(() => [{
         <TabsItem
           :data="['left', 'center', 'right', 'justify']"
           v-model="font.textAlign"
-          :icon-map="{ left: 'align-left', center: 'align-center', right: 'align-right', justify: 'align-justify' }"
+          :icon-map="{
+            left: 'align-left',
+            center: 'align-center',
+            right: 'align-right',
+            justify: 'align-justify',
+          }"
         ></TabsItem>
         <TabsItem
-          :data="fontTabs.map(item => ({
-            key: item.icon,
-            value: item.icon,
-            active: item.isActive,
-            onClick: item.setValue
-          }))"
-          :icon-map="Object.fromEntries(fontTabs.map(item => [item.key, item.icon]))"
+          :data="
+            fontTabs.map((item) => ({
+              key: item.icon,
+              value: item.icon,
+              active: item.isActive,
+              onClick: item.setValue,
+            }))
+          "
+          :icon-map="Object.fromEntries(fontTabs.map((item) => [item.key, item.icon]))"
         ></TabsItem>
         <InputItem
           :label="fontSetting.lineHeight.name"
@@ -107,7 +119,7 @@ const fontTabs = $computed(() => [{
           v-model="font.fontWeight"
           :options="fontWeightMap"
         ></SelectItem>
-       </template>
+      </template>
     </template>
   </Group>
 </template>
