@@ -2,12 +2,12 @@
 import { onBeforeUnmount, onMounted, ref, watch, watchPostEffect } from 'vue'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
-import type { SortableEvent } from 'sortablejs'
+import { active, SortableEvent } from 'sortablejs'
 
 import { usePageStore } from '@/stores/page'
 import { useDragStore } from '@/stores/drag'
 import { emitter } from '@/utils/event'
-import { disabledMoveable, getMoveable, useMoveable } from '@/utils/moveable'
+import { disabledMoveable, getMoveable, updateMoveableRect, useMoveable } from '@/utils/moveable'
 import { useDisplayStore } from '@/stores/display'
 import { PageNode } from '@/config'
 
@@ -39,20 +39,18 @@ const setActive = (e: Event) => {
 
 let isActive = $computed(() => activeNode.value === item)
 
-watchPostEffect(() => {
+watch(() => isActive, () => {
   if (isActive) {
     if (displayMode.value === 'preview') return
-
     const moveable = getMoveable()
-
     if (!moveable) return
     // 获取当前选中的元素，并去更新 moveable 示例
-    const elem = document.querySelector('.lib-component.active') as HTMLDivElement
+    const elem = (componentRef?.value as any)?.$el as HTMLDivElement
     if (!elem) return
-
     useMoveable(elem, item, parent)
   }
-})
+}, { flush: 'post' })
+
 watch($$(isActive), (val) => !val && disabledMoveable(), {
   flush: 'pre',
 })
@@ -77,7 +75,7 @@ const handleSortNode = (event: SortableEvent) => {
 }
 
 const isBlockComponent = $computed(() => item.component === 'Block')
-const scrollList: HTMLDivElement[] = []
+const scrollList: Set<HTMLDivElement> = new Set()
 const dragEvents = $computed(() =>
   isBlockComponent
     ? {
@@ -94,7 +92,8 @@ const dragEvents = $computed(() =>
         add: handleAddNode,
         end: handleSortNode,
         scroll: (e: Event) => {
-          scrollList.push(e.target as HTMLDivElement)
+          const elem = e.target as HTMLDivElement
+          scrollList.add(elem)
         },
         'active-node': () => {
           addActiveParentChain(item);
@@ -103,15 +102,15 @@ const dragEvents = $computed(() =>
     : {}
 )
 
-watch(() => displayMode.value, (val) => {
-  if (val !== 'preview' && scrollList.length > 0) {
+watch([displayMode, activeNode], () => {
+  if (scrollList.size > 0) {
     scrollList.forEach(el => {
       el.scrollLeft = 0
       el.scrollTop = 0
     })
-    scrollList.length = 0
+    scrollList.clear()
   }
-})
+}, { flush: 'pre' })
 
 const handleDragStart = (event: DragEvent, node: PageNode) => {
   if (dragNode.value) return

@@ -38,7 +38,9 @@ const style = $computed(() =>
 </script>
 
 <template>
-  <div :class="'block'" :style="style"><slot></slot></div>
+  <div :class="'block'" :style="style">
+    <slot></slot>
+  </div>
 </template>
 
 <style scoped></style>

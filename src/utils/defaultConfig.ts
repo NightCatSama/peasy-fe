@@ -25,8 +25,8 @@ export const getDefaultSize = (
       ? {
           width: 'auto',
           height: 'auto',
-          minWidth: '100px',
-          minHeight: '100px',
+          minWidth: '200px',
+          minHeight: '200px',
           maxHeight: 'none',
           maxWidth: 'none',
         }

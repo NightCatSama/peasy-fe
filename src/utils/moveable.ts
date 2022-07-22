@@ -20,7 +20,7 @@ export const getMoveable = () => {
     draggable: false,
     origin: false,
     useResizeObserver: true,
-    hideDefaultLines: true,
+    hideDefaultLines: false,
   })
 
   emitter.on('updateMoveable', updateMoveableRect)
@@ -40,6 +40,8 @@ export const disabledMoveable = () => {
   if (!moveable) return
 
   moveable.resizable = false
+  moveable.hideDefaultLines = true
+  moveable.target = null
   moveable.off()
 }
 
@@ -51,26 +53,34 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
   const disableWidth = item.type === 'section' || !isUnitType(getUnit(item.props.size?.width))
   const disableHeight = !isUnitType(getUnit(item.props.size?.height))
 
-  if (disableWidth && disableHeight) {
-    disabledMoveable()
-    return
-  }
+  // if (disableWidth && disableHeight) {
+  //   disabledMoveable()
+  //   return
+  // }
 
   /** 记录原先的单位 */
   let units: { width?: string; height?: string } = {}
 
-  const renderDirections = disableWidth
-    ? ['s', 'n']
-    : disableHeight
-    ? ['w', 'e']
-    : ['n', 'nw', 'ne', 's', 'se', 'sw', 'e', 'w']
+  const renderDirections = disableWidth && disableHeight
+    ? []
+    : disableWidth
+      ? ['s', 'n']
+      : disableHeight
+      ? ['w', 'e']
+      : ['n', 'nw', 'ne', 's', 'se', 'sw', 'e', 'w']
 
   moveable.resizable = true
+  moveable.hideDefaultLines = false
   moveable.target = elem
   moveable.renderDirections = renderDirections
 
   moveable.off()
+
+  if (!renderDirections.length) return
+
   moveable.on('resizeStart', (e) => {
+    elem.scrollLeft = 0
+    elem.scrollTop = 0
     if (!disableWidth) units.width = getUnit(item.props.size.width)
     if (!disableHeight) units.height = getUnit(item.props.size.height)
   })

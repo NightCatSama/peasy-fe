@@ -42,10 +42,10 @@ export const useSizeStyle = (size: ISize, direction?: string) => {
   const isEditMode = getIsEditMode()
   const isSection = !direction
 
-  let width = covertSize(size.width, { isEditMode, isSection, isHeight: false })
-  let height = covertSize(size.height, { isEditMode, isSection, isHeight: true })
-  let minHeight = covertSize(size.minHeight, { isEditMode, isSection, isHeight: true })
-  let maxHeight = covertSize(size.maxHeight, { isEditMode, isSection, isHeight: true })
+  let width = covertSize(size.width, { isSection, type: 'width' })
+  let height = covertSize(size.height, { isSection, type: 'height' })
+  let minHeight = covertSize(size.minHeight, { isSection, type: 'height' })
+  let maxHeight = covertSize(size.maxHeight, { isSection, type: 'height' })
 
   let flexStyles: any = {}
   if (width === 'stretch') {
@@ -125,11 +125,8 @@ export const useFontStyle = (font: IFont) => {
   const isEditMode = getIsEditMode()
 
   return {
-    fontSize:
-      isEditMode && getUnit(font.fontSize) === 'rem'
-        ? `${fixedPointToNumber(font.fontSize)}em`
-        : font.fontSize,
-    lineHeight: font.lineHeight,
+    fontSize: covertSize(font.fontSize),
+    lineHeight: covertSize(font.lineHeight),
     fontWeight: font.fontWeight,
     fontStyle: font.fontStyle,
     textDecoration: font.textDecoration,
@@ -183,7 +180,7 @@ export const useContainerStyle = (container: IContainer) => {
     overflow:
       getIsEditMode() &&
       getDisplayMode() !== 'preview'
-        ? 'visible'
+        ? container.overflow
         : container.overflow,
     boxShadow: container.boxShadow,
   }

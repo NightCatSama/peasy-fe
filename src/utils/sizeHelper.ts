@@ -1,7 +1,10 @@
 import { useDisplayStore } from '@/stores/display'
+import { inject } from 'vue'
+
+const getIsEditMode = () => !!inject('isEditMode')
 
 export const isUnitType = (type: string): type is UnitType =>
-  (['%', 'px', 'rem'] as UnitType[]).includes(type as unknown as UnitType)
+  (['%', 'px', 'rem', 'vw'] as UnitType[]).includes(type as unknown as UnitType)
 
 export const getUnit = (s: string): UnitType | '' => {
   if (!s || typeof s !== 'string') return ''
@@ -10,6 +13,9 @@ export const getUnit = (s: string): UnitType | '' => {
   }
   if (s.slice(-2) === 'px') {
     return 'px'
+  }
+  if (s.slice(-2) === 'vw') {
+    return 'vw'
   }
   if (s.slice(-1) === '%') {
     return '%'
@@ -36,42 +42,57 @@ export const covertPXToUnit = (s: string, unit: string, referSiz?: number) => {
   else if (unit === 'px') return s
   else if (unit === 'rem')
     return `${fixedPointToNumber(parseFloat(s) / useDisplayStore().curFootSize)}rem`
-  else if (unit === '%') return `${fixedPointToNumber((parseFloat(s) / (referSiz || 1)) * 100)}%`
+  else if (unit === '%') return `${fixedPointToNumber((parseFloat(s) / (referSiz || 100)) * 100)}%`
+  else if (unit === 'vw') return `${fixedPointToNumber((parseFloat(s) * (100 / useDisplayStore().device.width)))}vw`
   return s
 }
 
 /** 将各种格式的宽高转换成当前场景可用的样式 */
 export const covertSize = (
   s?: string,
-  options?: { isEditMode?: boolean; isSection?: boolean; isHeight?: boolean }
+  options?: { isSection?: boolean; type?: 'width' | 'height' }
 ) => {
   if (!s) return s
   const unit = getUnit(s)
   const n = parseFloat(s)
-  const { isEditMode = false, isSection = false, isHeight = true } = options || {}
+  const { isSection = false, type = '' } = options || {}
+  const isEditMode = getIsEditMode()
   switch (unit) {
     case '%':
+      if (!type) return s
+      // 如果是 Section 的宽高百分比，则特殊处理
       return isEditMode
         ? isSection
-          ? `${useDisplayStore().device[isHeight ? 'height' : 'width'] * (n / 100)}px`
+          ? `${useDisplayStore().device[type] * (n / 100)}px`
           : s
         : isSection
-        ? `${n}${isHeight ? 'vh' : 'vw'}`
-        : s
+          ? `${n}${type === 'height' ? 'vh' : 'vw'}`
+          : s
     case 'rem':
       return isEditMode ? `${useDisplayStore().device.fontSize * n}px` : s
+    case 'vw':
+      return isEditMode ? `${n / (100 / useDisplayStore().device.width)}px` : s
     case 'px':
     default:
       return s
   }
 }
 
-/** TODO: 转换格式时，保持现有宽高不变 */
+/** 转换格式时，保持原有数值不变 */
 export const covertSizeToOtherUnit = (n: number, oldUnit: string, newUnit: string): number => {
-  if (!n || !isUnitType(oldUnit) || !isUnitType(newUnit)) return n
-  if (oldUnit === 'px' && newUnit === 'rem')
-    return fixedPointToNumber(n / useDisplayStore().curFootSize)
-  if (oldUnit === 'rem' && newUnit === 'px')
-    return fixedPointToNumber(n * useDisplayStore().curFootSize)
-  return n
+  if (!n || !isUnitType(oldUnit) || !isUnitType(newUnit) || oldUnit === newUnit) return n
+  if (oldUnit === 'px') {
+    if (newUnit === 'rem') return fixedPointToNumber(n / useDisplayStore().curFootSize)
+    if (newUnit === 'vw') return fixedPointToNumber((n * (100 / useDisplayStore().device.width)))
+    return n
+  }
+
+  // 如果是其他格式进行转换，则先转为 px，再重复调用转换一次
+  const toPx = oldUnit === 'rem'
+    ? fixedPointToNumber(n * useDisplayStore().curFootSize)
+    : oldUnit === 'vw'
+      ? fixedPointToNumber(n / (100 / useDisplayStore().device.width))
+      : n
+  if (newUnit === 'vw' || newUnit === 'rem') return covertSizeToOtherUnit(toPx, 'px', newUnit)
+  return toPx
 }

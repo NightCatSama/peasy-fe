@@ -26,14 +26,14 @@ const fontSetting: any = $computed(() => ({
       }
       font.fontSize = val
     },
-    suffix: ['px', 'rem'],
+    suffix: ['px', 'rem', 'vw'],
   },
   lineHeight: {
     name: 'Line Height',
     type: 'number',
     value: font.lineHeight,
     setValue: (val: string) => (font.lineHeight = val),
-    suffix: ['px', 'rem', '%'],
+    suffix: ['px', 'rem', 'vw', '%'],
   },
 }))
 

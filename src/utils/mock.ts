@@ -34,7 +34,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
               name: `${type}-Block`,
               component: 'Block',
               props: {
-                size: getDefaultSize('component', { width: '50%' }),
+                size: getDefaultSize('component', { width: '50%', height: '200px' }),
                 layout: getDefaultLayout(),
                 spacing: getDefaultSpacing(),
                 border: getDefaultBorder(),

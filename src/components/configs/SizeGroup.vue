@@ -18,7 +18,7 @@ const list: any = $computed(() => [
     type: 'number',
     value: size.width,
     setValue: (val: string) => (size.width = val),
-    suffix: ['px', '%', 'rem', 'auto', 'stretch'],
+    suffix: ['px', '%', 'rem', 'vw', 'auto', 'stretch'],
   },
   {
     name: 'Height',
@@ -33,7 +33,7 @@ const list: any = $computed(() => [
     type: 'number',
     value: size.minWidth,
     setValue: (val: string) => (size.minWidth = val),
-    suffix: ['px', '%', 'rem', 'auto'],
+    suffix: ['px', '%', 'rem', 'vw', 'auto'],
     isAdvanced: true,
   },
   {
@@ -50,7 +50,7 @@ const list: any = $computed(() => [
     type: 'number',
     value: size.maxWidth,
     setValue: (val: string) => (size.maxWidth = val),
-    suffix: ['px', '%', 'rem', 'none'],
+    suffix: ['px', '%', 'rem', 'vw', 'none'],
     isAdvanced: true,
   },
   {
