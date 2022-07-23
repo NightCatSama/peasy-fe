@@ -24,7 +24,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
       border: getDefaultBorder(),
       container: getDefaultContainer(),
       background: getDefaultBackground({}),
-      position: getDefaultPosition()
+      position: getDefaultPosition(),
     },
     children:
       type === 'component'
@@ -44,7 +44,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                   backgroundType: 'image',
                   backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4',
                 }),
-                position: getDefaultPosition()
+                position: getDefaultPosition(),
               },
               children: [getMockText(name)],
             },

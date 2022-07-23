@@ -58,7 +58,8 @@ export const usePageStore = defineStore('page', {
       (state) =>
       (change: number): PageNode | null => {
         if (!state.activeNode) return null
-        const nodeList = state.activeNode.type === 'section' ? state.allPageData : state.activeParentNode?.children
+        const nodeList =
+          state.activeNode.type === 'section' ? state.allPageData : state.activeParentNode?.children
         if (!nodeList || nodeList.length === 0) return null
         const index = nodeList?.indexOf(state.activeNode)!
         if (index === -1) return null

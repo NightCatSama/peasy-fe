@@ -19,7 +19,7 @@
       right: 0;
       bottom: 100%;
       transform-origin: right bottom;
-      transform: translateY(-2px) scale(.9);
+      transform: translateY(-2px) scale(0.9);
       background: $theme;
       color: $white;
     }
@@ -28,7 +28,7 @@
       left: 0;
       top: 100%;
       transform-origin: left top;
-      transform: translateY(2px) scale(.9);
+      transform: translateY(2px) scale(0.9);
       background: $theme;
       color: $white;
     }
@@ -38,13 +38,13 @@
     position: absolute;
     z-index: 2;
     pointer-events: none;
-    background-color: rgba($pink, .9);
+    background-color: rgba($pink, 0.9);
 
     > div {
       position: absolute;
       min-width: 46px;
       color: $white;
-      background: rgba($pink, .9);
+      background: rgba($pink, 0.9);
       padding: 2px 4px;
       white-space: nowrap;
       border-radius: 4px;
@@ -61,7 +61,7 @@
         top: 100%;
         text-align: right;
         transform-origin: right center;
-        transform: translate(-4px, 4px) scale(.9);
+        transform: translate(-4px, 4px) scale(0.9);
       }
     }
 
@@ -75,7 +75,7 @@
         top: 100%;
         text-align: left;
         transform-origin: left center;
-        transform: translate(4px, 4px) scale(.9);
+        transform: translate(4px, 4px) scale(0.9);
       }
     }
 
@@ -89,7 +89,7 @@
         bottom: 0;
         text-align: left;
         transform-origin: left bottom;
-        transform: translate(4px, -4px) scale(.9);
+        transform: translate(4px, -4px) scale(0.9);
       }
     }
 
@@ -103,7 +103,7 @@
         top: 0;
         text-align: left;
         transform-origin: left bottom;
-        transform: translate(4px, 4px) scale(.9);
+        transform: translate(4px, 4px) scale(0.9);
       }
     }
   }

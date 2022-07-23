@@ -34,11 +34,13 @@ const componentNameMap: { [type in GroupType]: any | null } = {
 }
 
 const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
-
 </script>
 
 <template>
-  <div v-if="activeNode && componentNameMap[groupType] && !ignoreGroup.includes(groupType)" class="config-group">
+  <div
+    v-if="activeNode && componentNameMap[groupType] && !ignoreGroup.includes(groupType)"
+    class="config-group"
+  >
     <Component
       :is="componentNameMap[groupType]"
       :node="activeNode"

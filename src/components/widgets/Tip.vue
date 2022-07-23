@@ -26,7 +26,7 @@ const iconMap = {
   border-radius: $normal-radius;
   font-size: 12px;
   background: $bg-default;
-  display: flex;;
+  display: flex;
   align-items: flex-start;
 
   &-icon {

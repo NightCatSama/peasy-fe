@@ -25,12 +25,15 @@ const { activeParentNode } = storeToRefs(pageStore)
 
 const displayStore = useDisplayStore()
 const { setLockDragSetPosition } = displayStore
-const { lockDragSetPosition} = storeToRefs(displayStore)
+const { lockDragSetPosition } = storeToRefs(displayStore)
 
-const positionMap: { [key in IPosition['position']]?: string } = Object.assign({
-  static: 'Static',
-  absolute: 'Absolute',
-}, activeParentNode?.value?.type === 'section' ? { fixed: 'Fixed' } : null)
+const positionMap: { [key in IPosition['position']]?: string } = Object.assign(
+  {
+    static: 'Static',
+    absolute: 'Absolute',
+  },
+  activeParentNode?.value?.type === 'section' ? { fixed: 'Fixed' } : null
+)
 
 const positionValue = $computed(() => {
   let values = []
@@ -47,7 +50,11 @@ const values = $computed(() => {
     right: position.right === 'auto' ? '' : position.right,
     top: position.top === 'auto' ? '' : position.top,
     bottom: position.bottom === 'auto' ? '' : position.bottom,
-    center: position.left === 'auto' && position.right === 'auto' && position.top === 'auto' && position.bottom === 'auto'
+    center:
+      position.left === 'auto' &&
+      position.right === 'auto' &&
+      position.top === 'auto' &&
+      position.bottom === 'auto',
   }
 })
 
@@ -69,7 +76,6 @@ const handleLockChange = () => {
     closeDragMode()
   }
 }
-
 </script>
 
 <template>
@@ -81,7 +87,11 @@ const handleLockChange = () => {
       @update:model-value="handlePositionChange"
     >
     </TabsItem>
-    <Tip v-if="position.position === 'fixed'" type="warning" message="使用 Fixed 时请确保你的元素置于最顶层容器中"></Tip>
+    <Tip
+      v-if="position.position === 'fixed'"
+      type="warning"
+      message="使用 Fixed 时请确保你的元素置于最顶层容器中"
+    ></Tip>
     <div class="item position-item" v-if="position.position !== 'static'">
       <PositionTable
         :size="80"
@@ -97,12 +107,14 @@ const handleLockChange = () => {
           'bottom',
           'right bottom',
         ]"
-        @update:model-value="(key) => {
-          position.left = key.includes('left') ? '0px' : 'auto'
-          position.right = key.includes('right') ? '0px' : 'auto'
-          position.top = key.includes('top') ? '0px' : 'auto'
-          position.bottom = key.includes('bottom') ? '0px' : 'auto'
-        }"
+        @update:model-value="
+          (key) => {
+            position.left = key.includes('left') ? '0px' : 'auto'
+            position.right = key.includes('right') ? '0px' : 'auto'
+            position.top = key.includes('top') ? '0px' : 'auto'
+            position.bottom = key.includes('bottom') ? '0px' : 'auto'
+          }
+        "
       ></PositionTable>
       <div class="input-wrap">
         <div v-if="values.center" class="position-center">Always Center</div>
@@ -112,7 +124,7 @@ const handleLockChange = () => {
             type="number"
             :suffix="['px', '%']"
             :model-value="values.left"
-            @update:model-value="val => position.left = val"
+            @update:model-value="(val) => (position.left = val)"
           ></Input>
         </div>
         <div class="position-input" v-if="values.right">
@@ -121,7 +133,7 @@ const handleLockChange = () => {
             type="number"
             :suffix="['px', '%']"
             :model-value="values.right"
-            @update:model-value="val => position.right = val"
+            @update:model-value="(val) => (position.right = val)"
           ></Input>
         </div>
         <div class="position-input" v-if="values.top">
@@ -130,7 +142,7 @@ const handleLockChange = () => {
             type="number"
             :suffix="['px', '%']"
             :model-value="values.top"
-            @update:model-value="val => position.top = val"
+            @update:model-value="(val) => (position.top = val)"
           ></Input>
         </div>
         <div class="position-input" v-if="values.bottom">
@@ -139,12 +151,12 @@ const handleLockChange = () => {
             type="number"
             :suffix="['px', '%']"
             :model-value="values.bottom"
-            @update:model-value="val => position.bottom = val"
+            @update:model-value="(val) => (position.bottom = val)"
           ></Input>
         </div>
       </div>
       <Icon
-        :class="['lock-icon', { 'active': lockDragSetPosition }]"
+        :class="['lock-icon', { active: lockDragSetPosition }]"
         name="lock"
         :size="14"
         @click="handleLockChange"

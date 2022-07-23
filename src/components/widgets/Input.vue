@@ -16,7 +16,15 @@ interface IInputProps {
   autoFocus?: boolean
 }
 
-const { type = 'text', modelValue = '', suffix, disabled, realTime, hideSuffix, autoFocus } = defineProps<IInputProps>()
+const {
+  type = 'text',
+  modelValue = '',
+  suffix,
+  disabled,
+  realTime,
+  hideSuffix,
+  autoFocus,
+} = defineProps<IInputProps>()
 
 let inputValue = $ref(modelValue)
 let suffixInValue = $ref(suffix?.[0] ?? '')

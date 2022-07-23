@@ -82,6 +82,6 @@ export const useDisplayStore = defineStore('display', {
     },
     setLockDragSetPosition(lock: boolean) {
       this.lockDragSetPosition = lock
-    }
+    },
   },
 })

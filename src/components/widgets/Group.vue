@@ -30,7 +30,7 @@ const iconName = {
   Background: 'background',
   Container: 'container',
   Basic: 'basic',
-  Position: 'absolute'
+  Position: 'absolute',
 } as any
 </script>
 
