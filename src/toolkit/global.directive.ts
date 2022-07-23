@@ -37,7 +37,7 @@ export default {
           }
         } else {
           const height = el.getBoundingClientRect().height
-          el.style.transition = 'all .2s ease-out'
+          el.style.transition = 'all .15s ease-out'
           el.style.height = height + 'px'
           el.style.paddingTop = '0'
           el.style.paddingBottom = '0'

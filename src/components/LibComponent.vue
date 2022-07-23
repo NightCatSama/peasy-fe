@@ -42,15 +42,20 @@ const setActive = (e: Event) => {
 let isActive = $computed(() => activeNode.value === item)
 
 watch(
-  () => isActive,
+  () => [isActive, displayMode.value],
   () => {
     if (isActive) {
+      if (['preview', 'drag'].includes(displayMode.value)) {
+        disabledMoveable()
+        return
+      }
       const moveable = getMoveable()
       if (!moveable) return
       // 获取当前选中的元素，并去更新 moveable 示例
       const elem = (componentRef?.value as any)?.$el as HTMLDivElement
       if (!elem) return
       useMoveable(elem, item, parent)
+      setTimeout(() => emitter.emit('updateMoveable'), 300) // drag 视图切回来有个缩放动画，需要等动画完毕后重新定位
     }
   },
   { flush: 'post' }

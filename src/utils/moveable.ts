@@ -251,7 +251,7 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
 /** 开启拖拽定位模式 */
 export const openDragMode = (activeElem?: HTMLDivElement) => {
   const moveable = getMoveable()
-  if (!moveable || useDisplayStore().lockDragSetPosition) return
+  if (!moveable || useDisplayStore().lockDrag) return
   moveable.draggable = true
   const elem = activeElem || (moveable.target as HTMLDivElement)
   setSnappableGuidelines(elem)

@@ -103,13 +103,17 @@ watch(
   { flush: 'post', deep: true }
 )
 
-watch(
-  [displayMode],
-  () => {
-    setTimeout(() => emitter.emit('updateMoveable'), 300)
-  },
-  { flush: 'post' }
-)
+// watch(
+//   [displayMode],
+//   () => {
+//     if (displayMode.value !== 'edit') {
+//       disabledMoveable()
+//     } else {
+//       setTimeout(() => emitter.emit('updateMoveable'), 300)
+//     }
+//   },
+//   { flush: 'post' }
+// )
 
 watch(
   () => noPageData,

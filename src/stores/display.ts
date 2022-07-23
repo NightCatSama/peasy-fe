@@ -46,7 +46,7 @@ export const useDisplayStore = defineStore('display', {
      * grid: 布局模式
      */
     displayMode: 'edit' as DisplayMode,
-    /** 锁定拖拽修改 position */
+    /** 手动锁定拖拽修改 position */
     lockDragSetPosition: false,
   }),
   getters: {
@@ -66,6 +66,9 @@ export const useDisplayStore = defineStore('display', {
     curFootSize(state) {
       return state.device.fontSize
     },
+    lockDrag(state) {
+      return state.lockDragSetPosition || state.displayMode !== 'edit'
+    }
   },
   actions: {
     setDeviceByParent(parentWidth: number) {

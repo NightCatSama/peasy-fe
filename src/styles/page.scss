@@ -49,10 +49,13 @@
         outline: 3px dashed rgba($pink, 50%);
       }
     }
+    .moveable-control-box {
+      // display: none !important;
+    }
   }
   &-preview {
     .moveable-control-box {
-      display: none !important;
+      // display: none !important;
     }
   }
 }

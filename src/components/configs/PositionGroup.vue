@@ -27,13 +27,11 @@ const displayStore = useDisplayStore()
 const { setLockDragSetPosition } = displayStore
 const { lockDragSetPosition } = storeToRefs(displayStore)
 
-const positionMap: { [key in IPosition['position']]?: string } = Object.assign(
-  {
-    static: 'Static',
-    absolute: 'Absolute',
-  },
-  activeParentNode?.value?.type === 'section' ? { fixed: 'Fixed' } : null
-)
+const positionMap: { [key in IPosition['position']]?: string } = {
+  static: 'Static',
+  absolute: 'Absolute',
+  fixed: 'Fixed'
+}
 
 const positionValue = $computed(() => {
   let values = []
