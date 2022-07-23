@@ -190,7 +190,7 @@ export const usePageStore = defineStore('page', {
           this.activeParentNode,
           index !== void 0 ? index + 1 : this.activeParentNode?.children?.length!
         )
-        nextTick(() => this.activeNode = newNode)
+        nextTick(() => (this.activeNode = newNode))
       }
     },
     /** 设置当前展示的 Section */

@@ -4,7 +4,7 @@
   &-edit {
     .lib-component {
       position: relative;
-      transition: font-size 0.3s, transform 0.3s, box-shadow 0.2s;
+      transition: font-size 0.3s, box-shadow 0.2s;
       user-select: none;
 
       &:not(.active):hover::before {
@@ -29,8 +29,7 @@
   &-drag {
     .lib-component {
       position: relative;
-      transform: scale(0.92);
-      transition: font-size 0.3s, transform 0.3s;
+      transition: font-size 0.3s;
 
       &.block::after,
       &.text::after {
@@ -41,12 +40,12 @@
         height: 100%;
         position: absolute;
         z-index: 1;
-        outline: 3px dashed rgba($theme, 50%);
+        outline: 3px dashed rgba($theme, 80%);
         pointer-events: none;
       }
 
       &.text::after {
-        outline: 3px dashed rgba($pink, 50%);
+        outline: 3px dashed rgba($pink, 80%);
       }
     }
     .moveable-control-box {

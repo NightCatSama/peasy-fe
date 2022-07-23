@@ -37,9 +37,7 @@ const $el = $computed(() => (componentRef?.value as any)?.$el as HTMLDivElement)
 const setActive = () => {
   if (!$el || !$el.parentElement) return
   setActiveNode(item, parent)
-  $el.parentElement!.dispatchEvent(
-    new Event('active-node', { bubbles: true })
-  )
+  $el.parentElement!.dispatchEvent(new Event('active-node', { bubbles: true }))
   emitter.emit('switchMaterialsPanel', false)
 }
 

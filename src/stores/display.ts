@@ -15,7 +15,7 @@ export interface IGroupStatus {
   advanced: boolean
 }
 
-export type DisplayMode = 'preview' | 'drag' | 'edit' | 'grid'
+export type DisplayMode = 'preview' | 'drag' | 'edit'
 
 export const useDisplayStore = defineStore('display', {
   state: () => ({
@@ -68,7 +68,7 @@ export const useDisplayStore = defineStore('display', {
     },
     lockDrag(state) {
       return state.lockDragSetPosition || state.displayMode !== 'edit'
-    }
+    },
   },
   actions: {
     setDeviceByParent(parentWidth: number) {

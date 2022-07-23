@@ -1,11 +1,19 @@
 <script setup lang="ts">
 import { Dropdown as VDropdown } from 'floating-vue'
 interface IDropdownProps {
-  type?: 'default' | 'color-picker'
+  type?: 'default' | 'color-picker' | 'pure'
   disabled?: boolean
   triggers?: string[]
+  placement?: string
 }
-const { type = 'default', disabled, triggers = ['click'] } = defineProps<IDropdownProps>()
+const {
+  type = 'default',
+  disabled,
+  triggers = ['click'],
+  placement = 'bottom-end',
+} = defineProps<IDropdownProps>()
+
+const distance = type === 'color-picker' ? 10 : 5
 </script>
 
 <template>
@@ -13,14 +21,15 @@ const { type = 'default', disabled, triggers = ['click'] } = defineProps<IDropdo
     :disabled="disabled"
     :triggers="triggers"
     :popperClass="['dropdown-popper', `dropdown-popper-${type}`]"
-    :distance="10"
+    :distance="distance"
     :arrow-padding="10"
+    :placement="placement"
     auto-hide
     v-bind="$attrs"
   >
     <slot></slot>
-    <template #popper>
-      <slot name="content"></slot>
+    <template #popper="{ hide }">
+      <slot name="content" :hide="hide"></slot>
     </template>
   </VDropdown>
 </template>
@@ -42,6 +51,21 @@ const { type = 'default', disabled, triggers = ['click'] } = defineProps<IDropdo
     .v-popper__arrow-outer,
     .v-popper__arrow-inner {
       border-color: $panel;
+    }
+  }
+
+  &.dropdown-popper-pure {
+    .v-popper__inner {
+      background: $panel;
+      padding: 0;
+    }
+    .v-popper__arrow-outer,
+    .v-popper__arrow-inner {
+      border-color: $panel;
+    }
+    .v-popper__arrow-outer,
+    .v-popper__arrow-inner {
+      display: none;
     }
   }
 

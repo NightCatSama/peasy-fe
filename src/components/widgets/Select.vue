@@ -1,45 +1,65 @@
 <script setup lang="ts">
 import { watchEffect, defineEmits } from 'vue'
 import Icon from './Icon.vue'
+import Dropdown from './Dropdown.vue'
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:model-value'])
+
+interface ISelectItem {
+  title: string
+  icon?: string
+}
 
 interface ISelectProps {
   display?: 'inline' | 'block'
+  placement?: string
   modelValue: string
   disabled?: boolean
-  options: { [key: string]: string }
+  options: { [key: string]: string | ISelectItem }
 }
 
-const { display = 'block', disabled, options, modelValue } = defineProps<ISelectProps>()
+const { display = 'block', disabled, placement, options, modelValue } = defineProps<ISelectProps>()
 
-let isOpen = $ref(false)
-
-const showValue = $computed(() => options[modelValue] || '')
+const showValue = $computed(() => {
+  const value = options[modelValue]
+  if (typeof value === 'string') {
+    return value || ''
+  }
+  return value.title || ''
+})
 
 const handleChange = (val: string) => {
-  emit('update:modelValue', val)
-  isOpen = false
+  emit('update:model-value', val)
 }
 </script>
 
 <template>
-  <div :class="['select', `select-display-${display}`]" @click="!disabled && (isOpen = !isOpen)">
-    <div class="select-value">{{ showValue }}</div>
-    <div
-      :class="['select-option-wrapper', { hide: !isOpen }]"
-      v-click-outside="() => (isOpen = false)"
-    >
-      <div
-        :class="['select-option', { active: key === modelValue }]"
-        v-for="(label, key) in options"
-        :key="key"
-        @click.stop="() => handleChange(key as string)"
+  <Dropdown type="pure" :placement="placement" :disabled="disabled">
+    <div :class="['select', `select-display-${display}`]">
+      <slot name="value" :value="showValue"
+        ><div class="select-value">{{ showValue }}</div></slot
       >
-        {{ label }}
-      </div>
     </div>
-  </div>
+    <template #content="{ hide }">
+      <div :class="['select-option-wrapper']">
+        <div
+          v-for="(label, key) in options"
+          :key="key"
+          :class="['select-option', { active: key === modelValue, 'has-icon': (label as any)?.icon }]"
+          @click.stop="() => {
+            handleChange(key as string)
+            hide()
+          }"
+        >
+          <template v-if="typeof label === 'string'">{{ label }}</template>
+          <template v-else>
+            <Icon class="option-icon" v-if="label.icon" :name="label.icon" :size="11" />
+            <div>{{ label.title }}</div>
+          </template>
+        </div>
+      </div>
+    </template>
+  </Dropdown>
 </template>
 
 <style lang="scss" scoped>
@@ -47,6 +67,7 @@ const handleChange = (val: string) => {
   position: relative;
   display: inline-flex;
   align-items: center;
+  height: 100%;
 
   &-display-block {
     border-radius: $normal-radius;
@@ -76,47 +97,51 @@ const handleChange = (val: string) => {
     white-space: nowrap;
     transition: all 0.3s;
   }
+}
+</style>
 
-  .select-option-wrapper {
-    position: absolute;
-    right: 0px;
-    top: 100%;
-    transform: translateY(10px);
-    display: flex;
-    flex-direction: column;
+<style lang="scss">
+.select-option-wrapper {
+  display: flex;
+  flex-direction: column;
+  background: $panel-dark;
+  border-radius: $normal-radius;
+  padding: 4px 6px;
+  transition: all 0.3s;
+  z-index: 999;
+  min-width: 120px;
+  border: 1px solid $theme;
+
+  .select-option {
+    padding: 4px 12px 4px 8px;
+    font-size: 13px;
+    color: darken($color, 20%);
     background: $panel-dark;
-    border-radius: 8px;
-    box-shadow: $float-shadow;
-    padding: 4px 6px;
-    transition: all 0.3s;
-    z-index: 999;
-    min-width: 100%;
-    border: 1px solid $theme;
+    border-radius: $inner-radius;
+    white-space: nowrap;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
 
-    &.hide {
-      pointer-events: none;
-      opacity: 0;
-      transform: scale(0.8);
+    &:not(:last-child) {
+      margin-bottom: 4px;
+    }
+    &:hover {
+      color: $theme;
+      background: rgba($theme, 8%);
+    }
+    &.active {
+      color: $black;
+      background: $theme-gradient;
     }
 
-    .select-option {
-      padding: 4px 8px;
-      font-size: 14px;
-      background: $panel-dark;
-      border-radius: $inner-radius;
-      white-space: nowrap;
-      cursor: pointer;
+    &.has-icon {
+      padding-left: 6px;
+    }
 
-      &:not(:last-child) {
-        margin-bottom: 4px;
-      }
-      &:hover {
-        color: $theme;
-      }
-      &.active {
-        color: $black;
-        background: $theme-gradient;
-      }
+    .option-icon {
+      margin-right: 4px;
     }
   }
 }

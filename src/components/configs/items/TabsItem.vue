@@ -9,10 +9,10 @@ interface ITabsItemProps {
 }
 
 const { label, modelValue, data, iconMap } = defineProps<ITabsItemProps>()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:model-value'])
 
 const handleChange = (val: string) => {
-  emit('update:modelValue', val)
+  emit('update:model-value', val)
 }
 </script>
 

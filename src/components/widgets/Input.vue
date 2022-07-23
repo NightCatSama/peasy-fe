@@ -3,7 +3,7 @@ import { covertSizeToOtherUnit, fixedPointToNumber, isUnitType } from '@/utils/s
 import { watchEffect, defineEmits, nextTick, watch, onMounted } from 'vue'
 import Select from './Select.vue'
 
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:model-value'])
 
 interface IInputProps {
   type?: 'text' | 'number' | 'textarea'
@@ -105,11 +105,11 @@ const handleChange = (event: Event) => {
     value = '' + (parseFloat(value) || 0)
   }
   inputValue = value
-  emit('update:modelValue', getValueBySuffix(suffixInValue as SuffixType))
+  emit('update:model-value', getValueBySuffix(suffixInValue as SuffixType))
 }
 
 const handleSuffixClick = (key: SuffixType) => {
-  emit('update:modelValue', getValueBySuffix(key))
+  emit('update:model-value', getValueBySuffix(key))
   nextTick(() => inputRef?.focus?.())
 }
 

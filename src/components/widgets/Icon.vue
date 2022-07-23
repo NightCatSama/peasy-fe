@@ -36,46 +36,12 @@ import TopCircleIcon from '@/assets/top-circle.svg'
 import AbsoluteIcon from '@/assets/absolute.svg'
 import WarningIcon from '@/assets/warning.svg'
 import LockIcon from '@/assets/lock.svg'
+import DragIcon from '@/assets/drag.svg'
+import EditIcon from '@/assets/edit.svg'
+import PreviewIcon from '@/assets/preview.svg'
 
 interface IIconProps {
-  name:
-    | 'add'
-    | 'focus'
-    | 'device-sm'
-    | 'device-md'
-    | 'device-lg'
-    | 'check'
-    | 'down'
-    | 'advanced'
-    | 'more'
-    | 'delete'
-    | 'caret-down'
-    | 'line'
-    | 'dashed'
-    | 'dotted'
-    | 'line-double'
-    | 'layout'
-    | 'size'
-    | 'spacing'
-    | 'border'
-    | 'font'
-    | 'container'
-    | 'background'
-    | 'copy'
-    | 'basic'
-    | 'question'
-    | 'italic'
-    | 'bold'
-    | 'underline'
-    | 'through'
-    | 'align-left'
-    | 'align-center'
-    | 'align-right'
-    | 'align-justify'
-    | 'top-circle'
-    | 'absolute'
-    | 'warning'
-    | 'lock'
+  name: string
   type?: 'circle' | 'pure' | 'btn'
   size?: number
   active?: boolean
@@ -119,6 +85,9 @@ const iconMap = {
   absolute: AbsoluteIcon,
   warning: WarningIcon,
   lock: LockIcon,
+  drag: DragIcon,
+  edit: EditIcon,
+  preview: PreviewIcon,
 } as any
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()

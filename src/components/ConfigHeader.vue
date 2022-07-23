@@ -8,6 +8,7 @@ import Dropdown from './widgets/Dropdown.vue'
 import Icon from './widgets/Icon.vue'
 import { ref } from 'vue'
 import Slider from './widgets/Slider.vue'
+import Select from './widgets/Select.vue'
 
 const displayStore = useDisplayStore()
 const { device, displayMode } = storeToRefs(displayStore)
@@ -38,6 +39,26 @@ const setDeviceBySize = (size: number[]) => {
     fontSize: size[2],
   })
 }
+
+const modeMap = {
+  edit: {
+    title: 'Edit',
+    icon: 'edit',
+  },
+  drag: {
+    title: 'Drag',
+    icon: 'drag',
+  },
+  preview: {
+    title: 'Preview',
+    icon: 'preview',
+  },
+}
+
+const handleModeClick = (value: any) => {
+  console.log('value', value)
+  displayMode.value = value
+}
 </script>
 
 <template>
@@ -45,24 +66,17 @@ const setDeviceBySize = (size: number[]) => {
     <div class="left">
       <div class="name">{{ name }}</div>
       <div class="ext">.html</div>
-      <p
-        @click="
-          displayMode =
-            displayMode === 'drag' ? 'edit' : displayMode === 'edit' ? 'preview' : 'drag'
-        "
-        :style="{ marginLeft: 40 + 'px' }"
-      >
-        TODO: {{ displayMode }}
-      </p>
     </div>
     <div class="center">
-      <Dropdown>
-        <div class="size">{{ text }}</div>
+      <Dropdown placement="bottom">
+        <div class="size">
+          {{ text }}<span class="zoom">{{ zoomText }}</span>
+        </div>
         <template #content>
           <div class="device-wrapper">
             <div class="title">
               Options
-              <span class="device-size" v-if="hoverIndex > -1">
+              <span class="title-extra" v-if="hoverIndex > -1">
                 {{ desktop[hoverIndex][0] + ' × ' + desktop[hoverIndex][1] }}
               </span>
             </div>
@@ -79,15 +93,31 @@ const setDeviceBySize = (size: number[]) => {
                 <Icon v-else name="device-lg" type="pure" :size="28" />
               </div>
             </div>
+            <div class="title">Zoom</div>
+            <Slider
+              width="200px"
+              v-model="device.zoom"
+              :min="0.2"
+              :max="2"
+              :interval="0.01"
+              :contained="true"
+            ></Slider>
           </div>
         </template>
       </Dropdown>
-      <Dropdown>
-        <div class="zoom">{{ zoomText }}</div>
-        <template #content>
-          <Slider width="200px" v-model="device.zoom" :min="0.2" :max="2" :interval="0.01"></Slider>
+      <Select
+        class="mode-wrapper"
+        :options="modeMap"
+        :display="'inline'"
+        placement="bottom-start"
+        :model-value="displayMode"
+        @update:model-value="handleModeClick"
+      >
+        <template #value>
+          <Icon class="icon" :name="modeMap[displayMode].icon" :size="11"></Icon>
+          <span>{{ modeMap[displayMode].title }}</span>
         </template>
-      </Dropdown>
+      </Select>
     </div>
     <div class="right">
       <Btn @click="$emit('download')" text="Download"></Btn>
@@ -114,13 +144,14 @@ const setDeviceBySize = (size: number[]) => {
     align-items: baseline;
 
     .name {
-      color: $theme;
+      color: $yellow;
       font-size: 24px;
       font-weight: bold;
     }
     .ext {
       font-size: 14px;
       margin-left: 3px;
+      color: darken($color, 10%);
     }
   }
 
@@ -136,10 +167,32 @@ const setDeviceBySize = (size: number[]) => {
     left: 50%;
     top: 50%;
     transform: translate(-50%, -50%);
+
+    .mode-wrapper {
+      position: absolute;
+      left: 100%;
+      top: 50%;
+      transform: translate(12px, -50%);
+      font-size: 13px;
+      background: $panel;
+      padding: 6px 16px 6px 14px;
+      border-radius: $normal-radius;
+      white-space: nowrap;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      user-select: none;
+
+      :deep(.icon) {
+        padding: 0;
+        margin-right: 4px;
+        margin-top: -0.03em;
+      }
+    }
   }
 
-  .size,
-  .zoom {
+  .size {
     display: flex;
     justify-content: center;
     align-items: center;
@@ -158,13 +211,21 @@ const setDeviceBySize = (size: number[]) => {
     padding: 0 18px;
     font-size: 14px;
     border-radius: 18px;
-  }
+    .zoom {
+      position: relative;
+      margin-left: 16px;
 
-  .zoom {
-    height: 32px;
-    width: 32px;
-    font-size: 11px;
-    border-radius: 200px;
+      &::after {
+        content: '';
+        position: absolute;
+        left: -8px;
+        top: 50%;
+        transform: translateY(-50%);
+        width: 1px;
+        height: 10px;
+        background: darken($color, 20%);
+      }
+    }
   }
 
   .avatar {
@@ -179,8 +240,8 @@ const setDeviceBySize = (size: number[]) => {
     margin-bottom: 5px;
     font-weight: bold;
 
-    .device-size {
-      margin-left: 2px;
+    .title-extra {
+      margin-left: 10px;
       font-size: 10px;
       font-weight: lighter;
       opacity: 0.7;
@@ -189,7 +250,8 @@ const setDeviceBySize = (size: number[]) => {
   .device-list {
     color: $color;
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-start;
+    margin-bottom: 12px;
 
     .device-item {
       display: flex;

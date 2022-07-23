@@ -21,12 +21,40 @@ export const usePositionStyle = (position?: IPosition) => {
   const isAbsPosition = $computed(() => ['absolute', 'fixed'].includes(position.position))
   const isEditMode = getIsEditMode()
 
+  let horizontal: { left?: string; right?: string; center?: boolean } = {}
+  let vertical: { top?: string; bottom?: string; center?: boolean } = {}
+  let transform = ''
+
+  if (isAbsPosition) {
+    horizontal =
+      position.left === 'auto' && position.right === 'auto'
+        ? { left: '50%', center: true }
+        : position.left !== 'auto'
+        ? { left: position.left }
+        : { right: position.right }
+    vertical =
+      position.top === 'auto' && position.bottom === 'auto'
+        ? { top: '50%', center: true }
+        : position.top !== 'auto'
+        ? { top: position.top }
+        : { bottom: position.bottom }
+    transform =
+      horizontal.center && vertical.center
+        ? 'translate(-50%, -50%)'
+        : horizontal.center
+        ? 'translateX(-50%)'
+        : vertical.center
+        ? 'translateY(-50%)'
+        : ''
+  }
+
   return {
     position: isAbsPosition ? (isEditMode ? 'absolute' : position.position) : 'relative',
-    top: isAbsPosition && position.top !== 'auto' ? position.top : '',
-    left: isAbsPosition && position.left !== 'auto' ? position.left : '',
-    right: isAbsPosition && position.right !== 'auto' ? position.right : '',
-    bottom: isAbsPosition && position.bottom !== 'auto' ? position.bottom : '',
+    left: horizontal.left ? horizontal.left : 'auto',
+    right: horizontal.right ? horizontal.right : 'auto',
+    top: vertical.top ? vertical.top : 'auto',
+    bottom: vertical.bottom ? vertical.bottom : 'auto',
+    transform,
     zIndex: position.zIndex,
   }
 }

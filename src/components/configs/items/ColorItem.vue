@@ -9,16 +9,16 @@ interface IColorItemProps {
 }
 
 const { label, modelValue } = defineProps<IColorItemProps>()
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:model-value'])
 
 const value = $computed({
   get: () => modelValue,
   set: (val: any) => {
-    emit('update:modelValue', val.hex8 ? (val.hex8.slice(-2) === 'FF' ? val.hex : val.hex8) : val)
+    emit('update:model-value', val.hex8 ? (val.hex8.slice(-2) === 'FF' ? val.hex : val.hex8) : val)
   },
 })
 
-const test = () => emit('update:modelValue', value)
+const test = () => emit('update:model-value', value)
 </script>
 
 <template>

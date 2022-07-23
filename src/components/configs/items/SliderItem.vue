@@ -11,12 +11,12 @@ interface ISliderItemProps extends SliderPropType {
 
 const props = defineProps<ISliderItemProps>()
 const { label, type = 'text', modelValue } = $(props)
-const emit = defineEmits(['update:modelValue'])
+const emit = defineEmits(['update:model-value'])
 
 const value = $computed({
   get: () => modelValue,
   set: (val: SliderPropType['modelValue']) => {
-    emit('update:modelValue', val)
+    emit('update:model-value', val)
   },
 })
 </script>

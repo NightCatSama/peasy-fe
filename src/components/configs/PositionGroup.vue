@@ -30,7 +30,7 @@ const { lockDragSetPosition } = storeToRefs(displayStore)
 const positionMap: { [key in IPosition['position']]?: string } = {
   static: 'Static',
   absolute: 'Absolute',
-  fixed: 'Fixed'
+  fixed: 'Fixed',
 }
 
 const positionValue = $computed(() => {

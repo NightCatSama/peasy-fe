@@ -82,7 +82,7 @@ const {
     }
 
     &.size-md {
-      padding: 0 32px;
+      padding: 0 24px;
       border-radius: 18px;
       font-size: 14px;
       height: 36px;
