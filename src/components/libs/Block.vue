@@ -12,7 +12,7 @@ import {
 
 interface IBlockProps {
   direction?: 'row' | 'column'
-  // position: IPosition
+  position: IPosition
   size: ISize
   layout: ILayout
   spacing: ISpacing
@@ -21,7 +21,7 @@ interface IBlockProps {
   container: IContainer
 }
 
-const { size, layout, border, direction, spacing, background, container } =
+const { size, layout, border, direction, spacing, background, container, position } =
   defineProps<IBlockProps>()
 
 const style = $computed(() =>
@@ -32,7 +32,7 @@ const style = $computed(() =>
     ...useSpacingStyle(spacing),
     ...useBackgroundStyle(background),
     ...useContainerStyle(container),
-    // ...usePositionStyle(position),
+    ...usePositionStyle(position),
   })
 )
 </script>

@@ -93,8 +93,8 @@ export const covertSizeToOtherUnit = (n: number, oldUnit: string, newUnit: strin
     oldUnit === 'rem'
       ? fixedPointToNumber(n * useDisplayStore().curFootSize)
       : oldUnit === 'vw'
-      ? fixedPointToNumber(n / (100 / useDisplayStore().device.width))
-      : n
+        ? fixedPointToNumber(n / (100 / useDisplayStore().device.width))
+        : n
   if (newUnit === 'vw' || newUnit === 'rem') return covertSizeToOtherUnit(toPx, 'px', newUnit)
   return toPx
 }

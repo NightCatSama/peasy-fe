@@ -1,10 +1,11 @@
 /** 编辑窗口样式 */
-.edit-content {
+.edit-section {
   // 编辑模式
   &-edit {
     .lib-component {
       position: relative;
       transition: font-size 0.3s, transform 0.3s, box-shadow 0.2s;
+      user-select: none;
 
       &:not(.active):hover::before {
         content: '';
@@ -21,25 +22,6 @@
       &.active {
         position: relative;
         cursor: default;
-
-        // &:not(.snapshot) {
-        //   &::after {
-        //     content: '';
-        //     position: absolute;
-        //     left: 50%;
-        //     top: 50%;
-        //     width: 100%;
-        //     height: 100%;
-        //     pointer-events: none;
-        //     outline: 3px dashed rgba($theme, 80%);
-        //     box-sizing: content-box;
-        //     border-width: inherit;
-        //     border-color: transparent;
-        //     border-style: solid;
-        //     transform: translate(-50%, -50%);
-        //     z-index: 999;
-        //   }
-        // }
       }
     }
   }
@@ -49,7 +31,6 @@
       position: relative;
       transform: scale(0.92);
       transition: font-size 0.3s, transform 0.3s;
-      z-index: 9;
 
       &.block::after,
       &.text::after {
@@ -67,6 +48,11 @@
       &.text::after {
         outline: 3px dashed rgba($pink, 50%);
       }
+    }
+  }
+  &-preview {
+    .moveable-control-box {
+      display: none!important;
     }
   }
 }

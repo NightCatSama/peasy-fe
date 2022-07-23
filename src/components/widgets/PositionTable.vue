@@ -4,9 +4,10 @@ import { watchEffect, defineEmits } from 'vue'
 interface ICheckerProps {
   modelValue: string
   options: string[]
+  size?: number
 }
 
-const { modelValue, options } = defineProps<ICheckerProps>()
+const { modelValue, options, size = 88 } = defineProps<ICheckerProps>()
 const emit = defineEmits(['update:model-value'])
 
 const handleClick = (key: string) => {
@@ -15,7 +16,7 @@ const handleClick = (key: string) => {
 </script>
 
 <template>
-  <div class="position-table">
+  <div class="position-table" :style="{ width: `${size}px`, height: `${size}px` }">
     <div
       :class="['position-item', { active: key === modelValue }]"
       v-for="key in options"
@@ -28,8 +29,6 @@ const handleClick = (key: string) => {
 <style lang="scss" scoped>
 .position-table {
   display: grid;
-  width: 88px;
-  height: 88px;
   grid:
     'item item item'
     'item item item'

@@ -6,6 +6,7 @@ import {
   getDefaultContainer,
   getDefaultFont,
   getDefaultLayout,
+  getDefaultPosition,
   getDefaultSize,
   getDefaultSpacing,
 } from './defaultConfig'
@@ -23,6 +24,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
       border: getDefaultBorder(),
       container: getDefaultContainer(),
       background: getDefaultBackground({}),
+      position: getDefaultPosition()
     },
     children:
       type === 'component'
@@ -42,9 +44,10 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                   backgroundType: 'image',
                   backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4',
                 }),
-              } as PropsTypes<'Block'>,
+                position: getDefaultPosition()
+              },
               children: [getMockText(name)],
-            } as PageNode<'Block'>,
+            },
           ],
   }
 }
@@ -60,6 +63,8 @@ export const getMockText = (text?: string): PageNode<'Text'> => {
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),
       background: getDefaultBackground(),
+      container: getDefaultContainer(),
+      position: getDefaultPosition(),
     },
   }
 }

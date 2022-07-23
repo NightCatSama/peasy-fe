@@ -4,7 +4,7 @@ interface IElementProps {
   cover?: string
   name: string
 }
-const { cover = 'https://www.fillmurray.com/640/360', name } = defineProps<IElementProps>()
+const { cover = 'https://avatars.githubusercontent.com/u/13888962?v=4', name } = defineProps<IElementProps>()
 </script>
 
 <template>

@@ -57,16 +57,14 @@ export const usePageStore = defineStore('page', {
     getActiveNodeRound:
       (state) =>
       (change: number): PageNode | null => {
-        if (!state.activeParentNode || !state.activeNode) return null
-        const index = state.activeParentNode.children?.indexOf(state.activeNode)!
+        if (!state.activeNode) return null
+        const nodeList = state.activeNode.type === 'section' ? state.allPageData : state.activeParentNode?.children
+        if (!nodeList || nodeList.length === 0) return null
+        const index = nodeList?.indexOf(state.activeNode)!
         if (index === -1) return null
         const newIndex = index + change
-        if (newIndex < 0 || newIndex >= state.activeParentNode.children!.length) return null
-        console.log(
-          'state.activeParentNode.children![newIndex] => ',
-          state.activeParentNode.children![newIndex]
-        )
-        return state.activeParentNode.children![newIndex]
+        if (newIndex < 0 || newIndex >= nodeList!.length) return null
+        return nodeList![newIndex]
       },
   },
   actions: {
@@ -144,7 +142,6 @@ export const usePageStore = defineStore('page', {
       this.activeParentNode = this.activeParentChain?.[0] || null
     },
     setActiveNodeToRound(change: number) {
-      if (!this.activeParentNode || !this.activeNode) return
       const node = this.getActiveNodeRound(change)
       if (node) {
         this.activeNode = node

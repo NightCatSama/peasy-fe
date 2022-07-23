@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { covertSizeToOtherUnit, fixedPointToNumber, isUnitType } from '@/utils/sizeHelper'
-import { watchEffect, defineEmits, nextTick, watch } from 'vue'
+import { watchEffect, defineEmits, nextTick, watch, onMounted } from 'vue'
 import Select from './Select.vue'
 
 const emit = defineEmits(['update:modelValue'])
@@ -12,9 +12,11 @@ interface IInputProps {
   suffix?: SuffixType[]
   placeholder?: string
   realTime?: boolean
+  hideSuffix?: boolean
+  autoFocus?: boolean
 }
 
-const { type = 'text', modelValue = '', suffix, disabled, realTime } = defineProps<IInputProps>()
+const { type = 'text', modelValue = '', suffix, disabled, realTime, hideSuffix, autoFocus } = defineProps<IInputProps>()
 
 let inputValue = $ref(modelValue)
 let suffixInValue = $ref(suffix?.[0] ?? '')
@@ -104,6 +106,10 @@ const handleSuffixClick = (key: SuffixType) => {
 }
 
 const handleInput = (e: any) => realTime && handleChange(e)
+
+onMounted(() => {
+  if (autoFocus) inputRef?.focus()
+})
 </script>
 
 <template>
@@ -126,7 +132,7 @@ const handleInput = (e: any) => realTime && handleChange(e)
       @input.stop.prevent="handleInput"
     />
     <slot name="suffix">
-      <template v-if="suffixInValue && suffix">
+      <template v-if="suffixInValue && suffix && !hideSuffix">
         <Select
           display="inline"
           :model-value="suffixInValue"

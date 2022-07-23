@@ -1,7 +1,7 @@
 /** 组件对应支持的配置分组 */
 export const ComponentPropsGroup = {
-  Block: ['layout', 'size', 'spacing', 'border', 'background', 'container'] as const,
-  Text: ['basic', 'font', 'spacing', 'border', 'background'] as const,
+  Block: ['layout', 'size', 'spacing', 'border', 'background', 'container', 'position'] as const,
+  Text: ['basic', 'font', 'spacing', 'border', 'background', 'container', 'position'] as const,
 } as const
 
 /** 支持的配置分组名 */
@@ -54,7 +54,7 @@ export interface PageNode<T extends ComponentName = any> {
    * 组件类型
    * component: 最小粒度组件，无法添加 children
    * section: 块组件，可以添加 children
-   * template: 模板组件，可以添加 children
+   * template: 模板组件
    */
   type: 'component' | 'section' | 'template'
   /** 组件名称 */

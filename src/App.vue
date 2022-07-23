@@ -11,6 +11,7 @@ import Page from './pages/Configure.vue'
 @import '@/styles/page.scss';
 @import '@/styles/animation.scss';
 @import '@/styles/tooltip.scss';
+@import '@/styles/moveable.scss';
 
 #app {
   font-family: $font-family;

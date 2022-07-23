@@ -39,11 +39,12 @@ interface ISpacing {
 
 /** TODO: 位置信息 */
 interface IPosition {
-  type: 'absolute' | 'relative' | 'fixed'
-  left?: number
-  top?: number
-  right?: number
-  bottom?: number
+  position: 'static' | 'absolute' | 'fixed'
+  left: string | 'auto'
+  top: string | 'auto'
+  right: string | 'auto'
+  bottom: string | 'auto'
+  zIndex: number
 }
 
 /** 边框信息 */

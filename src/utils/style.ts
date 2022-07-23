@@ -18,15 +18,16 @@ export const useStyle = (styles: any) => {
 export const usePositionStyle = (position?: IPosition) => {
   if (!position) return {}
 
-  const isAbsPosition = $computed(() => ['absolute', 'fixed'].includes(position.type))
+  const isAbsPosition = $computed(() => ['absolute', 'fixed'].includes(position.position))
   const isEditMode = getIsEditMode()
 
   return {
-    position: isAbsPosition ? (isEditMode ? 'absolute' : position.type) : 'relative',
-    top: isAbsPosition && position.top !== void 0 ? position.top : '',
-    left: isAbsPosition && position.left !== void 0 ? position.left : '',
-    right: isAbsPosition && position.top !== void 0 ? position.right : '',
-    bottom: isAbsPosition && position.left !== void 0 ? position.bottom : '',
+    position: isAbsPosition ? (isEditMode ? 'absolute' : position.position) : 'relative',
+    top: isAbsPosition && position.top !== 'auto' ? position.top : '',
+    left: isAbsPosition && position.left !== 'auto' ? position.left : '',
+    right: isAbsPosition && position.right !== 'auto' ? position.right : '',
+    bottom: isAbsPosition && position.bottom !== 'auto' ? position.bottom : '',
+    zIndex: position.zIndex,
   }
 }
 

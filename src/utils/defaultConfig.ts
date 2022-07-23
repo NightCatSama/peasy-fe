@@ -25,8 +25,8 @@ export const getDefaultSize = (
       ? {
           width: 'auto',
           height: 'auto',
-          minWidth: '200px',
-          minHeight: '200px',
+          minWidth: '100px',
+          minHeight: '100px',
           maxHeight: 'none',
           maxWidth: 'none',
         }
@@ -103,6 +103,19 @@ export const getDefaultContainer = (initConfig?: Partial<IContainer>): IContaine
       overflow: 'visible',
       boxShadow: '',
       opacity: 1,
+    },
+    initConfig
+  )
+
+export const getDefaultPosition = (initConfig?: Partial<IPosition>): IPosition =>
+  Object.assign(
+    {
+      position: 'static',
+      left: '0px',
+      right: 'auto',
+      top: '0px',
+      bottom: 'auto',
+      zIndex: 0,
     },
     initConfig
   )

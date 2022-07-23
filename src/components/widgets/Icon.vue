@@ -33,6 +33,9 @@ import AlignCenterIcon from '@/assets/align-center.svg'
 import AlignRightIcon from '@/assets/align-right.svg'
 import AlignJustifyIcon from '@/assets/align-justify.svg'
 import TopCircleIcon from '@/assets/top-circle.svg'
+import AbsoluteIcon from '@/assets/absolute.svg'
+import WarningIcon from '@/assets/warning.svg'
+import LockIcon from '@/assets/lock.svg'
 
 interface IIconProps {
   name:
@@ -70,6 +73,9 @@ interface IIconProps {
     | 'align-right'
     | 'align-justify'
     | 'top-circle'
+    | 'absolute'
+    | 'warning'
+    | 'lock'
   type?: 'circle' | 'pure' | 'btn'
   size?: number
   active?: boolean
@@ -110,7 +116,10 @@ const iconMap = {
   'align-right': AlignRightIcon,
   'align-justify': AlignJustifyIcon,
   'top-circle': TopCircleIcon,
-}
+  absolute: AbsoluteIcon,
+  warning: WarningIcon,
+  lock: LockIcon,
+} as any
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()
 

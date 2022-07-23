@@ -54,7 +54,7 @@ const {
     }
 
     &.default {
-      color: darken($color, 30%);
+      color: darken($color, 10%);
 
       &:not(.disabled):hover {
         color: $color;

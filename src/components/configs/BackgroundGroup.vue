@@ -35,7 +35,7 @@ const updateBackgroundType = (type: 'color' | 'image' | 'gradient') => {
 
 const handleAddColor = () => {
   background.backgroundGradient.push({
-    color: '#000',
+    color: background.backgroundGradient[background.backgroundGradient.length - 1].color,
     percentage: 100,
   })
 }
@@ -59,7 +59,7 @@ const uploadImage = async (e: InputEvent) => {
     title="Background"
     class="background-group"
     :can-advanced="false"
-    :default-collapsed="true"
+    :default-collapsed="false"
   >
     <SelectItem
       :model-value="background.backgroundType"
@@ -226,7 +226,6 @@ const uploadImage = async (e: InputEvent) => {
     align-items: center;
     z-index: 1;
     padding: 4px;
-    cursor: pointer;
 
     .upload-btn {
       position: relative;
@@ -239,11 +238,13 @@ const uploadImage = async (e: InputEvent) => {
         width: 100%;
         height: 100%;
         opacity: 0;
+        cursor: default;
       }
     }
 
     .upload-btn,
     .question-icon {
+      cursor: default;
       &:hover {
         color: $theme;
       }

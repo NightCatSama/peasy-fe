@@ -3,6 +3,7 @@ import { ITextBasicType } from '@/config'
 import {
   useBackgroundStyle,
   useBorderStyle,
+  useContainerStyle,
   useFontStyle,
   usePositionStyle,
   useSpacingStyle,
@@ -16,17 +17,19 @@ interface ITextProps {
   spacing: ISpacing
   border: IBorder
   background: IBackground
-  // position?: IPosition
+  container: IContainer
+  position?: IPosition
 }
-const { basic, font, spacing, border, background } = defineProps<ITextProps>()
+const { basic, font, spacing, border, background, container, position } = defineProps<ITextProps>()
 
 const style = $computed(() =>
   useStyle({
-    // ...usePositionStyle(position),
     ...useFontStyle(font),
     ...useSpacingStyle(spacing),
     ...useBorderStyle(border),
     ...useBackgroundStyle(background),
+    ...useContainerStyle(container),
+    ...usePositionStyle(position),
   })
 )
 </script>

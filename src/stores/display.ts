@@ -46,6 +46,8 @@ export const useDisplayStore = defineStore('display', {
      * grid: 布局模式
      */
     displayMode: 'edit' as DisplayMode,
+    /** 锁定拖拽修改 position */
+    lockDragSetPosition: false,
   }),
   getters: {
     /** 当前展示的宽高（缩放后） */
@@ -78,5 +80,8 @@ export const useDisplayStore = defineStore('display', {
     setDisplayMode(mode: DisplayMode) {
       this.displayMode = mode
     },
+    setLockDragSetPosition(lock: boolean) {
+      this.lockDragSetPosition = lock
+    }
   },
 })

@@ -45,7 +45,6 @@ watch(
   () => isActive,
   () => {
     if (isActive) {
-      if (displayMode.value === 'preview') return
       const moveable = getMoveable()
       if (!moveable) return
       // 获取当前选中的元素，并去更新 moveable 示例
@@ -132,7 +131,7 @@ const handleDragStart = (event: DragEvent, node: PageNode) => {
 
 /** 拖拽模式下阻止编辑窗口移动 */
 const preventMousedown = (e: MouseEvent) => {
-  if (displayMode.value !== 'drag') return
+  // if (displayMode.value !== 'drag') return
   e.stopPropagation()
 }
 </script>
@@ -174,6 +173,7 @@ const preventMousedown = (e: MouseEvent) => {
   cursor: default;
 
   &.grading {
+    user-select: none;
   }
 }
 </style>

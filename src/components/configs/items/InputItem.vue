@@ -10,14 +10,16 @@ interface ISelectItemProps {
   suffix?: IInputProps['suffix']
   realTime?: boolean
   type?: IInputProps['type']
+  autoFocus?: boolean
 }
 
-const { label, modelValue, type, placeholder, suffix, realTime } = defineProps<ISelectItemProps>()
+const { label, modelValue, type, placeholder, suffix, realTime, autoFocus } = defineProps<ISelectItemProps>()
 const restProps = $computed(() => ({
   placeholder,
   suffix,
   realTime,
   type,
+  autoFocus
 }))
 const emit = defineEmits(['update:modelValue'])
 

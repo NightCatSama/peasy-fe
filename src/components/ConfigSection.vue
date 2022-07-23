@@ -116,7 +116,7 @@ const { setActiveParentNodeToActive, deleteActiveNode, copyActiveNode } = pageSt
 
     .config-info {
       display: flex;
-      margin-bottom: 12px;
+      margin-bottom: 6px;
     }
   }
 

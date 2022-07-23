@@ -10,6 +10,7 @@ import SizeGroup from './configs/SizeGroup.vue'
 import SpacingGroup from './configs/SpacingGroup.vue'
 import ContainerGroup from './configs/ContainerGroup.vue'
 import BackgroundGroup from './configs/BackgroundGroup.vue'
+import PositionGroup from './configs/PositionGroup.vue'
 
 interface IConfigGroupProps {
   groupType: GroupType
@@ -24,17 +25,20 @@ const componentNameMap: { [type in GroupType]: any | null } = {
   size: SizeGroup,
   font: FontGroup,
   spacing: SpacingGroup,
-  position: null,
+  position: PositionGroup,
   layout: LayoutGroup,
   border: BorderGroup,
   background: BackgroundGroup,
   container: ContainerGroup,
   animation: null,
 }
+
+const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
+
 </script>
 
 <template>
-  <div v-if="activeNode && componentNameMap[groupType]" class="config-group">
+  <div v-if="activeNode && componentNameMap[groupType] && !ignoreGroup.includes(groupType)" class="config-group">
     <Component
       :is="componentNameMap[groupType]"
       :node="activeNode"

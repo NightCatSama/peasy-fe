@@ -106,11 +106,7 @@ watch(
 watch(
   [displayMode],
   () => {
-    if (displayMode.value === 'preview') {
-      disabledMoveable()
-    } else {
-      setTimeout(() => emitter.emit('updateMoveable'), 300)
-    }
+    setTimeout(() => emitter.emit('updateMoveable'), 300)
   },
   { flush: 'post' }
 )
@@ -201,7 +197,7 @@ const handleLeaveTrash = (e: DragEvent) => {
 </script>
 
 <template>
-  <div class="edit-section" v-tap="hideMaterialsPanel">
+  <div :class="['edit-section', `edit-section-${displayMode}`]" v-tap="hideMaterialsPanel">
     <div ref="wrapperRef" class="edit-wrapper">
       <draggable
         ref="contentRef"
@@ -210,7 +206,7 @@ const handleLeaveTrash = (e: DragEvent) => {
         :item-key="'name'"
         :group="{ name: 'section', put: true, pull: false }"
         :disabled="displayMode !== 'drag' || (dragNode && dragNodeType !== 'section')"
-        :class="['edit-content', `edit-content-${displayMode}`]"
+        :class="['edit-content']"
         :ghost-class="dragNode && dragType === 'clone' ? 'ghost-clone-section' : 'ghost-move'"
         :style="editContentStyle"
         v-on="dragEvents"
@@ -359,6 +355,7 @@ const handleLeaveTrash = (e: DragEvent) => {
     position: absolute;
     right: 80px;
     bottom: 10px;
+    user-select: none;
 
     .prev-btn :deep(.icon) {
       transform: rotate(-45deg);
