@@ -5,6 +5,7 @@ import { getMockBlock, getMockText } from '@/utils/mock'
 import { PageNode, ComponentPropsGroup, ComponentName } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
+import { nextTick } from 'vue'
 
 const api = mande('http://localhost:3030/api/page')
 
@@ -95,7 +96,9 @@ export const usePageStore = defineStore('page', {
     },
     /** 插入 Component 组件 */
     insertNode(dragNode: PageNode, parentNode: PageNode, index: number) {
-      parentNode.children?.splice(index, 0, formatNodeByUniqueName(dragNode, this.nameMap))
+      const newNode = formatNodeByUniqueName(dragNode, this.nameMap)
+      parentNode.children?.splice(index, 0, newNode)
+      return newNode
     },
     /**
      * 拖拽交换两个 Component 组件的位置，放置的新位置为 DragStore 的 dropZone
@@ -116,7 +119,9 @@ export const usePageStore = defineStore('page', {
     /** 添加 Section */
     addSection(node: PageNode, index?: number) {
       const insertIndex = index ?? this.allPageData.length
-      this.allPageData.splice(insertIndex, 0, formatNodeByUniqueName(node, this.nameMap))
+      const newSection = formatNodeByUniqueName(node, this.nameMap)
+      this.allPageData.splice(insertIndex, 0, newSection)
+      return newSection
     },
     /** 移除 Section */
     removeSection(node: PageNode) {
@@ -180,11 +185,12 @@ export const usePageStore = defineStore('page', {
         this.addSection(this.activeNode)
       } else if (this.activeParentNode) {
         const index = this.activeParentNode?.children?.indexOf(this.activeNode)
-        this.insertNode(
+        const newNode = this.insertNode(
           this.activeNode,
           this.activeParentNode,
           index !== void 0 ? index + 1 : this.activeParentNode?.children?.length!
         )
+        nextTick(() => this.activeNode = newNode)
       }
     },
     /** 设置当前展示的 Section */

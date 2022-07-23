@@ -27,13 +27,17 @@ const { dragNode, dragType, dropZone, dragNodeType, isCancelDrag } = storeToRefs
 const { setDropZone, setDragNode, getIsInDragNode } = dragStore
 
 const displayStore = useDisplayStore()
+const { lockDrag } = displayStore
 const { displayMode } = storeToRefs(displayStore)
 
 const componentRef = ref(null)
 
-const setActive = (e: Event) => {
+const $el = $computed(() => (componentRef?.value as any)?.$el as HTMLDivElement)
+
+const setActive = () => {
+  if (!$el || !$el.parentElement) return
   setActiveNode(item, parent)
-  ;(e.target as HTMLDivElement).parentElement!.dispatchEvent(
+  $el.parentElement!.dispatchEvent(
     new Event('active-node', { bubbles: true })
   )
   emitter.emit('switchMaterialsPanel', false)
@@ -50,11 +54,8 @@ watch(
         return
       }
       const moveable = getMoveable()
-      if (!moveable) return
-      // 获取当前选中的元素，并去更新 moveable 示例
-      const elem = (componentRef?.value as any)?.$el as HTMLDivElement
-      if (!elem) return
-      useMoveable(elem, item, parent)
+      if (!moveable || !$el) return
+      useMoveable($el, item, parent)
       setTimeout(() => emitter.emit('updateMoveable'), 300) // drag 视图切回来有个缩放动画，需要等动画完毕后重新定位
     }
   },
@@ -136,8 +137,12 @@ const handleDragStart = (event: DragEvent, node: PageNode) => {
 
 /** 拖拽模式下阻止编辑窗口移动 */
 const preventMousedown = (e: MouseEvent) => {
-  // if (displayMode.value !== 'drag') return
-  e.stopPropagation()
+  if (
+    displayMode.value === 'drag' ||
+    (!lockDrag && !['absolute', 'fixed'].includes(item.props?.position?.value))
+  ) {
+    e.stopPropagation()
+  }
 }
 </script>
 
