@@ -29,7 +29,7 @@ export const usePageStore = defineStore('page', {
       template: [],
     } as MaterialData,
     /** 当前展示的 Section，null 为全部 */
-    activeSection: null as string | null,
+    activeSection: null as PageNode | null,
   }),
   getters: {
     /** 当前激活节点对应的配置数据 */
@@ -40,7 +40,7 @@ export const usePageStore = defineStore('page', {
     pageData: (state): typeof state.allPageData => {
       if (!state.activeSection) return state.allPageData
 
-      const pageData = state.allPageData.find((item) => item.name === state.activeSection)
+      const pageData = state.allPageData.find((item) => item === state.activeSection)
       return pageData ? [pageData] : state.allPageData
     },
     /** 所有组件的命名列表 */
@@ -150,7 +150,12 @@ export const usePageStore = defineStore('page', {
     setActiveNodeToRound(change: number) {
       const node = this.getActiveNodeRound(change)
       if (node) {
-        this.activeNode = node
+        if (this.activeSection === this.activeNode) {
+          this.activeSection = node
+          nextTick(() => this.activeNode = node)
+        } else {
+          this.activeNode = node
+        }
       }
     },
     /** 添加节点链 */
@@ -161,7 +166,7 @@ export const usePageStore = defineStore('page', {
     deleteActiveNode() {
       if (!this.activeNode) return
       if (this.activeNode.type === 'section') {
-        if (this.activeNode.name === this.activeSection) {
+        if (this.activeNode === this.activeSection) {
           this.activeSection = null
         }
         this.removeSection(this.activeNode)
@@ -195,7 +200,7 @@ export const usePageStore = defineStore('page', {
     },
     /** 设置当前展示的 Section */
     setActiveSection(node: PageNode | null) {
-      this.activeSection = node ? node.name : null
+      this.activeSection = node
     },
   },
 })

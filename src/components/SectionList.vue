@@ -82,7 +82,7 @@ const dragEvents = $computed(() => ({
     </template>
     <template #item="{ element: item, index }">
       <div
-        :class="['section-item', { active: item.name === activeSection }]"
+        :class="['section-item', { active: item === activeSection }]"
         :key="item.name"
         @click="handleSectionItemClick(item)"
       >
