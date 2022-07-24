@@ -1,22 +1,32 @@
-import { ComponentName, GroupPropType, PageNode } from '@/config'
+import { ComponentName, DefaultIconStyleLink, GroupPropType, isSomeBasicType, PageNode } from '@/config'
 
 export const getDefaultBasic = <
   T extends ComponentName = any,
-  P extends Partial<GroupPropType['basic'][T]> = any
+  P extends Partial<GroupPropType<T>['basic']> = any
 >(
   component: T,
   initConfig?: P
-): P => {
-  let obj: Partial<GroupPropType['basic'][T]> = {}
-  if (component === 'Text') {
+): GroupPropType<T>['basic'] => {
+  let obj: any = {}
+  if (isSomeBasicType(component, 'Text', obj)) {
     obj = {
       text: 'Title Text',
     }
   }
-  if (component === 'Image') {
+  if (isSomeBasicType(component, 'Image', obj)) {
     obj = {
       src: '',
       objectFit: 'fill'
+    }
+  }
+  if (isSomeBasicType(component, 'Icon', obj)) {
+    obj = {
+      name: 'home',
+      size: '2vw',
+      color: '#000',
+      prefixClass: 'fa-',
+      extraClass: '',
+      styleLink: DefaultIconStyleLink,
     }
   }
   return Object.assign(obj, initConfig)
@@ -57,7 +67,7 @@ export const getDefaultLayout = (initConfig?: Partial<ILayout>): ILayout =>
 export const getDefaultFont = (initConfig?: Partial<IFont>): IFont =>
   Object.assign(
     {
-      fontSize: '2rem',
+      fontSize: '2vw',
       lineHeight: '126%',
       color: '#232323',
       fontWeight: 'normal',

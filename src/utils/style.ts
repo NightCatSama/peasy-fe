@@ -1,4 +1,3 @@
-import { IImageBasicType } from '@/config'
 import { useDisplayStore } from '@/stores/display'
 import { computed, inject } from 'vue'
 import { covertSize, fixedPointToNumber, getUnit } from './sizeHelper'
@@ -20,6 +19,15 @@ export const useImageBasicStyle = (basic: IImageBasicType) => {
 
   return {
     objectFit: basic.objectFit,
+  }
+}
+
+export const useIconBasicStyle = (basic: IIconBasicType) => {
+  if (!basic) return {}
+
+  return {
+    color: basic.color,
+    fontSize: basic.size,
   }
 }
 

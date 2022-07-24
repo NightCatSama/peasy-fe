@@ -41,12 +41,12 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                 border: getDefaultBorder(),
                 container: getDefaultContainer(),
                 background: getDefaultBackground({
-                  backgroundType: 'image',
-                  backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4',
+                  // backgroundType: 'image',
+                  // backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4',
                 }),
                 position: getDefaultPosition(),
               },
-              children: [getMockText(name), getMockImage()],
+              children: [getMockIcon('apple'), getMockText(name), getMockImage()],
             },
           ],
   }
@@ -84,6 +84,19 @@ export const getMockImage = (src?: string): PageNode<'Image'> => {
       border: getDefaultBorder(),
       container: getDefaultContainer(),
       position: getDefaultPosition(),
+    },
+  }
+}
+
+export const getMockIcon = (name?: string): PageNode<'Icon'> => {
+  return {
+    type: 'component',
+    name: 'Icon',
+    component: 'Icon',
+    props: {
+      basic: getDefaultBasic('Icon', { name: 'apple' }),
+      spacing: getDefaultSpacing(),
+      border: getDefaultBorder(),
     },
   }
 }

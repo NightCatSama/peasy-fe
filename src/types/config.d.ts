@@ -3,6 +3,31 @@ type UnitType = '%' | 'px' | 'rem' | 'vw'
 /** 支持的全部选项 */
 type SuffixType = UnitType | 'auto' | 'none' | 'stretch' | 'circle' | 'refined'
 
+/** Text 组件基础配置 */
+interface ITextBasicType {
+  text: string
+}
+
+/** Image 组件基础配置 */
+interface IImageBasicType {
+  src: string
+  objectFit: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down'
+}
+
+/** Button 组件基础配置 */
+interface IButtonBasicType {
+}
+
+/** Icon 组件基础配置 */
+interface IIconBasicType {
+  name: string // 图标名字
+  size: string // 图标大小
+  color: string // 图标颜色
+  prefixClass: string // 图标前缀
+  extraClass: string // 图标额外属性
+  styleLink: string // 图标字体的 css 链接
+}
+
 /** 尺寸信息 */
 interface ISize {
   width?: string | 'auto' | 'stretch'

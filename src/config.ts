@@ -3,6 +3,7 @@ export const ComponentPropsGroup = {
   Block: ['layout', 'size', 'spacing', 'border', 'background', 'container', 'position'] as const,
   Text: ['basic', 'font', 'spacing', 'border', 'background', 'container', 'position'] as const,
   Image: ['basic', 'size', 'spacing', 'border', 'container', 'position'] as const,
+  Icon: ['basic', 'spacing', 'border'] as const
 } as const
 
 /** 支持的配置分组名 */
@@ -18,21 +19,12 @@ export type GroupType =
   | 'position'
   | 'animation'
 
-/** Text 组件基础配置 */
-export interface ITextBasicType {
-  text: string
-}
-
-export interface IImageBasicType {
-  src: string
-  objectFit: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down'
-}
-
 /** 配置对应约束类型 */
 export interface GroupPropType<T extends ComponentName = any> {
   basic: {
     Text: ITextBasicType
     Image: IImageBasicType
+    Icon: IIconBasicType
     [key: string]: any
   }[T]
   size: ISize
@@ -76,10 +68,9 @@ export interface PageNode<T extends ComponentName = any> {
   cover?: string
 }
 
-export const isTextBasicType = (node: PageNode, basic: any): basic is ITextBasicType => {
-  return node.component === 'Text' && !!basic
+/** 判断是否某个基础类型 */
+export const isSomeBasicType = <T extends ComponentName, P extends GroupPropType<T>['basic']>(name: string, compare: T, basic: any): basic is P => {
+  return name === compare && !!basic
 }
 
-export const isImageBasicType = (node: PageNode, basic: any): basic is IImageBasicType => {
-  return node.component === 'Image' && !!basic
-}
+export const DefaultIconStyleLink = '//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'

@@ -20,10 +20,6 @@ const fontSetting: any = $computed(() => ({
     type: 'number',
     value: font.fontSize,
     setValue: (val: string) => {
-      if (val === '') {
-        deleteActiveNode()
-        return
-      }
       font.fontSize = val
     },
     suffix: ['px', 'rem', 'vw'],

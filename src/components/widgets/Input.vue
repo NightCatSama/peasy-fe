@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
+</script>
+
 <script setup lang="ts">
 import { covertSizeToOtherUnit, fixedPointToNumber, isUnitType } from '@/utils/sizeHelper'
 import { watchEffect, defineEmits, nextTick, watch, onMounted } from 'vue'
@@ -14,6 +20,7 @@ interface IInputProps {
   realTime?: boolean
   hideSuffix?: boolean
   autoFocus?: boolean
+  onBlur?: () => void
 }
 
 const {
@@ -24,6 +31,7 @@ const {
   realTime,
   hideSuffix,
   autoFocus,
+  onBlur,
 } = defineProps<IInputProps>()
 
 let inputValue = $ref(modelValue)
@@ -121,7 +129,7 @@ onMounted(() => {
 </script>
 
 <template>
-  <div :class="['input-wrapper', { disabled, focus }]">
+  <div :class="['input-wrapper', { disabled, focus }, $attrs.class || '']">
     <component
       :is="type === 'textarea' ? 'textarea' : 'input'"
       ref="inputRef"
@@ -135,6 +143,7 @@ onMounted(() => {
       @focus="focus = true"
       @blur="(e: Event) => {
         focus = false
+        onBlur?.()
         handleChange(e)
       }"
       @input.stop.prevent="handleInput"

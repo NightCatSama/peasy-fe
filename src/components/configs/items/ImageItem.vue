@@ -39,7 +39,7 @@ const uploadImage = async (e: InputEvent) => {
           <input
             type="file"
             class="upload-btn-input"
-            accept=".jpg, .jpeg, .png .gif .webp"
+            accept="image/*"
             @change="uploadImage"
           />
         </div>

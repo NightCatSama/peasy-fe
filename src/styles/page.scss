@@ -31,8 +31,7 @@
       position: relative;
       transition: font-size 0.3s;
 
-      &.block::before,
-      &.text::before {
+      &::before {
         content: '';
         left: 0;
         top: 0;
@@ -40,12 +39,20 @@
         height: 100%;
         position: absolute;
         z-index: 1;
-        outline: 3px dashed rgba($theme, 80%);
+        outline: 3px dashed rgba($theme, 65%);
         pointer-events: none;
       }
 
       &.text::before {
-        outline: 3px dashed rgba($pink, 80%);
+        outline: 3px dashed rgba($pink, 65%);
+      }
+
+      &.image::before {
+        outline: 3px dashed rgba($green, 65%);
+      }
+
+      &.fa-icon::before {
+        outline: 3px dashed rgba($orange, 65%);
       }
     }
     .moveable-control-box {

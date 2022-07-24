@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { ITextBasicType } from '@/config'
 import {
   useBackgroundStyle,
   useBorderStyle,

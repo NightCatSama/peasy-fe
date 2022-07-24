@@ -2,7 +2,7 @@
 import { onBeforeUnmount, onMounted, ref, watch, watchPostEffect } from 'vue'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
-import { active, SortableEvent } from 'sortablejs'
+import type { SortableEvent } from 'sortablejs'
 
 import { usePageStore } from '@/stores/page'
 import { useDragStore } from '@/stores/drag'

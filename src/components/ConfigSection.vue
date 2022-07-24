@@ -7,7 +7,7 @@ import Btn from './widgets/Btn.vue'
 
 const pageStore = usePageStore()
 const { allPageData, activeNode, activeParentNode, activeNodeGroups } = storeToRefs(pageStore)
-const { setActiveParentNodeToActive, deleteActiveNode, copyActiveNode } = pageStore
+const { setActiveNode, deleteActiveNode, copyActiveNode } = pageStore
 </script>
 
 <template>
@@ -52,12 +52,14 @@ const { setActiveParentNodeToActive, deleteActiveNode, copyActiveNode } = pageSt
             v-if="item.children"
             v-for="subItem in item.children"
             :style="{ marginLeft: 20 + 'px' }"
+            @click.stop="setActiveNode(subItem, item)"
           >
             - {{ subItem.name }}
             <div
               v-if="subItem.children"
               v-for="son in subItem.children"
               :style="{ marginLeft: 40 + 'px' }"
+              @click.stop="setActiveNode(son, subItem)"
             >
               - {{ son.name }}
             </div>

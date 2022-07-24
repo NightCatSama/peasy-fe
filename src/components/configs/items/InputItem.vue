@@ -1,27 +1,23 @@
+<script lang="ts">
+export default {
+  inheritAttrs: false,
+}
+</script>
+
 <script setup lang="ts">
 import Input from '@/components/widgets/Input.vue'
 
 type IInputProps = InstanceType<typeof Input>
 
-interface ISelectItemProps {
+interface ISelectItemProps extends IInputProps {
   label: string
   modelValue: string
-  placeholder?: string
-  suffix?: IInputProps['suffix']
-  realTime?: boolean
   type?: IInputProps['type']
-  autoFocus?: boolean
 }
 
-const { label, modelValue, type, placeholder, suffix, realTime, autoFocus } =
-  defineProps<ISelectItemProps>()
-const restProps = $computed(() => ({
-  placeholder,
-  suffix,
-  realTime,
-  type,
-  autoFocus,
-}))
+const props = defineProps<ISelectItemProps>()
+const { label, modelValue, type } = $(props)
+
 const emit = defineEmits(['update:model-value'])
 
 const value = $computed({
@@ -35,7 +31,7 @@ const value = $computed({
 <template>
   <div :class="['item', { column: type === 'textarea' }]">
     <span class="label">{{ label }}</span>
-    <Input class="input" v-model="value" v-bind="restProps">
+    <Input class="input" v-model="value" :type="type" v-bind="$attrs">
       <template #suffix><slot name="suffix"></slot></template>
     </Input>
     <slot></slot>

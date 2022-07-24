@@ -3,7 +3,7 @@ import { createApp } from 'vue'
 import { VTooltip, VClosePopper } from 'floating-vue'
 
 import App from './App.vue'
-import { Text, Block, Image } from './components/libs'
+import { Text, Block, Image, Icon } from './components/libs'
 
 import 'floating-vue/dist/style.css'
 import GlobalDirective from './toolkit/global.directive'
@@ -19,5 +19,6 @@ app.directive('close-popper', VClosePopper)
 app.component('Text', Text)
 app.component('Block', Block)
 app.component('Image', Image)
+app.component('Icon', Icon)
 
 app.mount('#app')

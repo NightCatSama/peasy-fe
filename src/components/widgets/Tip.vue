@@ -16,7 +16,7 @@ const iconMap = {
 <template>
   <div :class="['tip', `tip-${type}`]">
     <Icon class="tip-icon" :name="iconMap[type]" :size="14"></Icon>
-    <div class="tip-msg">{{ message }}</div>
+    <div class="tip-msg" v-html="message"></div>
   </div>
 </template>
 
@@ -39,6 +39,17 @@ const iconMap = {
     flex: 1;
     padding: 2px 0 0;
     color: darken($color, 40%);
+    white-space: wrap;
+    line-height: 1.6;
+  }
+
+  :deep(a) {
+    color: lighten($theme, 25%);
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
   }
 }
 </style>

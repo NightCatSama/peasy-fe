@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { mande } from 'mande'
 import { cloneDeep } from 'lodash'
-import { getMockBlock, getMockImage, getMockText } from '@/utils/mock'
+import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mock'
 import { PageNode, ComponentPropsGroup, ComponentName } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
@@ -82,7 +82,7 @@ export const usePageStore = defineStore('page', {
           getMockBlock('section', 'Section-2'),
           getMockBlock('section', 'Section-3'),
         ],
-        component: [getMockText(), getMockBlock(), getMockImage()],
+        component: [getMockText(), getMockBlock(), getMockImage(), getMockIcon()],
         template: [],
       }
       this.materialData = data

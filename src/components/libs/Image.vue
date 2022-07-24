@@ -1,6 +1,4 @@
-<script setup lang="ts">
-import { IImageBasicType } from '@/config'
-import {
+<script setup lang="ts">import {
   useStyle,
   useSizeStyle,
   useBorderStyle,
@@ -10,7 +8,7 @@ import {
 useImageBasicStyle,
 } from '@/utils/style'
 
-interface IBlockProps {
+interface IImageProps {
   direction?: 'row' | 'column'
   basic: IImageBasicType
   position: IPosition
@@ -21,7 +19,7 @@ interface IBlockProps {
 }
 
 const { basic, size, border, direction, spacing, container, position } =
-  defineProps<IBlockProps>()
+  defineProps<IImageProps>()
 
 const style = $computed(() =>
   useStyle({
@@ -55,7 +53,7 @@ const src = $computed(() => basic.src.trim() || '')
     background-size: 30%;
     background-position: 50%;
     background-repeat: no-repeat;
-    background-color: rgba($black, 25%);
+    background-color: rgba($black, 20%);
     z-index: 1;
     // box-shadow: inset 0 0 0 2px $panel;
   }
