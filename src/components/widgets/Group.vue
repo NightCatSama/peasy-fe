@@ -155,6 +155,21 @@ const iconName = {
       margin-bottom: 10px;
     }
   }
+
+  .full-btn {
+    width: 100%;
+    height: 32px;
+    border-radius: $normal-radius;
+    border: 1px solid $theme;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: $theme;
+
+    &:hover {
+      background: linear-gradient(90deg, rgba($theme, 13%), rgba($theme, 23%));
+    }
+  }
 }
 
 :deep(.divider) {

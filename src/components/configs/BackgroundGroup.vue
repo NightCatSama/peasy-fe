@@ -183,7 +183,7 @@ const uploadImage = async (e: InputEvent) => {
         ></Icon>
       </ColorItem>
       <div class="item">
-        <div class="add-color-btn" @click="handleAddColor">Add Color</div>
+        <div class="full-btn add-color-btn" @click="handleAddColor">Add Color</div>
       </div>
     </template>
   </Group>
@@ -215,6 +215,10 @@ const uploadImage = async (e: InputEvent) => {
       color: $white;
       background-color: $red;
     }
+  }
+
+  .full {
+
   }
 
   .add-color-btn {
