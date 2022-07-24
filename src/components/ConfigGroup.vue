@@ -11,6 +11,7 @@ import SpacingGroup from './configs/SpacingGroup.vue'
 import ContainerGroup from './configs/ContainerGroup.vue'
 import BackgroundGroup from './configs/BackgroundGroup.vue'
 import PositionGroup from './configs/PositionGroup.vue'
+import EventGroup from './configs/EventGroup.vue'
 
 interface IConfigGroupProps {
   groupType: GroupType
@@ -30,6 +31,7 @@ const componentNameMap: { [type in GroupType]: any | null } = {
   border: BorderGroup,
   background: BackgroundGroup,
   container: ContainerGroup,
+  event: EventGroup,
   animation: null,
 }
 

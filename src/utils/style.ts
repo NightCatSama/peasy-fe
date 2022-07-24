@@ -1,9 +1,7 @@
-import { useDisplayStore } from '@/stores/display'
 import { computed, inject } from 'vue'
 import { covertSize, fixedPointToNumber, getUnit } from './sizeHelper'
 
 const getIsEditMode = () => !!inject('isEditMode')
-const getDisplayMode = () => useDisplayStore().displayMode || 'preview'
 
 export const useStyle = (styles: any) => {
   for (let key in styles) {
@@ -223,8 +221,7 @@ export const useContainerStyle = (container: IContainer) => {
 
   return {
     opacity: container.opacity,
-    overflow:
-      getIsEditMode() && getDisplayMode() !== 'preview' ? container.overflow : container.overflow,
+    overflow:container.overflow,
     boxShadow: container.boxShadow,
   }
 }

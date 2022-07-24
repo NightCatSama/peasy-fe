@@ -139,6 +139,7 @@ onMounted(() => {
       :disabled="disabled"
       :placeholder="placeholder"
       :rows="4"
+      v-bind="$attrs"
       @keyup.enter="handleChange"
       @focus="focus = true"
       @blur="(e: Event) => {

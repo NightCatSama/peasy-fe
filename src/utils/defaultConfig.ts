@@ -135,3 +135,16 @@ export const getDefaultPosition = (initConfig?: Partial<IPosition>): IPosition =
     },
     initConfig
   )
+
+export const getDefaultEvent = (initConfig?: Partial<IEvent>): IEvent =>
+  Object.assign(
+    {
+      type: 'tap',
+      action: 'link',
+      stopPropagation: true,
+      link: '',
+      openNewTab: true,
+      execFunction: ''
+    },
+    initConfig
+  )

@@ -9,6 +9,8 @@ import {
   useBackgroundStyle,
   useContainerStyle,
 } from '@/utils/style'
+import { useEvent } from './event'
+import { onBeforeMount, onMounted, watchEffect } from 'vue';
 
 interface IBlockProps {
   direction?: 'row' | 'column'
@@ -19,9 +21,10 @@ interface IBlockProps {
   border: IBorder
   background: IBackground
   container: IContainer
+  event: IEvent
 }
 
-const { size, layout, border, direction, spacing, background, container, position } =
+const { size, layout, border, direction, spacing, background, container, position, event } =
   defineProps<IBlockProps>()
 
 const style = $computed(() =>
@@ -35,10 +38,18 @@ const style = $computed(() =>
     ...usePositionStyle(position),
   })
 )
+
+const elem = $ref<HTMLDivElement | null>(null)
+let stop = $ref<(() => void) | null>(null)
+onMounted(() => {
+  stop = useEvent(event, elem!)
+})
+onBeforeMount(() => stop?.())
+
 </script>
 
 <template>
-  <div :class="'block'" :style="style">
+  <div ref="elem" :class="'block'" :style="style">
     <slot></slot>
   </div>
 </template>

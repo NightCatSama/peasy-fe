@@ -4,6 +4,7 @@ import {
   getDefaultBasic,
   getDefaultBorder,
   getDefaultContainer,
+  getDefaultEvent,
   getDefaultFont,
   getDefaultLayout,
   getDefaultPosition,
@@ -25,6 +26,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
       container: getDefaultContainer(),
       background: getDefaultBackground({}),
       position: getDefaultPosition(),
+      event: getDefaultEvent(),
     },
     children:
       type === 'component'
@@ -45,6 +47,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                   // backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4',
                 }),
                 position: getDefaultPosition(),
+                event: getDefaultEvent(),
               },
               children: [getMockIcon('apple'), getMockText(name), getMockImage()],
             },

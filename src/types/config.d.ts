@@ -16,6 +16,7 @@ interface IImageBasicType {
 
 /** Button 组件基础配置 */
 interface IButtonBasicType {
+  type: ''
 }
 
 /** Icon 组件基础配置 */
@@ -111,5 +112,31 @@ interface IContainer {
   opacity: number
 }
 
+/** 事件处理 */
+interface IEvent {
+  /** 事件类型 */
+  type: 'tap' | 'mousedown' | 'touchstart'
+  action: 'link' | 'func'
+  stopPropagation: boolean
+  link: string
+  openNewTab: boolean
+  execFunction: string
+}
+
 /** TODO: 动效 */
-interface IAnimation {}
+interface IAnimationItem {
+  /** 动画类型 */
+  trigger: 'hover' | 'click' | 'scrollIn' | 'always'
+  duration: number
+  delay: number
+  timingFunction: 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
+  name: 'fade' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'zoom-in' | 'zoom-out'
+  settings: {
+    opacity?: number
+    offset?: number
+    zoom?: number
+  }
+}
+interface IAnimation {
+  animationList: IAnimationItem[]
+}

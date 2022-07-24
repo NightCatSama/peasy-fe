@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide, onMounted, nextTick } from 'vue'
+import { provide, onMounted, nextTick, watch } from 'vue'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 
@@ -10,6 +10,7 @@ import ConfigHeader from '@/components/ConfigHeader.vue'
 import MaterialsPanel from '@/components/MaterialsPanel.vue'
 import EditSection from '@/components/EditSection.vue'
 import { emitter } from '@/utils/event'
+import { useDisplayStore } from '@/stores/display'
 
 provide('isEditMode', true)
 
@@ -17,6 +18,10 @@ const pageStore = usePageStore()
 
 const { pageData, materialData } = storeToRefs(pageStore)
 const { addSection, getAssetsData, getPageData, download } = pageStore
+
+const displayStore = useDisplayStore()
+const { setDeviceByParent } = displayStore
+const { device, displayMode } = storeToRefs(displayStore)
 
 const handleDownload = async () => {
   const res = await download()
@@ -33,6 +38,12 @@ onMounted(() => {
     showLeftPanel = show
   })
 })
+
+watch(() => displayMode.value, () => {
+  provide('displayMode', displayMode.value)
+  ;(window as any).displayMode = displayMode.value
+}, { immediate: true, flush: 'sync' })
+
 </script>
 
 <template>

@@ -1,6 +1,6 @@
 /** 组件对应支持的配置分组 */
 export const ComponentPropsGroup = {
-  Block: ['layout', 'size', 'spacing', 'border', 'background', 'container', 'position'] as const,
+  Block: ['layout', 'size', 'spacing', 'border', 'background', 'container', 'position', 'event'] as const,
   Text: ['basic', 'font', 'spacing', 'border', 'background', 'container', 'position'] as const,
   Image: ['basic', 'size', 'spacing', 'border', 'container', 'position'] as const,
   Icon: ['basic', 'spacing', 'border'] as const
@@ -17,6 +17,7 @@ export type GroupType =
   | 'background'
   | 'container'
   | 'position'
+  | 'event'
   | 'animation'
 
 /** 配置对应约束类型 */
@@ -35,6 +36,7 @@ export interface GroupPropType<T extends ComponentName = any> {
   background: IBackground
   container: IContainer
   position: IPosition
+  event: IEvent
   animation: IAnimation
 }
 

@@ -39,6 +39,7 @@ import LockIcon from '@/assets/lock.svg'
 import DragIcon from '@/assets/drag.svg'
 import EditIcon from '@/assets/edit.svg'
 import PreviewIcon from '@/assets/preview.svg'
+import EventIcon from '@/assets/event.svg'
 
 interface IIconProps {
   name: string
@@ -88,6 +89,7 @@ const iconMap = {
   drag: DragIcon,
   edit: EditIcon,
   preview: PreviewIcon,
+  event: EventIcon,
 } as any
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()

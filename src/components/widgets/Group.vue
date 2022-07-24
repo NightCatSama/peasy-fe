@@ -31,6 +31,7 @@ const iconName = {
   Container: 'container',
   Basic: 'basic',
   Position: 'absolute',
+  Event: 'event',
 } as any
 </script>
 

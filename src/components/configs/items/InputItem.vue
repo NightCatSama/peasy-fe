@@ -7,7 +7,7 @@ export default {
 <script setup lang="ts">
 import Input from '@/components/widgets/Input.vue'
 
-type IInputProps = InstanceType<typeof Input>
+type IInputProps = Partial<InstanceType<typeof Input>>
 
 interface ISelectItemProps extends IInputProps {
   label: string
