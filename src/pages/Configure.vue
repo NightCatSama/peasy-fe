@@ -39,11 +39,14 @@ onMounted(() => {
   })
 })
 
-watch(() => displayMode.value, () => {
-  provide('displayMode', displayMode.value)
-  ;(window as any).displayMode = displayMode.value
-}, { immediate: true, flush: 'sync' })
-
+watch(
+  () => displayMode.value,
+  () => {
+    provide('displayMode', displayMode.value)
+    ;(window as any).displayMode = displayMode.value
+  },
+  { immediate: true, flush: 'sync' }
+)
 </script>
 
 <template>

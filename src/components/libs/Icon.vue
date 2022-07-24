@@ -1,10 +1,5 @@
 <script setup lang="ts">
-import {
-  useStyle,
-  useIconBasicStyle,
-  useBorderStyle,
-  useSpacingStyle,
-} from '@/utils/style'
+import { useStyle, useIconBasicStyle, useBorderStyle, useSpacingStyle } from '@/utils/style'
 import { watch } from 'vue'
 
 interface IBlockProps {
@@ -14,8 +9,7 @@ interface IBlockProps {
   border: IBorder
 }
 
-const { basic, border, direction, spacing } =
-  defineProps<IBlockProps>()
+const { basic, border, direction, spacing } = defineProps<IBlockProps>()
 
 const style = $computed(() =>
   useStyle({
@@ -27,24 +21,30 @@ const style = $computed(() =>
 
 let styleElem = $ref<HTMLLinkElement | null>(null)
 
-watch(() => basic.styleLink, () => {
-  if (styleElem) {
-    document.body.removeChild(styleElem)
-    styleElem = null
-  }
-  if (basic.styleLink) {
-    styleElem = document.createElement('link')
-    styleElem.rel = 'stylesheet'
-    styleElem.href = basic.styleLink
-    document.body.appendChild(styleElem)
-  }
-}, { immediate: true })
-
+watch(
+  () => basic.styleLink,
+  () => {
+    if (styleElem) {
+      document.body.removeChild(styleElem)
+      styleElem = null
+    }
+    if (basic.styleLink) {
+      styleElem = document.createElement('link')
+      styleElem.rel = 'stylesheet'
+      styleElem.href = basic.styleLink
+      document.body.appendChild(styleElem)
+    }
+  },
+  { immediate: true }
+)
 </script>
 
 <template>
   <div class="fa-icon">
-    <i :class="['fa', `${basic.prefixClass || ''}${basic.name}`, `${basic?.extraClass || ''}`]" :style="style" />
+    <i
+      :class="['fa', `${basic.prefixClass || ''}${basic.name}`, `${basic?.extraClass || ''}`]"
+      :style="style"
+    />
   </div>
 </template>
 

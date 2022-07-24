@@ -2,14 +2,14 @@
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
 import { PageNode, isSomeBasicType, DefaultIconStyleLink } from '@/config'
-import ImageItem from './items/ImageItem.vue';
-import SelectItem from './items/SelectItem.vue';
-import { usePageStore } from '@/stores/page';
-import SliderItem from './items/SliderItem.vue';
-import ColorItem from './items/ColorItem.vue';
-import Tip from '../widgets/Tip.vue';
-import TabsItem from './items/TabsItem.vue';
-import SwitchItem from './items/SwitchItem.vue';
+import ImageItem from './items/ImageItem.vue'
+import SelectItem from './items/SelectItem.vue'
+import { usePageStore } from '@/stores/page'
+import SliderItem from './items/SliderItem.vue'
+import ColorItem from './items/ColorItem.vue'
+import Tip from '../widgets/Tip.vue'
+import TabsItem from './items/TabsItem.vue'
+import SwitchItem from './items/SwitchItem.vue'
 
 interface IEventGroupProps {
   node: PageNode
@@ -26,10 +26,7 @@ const { node, event } = defineProps<IEventGroupProps>()
         :options="{ tap: 'Tap', mousedown: 'Mouse Down', touchstart: 'Touch Start' }"
         v-model="event.type"
       ></SelectItem>
-      <TabsItem
-        :data="{ link: 'Link', func: 'Function' }"
-        v-model="event.action"
-      ></TabsItem>
+      <TabsItem :data="{ link: 'Link', func: 'Function' }" v-model="event.action"></TabsItem>
       <template v-if="event.action === 'link'">
         <InputItem
           label="Link"
@@ -51,7 +48,11 @@ const { node, event } = defineProps<IEventGroupProps>()
       </template>
       <template v-if="showAdvanced">
         <SwitchItem label="Stop Propagation" v-model="event.stopPropagation"></SwitchItem>
-        <SwitchItem v-if="event.action === 'link'" label="Open New Tab" v-model="event.openNewTab"></SwitchItem>
+        <SwitchItem
+          v-if="event.action === 'link'"
+          label="Open New Tab"
+          v-model="event.openNewTab"
+        ></SwitchItem>
       </template>
     </template>
   </Group>

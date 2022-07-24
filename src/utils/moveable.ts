@@ -212,9 +212,7 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
 
     units.width = getUnit(item.props.size.width)
     units.widthReferSize =
-      parent && elem.parentElement
-        ? elem.parentElement.clientWidth
-        : useDisplayStore().device.width
+      parent && elem.parentElement ? elem.parentElement.clientWidth : useDisplayStore().device.width
 
     units.height = getUnit(item.props.size.height)
     units.heightReferSize =
@@ -227,11 +225,7 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
   moveable.on('resize', (e) => {
     if (units?.width) {
       elem.style.width = fixedPointToNumber(e.width) + 'px'
-      elem.dataset.resizeWidth = covertPXToUnit(
-        elem.style.width,
-        units.width,
-        units.widthReferSize
-      )
+      elem.dataset.resizeWidth = covertPXToUnit(elem.style.width, units.width, units.widthReferSize)
     }
     if (units?.height) {
       elem.style.height = fixedPointToNumber(e.height) + 'px'

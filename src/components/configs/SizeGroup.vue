@@ -2,7 +2,7 @@
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
 import { PageNode } from '@/config'
-import { updateDirection } from '@/utils/moveable';
+import { updateDirection } from '@/utils/moveable'
 
 interface ISizeGroupProps {
   node: PageNode

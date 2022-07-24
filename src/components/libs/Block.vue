@@ -10,7 +10,7 @@ import {
   useContainerStyle,
 } from '@/utils/style'
 import { useEvent } from './event'
-import { onBeforeMount, onMounted, watchEffect } from 'vue';
+import { onBeforeMount, onMounted, watchEffect } from 'vue'
 
 interface IBlockProps {
   direction?: 'row' | 'column'
@@ -45,7 +45,6 @@ onMounted(() => {
   stop = useEvent(event, elem!)
 })
 onBeforeMount(() => stop?.())
-
 </script>
 
 <template>

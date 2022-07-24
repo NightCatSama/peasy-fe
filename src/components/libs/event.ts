@@ -1,4 +1,4 @@
-import { inject } from "vue"
+import { inject } from 'vue'
 
 export const useEvent = (event: IEvent, el: HTMLDivElement): (() => void) | null => {
   if (!event) return null
@@ -45,5 +45,5 @@ export const useEvent = (event: IEvent, el: HTMLDivElement): (() => void) | null
     })
   }
 
-  return () => removeListenerList.forEach(fn => fn())
+  return () => removeListenerList.forEach((fn) => fn())
 }

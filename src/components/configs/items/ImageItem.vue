@@ -1,6 +1,7 @@
-<script setup lang="ts">import { upload } from '@/utils/oss';
-import InputItem from './InputItem.vue';
-import Icon from '@/components/widgets/Icon.vue';
+<script setup lang="ts">
+import { upload } from '@/utils/oss'
+import InputItem from './InputItem.vue'
+import Icon from '@/components/widgets/Icon.vue'
 
 interface IImageItemProps {
   label: string
@@ -36,18 +37,17 @@ const uploadImage = async (e: InputEvent) => {
       <div class="upload-wrapper">
         <div class="upload-btn">
           Upload
-          <input
-            type="file"
-            class="upload-btn-input"
-            accept="image/*"
-            @change="uploadImage"
-          />
+          <input type="file" class="upload-btn-input" accept="image/*" @change="uploadImage" />
         </div>
         <Icon
           name="question"
           class="question-icon"
           :size="13"
-          v-tooltip="{ showTriggers: ['click'], hideTriggers: ['click', 'hover'], content: 'Stability not guaranteed' }"
+          v-tooltip="{
+            showTriggers: ['click'],
+            hideTriggers: ['click', 'hover'],
+            content: 'Stability not guaranteed',
+          }"
         ></Icon>
       </div>
     </template>

@@ -112,12 +112,12 @@ const componentEvents = $computed(() =>
         },
       }
     : item.component === 'Image'
-      ? {
+    ? {
         load: (e: Event) => {
           console.log('image', e)
-        }
+        },
       }
-      : {}
+    : {}
 )
 
 watch(

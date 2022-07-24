@@ -218,7 +218,6 @@ const uploadImage = async (e: InputEvent) => {
   }
 
   .full {
-
   }
 
   .add-color-btn {

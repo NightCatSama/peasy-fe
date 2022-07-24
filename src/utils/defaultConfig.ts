@@ -1,4 +1,10 @@
-import { ComponentName, DefaultIconStyleLink, GroupPropType, isSomeBasicType, PageNode } from '@/config'
+import {
+  ComponentName,
+  DefaultIconStyleLink,
+  GroupPropType,
+  isSomeBasicType,
+  PageNode,
+} from '@/config'
 
 export const getDefaultBasic = <
   T extends ComponentName = any,
@@ -16,7 +22,7 @@ export const getDefaultBasic = <
   if (isSomeBasicType(component, 'Image', obj)) {
     obj = {
       src: '',
-      objectFit: 'fill'
+      objectFit: 'fill',
     }
   }
   if (isSomeBasicType(component, 'Icon', obj)) {
@@ -145,7 +151,7 @@ export const getDefaultEvent = (initConfig?: Partial<IEvent>): IEvent =>
       stopPropagation: true,
       link: '',
       openNewTab: true,
-      execFunction: ''
+      execFunction: '',
     },
     initConfig
   )

@@ -1,11 +1,12 @@
-<script setup lang="ts">import {
+<script setup lang="ts">
+import {
   useStyle,
   useSizeStyle,
   useBorderStyle,
   usePositionStyle,
   useSpacingStyle,
   useContainerStyle,
-useImageBasicStyle,
+  useImageBasicStyle,
 } from '@/utils/style'
 
 interface IImageProps {
@@ -18,8 +19,7 @@ interface IImageProps {
   container: IContainer
 }
 
-const { basic, size, border, direction, spacing, container, position } =
-  defineProps<IImageProps>()
+const { basic, size, border, direction, spacing, container, position } = defineProps<IImageProps>()
 
 const style = $computed(() =>
   useStyle({
@@ -33,7 +33,6 @@ const style = $computed(() =>
 )
 
 const src = $computed(() => basic.src.trim() || '')
-
 </script>
 
 <template>

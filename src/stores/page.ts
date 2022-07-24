@@ -152,7 +152,7 @@ export const usePageStore = defineStore('page', {
       if (node) {
         if (this.activeSection === this.activeNode) {
           this.activeSection = node
-          nextTick(() => this.activeNode = node)
+          nextTick(() => (this.activeNode = node))
         } else {
           this.activeNode = node
         }

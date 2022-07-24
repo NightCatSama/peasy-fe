@@ -1,9 +1,18 @@
 /** 组件对应支持的配置分组 */
 export const ComponentPropsGroup = {
-  Block: ['layout', 'size', 'spacing', 'border', 'background', 'container', 'position', 'event'] as const,
+  Block: [
+    'layout',
+    'size',
+    'spacing',
+    'border',
+    'background',
+    'container',
+    'position',
+    'event',
+  ] as const,
   Text: ['basic', 'font', 'spacing', 'border', 'background', 'container', 'position'] as const,
   Image: ['basic', 'size', 'spacing', 'border', 'container', 'position'] as const,
-  Icon: ['basic', 'spacing', 'border'] as const
+  Icon: ['basic', 'spacing', 'border'] as const,
 } as const
 
 /** 支持的配置分组名 */
@@ -71,8 +80,13 @@ export interface PageNode<T extends ComponentName = any> {
 }
 
 /** 判断是否某个基础类型 */
-export const isSomeBasicType = <T extends ComponentName, P extends GroupPropType<T>['basic']>(name: string, compare: T, basic: any): basic is P => {
+export const isSomeBasicType = <T extends ComponentName, P extends GroupPropType<T>['basic']>(
+  name: string,
+  compare: T,
+  basic: any
+): basic is P => {
   return name === compare && !!basic
 }
 
-export const DefaultIconStyleLink = '//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
+export const DefaultIconStyleLink =
+  '//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'

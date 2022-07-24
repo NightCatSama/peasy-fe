@@ -2,12 +2,12 @@
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
 import { PageNode, isSomeBasicType, DefaultIconStyleLink } from '@/config'
-import ImageItem from './items/ImageItem.vue';
-import SelectItem from './items/SelectItem.vue';
-import { usePageStore } from '@/stores/page';
-import SliderItem from './items/SliderItem.vue';
-import ColorItem from './items/ColorItem.vue';
-import Tip from '../widgets/Tip.vue';
+import ImageItem from './items/ImageItem.vue'
+import SelectItem from './items/SelectItem.vue'
+import { usePageStore } from '@/stores/page'
+import SliderItem from './items/SliderItem.vue'
+import ColorItem from './items/ColorItem.vue'
+import Tip from '../widgets/Tip.vue'
 
 interface IBasicGroupProps {
   node: PageNode
@@ -81,7 +81,7 @@ const configs: ShowItem[] = $computed(() => {
         setValue: (val: IImageBasicType['objectFit']) => {
           basic.objectFit = val
         },
-      }
+      },
     ]
   }
   /** Icon 组件 */
@@ -92,9 +92,10 @@ const configs: ShowItem[] = $computed(() => {
         component: Tip,
         props: {
           type: 'warning',
-          message: '默认使用第三方 CDN 加载图标，不保证稳定性。图标使用的是 FontAwesome。更多图标查阅：<a href="https://fontawesome.com/v4/icons/" target="_blank">https://fontawesome.com/v4/icons/</a>',
-          style: { marginBottom: '12px' }
-        }
+          message:
+            '默认使用第三方 CDN 加载图标，不保证稳定性。图标使用的是 FontAwesome。更多图标查阅：<a href="https://fontawesome.com/v4/icons/" target="_blank">https://fontawesome.com/v4/icons/</a>',
+          style: { marginBottom: '12px' },
+        },
       },
       {
         component: InputItem,
@@ -149,7 +150,7 @@ const configs: ShowItem[] = $computed(() => {
           label: 'Extra Class',
           type: 'text',
           modelValue: basic.extraClass,
-          placeholder: 'like \'fa-spin\''
+          placeholder: "like 'fa-spin'",
         },
         setValue: (val: string) => {
           basic.extraClass = val
@@ -166,7 +167,8 @@ const configs: ShowItem[] = $computed(() => {
         setValue: (val: string) => {
           basic.styleLink = val
         },
-      }]
+      },
+    ]
     return fontAwesomeItems
   }
   return []
@@ -174,11 +176,16 @@ const configs: ShowItem[] = $computed(() => {
 </script>
 
 <template>
-  <Group title="Basic" class="basic-group" :default-collapsed="true" :can-advanced="configs.some(item => item.isAdvanced)">
+  <Group
+    title="Basic"
+    class="basic-group"
+    :default-collapsed="true"
+    :can-advanced="configs.some((item) => item.isAdvanced)"
+  >
     <template #default="{ showAdvanced }">
       <template v-for="item in configs">
         <component
-          v-if="(!item.hide && (!item.isAdvanced || showAdvanced))"
+          v-if="!item.hide && (!item.isAdvanced || showAdvanced)"
           :is="item.component"
           v-bind="item.props"
           @update:model-value="item?.setValue"

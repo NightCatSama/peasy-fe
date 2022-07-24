@@ -226,7 +226,8 @@ onMounted(() => {
     transition: all 0.3s;
   }
 
-  :deep(.suffix-select-hide-input), :deep(.select) {
+  :deep(.suffix-select-hide-input),
+  :deep(.select) {
     width: 100%;
   }
 }

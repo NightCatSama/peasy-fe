@@ -32,7 +32,7 @@ const handleChange = (event: Event) => {
   background: $panel-light;
   border-radius: 18px;
   cursor: pointer;
-  transition: background-color .3s;
+  transition: background-color 0.3s;
 
   &.active {
     background: $theme;
@@ -47,7 +47,7 @@ const handleChange = (event: Event) => {
     height: 18px;
     border-radius: 50%;
     background: $color;
-    transition: all .3s;
+    transition: all 0.3s;
   }
 }
 </style>
