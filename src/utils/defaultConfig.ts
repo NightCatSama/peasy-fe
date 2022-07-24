@@ -119,6 +119,7 @@ export const getDefaultContainer = (initConfig?: Partial<IContainer>): IContaine
       overflow: 'visible',
       boxShadow: '',
       opacity: 1,
+      cursor: 'auto',
     },
     initConfig
   )

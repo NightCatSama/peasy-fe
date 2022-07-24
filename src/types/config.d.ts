@@ -110,6 +110,7 @@ interface IContainer {
   overflow: 'visible' | 'hidden' | 'scroll' | 'auto'
   boxShadow: string
   opacity: number
+  cursor: 'auto' | 'default' | 'pointer' | 'move' | 'text' | 'wait' | 'help' | 'not-allowed'
 }
 
 /** 事件处理 */

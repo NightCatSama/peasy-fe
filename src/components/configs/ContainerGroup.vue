@@ -37,6 +37,21 @@ const curShadowIndex = $computed(() => presetShadow.indexOf(container.boxShadow)
       :options="{ visible: 'Visible', hidden: 'Hidden', scroll: 'Scroll', auto: 'Auto' }"
       v-model="container.overflow"
     ></SelectItem>
+    <SelectItem
+      label="Cursor"
+      :options="{
+        auto: 'Auto',
+        default: 'Default',
+        pointer: 'Pointer',
+        move: 'Move',
+        text: 'Text',
+        wait: 'Wait',
+        help: 'Help',
+        'not-allowed': 'Not Allowed',
+      }"
+      :style="{ marginBottom: '3px' }"
+      v-model="container.cursor"
+    ></SelectItem>
     <div class="item shadow-item">
       <div class="label">Shadow</div>
       <div class="shadow-preview">
