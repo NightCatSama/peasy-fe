@@ -142,7 +142,8 @@ onMounted(() => {
     <slot name="suffix">
       <template v-if="suffixInValue && suffix && !hideSuffix">
         <Select
-          display="inline"
+          :display="'inline'"
+          :class="hideInput ? 'suffix-select-hide-input' : 'suffix-select'"
           :model-value="suffixInValue"
           :options="Object.fromEntries(suffix.map((s) => [s, getSuffixText(s)]))"
           :disabled="disabled || suffix.length <= 1"
@@ -196,7 +197,7 @@ onMounted(() => {
   }
 
   textarea {
-    font-size: 16px;
+    font-size: 14px;
     padding: 8px;
     resize: none;
     line-height: 1.4;
@@ -213,6 +214,10 @@ onMounted(() => {
     background: $panel-dark;
     border-radius: $normal-radius;
     transition: all 0.3s;
+  }
+
+  :deep(.suffix-select-hide-input), :deep(.select) {
+    width: 100%;
   }
 }
 </style>

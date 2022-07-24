@@ -10,6 +10,7 @@ import TabsItem from './items/TabsItem.vue'
 import SliderItem from './items/SliderItem.vue'
 import Slider from '../widgets/Slider.vue'
 import PositionTable from '../widgets/PositionTable.vue'
+import ImageItem from './items/ImageItem.vue'
 
 interface IBackgroundGroupProps {
   node: PageNode
@@ -83,33 +84,11 @@ const uploadImage = async (e: InputEvent) => {
 
     <!-- 背景图设置 -->
     <template v-if="background.backgroundType === 'image'">
-      <InputItem
-        :model-value="background.backgroundImage"
+      <ImageItem
         :label="'Image Link'"
-        :type="'textarea'"
-        :placeholder="'https://'"
+        :model-value="background.backgroundImage"
         @update:model-value="(image) => (background.backgroundImage = image)"
-      >
-        <template #suffix>
-          <div class="upload-wrapper">
-            <div class="upload-btn">
-              Upload
-              <input
-                type="file"
-                class="upload-btn-input"
-                accept=".jpg, .jpeg, .png .gif .webp"
-                @change="uploadImage"
-              />
-            </div>
-            <Icon
-              name="question"
-              class="question-icon"
-              :size="13"
-              v-tooltip="{ content: 'Stability not guaranteed' }"
-            ></Icon>
-          </div>
-        </template>
-      </InputItem>
+      ></ImageItem>
       <TabsItem
         label="Background Size"
         :data="{ cover: 'Cover', contain: 'Contain', auto: 'Auto' }"
@@ -215,40 +194,6 @@ const uploadImage = async (e: InputEvent) => {
   .label {
     flex: 1;
     margin-right: 8px;
-  }
-
-  .upload-wrapper {
-    position: absolute;
-    right: 4px;
-    bottom: 4px;
-    font-size: 13px;
-    display: flex;
-    align-items: center;
-    z-index: 1;
-    padding: 4px;
-
-    .upload-btn {
-      position: relative;
-      margin-right: 4px;
-
-      &-input {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        opacity: 0;
-        cursor: default;
-      }
-    }
-
-    .upload-btn,
-    .question-icon {
-      cursor: default;
-      &:hover {
-        color: $theme;
-      }
-    }
   }
 
   .delete-color-btn {

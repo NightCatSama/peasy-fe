@@ -31,8 +31,8 @@
       position: relative;
       transition: font-size 0.3s;
 
-      &.block::after,
-      &.text::after {
+      &.block::before,
+      &.text::before {
         content: '';
         left: 0;
         top: 0;
@@ -44,7 +44,7 @@
         pointer-events: none;
       }
 
-      &.text::after {
+      &.text::before {
         outline: 3px dashed rgba($pink, 80%);
       }
     }

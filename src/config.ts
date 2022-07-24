@@ -2,6 +2,7 @@
 export const ComponentPropsGroup = {
   Block: ['layout', 'size', 'spacing', 'border', 'background', 'container', 'position'] as const,
   Text: ['basic', 'font', 'spacing', 'border', 'background', 'container', 'position'] as const,
+  Image: ['basic', 'size', 'spacing', 'border', 'container', 'position'] as const,
 } as const
 
 /** 支持的配置分组名 */
@@ -22,10 +23,16 @@ export interface ITextBasicType {
   text: string
 }
 
+export interface IImageBasicType {
+  src: string
+  objectFit: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down'
+}
+
 /** 配置对应约束类型 */
 export interface GroupPropType<T extends ComponentName = any> {
   basic: {
     Text: ITextBasicType
+    Image: IImageBasicType
     [key: string]: any
   }[T]
   size: ISize
@@ -71,4 +78,8 @@ export interface PageNode<T extends ComponentName = any> {
 
 export const isTextBasicType = (node: PageNode, basic: any): basic is ITextBasicType => {
   return node.component === 'Text' && !!basic
+}
+
+export const isImageBasicType = (node: PageNode, basic: any): basic is IImageBasicType => {
+  return node.component === 'Image' && !!basic
 }

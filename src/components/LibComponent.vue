@@ -88,7 +88,7 @@ const handleSortNode = (event: SortableEvent) => {
 
 const isBlockComponent = $computed(() => item.component === 'Block')
 const scrollList: Set<HTMLDivElement> = new Set()
-const dragEvents = $computed(() =>
+const componentEvents = $computed(() =>
   isBlockComponent
     ? {
         dragenter: (e: DragEvent) => {
@@ -111,7 +111,13 @@ const dragEvents = $computed(() =>
           addActiveParentChain(item)
         },
       }
-    : {}
+    : item.component === 'Image'
+      ? {
+        load: (e: Event) => {
+          console.log('image', e)
+        }
+      }
+      : {}
 )
 
 watch(
@@ -162,7 +168,7 @@ const preventMousedown = (e: MouseEvent) => {
     :chosen-class="'chosen-clone'"
     :data-name="item.name"
     v-tap.stop="setActive"
-    v-on="dragEvents"
+    v-on="componentEvents"
   >
     <template #item="{ element: subItem }">
       <LibComponent

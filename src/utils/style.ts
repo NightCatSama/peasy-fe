@@ -1,3 +1,4 @@
+import { IImageBasicType } from '@/config'
 import { useDisplayStore } from '@/stores/display'
 import { computed, inject } from 'vue'
 import { covertSize, fixedPointToNumber, getUnit } from './sizeHelper'
@@ -12,6 +13,14 @@ export const useStyle = (styles: any) => {
     }
   }
   return styles
+}
+
+export const useImageBasicStyle = (basic: IImageBasicType) => {
+  if (!basic) return {}
+
+  return {
+    objectFit: basic.objectFit,
+  }
 }
 
 /** 定位样式 */
@@ -76,12 +85,12 @@ export const useSizeStyle = (size: ISize, direction?: string) => {
   let minHeight = covertSize(size.minHeight, { isSection, type: 'height' })
   let maxHeight = covertSize(size.maxHeight, { isSection, type: 'height' })
 
-  let flexStyles: any = {}
+  let flexStyles: any = { 'flex-shrink': '0' }
   if (width === 'stretch') {
     width = ''
     if (direction === 'row') {
       flexStyles.flexGrow = 1
-      flexStyles.flexShrink = 1
+      flexStyles['flex-shrink'] = '1'
     } else {
       flexStyles.alignSelf = 'stretch'
     }
@@ -90,7 +99,7 @@ export const useSizeStyle = (size: ISize, direction?: string) => {
     height = ''
     if (direction === 'column') {
       flexStyles.flexGrow = 1
-      flexStyles.flexShrink = 1
+      flexStyles['flex-shrink'] = '1'
     } else {
       flexStyles.alignSelf = 'stretch'
     }

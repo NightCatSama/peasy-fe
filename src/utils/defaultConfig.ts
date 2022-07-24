@@ -13,6 +13,12 @@ export const getDefaultBasic = <
       text: 'Title Text',
     }
   }
+  if (component === 'Image') {
+    obj = {
+      src: '',
+      objectFit: 'fill'
+    }
+  }
   return Object.assign(obj, initConfig)
 }
 
@@ -25,14 +31,14 @@ export const getDefaultSize = (
       ? {
           width: 'auto',
           height: 'auto',
-          minWidth: '100px',
-          minHeight: '100px',
+          minWidth: '50px',
+          minHeight: '50px',
           maxHeight: 'none',
           maxWidth: 'none',
         }
       : {
           height: '100%',
-          minHeight: '100px',
+          minHeight: '50px',
           maxHeight: 'none',
         },
     initConfig || null

@@ -2,6 +2,7 @@
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
 import { PageNode } from '@/config'
+import { updateDirection } from '@/utils/moveable';
 
 interface ISizeGroupProps {
   node: PageNode
@@ -17,14 +18,20 @@ const list: any = $computed(() => [
     name: 'Width',
     type: 'number',
     value: size.width,
-    setValue: (val: string) => (size.width = val),
+    setValue: (val: string) => {
+      size.width = val
+      updateDirection(node)
+    },
     suffix: ['px', '%', 'rem', 'vw', 'auto', 'stretch'],
   },
   {
     name: 'Height',
     type: 'number',
     value: size.height,
-    setValue: (val: string) => (size.height = val),
+    setValue: (val: string) => {
+      size.height = val
+      updateDirection(node)
+    },
     suffix: isSection ? ['px', '%', 'rem', 'auto'] : ['px', '%', 'rem', 'auto', 'stretch'],
   },
   {

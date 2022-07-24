@@ -35,7 +35,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
               name: `${type}-Block`,
               component: 'Block',
               props: {
-                size: getDefaultSize('component', { width: '50%', height: '200px' }),
+                size: getDefaultSize('component', { width: '50%', height: 'auto' }),
                 layout: getDefaultLayout(),
                 spacing: getDefaultSpacing(),
                 border: getDefaultBorder(),
@@ -46,7 +46,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                 }),
                 position: getDefaultPosition(),
               },
-              children: [getMockText(name)],
+              children: [getMockText(name), getMockImage()],
             },
           ],
   }
@@ -63,6 +63,25 @@ export const getMockText = (text?: string): PageNode<'Text'> => {
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),
       background: getDefaultBackground(),
+      container: getDefaultContainer(),
+      position: getDefaultPosition(),
+    },
+  }
+}
+
+export const getMockImage = (src?: string): PageNode<'Image'> => {
+  return {
+    type: 'component',
+    name: 'Image',
+    component: 'Image',
+    props: {
+      basic: getDefaultBasic('Image'),
+      size: getDefaultSize('component', {
+        minHeight: '100px',
+        minWidth: '100px',
+      }),
+      spacing: getDefaultSpacing(),
+      border: getDefaultBorder(),
       container: getDefaultContainer(),
       position: getDefaultPosition(),
     },

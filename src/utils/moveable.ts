@@ -1,6 +1,7 @@
 import { PageNode } from '@/config'
 import { useDisplayStore } from '@/stores/display'
 import { usePageStore } from '@/stores/page'
+import { useKeyPress } from 'ahooks-vue'
 import Moveable, { MoveableOptions } from 'moveable'
 import { h } from 'vue'
 import { emitter } from './event'
@@ -26,7 +27,7 @@ export const getMoveable = () => {
     snappable: true,
     origin: false,
     useResizeObserver: true,
-    hideDefaultLines: false,
+    hideDefaultLines: true,
     ables: [
       {
         name: 'outline',
@@ -146,9 +147,26 @@ export const disabledMoveable = () => {
 
   moveable.resizable = false
   moveable.draggable = false
-  moveable.hideDefaultLines = true
   moveable.target = null
   moveable.off()
+}
+
+export const updateDirection = (item: PageNode) => {
+  const moveable = getMoveable()
+  if (!moveable) return
+
+  const disableWidth = item.type === 'section' || !isUnitType(getUnit(item.props.size?.width))
+  const disableHeight = !isUnitType(getUnit(item.props.size?.height))
+  const renderDirections =
+    disableWidth && disableHeight
+      ? []
+      : disableWidth
+      ? ['s', 'n']
+      : disableHeight
+      ? ['w', 'e']
+      : ['n', 'nw', 'ne', 's', 'se', 'sw', 'e', 'w']
+
+  moveable.renderDirections = renderDirections
 }
 
 /** 启用 moveable */
@@ -159,11 +177,6 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
   const disableWidth = item.type === 'section' || !isUnitType(getUnit(item.props.size?.width))
   const disableHeight = !isUnitType(getUnit(item.props.size?.height))
   const disableMove = !['absolute', 'fixed'].includes(item.props?.position?.position)
-
-  // if (disableWidth && disableHeight) {
-  //   disabledMoveable()
-  //   return
-  // }
 
   /** 记录原先的单位 */
   let units: {
@@ -183,64 +196,64 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
       : ['n', 'nw', 'ne', 's', 'se', 'sw', 'e', 'w']
 
   moveable.resizable = true
-  // moveable.hideDefaultLines = false
   moveable.target = elem
   moveable.renderDirections = renderDirections
 
   moveable.off()
 
-  if (renderDirections.length) {
-    setSnappableGuidelines(elem)
-    moveable.on('resizeStart', (e) => {
-      elem.scrollLeft = 0
-      elem.scrollTop = 0
-      if (!disableWidth) {
-        units.width = getUnit(item.props.size.width)
-        units.widthReferSize =
-          parent && elem.parentElement
-            ? elem.parentElement.clientWidth
-            : useDisplayStore().device.width
-      }
-      if (!disableHeight) {
-        units.height = getUnit(item.props.size.height)
-        units.heightReferSize =
-          parent && elem.parentElement
-            ? elem.parentElement.clientHeight
-            : useDisplayStore().device.height
-      }
-      isResizing = true
-    })
-    moveable.on('resize', (e) => {
-      if (units?.width) {
-        elem.style.width = fixedPointToNumber(e.width) + 'px'
-        elem.dataset.resizeWidth = covertPXToUnit(
-          elem.style.width,
-          units.width,
-          units.widthReferSize
-        )
-      }
-      if (units?.height) {
-        elem.style.height = fixedPointToNumber(e.height) + 'px'
-        elem.dataset.resizeHeight = covertPXToUnit(
-          elem.style.height,
-          units.height,
-          units.heightReferSize
-        )
-      }
-    })
-    moveable.on('resizeEnd', (e) => {
-      if (units.width && elem.dataset.resizeWidth) {
-        item.props.size.width = elem.dataset.resizeWidth
-        delete elem.dataset.resizeWidth
-      }
-      if (units.height && elem.dataset.resizeHeight) {
-        item.props.size.height = elem.dataset.resizeHeight
-        delete elem.dataset.resizeHeight
-      }
+  setSnappableGuidelines(elem)
+  moveable.on('beforeResize', (e) => {
+    const shiftKey = e?.inputEvent.shiftKey
+    moveable.keepRatio = !!shiftKey
+  })
+  moveable.on('resizeStart', (e) => {
+    elem.scrollLeft = 0
+    elem.scrollTop = 0
 
-      isResizing = false
-    })
-  }
+    units.width = getUnit(item.props.size.width)
+    units.widthReferSize =
+      parent && elem.parentElement
+        ? elem.parentElement.clientWidth
+        : useDisplayStore().device.width
+
+    units.height = getUnit(item.props.size.height)
+    units.heightReferSize =
+      parent && elem.parentElement
+        ? elem.parentElement.clientHeight
+        : useDisplayStore().device.height
+
+    isResizing = true
+  })
+  moveable.on('resize', (e) => {
+    if (units?.width) {
+      elem.style.width = fixedPointToNumber(e.width) + 'px'
+      elem.dataset.resizeWidth = covertPXToUnit(
+        elem.style.width,
+        units.width,
+        units.widthReferSize
+      )
+    }
+    if (units?.height) {
+      elem.style.height = fixedPointToNumber(e.height) + 'px'
+      elem.dataset.resizeHeight = covertPXToUnit(
+        elem.style.height,
+        units.height,
+        units.heightReferSize
+      )
+    }
+  })
+  moveable.on('resizeEnd', (e) => {
+    if (units.width && elem.dataset.resizeWidth) {
+      item.props.size.width = elem.dataset.resizeWidth
+      delete elem.dataset.resizeWidth
+    }
+    if (units.height && elem.dataset.resizeHeight) {
+      item.props.size.height = elem.dataset.resizeHeight
+      delete elem.dataset.resizeHeight
+    }
+    isResizing = false
+  })
+
   if (!disableMove) {
     openDragMode(elem)
   } else {
