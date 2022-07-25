@@ -68,6 +68,7 @@ export const getMockText = (text?: string): PageNode<'Text'> => {
       background: getDefaultBackground(),
       container: getDefaultContainer(),
       position: getDefaultPosition(),
+      event: getDefaultEvent(),
     },
   }
 }
@@ -87,6 +88,7 @@ export const getMockImage = (src?: string): PageNode<'Image'> => {
       border: getDefaultBorder(),
       container: getDefaultContainer(),
       position: getDefaultPosition(),
+      event: getDefaultEvent(),
     },
   }
 }
@@ -100,6 +102,8 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
       basic: getDefaultBasic('Icon', { name: 'apple' }),
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),
+      position: getDefaultPosition(),
+      event: getDefaultEvent(),
     },
   }
 }

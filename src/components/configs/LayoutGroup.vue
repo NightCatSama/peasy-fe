@@ -32,7 +32,7 @@ const previewStyle = $computed(() => useLayoutStyle(layout))
 </script>
 
 <template>
-  <Group title="Layout" class="layout-group" :default-collapsed="false">
+  <Group title="Layout" class="layout-group" :default-collapsed="true">
     <div class="align-preview" data-title="Preview" :style="previewStyle">
       <div class="align-preview-item">1</div>
       <div class="align-preview-item">2</div>

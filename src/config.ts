@@ -10,9 +10,9 @@ export const ComponentPropsGroup = {
     'position',
     'event',
   ] as const,
-  Text: ['basic', 'font', 'spacing', 'border', 'background', 'container', 'position'] as const,
-  Image: ['basic', 'size', 'spacing', 'border', 'container', 'position'] as const,
-  Icon: ['basic', 'spacing', 'border'] as const,
+  Text: ['basic', 'font', 'spacing', 'border', 'background', 'container', 'position', 'event'] as const,
+  Image: ['basic', 'size', 'spacing', 'border', 'container', 'position', 'event'] as const,
+  Icon: ['basic', 'spacing', 'border', 'event'] as const,
 } as const
 
 /** 支持的配置分组名 */

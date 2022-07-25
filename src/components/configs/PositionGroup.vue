@@ -77,7 +77,7 @@ const handleLockChange = () => {
 </script>
 
 <template>
-  <Group title="Position" class="position-group" :default-collapsed="true">
+  <Group title="Position" class="position-group" :default-collapsed="false">
     <TabsItem
       :label="'Direction'"
       :data="positionMap"

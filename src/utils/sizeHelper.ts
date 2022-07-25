@@ -1,7 +1,5 @@
 import { useDisplayStore } from '@/stores/display'
-import { inject } from 'vue'
-
-const getIsEditMode = () => !!inject('isEditMode')
+import { getIsEditMode } from './context'
 
 export const isUnitType = (type: string): type is UnitType =>
   (['%', 'px', 'rem', 'vw'] as UnitType[]).includes(type as unknown as UnitType)

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide, onMounted, nextTick, watch } from 'vue'
+import { provide, onMounted, nextTick, watch, reactive } from 'vue'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 
@@ -11,8 +11,6 @@ import MaterialsPanel from '@/components/MaterialsPanel.vue'
 import EditSection from '@/components/EditSection.vue'
 import { emitter } from '@/utils/event'
 import { useDisplayStore } from '@/stores/display'
-
-provide('isEditMode', true)
 
 const pageStore = usePageStore()
 
@@ -39,11 +37,13 @@ onMounted(() => {
   })
 })
 
+let context = reactive({ isEditMode: true, displayMode: displayMode.value })
+provide('editContext', context)
+
 watch(
   () => displayMode.value,
   () => {
-    provide('displayMode', displayMode.value)
-    ;(window as any).displayMode = displayMode.value
+    context.displayMode = displayMode.value
   },
   { immediate: true, flush: 'sync' }
 )

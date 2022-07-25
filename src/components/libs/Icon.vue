@@ -1,15 +1,17 @@
 <script setup lang="ts">
-import { useStyle, useIconBasicStyle, useBorderStyle, useSpacingStyle } from '@/utils/style'
-import { watch } from 'vue'
+import { useStyle, useIconBasicStyle, useBorderStyle, useSpacingStyle, usePositionStyle } from '@/utils/style'
+import { ref, watch } from 'vue'
+import { useEvent } from './event';
 
 interface IBlockProps {
   direction?: 'row' | 'column'
   basic: IIconBasicType
   spacing: ISpacing
   border: IBorder
+  event: IEvent
 }
 
-const { basic, border, direction, spacing } = defineProps<IBlockProps>()
+const { basic, border, direction, spacing, event } = defineProps<IBlockProps>()
 
 const style = $computed(() =>
   useStyle({
@@ -37,6 +39,10 @@ watch(
   },
   { immediate: true }
 )
+
+const elem = ref<HTMLDivElement | null>(null)
+useEvent(event, elem)
+
 </script>
 
 <template>

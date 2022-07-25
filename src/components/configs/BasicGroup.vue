@@ -93,7 +93,7 @@ const configs: ShowItem[] = $computed(() => {
         props: {
           type: 'warning',
           message:
-            '默认使用第三方 CDN 加载图标，不保证稳定性。图标使用的是 FontAwesome。更多图标查阅：<a href="https://fontawesome.com/v4/icons/" target="_blank">https://fontawesome.com/v4/icons/</a>',
+            '默认使用第三方 CDN 加载图标，不保证稳定性。图标使用的是 FontAwesome，更多图标查阅：<a href="https://fontawesome.com/v4/icons/" target="_blank">https://fontawesome.com/v4/icons/</a>',
           style: { marginBottom: '12px' },
         },
       },

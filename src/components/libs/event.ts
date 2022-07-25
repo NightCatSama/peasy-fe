@@ -1,12 +1,22 @@
-import { inject } from 'vue'
+import { getContext } from '@/utils/context'
+import { inject, onBeforeMount, onMounted, Ref } from 'vue'
 
-export const useEvent = (event: IEvent, el: HTMLDivElement): (() => void) | null => {
+export const useEvent = (event: IEvent, el: Ref<HTMLDivElement | null>) => {
+  let stop = $ref<(() => void) | null>(null)
+  onMounted(() => {
+    if (!el.value) return
+    stop = eventHandler(event, el.value)
+  })
+  onBeforeMount(() => stop?.())
+}
+
+const eventHandler = (event: IEvent, el: HTMLDivElement): (() => void) | null => {
   if (!event) return null
 
-  const isEditMode = !!inject('isEditMode')
+  const editContext = getContext()
 
   const handler = (e: Event) => {
-    if (isEditMode && (window as any).displayMode !== 'preview') return
+    if (editContext?.isEditMode && editContext?.displayMode !== 'preview') return
     if (event.stopPropagation) {
       e.preventDefault()
     }

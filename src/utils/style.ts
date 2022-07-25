@@ -1,7 +1,6 @@
 import { computed, inject } from 'vue'
+import { getIsEditMode } from './context'
 import { covertSize, fixedPointToNumber, getUnit } from './sizeHelper'
-
-const getIsEditMode = () => !!inject('isEditMode')
 
 export const useStyle = (styles: any) => {
   for (let key in styles) {

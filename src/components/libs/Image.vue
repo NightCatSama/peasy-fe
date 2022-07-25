@@ -8,6 +8,8 @@ import {
   useContainerStyle,
   useImageBasicStyle,
 } from '@/utils/style'
+import { ref } from 'vue';
+import { useEvent } from './event';
 
 interface IImageProps {
   direction?: 'row' | 'column'
@@ -17,9 +19,10 @@ interface IImageProps {
   spacing: ISpacing
   border: IBorder
   container: IContainer
+  event: IEvent
 }
 
-const { basic, size, border, direction, spacing, container, position } = defineProps<IImageProps>()
+const { basic, size, border, direction, spacing, container, position, event } = defineProps<IImageProps>()
 
 const style = $computed(() =>
   useStyle({
@@ -33,10 +36,14 @@ const style = $computed(() =>
 )
 
 const src = $computed(() => basic.src.trim() || '')
+
+const elem = ref<HTMLDivElement | null>(null)
+useEvent(event, elem)
+
 </script>
 
 <template>
-  <img :class="['image', { 'no-image': !basic.src }]" :style="style" :src="src" />
+  <img ref="elem" :class="['image', { 'no-image': !basic.src }]" :style="style" :src="src" />
 </template>
 
 <style lang="scss" scoped>
