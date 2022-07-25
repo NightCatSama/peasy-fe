@@ -175,6 +175,7 @@ export const useFontStyle = (font: IFont) => {
     textDecoration: font.textDecoration,
     textAlign: font.textAlign,
     color: font.color,
+    textShadow: font.textShadow,
   }
 }
 

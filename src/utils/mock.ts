@@ -49,21 +49,21 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                 position: getDefaultPosition(),
                 event: getDefaultEvent(),
               },
-              children: [getMockIcon('apple'), getMockText(name), getMockImage()],
+              children: [getMockIcon('apple'), getMockText(), getMockImage()],
             },
           ],
   }
 }
 
-export const getMockText = (text?: string): PageNode<'Text'> => {
+export const getMockText = (): PageNode<'Text'> => {
   return {
     type: 'component',
     name: 'Text',
     component: 'Text',
     props: {
       basic: getDefaultBasic('Text'),
-      font: getDefaultFont(),
-      spacing: getDefaultSpacing(),
+      font: getDefaultFont({ fontSize: '100px' }),
+      spacing: getDefaultSpacing({ margin: [50, 50, 50, 50] }),
       border: getDefaultBorder(),
       background: getDefaultBackground(),
       container: getDefaultContainer(),
@@ -102,7 +102,6 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
       basic: getDefaultBasic('Icon', { name: 'apple' }),
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),
-      position: getDefaultPosition(),
       event: getDefaultEvent(),
     },
   }

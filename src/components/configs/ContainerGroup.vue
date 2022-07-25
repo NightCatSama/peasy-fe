@@ -4,6 +4,8 @@ import SelectItem from '@/components/configs/items/SelectItem.vue'
 import { PageNode } from '@/config'
 import TabsItem from './items/TabsItem.vue'
 import SliderItem from './items/SliderItem.vue'
+import InputItem from './items/InputItem.vue'
+import PreviewItem from './items/PreviewItem.vue'
 
 interface IContainerGroupProps {
   node: PageNode
@@ -24,99 +26,73 @@ const curShadowIndex = $computed(() => presetShadow.indexOf(container.boxShadow)
 </script>
 
 <template>
-  <Group title="Container" class="container-group" :can-advanced="false" :default-collapsed="false">
-    <SliderItem
-      label="Opacity"
-      v-model="container.opacity"
-      :min="0"
-      :max="1"
-      :interval="0.01"
-    ></SliderItem>
-    <SelectItem
-      label="Overflow"
-      :options="{ visible: 'Visible', hidden: 'Hidden', scroll: 'Scroll', auto: 'Auto' }"
-      v-model="container.overflow"
-    ></SelectItem>
-    <SelectItem
-      label="Cursor"
-      :options="{
-        auto: 'Auto',
-        default: 'Default',
-        pointer: 'Pointer',
-        move: 'Move',
-        text: 'Text',
-        wait: 'Wait',
-        help: 'Help',
-        'not-allowed': 'Not Allowed',
-      }"
-      :style="{ marginBottom: '3px' }"
-      v-model="container.cursor"
-    ></SelectItem>
-    <div class="item shadow-item">
-      <div class="label">Shadow</div>
-      <div class="shadow-preview">
-        <div
-          v-for="(shadow, index) in presetShadow"
-          :key="index"
-          :class="['shadow-preview-item', { active: curShadowIndex === index }]"
-          @click="container.boxShadow = curShadowIndex === index ? '' : shadow"
-        >
-          <div class="inner" :style="{ boxShadow: shadow }"></div>
-        </div>
-      </div>
-    </div>
+  <Group title="Container" class="container-group" :can-advanced="true" :default-collapsed="false">
+    <template #default="{ showAdvanced }">
+      <SliderItem
+        label="Opacity"
+        v-model="container.opacity"
+        :min="0"
+        :max="1"
+        :interval="0.01"
+      ></SliderItem>
+      <SelectItem
+        label="Overflow"
+        :options="{ visible: 'Visible', hidden: 'Hidden', scroll: 'Scroll', auto: 'Auto' }"
+        v-model="container.overflow"
+      ></SelectItem>
+      <SelectItem
+        label="Cursor"
+        :options="{
+          auto: 'Auto',
+          default: 'Default',
+          pointer: 'Pointer',
+          move: 'Move',
+          text: 'Text',
+          wait: 'Wait',
+          help: 'Help',
+          'not-allowed': 'Not Allowed',
+        }"
+        v-model="container.cursor"
+      ></SelectItem>
+      <PreviewItem
+        label="Shadow"
+        v-model="container.boxShadow"
+        :options="presetShadow"
+      >
+        <template #default="{ item: shadow, active }">
+          <div :class="['inner', { active }]" :style="{ boxShadow: shadow }"></div>
+        </template>
+      </PreviewItem>
+      <InputItem
+        v-if="showAdvanced"
+        label="Custom Shadow"
+        v-model="container.boxShadow"
+      ></InputItem>
+    </template>
   </Group>
 </template>
 
 <style lang="scss" scoped>
 .container-group {
-  .shadow-item {
-    align-items: flex-start;
-    flex-direction: column;
+  :deep(.inner) {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    border-radius: $inner-radius;
+    background: $white-gradient;
+    overflow: hidden;
 
-    .label {
-      margin: 10px 0;
-    }
-
-    .shadow-preview {
-      display: flex;
-      flex-wrap: wrap;
-      justify-content: space-between;
-
-      &-item {
-        position: relative;
-        margin-right: 10px;
-        margin-bottom: 10px;
-        width: 78px;
-        height: 78px;
-        border-radius: $normal-radius;
-        background: $color;
-        padding: 20px;
-        cursor: pointer;
-        overflow: hidden;
-
-        .inner {
-          position: relative;
-          width: 100%;
-          height: 100%;
-          border-radius: $inner-radius;
-          background: $white-gradient;
-          overflow: hidden;
-        }
-
-        $edge: 8px;
-        &.active .inner::after {
-          content: '';
-          position: absolute;
-          right: -$edge;
-          top: -$edge;
-          width: $edge * 2;
-          height: $edge * 2;
-          background: $theme;
-          transform: rotate(45deg);
-          box-shadow: $shadow;
-        }
-      }
+    $edge: 8px;
+    &.active::after {
+      content: '';
+      position: absolute;
+      right: -$edge;
+      top: -$edge;
+      width: $edge * 2;
+      height: $edge * 2;
+      background: $theme;
+      transform: rotate(45deg);
+      box-shadow: $shadow;
     }
   }
 }

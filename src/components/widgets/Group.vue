@@ -144,6 +144,8 @@ const iconName = {
     flex: 1;
     font-size: 14px;
     margin-right: 10px;
+    cursor: default;
+    user-select: none;
     &.short {
       flex: none;
     }

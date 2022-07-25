@@ -55,6 +55,7 @@ interface IFont {
   fontStyle: 'normal' | 'italic'
   textDecoration: 'none' | 'underline' | 'line-through'
   textAlign: 'left' | 'right' | 'center' | 'justify'
+  textShadow: string
 }
 
 /** 间距信息，上右下左 */
@@ -124,7 +125,7 @@ interface IEvent {
   execFunction: string
 }
 
-/** TODO: 动效 */
+/** 动效 */
 interface IAnimationItem {
   /** 动画类型 */
   trigger: 'hover' | 'click' | 'scrollIn' | 'always'
