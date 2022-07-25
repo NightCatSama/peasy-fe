@@ -165,26 +165,43 @@ export const getDefaultAnimation = (initConfig?: Partial<IAnimation>): IAnimatio
     initConfig
   )
 
-// export const getDefaultAnimationItem = (name: IAnimationItem['name'], initConfig?: Partial<IAnimationItem>): IAnimationItem => {
-//   return {
-//     name,
-//     duration: 1,
-//     delay: 0,
-//     timingFunction: 'ease',
-//     settings: {
-//       fade: {
+export const getDefaultAnimationItem = (name: IAnimationItem['name'], initConfig?: Partial<IAnimationItem>): IAnimationItem => {
+  return {
+    name,
+    trigger: 'always',
+    duration: 1,
+    delay: 0,
+    timingFunction: 'ease',
+    fillMode: 'both',
+    direction: 'alternate',
+    settings: getDefaultAnimationSettings(name),
+    ...initConfig
+  }
+}
 
-//       }
-//     },
-//     ...initConfig
-//   }
-// }
-
-// export const getDefaultAnimationSettings = (name: IAnimationItem['name']): IAnimationSettings => {
-//   return {
-//     fade: {
-//       opacity: 0,
-//     },
-
-//   }
-// }
+export const getDefaultAnimationSettings = (name: IAnimationItem['name']): IAnimationSettings => {
+  if (name === 'fade') {
+    return {
+      fade: {
+        opacity: 0,
+      },
+    }
+  }
+  if (name.slice(0, 5) === 'slide') {
+    return {
+      [name]: {
+        offset: 30,
+        opacity: 0,
+      },
+    }
+  }
+  if (name.slice(0, 4) === 'zoom') {
+    return {
+      [name]: {
+        zoom: 0,
+        opacity: 0,
+      }
+    }
+  }
+  return {}
+}

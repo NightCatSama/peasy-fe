@@ -1,5 +1,6 @@
 import { PageNode, PropsTypes } from '@/config'
 import {
+  getDefaultAnimation,
   getDefaultBackground,
   getDefaultBasic,
   getDefaultBorder,
@@ -27,6 +28,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
       background: getDefaultBackground({}),
       position: getDefaultPosition(),
       event: getDefaultEvent(),
+      animation: getDefaultAnimation(),
     },
     children:
       type === 'component'
@@ -48,6 +50,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                 }),
                 position: getDefaultPosition(),
                 event: getDefaultEvent(),
+                animation: getDefaultAnimation(),
               },
               children: [getMockIcon('apple'), getMockText(), getMockImage()],
             },

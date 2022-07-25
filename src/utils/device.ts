@@ -6,7 +6,9 @@ export const getDefaultDevice = (parentWidth: number, preset: number[][]): IDevi
   let size = preset[0]
   let zoom = 1
   // 如果比最小的设备宽度还小，则开启缩放
-  if (w < size[0] * 0.8) {
+  if (w < size[0] * 0.6) {
+    zoom = 0.5
+  } else if (w < size[0] * 0.8) {
     zoom = 0.6
   } else if (w < size[0]) {
     zoom = 0.8

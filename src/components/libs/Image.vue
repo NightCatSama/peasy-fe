@@ -7,7 +7,7 @@ import {
   useSpacingStyle,
   useContainerStyle,
   useImageBasicStyle,
-} from '@/utils/style'
+} from './style'
 import { ref } from 'vue'
 import { useEvent } from './event'
 

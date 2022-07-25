@@ -1,8 +1,5 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
-import Tabs from '../widgets/Tabs.vue'
-import { useLayoutStyle } from '@/utils/style'
-import SelectItem from './items/SelectItem.vue'
 import { PageNode } from '@/config'
 import TabsItem from './items/TabsItem.vue'
 import PositionTable from '../widgets/PositionTable.vue'

@@ -58,8 +58,8 @@ const showCodeInput = $ref(false)
       position: relative;
       margin-right: 10px;
       margin-bottom: 10px;
-      width: 78px;
-      height: 78px;
+      width: 73px;
+      height: 73px;
       border-radius: $normal-radius;
       background: $color;
       padding: 20px;

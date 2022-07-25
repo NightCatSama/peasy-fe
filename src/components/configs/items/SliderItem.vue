@@ -42,13 +42,14 @@ const value = $computed({
   .label {
     flex: none;
     margin-right: 10px;
+    min-width: 60px;
   }
 
   .value {
     position: relative;
     width: 36px;
     padding: 2px 4px;
-    font-size: 14px;
+    font-size: 13px;
     border-radius: $normal-radius;
     color: $color;
     background: $panel-gradient;

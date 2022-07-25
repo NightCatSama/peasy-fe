@@ -1,6 +1,7 @@
 import { computed, inject } from 'vue'
-import { getIsEditMode } from './context'
-import { covertSize, fixedPointToNumber, getUnit } from './sizeHelper'
+import { getIsEditMode } from '@/utils/context'
+import { covertSize, fixedPointToNumber, getUnit } from '@/utils/sizeHelper'
+import { getAnimateName } from './animation'
 
 export const useStyle = (styles: any) => {
   for (let key in styles) {
@@ -224,5 +225,19 @@ export const useContainerStyle = (container: IContainer) => {
     overflow: container.overflow,
     boxShadow: container.boxShadow,
     cursor: container.cursor,
+  }
+}
+
+export const useAnimationStyle = (animation: IAnimation) => {
+  if (!animation) return {}
+
+  const animationStyle = animation.animationList
+    .map(anim =>
+      `${getAnimateName(anim)} ${anim.duration}s ${anim.timingFunction} ${anim.delay}s ${anim.trigger === 'always' ? 'infinite' : 1} ${anim.direction} ${anim.fillMode} running`
+     )
+    .join(', ')
+
+  return {
+    animation: animationStyle,
   }
 }

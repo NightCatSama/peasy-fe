@@ -7,7 +7,7 @@ import {
   usePositionStyle,
   useSpacingStyle,
   useStyle,
-} from '@/utils/style'
+} from './style'
 import { ref } from 'vue'
 import { useEvent } from './event'
 

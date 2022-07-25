@@ -5,7 +5,7 @@ import {
   useBorderStyle,
   useSpacingStyle,
   usePositionStyle,
-} from '@/utils/style'
+} from './style'
 import { ref, watch } from 'vue'
 import { useEvent } from './event'
 

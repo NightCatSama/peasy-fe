@@ -143,6 +143,10 @@ interface IAnimationItem {
   timingFunction: 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
   /** 内置动画类型 */
   name: 'fade' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'zoom-in' | 'zoom-out'
+  /** 动画结束状态 */
+  fillMode: 'forwards' | 'backwards' | 'both' | 'none'
+  /** 动画播放方向 */
+  direction: 'normal' | 'reverse' | 'alternate' | 'alternate-reverse'
   /** 内置动画配置 */
   settings: IAnimationSettings
 }
@@ -150,13 +154,15 @@ type IAnimationSettings = {
   fade?: {
     opacity: number
   }
-} | {
-  [key in `slider-${'up' | 'down' | 'left' | 'right'}`]?: {
+} & {
+  [key in `slide-${'up' | 'down' | 'left' | 'right'}`]?: {
     offset: number
+    opacity: number
   }
-} | {
+} & {
   [key in `zoom-${'in' | 'out'}`]?: {
     zoom: number
+    opacity: number
   }
 }
 interface IAnimation {

@@ -8,11 +8,15 @@ import {
   useSpacingStyle,
   useBackgroundStyle,
   useContainerStyle,
-} from '@/utils/style'
+useAnimationStyle,
+} from './style'
 import { useEvent } from './event'
 import { onBeforeMount, onMounted, ref, watchEffect } from 'vue'
+import { useAnimation } from './animation';
+import type { PageNode } from '@/config';
 
 interface IBlockProps {
+  name: string
   direction?: 'row' | 'column'
   position: IPosition
   size: ISize
@@ -22,9 +26,10 @@ interface IBlockProps {
   background: IBackground
   container: IContainer
   event: IEvent
+  animation: IAnimation
 }
 
-const { size, layout, border, direction, spacing, background, container, position, event } =
+const { size, layout, border, direction, spacing, background, container, position, event, animation, name } =
   defineProps<IBlockProps>()
 
 const style = $computed(() =>
@@ -36,11 +41,15 @@ const style = $computed(() =>
     ...useBackgroundStyle(background),
     ...useContainerStyle(container),
     ...usePositionStyle(position),
+    ...useAnimationStyle(animation),
   })
 )
 
 const elem = ref<HTMLDivElement | null>(null)
+
 useEvent(event, elem)
+
+useAnimation(animation, name)
 </script>
 
 <template>
