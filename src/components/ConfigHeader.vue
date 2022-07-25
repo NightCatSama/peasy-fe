@@ -183,7 +183,7 @@ const handleModeClick = (value: any) => {
       align-items: center;
       cursor: pointer;
       user-select: none;
-      transition: all .3s;
+      transition: all 0.3s;
 
       &:hover {
         background: lighten($panel, 3%);

@@ -8,8 +8,8 @@ import {
   useSpacingStyle,
   useStyle,
 } from '@/utils/style'
-import { ref } from 'vue';
-import { useEvent } from './event';
+import { ref } from 'vue'
+import { useEvent } from './event'
 
 interface ITextProps {
   direction?: 'row' | 'column'
@@ -22,7 +22,8 @@ interface ITextProps {
   position: IPosition
   event: IEvent
 }
-const { basic, font, spacing, border, background, container, position, event } = defineProps<ITextProps>()
+const { basic, font, spacing, border, background, container, position, event } =
+  defineProps<ITextProps>()
 
 const style = $computed(() =>
   useStyle({
@@ -37,7 +38,6 @@ const style = $computed(() =>
 
 const elem = ref<HTMLDivElement | null>(null)
 useEvent(event, elem)
-
 </script>
 
 <template>

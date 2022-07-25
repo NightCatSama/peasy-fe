@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import InputItem from './InputItem.vue';
+import InputItem from './InputItem.vue'
 interface IPreviewItemProps {
   label: string
   modelValue: string
@@ -16,7 +16,6 @@ const handleChange = (item: string) => {
 }
 
 const showCodeInput = $ref(false)
-
 </script>
 
 <template>

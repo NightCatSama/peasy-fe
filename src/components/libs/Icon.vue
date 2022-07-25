@@ -1,7 +1,13 @@
 <script setup lang="ts">
-import { useStyle, useIconBasicStyle, useBorderStyle, useSpacingStyle, usePositionStyle } from '@/utils/style'
+import {
+  useStyle,
+  useIconBasicStyle,
+  useBorderStyle,
+  useSpacingStyle,
+  usePositionStyle,
+} from '@/utils/style'
 import { ref, watch } from 'vue'
-import { useEvent } from './event';
+import { useEvent } from './event'
 
 interface IBlockProps {
   direction?: 'row' | 'column'
@@ -42,7 +48,6 @@ watch(
 
 const elem = ref<HTMLDivElement | null>(null)
 useEvent(event, elem)
-
 </script>
 
 <template>

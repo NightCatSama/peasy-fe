@@ -41,7 +41,6 @@ const style = $computed(() =>
 
 const elem = ref<HTMLDivElement | null>(null)
 useEvent(event, elem)
-
 </script>
 
 <template>

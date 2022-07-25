@@ -54,11 +54,7 @@ const curShadowIndex = $computed(() => presetShadow.indexOf(container.boxShadow)
         }"
         v-model="container.cursor"
       ></SelectItem>
-      <PreviewItem
-        label="Shadow"
-        v-model="container.boxShadow"
-        :options="presetShadow"
-      >
+      <PreviewItem label="Shadow" v-model="container.boxShadow" :options="presetShadow">
         <template #default="{ item: shadow, active }">
           <div :class="['inner', { active }]" :style="{ boxShadow: shadow }"></div>
         </template>
