@@ -32,6 +32,7 @@ const iconName = {
   Basic: 'basic',
   Position: 'absolute',
   Event: 'event',
+  Animation: 'animation',
 } as any
 </script>
 
@@ -74,6 +75,8 @@ const iconName = {
     align-items: center;
 
     .title {
+      flex: 1;
+      height: 100%;
       display: flex;
       align-items: center;
       font-size: 18px;
@@ -81,6 +84,9 @@ const iconName = {
       color: lighten($color, 15%);
       user-select: none;
       cursor: default;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
 
       .icon {
         margin-right: 8px;
@@ -88,7 +94,7 @@ const iconName = {
     }
 
     .info-op {
-      flex: 1;
+      flex-shrink: 0;
       display: flex;
       justify-content: flex-end;
 
@@ -167,6 +173,8 @@ const iconName = {
     justify-content: center;
     align-items: center;
     color: $theme;
+    cursor: pointer;
+    user-select: none;
 
     &:hover {
       background: linear-gradient(90deg, rgba($theme, 13%), rgba($theme, 23%));

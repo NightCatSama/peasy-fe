@@ -127,16 +127,36 @@ interface IEvent {
 
 /** 动效 */
 interface IAnimationItem {
-  /** 动画类型 */
-  trigger: 'hover' | 'click' | 'scrollIn' | 'always'
+  /**
+   * 动画触发类型
+   * scrollIntoView: 滚动进入触发
+   * hover: 鼠标移上去触发
+   * click: 点击触发
+   * always: 总是执行
+   */
+  trigger: 'hover' | 'click' | 'scrollIntoView' | 'always'
+  /** 动画时长 */
   duration: number
+  /** 动画延迟 */
   delay: number
+  /** 动画缓动 */
   timingFunction: 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
+  /** 内置动画类型 */
   name: 'fade' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'zoom-in' | 'zoom-out'
-  settings: {
-    opacity?: number
-    offset?: number
-    zoom?: number
+  /** 内置动画配置 */
+  settings: IAnimationSettings
+}
+type IAnimationSettings = {
+  fade?: {
+    opacity: number
+  }
+} | {
+  [key in `slider-${'up' | 'down' | 'left' | 'right'}`]?: {
+    offset: number
+  }
+} | {
+  [key in `zoom-${'in' | 'out'}`]?: {
+    zoom: number
   }
 }
 interface IAnimation {

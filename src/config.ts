@@ -9,6 +9,7 @@ export const ComponentPropsGroup = {
     'container',
     'position',
     'event',
+    'animation',
   ] as const,
   Text: [
     'basic',

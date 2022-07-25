@@ -156,3 +156,35 @@ export const getDefaultEvent = (initConfig?: Partial<IEvent>): IEvent =>
     },
     initConfig
   )
+
+export const getDefaultAnimation = (initConfig?: Partial<IAnimation>): IAnimation =>
+  Object.assign(
+    {
+      animationList: []
+    },
+    initConfig
+  )
+
+// export const getDefaultAnimationItem = (name: IAnimationItem['name'], initConfig?: Partial<IAnimationItem>): IAnimationItem => {
+//   return {
+//     name,
+//     duration: 1,
+//     delay: 0,
+//     timingFunction: 'ease',
+//     settings: {
+//       fade: {
+
+//       }
+//     },
+//     ...initConfig
+//   }
+// }
+
+// export const getDefaultAnimationSettings = (name: IAnimationItem['name']): IAnimationSettings => {
+//   return {
+//     fade: {
+//       opacity: 0,
+//     },
+
+//   }
+// }

@@ -12,6 +12,7 @@ import ContainerGroup from './configs/ContainerGroup.vue'
 import BackgroundGroup from './configs/BackgroundGroup.vue'
 import PositionGroup from './configs/PositionGroup.vue'
 import EventGroup from './configs/EventGroup.vue'
+import AnimationGroup from './configs/AnimationGroup.vue'
 
 interface IConfigGroupProps {
   groupType: GroupType
@@ -32,7 +33,7 @@ const componentNameMap: { [type in GroupType]: any | null } = {
   background: BackgroundGroup,
   container: ContainerGroup,
   event: EventGroup,
-  animation: null,
+  animation: AnimationGroup,
 }
 
 const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
