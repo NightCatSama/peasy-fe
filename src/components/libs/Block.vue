@@ -32,6 +32,11 @@ interface IBlockProps {
 const { size, layout, border, direction, spacing, background, container, position, event, animation, name } =
   defineProps<IBlockProps>()
 
+const elem = ref<HTMLDivElement | null>(null)
+useEvent(event, elem)
+
+const { animationMap } = useAnimation(animation, name, elem)
+
 const style = $computed(() =>
   useStyle({
     ...useSizeStyle(size, direction),
@@ -41,15 +46,10 @@ const style = $computed(() =>
     ...useBackgroundStyle(background),
     ...useContainerStyle(container),
     ...usePositionStyle(position),
-    ...useAnimationStyle(animation),
+    ...useAnimationStyle(animationMap),
   })
 )
 
-const elem = ref<HTMLDivElement | null>(null)
-
-useEvent(event, elem)
-
-useAnimation(animation, name)
 </script>
 
 <template>
@@ -58,4 +58,6 @@ useAnimation(animation, name)
   </div>
 </template>
 
-<style scoped></style>
+<style scoped>
+.block {}
+</style>

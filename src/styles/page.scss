@@ -6,7 +6,7 @@
       position: relative;
       transition: font-size 0.3s, box-shadow 0.2s;
       user-select: none;
-      // animation: none!important;
+      animation: none!important;
 
       &:not(.active):hover::before {
         content: '';

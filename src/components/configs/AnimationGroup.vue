@@ -98,7 +98,7 @@ let showAdvancedSettings = $ref(false)
             @update:model-value="(val) => handleChangeAnimationName(val, index)"
           >
             <template #default="{ item, active }">
-              <div :class="['inner-box', { active }]" :style="{ 'animation': `${item} 1s 3s infinite` }"></div>
+              <div :class="['inner-box', { active }]" :style="{ 'animation': `${item} 1s infinite` }"></div>
               <div class="inner-text">{{ animationNameMap[item] }}</div>
             </template>
           </PreviewItem>
