@@ -1,6 +1,7 @@
 import type { PageNode } from "@/config"
 import { getIsEditMode } from "@/utils/context"
 import { onBeforeMount, onBeforeUnmount, onMounted, reactive, Ref, ref, watch } from "vue"
+import { getPositionTransform } from "./style"
 
 export type AnimationMapType = Map<IAnimationItem, {
   animationName: string;
@@ -36,7 +37,7 @@ export const useIntersectionObserver = (target: HTMLElement, setIsIntersection: 
  * 3. 绑定对应的事件去更新 animationMap 中的 disabled 值
  * 4. 返回 animationMap 用于组件中获取
  */
-export const useAnimation = (animation: IAnimation, el: Ref<HTMLDivElement | null>) => {
+export const useAnimation = (animation: IAnimation, el: Ref<HTMLDivElement | null>, position: IPosition) => {
   let dynamicAnimationStyles = $ref<HTMLStyleElement | null>(null)
   let observer = $ref<IntersectionObserver | null>(null)
   let removeListenerList: (() => void)[] = $ref([])
@@ -96,7 +97,7 @@ export const useAnimation = (animation: IAnimation, el: Ref<HTMLDivElement | nul
     })
   }
 
-  watch(() => [animation], () => {
+  watch(() => [animation, position], () => {
     if (!animation?.animationList?.length) {
       animationMap.clear()
       return
@@ -115,7 +116,7 @@ export const useAnimation = (animation: IAnimation, el: Ref<HTMLDivElement | nul
     animationList.forEach((anim) => {
       bindEvents[anim.trigger] = true
       const animName = getAnimateName(anim)
-      const keyframeBody = getKeyframeBody(anim)
+      const keyframeBody = getKeyframeBody(anim, position)
       const keyframe = getKeyframe(animName, keyframeBody)
       stylesheet += keyframe
       animationMap.set(anim, { animationName: animName, disabled: anim.trigger !== 'always' })
@@ -142,7 +143,7 @@ export const useAnimation = (animation: IAnimation, el: Ref<HTMLDivElement | nul
 }
 
 /** 根据 IAnimationItem 获得 keyframes 题 */
-function getKeyframeBody(anim: IAnimationItem) {
+function getKeyframeBody(anim: IAnimationItem, position: IPosition) {
   let setting
   if (anim.name === 'fade') {
     setting = anim.settings.fade
@@ -157,9 +158,10 @@ function getKeyframeBody(anim: IAnimationItem) {
     const offset = setting?.offset ?? 100
     let x = anim.name === 'slide-left' ? offset : anim.name === 'slide-right' ? -offset : 0
     let y = anim.name === 'slide-up' ? offset : anim.name === 'slide-down' ? -offset : 0
+    const { horizontal, vertical } = getPositionTransform(position)
     return `
       from {
-        transform: translate(${x}%, ${y}%);
+        transform: translate(${x + (horizontal?.center ? -50 : 0)}%, ${y + (vertical?.center ? -50 : 0)}%);
         opacity: ${setting?.opacity ?? 1};
       }
     `
@@ -167,9 +169,10 @@ function getKeyframeBody(anim: IAnimationItem) {
   if (anim.name.startsWith('zoom')) {
     setting = anim.settings.zoom
     const zoom = setting?.zoom ?? 1
+    const { transform } = getPositionTransform(position)
     return `
       from {
-        transform: scale(${anim.name === 'zoom-in' ? 1 - zoom : 1 + zoom});
+        transform: scale(${anim.name === 'zoom-in' ? 1 - zoom : 1 + zoom})${transform ? ` ${transform}` : ''};
         opacity: ${setting?.opacity ?? 1};
       }
     `
@@ -177,9 +180,10 @@ function getKeyframeBody(anim: IAnimationItem) {
   if (anim.name.startsWith('rotate')) {
     setting = anim.settings.rotate
     const angle = setting?.angle ?? 0
+    const { transform } = getPositionTransform(position)
     return `
       from {
-        transform: rotate${anim.name === 'rotate-x' ? 'X' : 'Y'}(${angle}deg);
+        transform: rotate${anim.name === 'rotate-x' ? 'X' : 'Y'}(${angle}deg)${transform ? ` ${transform}` : ''};
         opacity: ${setting?.opacity ?? 1};
       }
     `

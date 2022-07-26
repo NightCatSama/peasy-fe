@@ -31,7 +31,7 @@ const { basic, font, spacing, border, background, container, position, event, an
 const elem = ref<HTMLDivElement | null>(null)
 useEvent(event, elem)
 
-const { animationMap } = useAnimation(animation, elem)
+const { animationMap } = useAnimation(animation, elem, position)
 
 const style = $computed(() =>
   useStyle({

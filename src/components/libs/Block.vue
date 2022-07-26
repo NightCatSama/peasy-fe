@@ -34,7 +34,7 @@ const { size, layout, border, direction, spacing, background, container, positio
 const elem = ref<HTMLDivElement | null>(null)
 useEvent(event, elem)
 
-const { animationMap } = useAnimation(animation, elem)
+const { animationMap } = useAnimation(animation, elem, position)
 
 const style = $computed(() =>
   useStyle({

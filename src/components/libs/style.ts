@@ -29,13 +29,8 @@ export const useIconBasicStyle = (basic: IIconBasicType) => {
   }
 }
 
-/** 定位样式 */
-export const usePositionStyle = (position?: IPosition) => {
-  if (!position) return {}
-
-  const isAbsPosition = $computed(() => ['absolute', 'fixed'].includes(position.position))
-  const isEditMode = getIsEditMode()
-
+export const getPositionTransform = (position: IPosition) => {
+  const isAbsPosition = ['absolute', 'fixed'].includes(position.position)
   let horizontal: { left?: string; right?: string; center?: boolean } = {}
   let vertical: { top?: string; bottom?: string; center?: boolean } = {}
   let transform = ''
@@ -62,6 +57,22 @@ export const usePositionStyle = (position?: IPosition) => {
         ? 'translateY(-50%)'
         : ''
   }
+
+  return {
+    horizontal,
+    vertical,
+    transform,
+  }
+}
+
+/** 定位样式 */
+export const usePositionStyle = (position?: IPosition) => {
+  if (!position) return {}
+
+  const isAbsPosition = $computed(() => ['absolute', 'fixed'].includes(position.position))
+  const isEditMode = getIsEditMode()
+
+  let { horizontal, vertical, transform } = getPositionTransform(position)
 
   return {
     position: isAbsPosition ? (isEditMode ? 'absolute' : position.position) : 'relative',
@@ -204,6 +215,7 @@ export const useBackgroundStyle = (background: IBackground) => {
       backgroundPosition: background.backgroundPosition,
       backgroundRepeat: background.backgroundRepeat,
       backgroundSize: background.backgroundSize,
+      backgroundAttachment: background.backgroundAttachment,
     }
   } else if (background.backgroundType === 'gradient') {
     return {

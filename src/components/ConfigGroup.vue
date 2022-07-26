@@ -13,6 +13,7 @@ import BackgroundGroup from './configs/BackgroundGroup.vue'
 import PositionGroup from './configs/PositionGroup.vue'
 import EventGroup from './configs/EventGroup.vue'
 import AnimationGroup from './configs/AnimationGroup.vue'
+import EffectGroup from './configs/EffectGroup.vue'
 
 interface IConfigGroupProps {
   groupType: GroupType
@@ -33,6 +34,7 @@ const componentNameMap: { [type in GroupType]: any | null } = {
   background: BackgroundGroup,
   container: ContainerGroup,
   event: EventGroup,
+  effect: EffectGroup,
   animation: AnimationGroup,
 }
 

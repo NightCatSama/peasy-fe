@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
-import InputItem from '@/components/configs/items/InputItem.vue'
+import SwitchItem from '@/components/configs/items/SwitchItem.vue'
 import SelectItem from '@/components/configs/items/SelectItem.vue'
 import ColorItem from './items/ColorItem.vue'
 import { PageNode } from '@/config'
@@ -121,6 +121,11 @@ const uploadImage = async (e: InputEvent) => {
         }"
         v-model="background.backgroundRepeat"
       ></SelectItem>
+      <SwitchItem
+        label="Fixed Background"
+        :model-value="background.backgroundAttachment === 'fixed'"
+        @update:model-value="(value: boolean) => (background.backgroundAttachment = value ? 'fixed' : 'scroll')"
+      ></SwitchItem>
     </template>
 
     <!-- 背景渐变设置 -->

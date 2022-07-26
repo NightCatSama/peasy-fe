@@ -101,6 +101,7 @@ interface IBackground {
     | 'bottom'
     | 'right bottom'
   backgroundRepeat: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat'
+  backgroundAttachment: 'scroll' | 'fixed'
   /** 背景过渡色 */
   backgroundGradientAngle: number
   backgroundGradient: { color: string; percentage: number }[]
@@ -174,13 +175,21 @@ interface IAnimation {
   animationList: IAnimationItem[]
 }
 
-/** 动效设置 */
+/** 过渡设置 */
 interface IEffectItem {
-  /** 动效类型 */
-  type: 'hover' | 'press' | 'focus'
+  /** 属性名 */
   property: string
+  /** 过渡时长 */
   duration: number
+  /** 过渡曲线 */
   timingFunction: 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
+  /** 过渡样式 */
+  styles: {
+    /** 触发类型 */
+    type: 'hover' | 'active'
+    /** 过渡值 */
+    value: any
+  }[]
 }
 interface IEffect {
   effectList: IEffectItem[]

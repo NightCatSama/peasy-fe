@@ -116,6 +116,7 @@ export const getDefaultBackground = (initConfig?: Partial<IBackground>): IBackgr
       backgroundRepeat: 'no-repeat',
       backgroundGradientAngle: 180,
       backgroundGradient: [],
+      backgroundAttachment: 'scroll',
     },
     initConfig
   )
@@ -206,10 +207,15 @@ export const getDefaultAnimationSettings = (name: IAnimationItem['name']): IAnim
   if (name.startsWith('rotate')) {
     return {
       rotate: {
-        angle: 360,
+        angle: 180,
         opacity: 1,
       }
     }
   }
   return {}
 }
+
+export const getDefaultEffect = (initConfig?: Partial<IEffect>): IEffect =>
+  Object.assign({
+    effectList: []
+  }, initConfig)

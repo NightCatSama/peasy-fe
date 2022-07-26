@@ -56,6 +56,9 @@ const values = $computed(() => {
 const handlePositionChange = (value: IPosition['position']) => {
   position.position = value
   if (value !== 'static') {
+    if (node?.props?.spacing?.margin) {
+      node.props.spacing.margin = [0, 0, 0, 0]
+    }
     openDragMode()
   } else {
     closeDragMode()

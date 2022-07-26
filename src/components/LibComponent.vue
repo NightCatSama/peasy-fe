@@ -140,13 +140,14 @@ const handleDragStart = (event: DragEvent, node: PageNode) => {
 }
 
 /** 拖拽模式下阻止编辑窗口移动 */
-const preventMousedown = (e: MouseEvent) => {
+const preventMousedown = (e: MouseEvent, subItem: PageNode) => {
   if (
     displayMode.value === 'drag' ||
-    (!lockDrag && !['absolute', 'fixed'].includes(item.props?.position?.value))
+    (!lockDrag && ['absolute', 'fixed'].includes(subItem.props?.position?.position))
   ) {
     e.stopPropagation()
   }
+  console.log(subItem.props?.position?.position, subItem);
 }
 </script>
 
@@ -175,7 +176,7 @@ const preventMousedown = (e: MouseEvent) => {
         :item="subItem"
         :parent="item"
         :key="subItem.name"
-        @mousedown="preventMousedown"
+        @mousedown="(e) => preventMousedown(e, subItem)"
         @dragstart="(event: DragEvent) => handleDragStart(event, subItem)"
       ></LibComponent>
     </template>

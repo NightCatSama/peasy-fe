@@ -9,6 +9,7 @@ export const ComponentPropsGroup = {
     'container',
     'position',
     'event',
+    'effect',
     'animation',
   ] as const,
   Text: [
@@ -38,6 +39,7 @@ export type GroupType =
   | 'container'
   | 'position'
   | 'event'
+  | 'effect'
   | 'animation'
 
 /** 配置对应约束类型 */
@@ -57,6 +59,7 @@ export interface GroupPropType<T extends ComponentName = any> {
   container: IContainer
   position: IPosition
   event: IEvent
+  effect: IEffect
   animation: IAnimation
 }
 

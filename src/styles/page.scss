@@ -31,6 +31,7 @@
     .lib-component {
       position: relative;
       transition: font-size 0.3s;
+      animation: none!important;
 
       &::before {
         content: '';

@@ -33,6 +33,7 @@ const iconName = {
   Position: 'absolute',
   Event: 'event',
   Animation: 'animation',
+  Effect: 'effect',
 } as any
 </script>
 
