@@ -26,39 +26,59 @@ export const useAnimation = (animation: IAnimation, name: string) => {
     }
     const animationList = animation?.animationList as IAnimationItem[]
     let stylesheet = ''
-    console.log('animationList', animationList)
     animationList.forEach((anim) => {
       const animName = getAnimateName(anim)
       const keyframeBody = getKeyframeBody(anim)
       const keyframe = getKeyframe(animName, keyframeBody)
       stylesheet += keyframe
     })
-    console.log('stylesheet', stylesheet)
     dynamicAnimationStyles.innerHTML = stylesheet
   }, { deep: true, immediate: true })
 }
 
 function getKeyframeBody(anim: IAnimationItem) {
   let setting
-  switch (anim.name) {
-    case 'fade':
-      setting = anim.settings.fade!
-      return `
-        from {
-          opacity: ${setting.opacity};
-        }
-      `
-     case 'slide-up':
-      setting = anim.settings["slide-up"]!
-      return `
-        from {
-          opacity: ${setting.opacity};
-          transform: translateY(-${setting.offset}px);
-        }
-      `
-     default:
-      return ''
+  if (anim.name === 'fade') {
+    setting = anim.settings.fade
+    return `
+      from {
+        opacity: ${setting?.opacity || 0};
+      }
+    `
   }
+  if (anim.name.startsWith('slide')) {
+    setting = anim.settings[anim.name as 'slide-left' | 'slide-right' | 'slide-up' | 'slide-down']
+    const offset = setting?.offset || 100
+    let x = anim.name === 'slide-left' ? offset : anim.name === 'slide-right' ? -offset : 0
+    let y = anim.name === 'slide-up' ? offset : anim.name === 'slide-down' ? -offset : 0
+    return `
+      from {
+        transform: translate(${x}%, ${y}%);
+        opacity: ${setting?.opacity || 0};
+      }
+    `
+  }
+  if (anim.name.startsWith('zoom')) {
+    setting = anim.settings[anim.name as 'zoom-in' | 'zoom-out']
+    const zoom = setting?.zoom || 1
+    return `
+      from {
+        transform: scale(${zoom});
+        opacity: ${setting?.opacity || 0};
+      }
+    `
+  }
+  if (anim.name.startsWith('rotate')) {
+    setting = anim.settings[anim.name as 'rotate-x' | 'rotate-y']
+    const angle = setting?.angle || 0
+    return `
+      from {
+        transform: rotate${anim.name === 'rotate-x' ? 'X' : 'Y'}(${angle}deg);
+        opacity: ${setting?.opacity || 0};
+      }
+    `
+  }
+  return ''
 }
 
 function getKeyframe(keyframeName: string, keyframeBody: string) {

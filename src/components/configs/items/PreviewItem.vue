@@ -58,13 +58,41 @@ const showCodeInput = $ref(false)
       position: relative;
       margin-right: 10px;
       margin-bottom: 10px;
-      width: 73px;
-      height: 73px;
+      width: calc(33.3% - 10px);
+      height: 78px;
       border-radius: $normal-radius;
       background: $color;
       padding: 20px;
       cursor: pointer;
       overflow: hidden;
+      display: flex;
+      flex-direction: column;
+
+      &:nth-child(n + 3) {
+        margin-right: 0;
+      }
+    }
+
+    :deep(.inner-box) {
+      position: relative;
+      width: 100%;
+      height: 100%;
+      border-radius: $inner-radius;
+      background: $white-gradient;
+      overflow: hidden;
+
+      $edge: 8px;
+      &.active::after {
+        content: '';
+        position: absolute;
+        right: -$edge;
+        top: -$edge;
+        width: $edge * 2;
+        height: $edge * 2;
+        background: $theme;
+        transform: rotate(45deg);
+        box-shadow: $shadow;
+      }
     }
   }
 }

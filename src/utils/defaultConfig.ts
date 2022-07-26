@@ -168,7 +168,7 @@ export const getDefaultAnimation = (initConfig?: Partial<IAnimation>): IAnimatio
 export const getDefaultAnimationItem = (name: IAnimationItem['name'], initConfig?: Partial<IAnimationItem>): IAnimationItem => {
   return {
     name,
-    trigger: 'always',
+    trigger: 'scrollIntoView',
     duration: 1,
     delay: 0,
     timingFunction: 'ease',
@@ -187,19 +187,27 @@ export const getDefaultAnimationSettings = (name: IAnimationItem['name']): IAnim
       },
     }
   }
-  if (name.slice(0, 5) === 'slide') {
+  if (name.startsWith('slide')) {
     return {
       [name]: {
         offset: 30,
-        opacity: 0,
+        opacity: 0.5,
       },
     }
   }
-  if (name.slice(0, 4) === 'zoom') {
+  if (name.startsWith('zoom')) {
     return {
       [name]: {
-        zoom: 0,
-        opacity: 0,
+        zoom: name === 'zoom-in' ? 0.7 : 1.5,
+        opacity: 0.5,
+      }
+    }
+  }
+  if (name.startsWith('rotate')) {
+    return {
+      [name]: {
+        angle: 180,
+        opacity: 0.5,
       }
     }
   }

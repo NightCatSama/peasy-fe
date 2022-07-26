@@ -54,3 +54,58 @@
     transition-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1);
   }
 }
+
+@keyframes fade {
+  from {
+    opacity: .5;
+  }
+}
+
+@keyframes slide-up {
+  from {
+    transform: translateY(100%);
+    opacity: .5;
+  }
+}
+@keyframes slide-down {
+  from {
+    transform: translateY(-100%);
+    opacity: .5;
+  }
+}
+@keyframes slide-left {
+  from {
+    transform: translateX(100%);
+    opacity: .5;
+  }
+}
+@keyframes slide-right {
+  from {
+    transform: translateX(-100%);
+    opacity: .5;
+  }
+}
+@keyframes zoom-in {
+  from {
+    transform: scale(.8);
+    opacity: .5;
+  }
+}
+@keyframes zoom-out {
+  from {
+    transform: scale(1.5);
+    opacity: .5;
+  }
+}
+@keyframes rotate-x {
+  from {
+    transform: rotateX(180deg);
+    opacity: .5;
+  }
+}
+@keyframes rotate-y {
+  from {
+    transform: rotateY(180deg);
+    opacity: .5;
+  }
+}

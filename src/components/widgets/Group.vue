@@ -166,7 +166,7 @@ const iconName = {
 
   .full-btn {
     width: 100%;
-    height: 32px;
+    height: 35px;
     border-radius: $normal-radius;
     border: 1px solid $theme;
     display: flex;

@@ -23,6 +23,7 @@ export default {
       updated(el, binding) {
         if (binding.value === true) {
           if (el.dataset.originHeight) {
+            el.style.transition = 'all .15s ease-out'
             el.style.paddingTop = ''
             el.style.paddingBottom = ''
             el.style.height = el.dataset.originHeight + 'px'
@@ -37,6 +38,7 @@ export default {
           }
         } else {
           const height = el.getBoundingClientRect().height
+          if (!height) return
           el.style.transition = 'all .15s ease-out'
           el.style.height = height + 'px'
           el.style.paddingTop = '0'

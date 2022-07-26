@@ -134,7 +134,7 @@ interface IAnimationItem {
    * click: 点击触发
    * always: 总是执行
    */
-  trigger: 'hover' | 'click' | 'scrollIntoView' | 'always'
+  trigger: 'scrollIntoView' | 'always' | 'hover' | 'click'
   /** 动画时长 */
   duration: number
   /** 动画延迟 */
@@ -142,7 +142,7 @@ interface IAnimationItem {
   /** 动画缓动 */
   timingFunction: 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
   /** 内置动画类型 */
-  name: 'fade' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'zoom-in' | 'zoom-out'
+  name: 'fade' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'zoom-in' | 'zoom-out' | 'rotate-x' | 'rotate-y'
   /** 动画结束状态 */
   fillMode: 'forwards' | 'backwards' | 'both' | 'none'
   /** 动画播放方向 */
@@ -164,7 +164,24 @@ type IAnimationSettings = {
     zoom: number
     opacity: number
   }
+} & {
+  [key in `rotate-${'x' | 'y'}`]?: {
+    angle: number
+    opacity: number
+  }
 }
 interface IAnimation {
   animationList: IAnimationItem[]
+}
+
+/** 动效设置 */
+interface IEffectItem {
+  /** 动效类型 */
+  type: 'hover' | 'press' | 'focus'
+  property: string
+  duration: number
+  timingFunction: 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
+}
+interface IEffect {
+  effectList: IEffectItem[]
 }
