@@ -3,7 +3,7 @@ import Group from '../widgets/Group.vue'
 import SliderItem from '@/components/configs/items/SliderItem.vue'
 import SelectItem from '@/components/configs/items/SelectItem.vue'
 import { PageNode } from '@/config'
-import { getDefaultAnimationItem, getDefaultAnimationSettings } from '@/utils/defaultConfig'
+import { getDefaultAnimationItem, getDefaultAnimationSettings, getDefaultEffectItem } from '@/utils/defaultConfig'
 import PreviewItem from '@/components/configs/items/PreviewItem.vue'
 import Icon from '../widgets/Icon.vue'
 import Tip from '../widgets/Tip.vue'
@@ -15,7 +15,7 @@ interface IEffectGroupProps {
 const { effect, node } = defineProps<IEffectGroupProps>()
 
 const handleAddAnimation = () => {
-  // effect.effectList.push(getDefaultAnimationItem('fade'))
+  effect.effectList.push(getDefaultEffectItem())
 }
 </script>
 
@@ -29,6 +29,7 @@ const handleAddAnimation = () => {
     <div class="item">
       <Tip type="warning" message="只可在 Preview 模式下能预览动效效果" :block="true"></Tip>
     </div>
+    <div class="item" v-for="item in effect.effectList">{{ item.property + item.duration }}</div>
     <div class="item">
       <div class="full-btn" @click="handleAddAnimation">Add Effect</div>
     </div>

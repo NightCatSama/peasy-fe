@@ -219,3 +219,12 @@ export const getDefaultEffect = (initConfig?: Partial<IEffect>): IEffect =>
   Object.assign({
     effectList: []
   }, initConfig)
+
+export const getDefaultEffectItem = (): IEffectItem => {
+  return {
+    property: '',
+    duration: .3,
+    timingFunction: 'ease',
+    styles: [],
+  }
+}

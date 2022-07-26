@@ -147,7 +147,6 @@ const preventMousedown = (e: MouseEvent, subItem: PageNode) => {
   ) {
     e.stopPropagation()
   }
-  console.log(subItem.props?.position?.position, subItem);
 }
 </script>
 

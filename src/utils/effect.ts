@@ -7,7 +7,7 @@ export const getEffectPropertyByGroup = (groupType: GroupType, node: PageNode) =
         color: {
           property: 'color',
           handler: 'color',
-          name: '字体颜色',
+          label: '字体颜色',
           defaultValue: node?.props?.font?.color ?? '#000',
         },
         fontSize: {
@@ -17,6 +17,7 @@ export const getEffectPropertyByGroup = (groupType: GroupType, node: PageNode) =
             type: 'number',
             suffix: ['px', 'rem', 'vw'],
           },
+          label: '字体大小',
           defaultValue: node?.props?.font?.fontSize ?? '18px',
         }
       }
