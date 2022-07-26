@@ -7,9 +7,11 @@ import {
   useSpacingStyle,
   useContainerStyle,
   useImageBasicStyle,
+useAnimationStyle,
 } from './style'
 import { ref } from 'vue'
 import { useEvent } from './event'
+import { useAnimation } from './animation';
 
 interface IImageProps {
   direction?: 'row' | 'column'
@@ -20,10 +22,16 @@ interface IImageProps {
   border: IBorder
   container: IContainer
   event: IEvent
+  animation: IAnimation
 }
 
-const { basic, size, border, direction, spacing, container, position, event } =
+const { basic, size, border, direction, spacing, container, position, event, animation } =
   defineProps<IImageProps>()
+
+const elem = ref<HTMLDivElement | null>(null)
+useEvent(event, elem)
+
+const { animationMap } = useAnimation(animation, elem)
 
 const style = $computed(() =>
   useStyle({
@@ -33,13 +41,11 @@ const style = $computed(() =>
     ...useSpacingStyle(spacing),
     ...useContainerStyle(container),
     ...usePositionStyle(position),
+    ...useAnimationStyle(animationMap),
   })
 )
 
 const src = $computed(() => basic.src.trim() || '')
-
-const elem = ref<HTMLDivElement | null>(null)
-useEvent(event, elem)
 </script>
 
 <template>

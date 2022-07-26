@@ -155,17 +155,17 @@ type IAnimationSettings = {
     opacity: number
   }
 } & {
-  [key in `slide-${'up' | 'down' | 'left' | 'right'}`]?: {
+  slide?: {
     offset: number
     opacity: number
   }
 } & {
-  [key in `zoom-${'in' | 'out'}`]?: {
+  zoom?: {
     zoom: number
     opacity: number
   }
 } & {
-  [key in `rotate-${'x' | 'y'}`]?: {
+  rotate?: {
     angle: number
     opacity: number
   }

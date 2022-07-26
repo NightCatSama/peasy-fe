@@ -4,9 +4,10 @@ interface IPreviewItemProps {
   label: string
   modelValue: string
   options: string[]
+  hideAdvanced?: boolean
 }
 
-const { label, modelValue, options } = defineProps<IPreviewItemProps>()
+const { label, modelValue, options, hideAdvanced } = defineProps<IPreviewItemProps>()
 const emit = defineEmits(['update:model-value'])
 
 const activeIndex = $computed(() => options.indexOf(modelValue))
@@ -20,7 +21,7 @@ const showCodeInput = $ref(false)
 
 <template>
   <div class="item preview-item">
-    <div class="label" @dblclick="showCodeInput = true">{{ label }}</div>
+    <div class="label" @dblclick="showCodeInput = hideAdvanced ? false : !showCodeInput">{{ label }}</div>
     <div class="preview-wrapper">
       <div
         v-for="(item, index) in options"

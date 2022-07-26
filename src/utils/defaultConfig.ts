@@ -189,25 +189,25 @@ export const getDefaultAnimationSettings = (name: IAnimationItem['name']): IAnim
   }
   if (name.startsWith('slide')) {
     return {
-      [name]: {
+      slide: {
         offset: 30,
-        opacity: 0.5,
+        opacity: 1,
       },
     }
   }
   if (name.startsWith('zoom')) {
     return {
-      [name]: {
-        zoom: name === 'zoom-in' ? 0.7 : 1.5,
-        opacity: 0.5,
+      zoom: {
+        zoom: 0.5,
+        opacity: 1,
       }
     }
   }
   if (name.startsWith('rotate')) {
     return {
-      [name]: {
-        angle: 180,
-        opacity: 0.5,
+      rotate: {
+        angle: 360,
+        opacity: 1,
       }
     }
   }

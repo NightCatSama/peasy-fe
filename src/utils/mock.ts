@@ -72,6 +72,7 @@ export const getMockText = (): PageNode<'Text'> => {
       container: getDefaultContainer(),
       position: getDefaultPosition(),
       event: getDefaultEvent(),
+      animation: getDefaultAnimation(),
     },
   }
 }
@@ -92,6 +93,7 @@ export const getMockImage = (src?: string): PageNode<'Image'> => {
       container: getDefaultContainer(),
       position: getDefaultPosition(),
       event: getDefaultEvent(),
+      animation: getDefaultAnimation(),
     },
   }
 }

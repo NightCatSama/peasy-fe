@@ -20,8 +20,9 @@ export const ComponentPropsGroup = {
     'container',
     'position',
     'event',
+    'animation',
   ] as const,
-  Image: ['basic', 'size', 'spacing', 'border', 'container', 'position', 'event'] as const,
+  Image: ['basic', 'size', 'spacing', 'border', 'container', 'position', 'event', 'animation'] as const,
   Icon: ['basic', 'spacing', 'border', 'event'] as const,
 } as const
 

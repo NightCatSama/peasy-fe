@@ -234,7 +234,8 @@ export const useAnimationStyle = (animationMap: AnimationMapType) => {
   const animationList: string[] = []
   animationMap.forEach((item, anim) => {
     if (item.disabled) return
-    animationList.push(`${item.animationName} ${anim.duration}s ${anim.timingFunction} ${anim.delay}s ${anim.trigger === 'always' ? 'infinite' : 1} ${anim.direction} ${anim.fillMode} running`)
+    const iteration = ['always', 'hover'].includes(anim.trigger) ? 'infinite' : 1
+    animationList.push(`${item.animationName} ${anim.duration}s ${anim.timingFunction} ${anim.delay}s ${iteration} ${anim.direction} ${anim.fillMode} running`)
   })
 
   return {

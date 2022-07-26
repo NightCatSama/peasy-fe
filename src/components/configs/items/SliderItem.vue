@@ -13,12 +13,21 @@ const props = defineProps<ISliderItemProps>()
 const { label, type = 'text', modelValue } = $(props)
 const emit = defineEmits(['update:model-value'])
 
-const value = $computed({
+let value = $computed({
   get: () => modelValue,
   set: (val: SliderPropType['modelValue']) => {
     emit('update:model-value', val)
   },
 })
+
+const handleChange = (e: Event) => {
+  const elem = (e.target as HTMLInputElement)
+  if (elem.value.length > 4) {
+    elem.value = elem.value.slice(0, 4)
+  } else {
+    value = parseFloat(elem.value) || 0
+  }
+}
 </script>
 
 <template>
@@ -30,9 +39,15 @@ const value = $computed({
         class="angle-point"
         :style="{ transform: `rotate(${(value as number) - 90}deg)` }"
       ></div>
-      {{ value }}
+      <input type="text" :value="value" @change="handleChange" />
     </div>
-    <Slider class="slider" v-model="value" :contained="true" v-bind="$attrs"></Slider>
+    <Slider
+      class="slider"
+      v-bind="$attrs"
+      v-model="value"
+      :contained="true"
+      :max="Math.max($attrs.max as number || 0, value as number)
+    "></Slider>
     <slot></slot>
   </div>
 </template>
@@ -57,6 +72,17 @@ const value = $computed({
     text-align: center;
 
     $angleSize: 28px;
+
+    > input {
+      border: none;
+      outline: none;
+      width: 100%;
+      color: $color;
+      font-family: inherit;
+      background-color: $tr;
+      font-size: 12px;
+      text-align: center;
+    }
 
     &-type-angle {
       width: $angleSize;

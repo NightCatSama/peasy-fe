@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import {
+useAnimationStyle,
   useBackgroundStyle,
   useBorderStyle,
   useContainerStyle,
@@ -10,6 +11,7 @@ import {
 } from './style'
 import { ref } from 'vue'
 import { useEvent } from './event'
+import { useAnimation } from './animation';
 
 interface ITextProps {
   direction?: 'row' | 'column'
@@ -21,9 +23,15 @@ interface ITextProps {
   container: IContainer
   position: IPosition
   event: IEvent
+  animation: IAnimation
 }
-const { basic, font, spacing, border, background, container, position, event } =
+const { basic, font, spacing, border, background, container, position, event, animation } =
   defineProps<ITextProps>()
+
+const elem = ref<HTMLDivElement | null>(null)
+useEvent(event, elem)
+
+const { animationMap } = useAnimation(animation, elem)
 
 const style = $computed(() =>
   useStyle({
@@ -33,11 +41,10 @@ const style = $computed(() =>
     ...useBackgroundStyle(background),
     ...useContainerStyle(container),
     ...usePositionStyle(position),
+    ...useAnimationStyle(animationMap),
   })
 )
 
-const elem = ref<HTMLDivElement | null>(null)
-useEvent(event, elem)
 </script>
 
 <template>

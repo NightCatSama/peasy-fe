@@ -36,7 +36,7 @@ export const useIntersectionObserver = (target: HTMLElement, setIsIntersection: 
  * 3. 绑定对应的事件去更新 animationMap 中的 disabled 值
  * 4. 返回 animationMap 用于组件中获取
  */
-export const useAnimation = (animation: IAnimation, name: string, el: Ref<HTMLDivElement | null>) => {
+export const useAnimation = (animation: IAnimation, el: Ref<HTMLDivElement | null>) => {
   let dynamicAnimationStyles = $ref<HTMLStyleElement | null>(null)
   let observer = $ref<IntersectionObserver | null>(null)
   let removeListenerList: (() => void)[] = $ref([])
@@ -63,7 +63,7 @@ export const useAnimation = (animation: IAnimation, name: string, el: Ref<HTMLDi
       animationMap.forEach((item, anim) => {
         if (anim.trigger === 'click' && item.disabled) {
           item.disabled = false
-          setTimeout(() => item.disabled = true, anim.duration * 1000)
+          setTimeout(() => item.disabled = true, (anim.duration + anim.delay) * 1000)
         }
       })
     }
@@ -78,15 +78,25 @@ export const useAnimation = (animation: IAnimation, name: string, el: Ref<HTMLDi
       animationMap.forEach((item, anim) => {
         if (anim.trigger === 'hover' && item.disabled) {
           item.disabled = false
-          setTimeout(() => item.disabled = true, anim.duration * 1000)
         }
       })
     }
-    el.addEventListener('mouseenter', hoverHandler)
-    removeListenerList.push(() => el.removeEventListener('mouseenter', hoverHandler))
+    const leaveHandler = (e: MouseEvent) => {
+      animationMap.forEach((item, anim) => {
+        if (anim.trigger === 'hover' && !item.disabled) {
+          item.disabled = true
+        }
+      })
+    }
+    el.addEventListener('mouseenter', hoverHandler, true)
+    el.addEventListener('mouseleave', leaveHandler, true)
+    removeListenerList.push(() => {
+      el.removeEventListener('mouseenter', hoverHandler)
+      el.removeEventListener('mouseleave', leaveHandler)
+    })
   }
 
-  watch(() => [animation, name], () => {
+  watch(() => [animation], () => {
     if (!animation?.animationList?.length) {
       animationMap.clear()
       return
@@ -138,39 +148,39 @@ function getKeyframeBody(anim: IAnimationItem) {
     setting = anim.settings.fade
     return `
       from {
-        opacity: ${setting?.opacity || 0};
+        opacity: ${setting?.opacity ?? 1};
       }
     `
   }
   if (anim.name.startsWith('slide')) {
-    setting = anim.settings[anim.name as 'slide-left' | 'slide-right' | 'slide-up' | 'slide-down']
-    const offset = setting?.offset || 100
+    setting = anim.settings.slide
+    const offset = setting?.offset ?? 100
     let x = anim.name === 'slide-left' ? offset : anim.name === 'slide-right' ? -offset : 0
     let y = anim.name === 'slide-up' ? offset : anim.name === 'slide-down' ? -offset : 0
     return `
       from {
         transform: translate(${x}%, ${y}%);
-        opacity: ${setting?.opacity || 0};
+        opacity: ${setting?.opacity ?? 1};
       }
     `
   }
   if (anim.name.startsWith('zoom')) {
-    setting = anim.settings[anim.name as 'zoom-in' | 'zoom-out']
-    const zoom = setting?.zoom || 1
+    setting = anim.settings.zoom
+    const zoom = setting?.zoom ?? 1
     return `
       from {
-        transform: scale(${zoom});
-        opacity: ${setting?.opacity || 0};
+        transform: scale(${anim.name === 'zoom-in' ? 1 - zoom : 1 + zoom});
+        opacity: ${setting?.opacity ?? 1};
       }
     `
   }
   if (anim.name.startsWith('rotate')) {
-    setting = anim.settings[anim.name as 'rotate-x' | 'rotate-y']
-    const angle = setting?.angle || 0
+    setting = anim.settings.rotate
+    const angle = setting?.angle ?? 0
     return `
       from {
         transform: rotate${anim.name === 'rotate-x' ? 'X' : 'Y'}(${angle}deg);
-        opacity: ${setting?.opacity || 0};
+        opacity: ${setting?.opacity ?? 1};
       }
     `
   }

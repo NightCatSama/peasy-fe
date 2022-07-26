@@ -3,10 +3,11 @@ import Icon from './Icon.vue'
 
 interface ITipProps {
   type: 'warning'
+  block?: boolean
   message: string
 }
 
-const { type, message } = defineProps<ITipProps>()
+const { type, message, block } = defineProps<ITipProps>()
 
 const iconMap = {
   warning: 'warning',
@@ -14,7 +15,7 @@ const iconMap = {
 </script>
 
 <template>
-  <div :class="['tip', `tip-${type}`]">
+  <div :class="['tip', `tip-${type}`, { block }]">
     <Icon class="tip-icon" :name="iconMap[type]" :size="14"></Icon>
     <div class="tip-msg" v-html="message"></div>
   </div>
@@ -28,6 +29,10 @@ const iconMap = {
   background: $bg-default;
   display: flex;
   align-items: flex-start;
+
+  &.block {
+    width: 100%;
+  }
 
   &-icon {
     color: lighten($theme, 20%);

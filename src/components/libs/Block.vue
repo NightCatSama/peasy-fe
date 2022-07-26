@@ -16,7 +16,6 @@ import { useAnimation } from './animation';
 import type { PageNode } from '@/config';
 
 interface IBlockProps {
-  name: string
   direction?: 'row' | 'column'
   position: IPosition
   size: ISize
@@ -29,13 +28,13 @@ interface IBlockProps {
   animation: IAnimation
 }
 
-const { size, layout, border, direction, spacing, background, container, position, event, animation, name } =
+const { size, layout, border, direction, spacing, background, container, position, event, animation } =
   defineProps<IBlockProps>()
 
 const elem = ref<HTMLDivElement | null>(null)
 useEvent(event, elem)
 
-const { animationMap } = useAnimation(animation, name, elem)
+const { animationMap } = useAnimation(animation, elem)
 
 const style = $computed(() =>
   useStyle({

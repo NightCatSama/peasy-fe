@@ -6,6 +6,7 @@ import { PageNode } from '@/config'
 import { getDefaultAnimationItem, getDefaultAnimationSettings } from '@/utils/defaultConfig'
 import PreviewItem from '@/components/configs/items/PreviewItem.vue'
 import Icon from '../widgets/Icon.vue'
+import Tip from '../widgets/Tip.vue'
 
 interface IAnimationGroupProps {
   node: PageNode
@@ -67,6 +68,14 @@ const handleChangeAnimationName = (name: IAnimationItem['name'], index: number) 
   animation.animationList[index].name = name
 }
 
+const handleChangeAnimationTrigger = (trigger: IAnimationItem['trigger'], index: number) => {
+  animation.animationList[index].trigger = trigger
+  animation.animationList[index].direction = isOneCount(trigger) ? 'normal' : 'alternate-reverse'
+}
+
+// 只动画一次的动画效果
+const isOneCount = (trigger: IAnimationItem['trigger']) => ['scrollIntoView', 'click'].includes(trigger)
+
 let showAdvancedSettings = $ref(false)
 
 </script>
@@ -78,45 +87,115 @@ let showAdvancedSettings = $ref(false)
     :can-advanced="false"
     :default-collapsed="true"
   >
-    <div :class="['item column animation-item', { active: index === collapsedIndex }]" v-for="(item, index) in animation.animationList">
+    <div class="item">
+      <Tip type="warning" message="只可在 Preview 模式下能预览动画效果" :block="true"></Tip>
+    </div>
+    <div
+      :class="['item column animation-item', { active: index === collapsedIndex }]"
+      v-for="(item, index) in animation.animationList"
+    >
       <div class="animation-content">
         <div class="animation-header" @click="collapsedIndex = collapsedIndex === index ? -1 : index">
-          <div class="animation-name">{{ `Animation ${index + 1}`}}</div>
+          <div class="animation-name">{{ `${animationTriggerMap[item.trigger]}`}}</div>
+          <div class="animation-tag" v-show="collapsedIndex !== index">{{ animationNameMap[item.name] }}</div>
           <Icon class="close-btn" name="close" :size="18" @click.stop="animation.animationList.splice(index, 1)"></Icon>
         </div>
         <div class="animation-setting" v-collapse="collapsedIndex === index">
           <SelectItem
             label="Trigger Type"
             :options="animationTriggerMap"
-            v-model="item.trigger"
+            :model-value="item.trigger"
+            @update:model-value="val => handleChangeAnimationTrigger(val, index)"
             @dblclick="showAdvancedSettings = !showAdvancedSettings"
           ></SelectItem>
           <PreviewItem
             label="Animation"
             :options="animationNameList"
             :model-value="item.name"
-            @update:model-value="(val) => handleChangeAnimationName(val, index)"
+            :hide-advanced="true"
+            @update:model-value="(val) => val && handleChangeAnimationName(val, index)"
           >
-            <template #default="{ item, active }">
-              <div :class="['inner-box', { active }]" :style="{ 'animation': `${item} 1s infinite` }"></div>
-              <div class="inner-text">{{ animationNameMap[item] }}</div>
+            <template #default="{ item: name, active }">
+              <div
+                :class="['inner-box', { active }]"
+                :style="{ 'animation': `${name} 1s infinite ${isOneCount(item.trigger) ? 'normal' : 'alternate-reverse'}` }">
+              </div>
+              <div class="inner-text">{{ animationNameMap[name] }}</div>
             </template>
           </PreviewItem>
+          <template v-if="item.settings">
+            <SliderItem
+              v-if="item.settings.fade"
+              label="Opacity"
+              :min="0"
+              :max="1"
+              :interval="0.01"
+              v-model="item.settings.fade.opacity"
+            ></SliderItem>
+            <template v-if="item.settings.slide">
+              <SliderItem
+                label="Offset(%)"
+                :min="0"
+                :max="100"
+                :interval="1"
+                v-model="item.settings.slide.offset"
+              ></SliderItem>
+              <SliderItem
+                label="Opacity"
+                :min="0"
+                :max="1"
+                :interval="0.01"
+                v-model="item.settings.slide.opacity"
+              ></SliderItem>
+            </template>
+            <template v-if="item.settings.zoom">
+              <SliderItem
+                label="Zoom"
+                :min="0"
+                :max="1"
+                :interval="0.1"
+                v-model="item.settings.zoom.zoom"
+              ></SliderItem>
+              <SliderItem
+                label="Opacity"
+                :min="0"
+                :max="1"
+                :interval="0.01"
+                v-model="item.settings.zoom.opacity"
+              ></SliderItem>
+            </template>
+            <template v-if="item.settings.rotate">
+              <SliderItem
+                label="Zoom"
+                :min="0"
+                :max="360"
+                :interval="10"
+                v-model="item.settings.rotate.angle"
+              ></SliderItem>
+              <SliderItem
+                label="Opacity"
+                :min="0"
+                :max="1"
+                :interval="0.01"
+                v-model="item.settings.rotate.opacity"
+              ></SliderItem>
+            </template>
+          </template>
           <SliderItem
             label="Duration"
             :min="0"
-            :max="10"
+            :max="5"
             :interval="0.05"
             v-model="item.duration"
           ></SliderItem>
+          <SliderItem
+            label="Delay"
+            :min="0"
+            :max="5"
+            :interval="0.05"
+            v-model="item.delay"
+          ></SliderItem>
           <template v-if="showAdvancedSettings">
-            <SliderItem
-              label="Delay"
-              :min="0"
-              :max="10"
-              :interval="0.05"
-              v-model="item.delay"
-            ></SliderItem>
             <SelectItem
               label="Timing"
               :options="timingFunction"
@@ -167,10 +246,23 @@ let showAdvancedSettings = $ref(false)
       .animation-header {
         display: flex;
         align-items: center;
-        padding: 8px 16px;
+        font-size: 14px;
+        padding: 8px 10px 8px 16px;
 
         .animation-name {
           flex: 1;
+        }
+
+        .animation-tag {
+          padding: 2px 8px;
+          font-size: 12px;
+          background: $panel-light-gradient;
+          border-radius: 4px;
+          margin-right: 4px;
+          color: $color;
+          white-space: nowrap;
+          transform: scale(.9);
+          transform-origin: right center;
         }
 
         .close-btn {
@@ -216,7 +308,7 @@ let showAdvancedSettings = $ref(false)
           user-select: none;
           transform: translateX(-50%) scale(.86);
           white-space: nowrap;
-          color: darken($panel-light, 3%);
+          color: rgba($panel-light, 80%);
         }
       }
     }
