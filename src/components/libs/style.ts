@@ -2,6 +2,7 @@ import { computed, inject } from 'vue'
 import { getIsEditMode } from '@/utils/context'
 import { covertSize, fixedPointToNumber, getUnit } from '@/utils/sizeHelper'
 import type { AnimationMapType } from './animation'
+import { effectName2PropertyMap } from './effect'
 
 export const useStyle = (styles: any) => {
   for (let key in styles) {
@@ -252,5 +253,19 @@ export const useAnimationStyle = (animationMap: AnimationMapType) => {
 
   return {
     animation: animationList.join(', '),
+  }
+}
+
+export const useEffectStyle = (effect: IEffect) => {
+  if (!effect) return {}
+
+  return {
+    transition: effect.effectList.map((item: IEffectItem) => `${
+      effectName2PropertyMap[item.name]
+    } ${
+      item.duration
+    }s ${
+      item.timingFunction
+    }`).join(', '),
   }
 }

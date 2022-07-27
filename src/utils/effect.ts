@@ -4,7 +4,6 @@ import { GroupType, PageNode } from "@/config";
 
 export interface IEffectShowItem {
   label: string
-  property: string
   component: any
   handler: any
   defaultValue: any
@@ -20,7 +19,6 @@ export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): 
       return {
         color: {
           label: 'Font Color',
-          property: 'color',
           component: ColorItemVue,
           handler: {
           },
@@ -28,7 +26,6 @@ export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): 
         },
         fontSize: {
           label: 'Font Size',
-          property: 'font-size',
           component: InputItemVue,
           handler: {
             name: 'Font Size',

@@ -4,6 +4,7 @@ useAnimationStyle,
   useBackgroundStyle,
   useBorderStyle,
   useContainerStyle,
+  useEffectStyle,
   useFontStyle,
   usePositionStyle,
   useSpacingStyle,
@@ -12,6 +13,7 @@ useAnimationStyle,
 import { ref } from 'vue'
 import { useEvent } from './event'
 import { useAnimation } from './animation';
+import { useEffect } from './effect';
 
 interface ITextProps {
   direction?: 'row' | 'column'
@@ -23,15 +25,17 @@ interface ITextProps {
   container: IContainer
   position: IPosition
   event: IEvent
+  effect: IEffect
   animation: IAnimation
 }
-const { basic, font, spacing, border, background, container, position, event, animation } =
+const { basic, font, spacing, border, background, container, position, event, effect, animation } =
   defineProps<ITextProps>()
 
 const elem = ref<HTMLDivElement | null>(null)
 useEvent(event, elem)
 
 const { animationMap } = useAnimation(animation, elem, position)
+const { className } = useEffect(effect)
 
 const style = $computed(() =>
   useStyle({
@@ -42,13 +46,15 @@ const style = $computed(() =>
     ...useContainerStyle(container),
     ...usePositionStyle(position),
     ...useAnimationStyle(animationMap),
+    ...useEffectStyle(effect)
   })
 )
+
 
 </script>
 
 <template>
-  <div ref="elem" class="text" :style="style">{{ basic.text }}</div>
+  <div ref="elem" class="text" :style="style" :class="className">{{ basic.text }}</div>
 </template>
 
 <style scoped>

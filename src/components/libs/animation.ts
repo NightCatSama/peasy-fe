@@ -1,6 +1,4 @@
-import type { PageNode } from "@/config"
-import { getIsEditMode } from "@/utils/context"
-import { onBeforeMount, onBeforeUnmount, onMounted, reactive, Ref, ref, watch } from "vue"
+import { onBeforeUnmount, reactive, Ref, watch } from "vue"
 import { getPositionTransform } from "./style"
 
 export type AnimationMapType = Map<IAnimationItem, {
@@ -212,5 +210,5 @@ export const getAnimateName = (anim: IAnimationItem) => {
     id = uniqueId++
     uniqueMap.set(anim, id)
   }
-  return `${anim.name}-${id}`
+  return `__${anim.name}-${id}__`
 }

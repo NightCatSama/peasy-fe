@@ -104,7 +104,7 @@ const timingFunction = {
       class="animation-item"
       :key="index"
       :collapsed="index === collapsedIndex || !item.name"
-      :name="item.name"
+      :name="item.name || 'Choose a style'"
       :tag="index === collapsedIndex ? '' : Object.keys(item.styles).length ? Object.keys(item.styles) : 'Need Action'"
       :tag-type="Object.keys(item.styles).length ? 'theme' : 'red'"
       @delete="() => effect.effectList.splice(index, 1)"
@@ -112,7 +112,7 @@ const timingFunction = {
     >
       <template #default>
         <SelectItem
-          label="Property"
+          label="Style"
           :options="showEffectNameMap"
           :model-value="item.name"
           :disabled="Object.keys(showEffectNameMap).length === 0"
