@@ -180,7 +180,7 @@ const uploadImage = async (e: InputEvent) => {
         @update:model-value="(color) => (background.backgroundGradient[index].color = color)"
       >
         <Icon
-          :class="['delete-color-btn', { disabled: background.backgroundGradient.length <= 2 }]"
+          :class="['delete-btn', { disabled: background.backgroundGradient.length <= 2 }]"
           type="circle"
           name="line"
           :size="8"
@@ -199,27 +199,6 @@ const uploadImage = async (e: InputEvent) => {
   .label {
     flex: 1;
     margin-right: 8px;
-  }
-
-  .delete-color-btn {
-    margin-left: 8px;
-    background: $tr;
-    border: 1px solid $red;
-    color: $red;
-    padding: 2px;
-    cursor: pointer;
-
-    &.disabled {
-      opacity: 0.5;
-      border: 1px solid $panel-light;
-      color: $panel-light;
-      cursor: not-allowed;
-    }
-
-    &:not(.disabled):hover {
-      color: $white;
-      background-color: $red;
-    }
   }
 
   .full {

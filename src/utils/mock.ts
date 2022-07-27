@@ -79,6 +79,7 @@ export const getMockText = (): PageNode<'Text'> => {
       container: getDefaultContainer(),
       position: getDefaultPosition(),
       event: getDefaultEvent(),
+      effect: getDefaultEffect(),
       animation: getDefaultAnimation(),
     },
   }

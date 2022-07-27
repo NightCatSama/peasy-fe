@@ -21,7 +21,7 @@ interface ISelectProps {
 const { display = 'block', disabled, placement, options, modelValue } = defineProps<ISelectProps>()
 
 const showValue = $computed(() => {
-  const value = options[modelValue]
+  const value = options[modelValue] || modelValue
   if (typeof value === 'string') {
     return value || ''
   }

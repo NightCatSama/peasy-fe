@@ -177,19 +177,17 @@ interface IAnimation {
 
 /** 过渡设置 */
 interface IEffectItem {
-  /** 属性名 */
-  property: string
+  /** 名称 */
+  name: string
   /** 过渡时长 */
   duration: number
   /** 过渡曲线 */
   timingFunction: 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
   /** 过渡样式 */
   styles: {
-    /** 触发类型 */
-    type: 'hover' | 'active'
-    /** 过渡值 */
-    value: any
-  }[]
+    hover?: any
+    active?: any
+  }
 }
 interface IEffect {
   effectList: IEffectItem[]

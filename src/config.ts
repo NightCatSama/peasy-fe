@@ -21,6 +21,7 @@ export const ComponentPropsGroup = {
     'container',
     'position',
     'event',
+    'effect',
     'animation',
   ] as const,
   Image: ['basic', 'size', 'spacing', 'border', 'container', 'position', 'event', 'animation'] as const,

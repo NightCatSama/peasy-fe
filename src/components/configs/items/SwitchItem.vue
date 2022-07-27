@@ -21,6 +21,7 @@ const value = $computed({
   <div class="item">
     <div class="label">{{ label }}</div>
     <Switch v-model="value"></Switch>
+    <slot></slot>
   </div>
 </template>
 

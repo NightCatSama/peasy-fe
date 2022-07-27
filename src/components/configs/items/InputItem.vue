@@ -30,7 +30,9 @@ const value = $computed({
 
 <template>
   <div :class="['item', { column: type === 'textarea' }]">
-    <span class="label">{{ label }}</span>
+    <span class="label">
+      <slot name="label" :label="label">{{ label }}</slot>
+    </span>
     <Input class="input" v-model="value" :type="type" v-bind="$attrs">
       <template #suffix><slot name="suffix"></slot></template>
     </Input>
@@ -49,12 +51,10 @@ const value = $computed({
     flex: none;
   }
 
-  &.column {
-    .input {
-      width: 100%;
-      flex: 1;
-      height: auto;
-    }
+  &.column > .input {
+    width: 100%;
+    flex: 1;
+    height: auto;
   }
 }
 </style>

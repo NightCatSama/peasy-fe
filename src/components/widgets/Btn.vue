@@ -2,12 +2,13 @@
 import Icon from './Icon.vue'
 
 interface IBtnProps {
-  text: string
+  text?: string
   size?: 'md' | 'sm'
-  type?: 'text' | 'btn'
+  type?: 'text' | 'btn' | 'inner'
   color?: 'primary' | 'default'
   icon?: InstanceType<typeof Icon>['name']
   disabled?: boolean
+  isBlock?: boolean
 }
 const {
   text,
@@ -16,13 +17,17 @@ const {
   color = 'primary',
   icon,
   disabled,
+  isBlock
 } = defineProps<IBtnProps>()
 </script>
 
 <template>
-  <div :class="['btn', `size-${size}`, `${color}`, `btn-type-${type}`, { disabled }]" role="button">
+  <div
+    :class="['btn', `size-${size}`, `${color}`, `btn-type-${type}`, { disabled, 'btn-block': isBlock }]"
+    role="button"
+  >
     <Icon v-if="icon" class="btn-icon" :name="icon" :size="12"></Icon>
-    <div class="text">{{ text }}</div>
+    <div class="text"><slot>{{ text }}</slot></div>
   </div>
 </template>
 
@@ -42,6 +47,12 @@ const {
 
   &-icon {
     margin-right: 4px;
+    margin-top: -0.1em;
+  }
+
+  &-block {
+    width: 100%;
+    flex: 1;
   }
 
   &-type-text {
@@ -87,6 +98,37 @@ const {
       font-size: 14px;
       height: 36px;
       font-weight: bold;
+    }
+  }
+
+  &-type-inner {
+
+    &.primary {
+      color: $color;
+      background: $theme-gradient;
+
+      &:not(.disabled):hover {
+        opacity: 0.8;
+      }
+    }
+
+    &.default {
+      color: $color;
+      background: $panel;
+
+      &:not(.disabled):hover {
+        opacity: 0.8;
+      }
+    }
+
+    &.size-md {
+      padding: 0 12px;
+      border-radius: $inner-radius;
+      font-size: 14px;
+      height: 32px;
+      font-weight: bold;
+      text-align: center;
+      width: 100%;
     }
   }
 }

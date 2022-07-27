@@ -21,7 +21,8 @@ const value = $computed({
 <template>
   <div class="item">
     <div class="label">{{ label }}</div>
-    <Select v-model="value" :options="options"></Select>
+    <Select v-model="value" :options="options" v-bind="$attrs"></Select>
+    <slot></slot>
   </div>
 </template>
 

@@ -165,6 +165,47 @@ const iconName = {
     }
   }
 
+  .add-btn {
+    margin-left: 8px;
+    background: $theme;
+    // border: 1px solid $theme;
+    color: $color;
+    padding: 2px;
+    cursor: pointer;
+
+    &.disabled {
+      opacity: 0.5;
+      // border: 1px solid $panel-light;
+      color: $panel-light;
+      cursor: not-allowed;
+    }
+
+    &:not(.disabled):hover {
+      color: $white;
+    }
+  }
+
+  .delete-btn {
+    margin-left: 8px;
+    background: $tr;
+    border: 1px solid $red;
+    color: $red;
+    padding: 2px;
+    cursor: pointer;
+
+    &.disabled {
+      opacity: 0.5;
+      border: 1px solid $panel-light;
+      color: $panel-light;
+      cursor: not-allowed;
+    }
+
+    &:not(.disabled):hover {
+      color: $white;
+      background-color: $red;
+    }
+  }
+
   .full-btn {
     width: 100%;
     height: 35px;
@@ -185,7 +226,7 @@ const iconName = {
 
 :deep(.divider) {
   position: relative;
-  margin: 16px 0 24px;
+  margin: 24px 0 24px;
   height: 0;
   opacity: 1;
   border: 1px solid rgba($panel-light, 50%);
@@ -198,7 +239,7 @@ const iconName = {
     top: 50%;
     left: 50%;
     transform: translate(-50%, -50%);
-    background-color: $panel-content;
+    background-color: $panel-dark;
     padding: 0 8px;
     color: rgba($color, 50%);
     z-index: 1;
