@@ -2,7 +2,7 @@ import mitt from 'mitt'
 
 type Events = {
   location?: boolean
-  switchMaterialsPanel: boolean
+  switchMaterialsPanel?: boolean
   updateMoveable?: any
 }
 

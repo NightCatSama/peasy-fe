@@ -27,13 +27,14 @@ const handleDownload = async () => {
 }
 
 let showLeftPanel = $ref(false)
+let minimizeRight = $ref(false)
 
 onMounted(() => {
   getAssetsData()
   getPageData()
 
-  emitter.on('switchMaterialsPanel', (show: boolean) => {
-    showLeftPanel = show
+  emitter.on('switchMaterialsPanel', (show?: boolean) => {
+    showLeftPanel = show === void 0 ? !showLeftPanel : show
   })
 })
 
@@ -67,7 +68,7 @@ watch(
         <!-- 页面编辑区 -->
         <EditSection></EditSection>
         <!-- 右侧组件参数配置区 -->
-        <div class="right">
+        <div class="right" :style="{ marginRight: minimizeRight ? '-255px' : 0 }" @click="minimizeRight = !minimizeRight">
           <ConfigSection></ConfigSection>
         </div>
       </div>
@@ -112,6 +113,7 @@ watch(
     .right {
       width: $config-width;
       flex-shrink: 0;
+      transition: all .3s;
     }
   }
 }

@@ -9,10 +9,12 @@ import Icon from './widgets/Icon.vue'
 import { ref } from 'vue'
 import Slider from './widgets/Slider.vue'
 import Select from './widgets/Select.vue'
+import { useKeyPress } from 'ahooks-vue'
+import { emitter } from '@/utils/event'
 
 const displayStore = useDisplayStore()
 const { device, displayMode } = storeToRefs(displayStore)
-const { setDevice, curPresetDeviceList } = displayStore
+const { setDevice, curPresetDeviceList, setDisplayMode } = displayStore
 
 const name = $ref('index')
 
@@ -56,8 +58,20 @@ const modeMap = {
 }
 
 const handleModeClick = (value: any) => {
-  displayMode.value = value
+  setDisplayMode(value)
 }
+
+useKeyPress('meta.e', (e) => {
+  e.preventDefault()
+  const displayModeList = ['edit', 'drag', 'preview'] as const
+  setDisplayMode(
+    displayModeList[(displayModeList.indexOf(displayMode.value) + 1) % 3]
+  )
+})
+useKeyPress('meta.shift.a', (e) => {
+  e.preventDefault()
+  emitter.emit('switchMaterialsPanel')
+})
 </script>
 
 <template>
