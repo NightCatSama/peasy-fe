@@ -3,6 +3,9 @@ import { onBeforeUnmount, ref, watch } from "vue"
 export const effectName2PropertyMap: { [name: string]: string } = {
   color: 'color',
   fontSize: 'font-size',
+  borderColor: 'border-color',
+  backgroundColor: 'background-color',
+  opacity: 'opacity',
 }
 
 export const selectorPriority: { [selector: string]: number } = {

@@ -5,9 +5,11 @@ import {
   useBorderStyle,
   useSpacingStyle,
   usePositionStyle,
+useEffectStyle,
 } from './style'
 import { ref, watch } from 'vue'
 import { useEvent } from './event'
+import { useEffect } from './effect';
 
 interface IBlockProps {
   direction?: 'row' | 'column'
@@ -15,15 +17,19 @@ interface IBlockProps {
   spacing: ISpacing
   border: IBorder
   event: IEvent
+  effect: IEffect
 }
 
-const { basic, border, direction, spacing, event } = defineProps<IBlockProps>()
+const { basic, border, direction, spacing, event, effect } = defineProps<IBlockProps>()
+
+const { className } = useEffect(effect)
 
 const style = $computed(() =>
   useStyle({
     ...useIconBasicStyle(basic),
     ...useBorderStyle(border),
     ...useSpacingStyle(spacing),
+    ...useEffectStyle(effect),
   })
 )
 
@@ -51,9 +57,9 @@ useEvent(event, elem)
 </script>
 
 <template>
-  <div class="fa-icon">
+  <div :class="['fa-icon']">
     <i
-      :class="['fa', `${basic.prefixClass || ''}${basic.name}`, `${basic?.extraClass || ''}`]"
+      :class="['fa', `${basic.prefixClass || ''}${basic.name}`, `${basic?.extraClass || ''}`, className]"
       :style="style"
     />
   </div>

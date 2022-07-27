@@ -24,8 +24,8 @@ export const ComponentPropsGroup = {
     'effect',
     'animation',
   ] as const,
-  Image: ['basic', 'size', 'spacing', 'border', 'container', 'position', 'event', 'animation'] as const,
-  Icon: ['basic', 'spacing', 'border', 'event'] as const,
+  Image: ['basic', 'size', 'spacing', 'border', 'container', 'position', 'event', 'effect', 'animation'] as const,
+  Icon: ['basic', 'spacing', 'border', 'event', 'effect'] as const,
 } as const
 
 /** 支持的配置分组名 */
@@ -105,3 +105,5 @@ export const isSomeBasicType = <T extends ComponentName, P extends GroupPropType
 
 export const DefaultIconStyleLink =
   '//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
+
+export const defaultColor = 'inherit'

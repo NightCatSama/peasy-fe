@@ -101,6 +101,7 @@ export const getMockImage = (src?: string): PageNode<'Image'> => {
       container: getDefaultContainer(),
       position: getDefaultPosition(),
       event: getDefaultEvent(),
+      effect: getDefaultEffect(),
       animation: getDefaultAnimation(),
     },
   }
@@ -116,6 +117,7 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),
       event: getDefaultEvent(),
+      effect: getDefaultEffect(),
     },
   }
 }

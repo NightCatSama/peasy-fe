@@ -9,11 +9,13 @@ import {
   useBackgroundStyle,
   useContainerStyle,
 useAnimationStyle,
+useEffectStyle,
 } from './style'
 import { useEvent } from './event'
 import { onBeforeMount, onMounted, ref, watchEffect } from 'vue'
 import { useAnimation } from './animation';
 import type { PageNode } from '@/config';
+import { useEffect } from './effect';
 
 interface IBlockProps {
   direction?: 'row' | 'column'
@@ -25,16 +27,19 @@ interface IBlockProps {
   background: IBackground
   container: IContainer
   event: IEvent
+  effect: IEffect
   animation: IAnimation
 }
 
-const { size, layout, border, direction, spacing, background, container, position, event, animation } =
+const { size, layout, border, direction, spacing, background, container, position, event, effect, animation } =
   defineProps<IBlockProps>()
 
 const elem = ref<HTMLDivElement | null>(null)
 useEvent(event, elem)
 
 const { animationMap } = useAnimation(animation, elem, position)
+
+const { className } = useEffect(effect)
 
 const style = $computed(() =>
   useStyle({
@@ -46,13 +51,14 @@ const style = $computed(() =>
     ...useContainerStyle(container),
     ...usePositionStyle(position),
     ...useAnimationStyle(animationMap),
+    ...useEffectStyle(effect),
   })
 )
 
 </script>
 
 <template>
-  <div ref="elem" :class="'block'" :style="style">
+  <div ref="elem" :class="['block', className]" :style="style">
     <slot></slot>
   </div>
 </template>

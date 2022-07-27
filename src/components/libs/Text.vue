@@ -35,6 +35,7 @@ const elem = ref<HTMLDivElement | null>(null)
 useEvent(event, elem)
 
 const { animationMap } = useAnimation(animation, elem, position)
+
 const { className } = useEffect(effect)
 
 const style = $computed(() =>
