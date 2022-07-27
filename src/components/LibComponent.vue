@@ -160,6 +160,7 @@ const preventMousedown = (e: MouseEvent, subItem: PageNode) => {
     :tag="item.component"
     :component-data="{
       ...item.props,
+      componentName: item.name,
       direction: parent?.props?.layout?.direction,
     }"
     :disabled="displayMode !== 'drag' || (dragNode && dragNodeType !== 'component')"

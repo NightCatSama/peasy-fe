@@ -3,11 +3,12 @@ import { cloneDeep } from 'lodash'
 
 /** 生成唯一的节点 name */
 const createUnitName = (originName: string, nameMap: { [key: string]: PageNode }): string => {
-  let name = originName
-  let i = 1
+  const matchObj = /(?<name>.*)-(?<index>\d+)$/.exec(originName)
+  let baseName = matchObj?.groups?.name ?? originName
+  let i = matchObj?.groups?.index ? parseInt(matchObj?.groups?.index) + 1 : 1
+  let name = `${baseName}-${i}`
   while (nameMap[name]) {
-    name = `${originName}-${i}`
-    i++
+    name = `${baseName}-${++i}`
   }
   return name
 }

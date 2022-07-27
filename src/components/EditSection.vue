@@ -103,18 +103,6 @@ watch(
   { flush: 'post', deep: true }
 )
 
-// watch(
-//   [displayMode],
-//   () => {
-//     if (displayMode.value !== 'edit') {
-//       disabledMoveable()
-//     } else {
-//       setTimeout(() => emitter.emit('updateMoveable'), 300)
-//     }
-//   },
-//   { flush: 'post' }
-// )
-
 watch(
   () => noPageData,
   (newValue, oldValue) => {
@@ -161,8 +149,6 @@ const handleLocationPage = (immediate = false) => {
     left = activeRect.left - rect.left - (wrapperSize.width - activeRect.width) / 2 + Math.min(x, 0)
     top = activeRect.top - rect.top - (wrapperSize.height - activeRect.height) / 2 + Math.min(y, 0)
   }
-
-  // console.log('left', left, top);
 
   wrapperRef.value?.scrollTo({
     top: Math.max(top, 0),

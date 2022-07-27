@@ -95,8 +95,8 @@ export const useAnimation = (animation: IAnimation, el: Ref<HTMLDivElement | nul
     })
   }
 
-  watch(() => [animation, position], () => {
-    if (!animation?.animationList?.length) {
+  watch(() => [animation, position, el], () => {
+    if (!animation?.animationList?.length || el.value === null) {
       animationMap.clear()
       return
     }

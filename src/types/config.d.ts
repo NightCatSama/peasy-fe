@@ -78,8 +78,8 @@ interface IPosition {
 type BorderStyle = 'solid' | 'dashed' | 'dotted' | 'double'
 interface IBorder {
   borderWidth: [string, string, string, string]
-  borderStyle: [BorderStyle, BorderStyle, BorderStyle, BorderStyle]
-  borderColor: [string, string, string, string]
+borderStyle: [BorderStyle, BorderStyle, BorderStyle, BorderStyle]
+  borderColor: string | [string, string, string, string]
   borderRadius: string | 'circle' | [string, string, string, string]
 }
 
@@ -177,6 +177,7 @@ interface IAnimation {
 
 /** 过渡设置 */
 interface IEffectItem {
+  target: string
   /** 名称 */
   name: string
   /** 过渡时长 */

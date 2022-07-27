@@ -56,7 +56,6 @@ const modeMap = {
 }
 
 const handleModeClick = (value: any) => {
-  console.log('value', value)
   displayMode.value = value
 }
 </script>

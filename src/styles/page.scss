@@ -4,10 +4,9 @@
   &-edit {
     .lib-component {
       position: relative;
-      transition: font-size 0.3s, box-shadow 0.2s;
+      // transition: font-size 0.3s, box-shadow 0.2s;
       user-select: none;
       animation: none!important;
-      transition: none!important;
 
       &:not(.active):hover::before {
         content: '';
@@ -17,7 +16,7 @@
         height: 100%;
         position: absolute;
         z-index: 1;
-        box-shadow: inset 0 0 0 1px rgba($theme, 0.7);
+        box-shadow: inset 0 0 0 1px rgba($theme, 0.5);
         pointer-events: none;
       }
 
@@ -31,9 +30,8 @@
   &-drag {
     .lib-component {
       position: relative;
-      transition: font-size 0.3s;
+      // transition: font-size 0.3s;
       animation: none!important;
-      transition: none!important;
 
       &::before {
         content: '';

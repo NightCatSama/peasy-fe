@@ -86,7 +86,7 @@ let showAdvancedSettings = $ref(false)
     title="Animation"
     class="animation-group"
     :can-advanced="false"
-    :default-collapsed="true"
+    :default-collapsed="false"
   >
     <div class="item">
       <Tip type="warning" message="只可在 Preview 模式下能预览动画效果" :block="true"></Tip>

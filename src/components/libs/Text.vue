@@ -10,12 +10,14 @@ useAnimationStyle,
   useSpacingStyle,
   useStyle,
 } from './style'
-import { ref } from 'vue'
+import { ref, useSlots } from 'vue'
 import { useEvent } from './event'
 import { useAnimation } from './animation';
 import { useEffect } from './effect';
+import { getUniqueName } from '@/config';
 
 interface ITextProps {
+  componentName: string
   direction?: 'row' | 'column'
   basic: ITextBasicType
   font: IFont
@@ -28,15 +30,16 @@ interface ITextProps {
   effect: IEffect
   animation: IAnimation
 }
-const { basic, font, spacing, border, background, container, position, event, effect, animation } =
-  defineProps<ITextProps>()
+
+const { basic, font, spacing, border, background, container, position, event, effect, animation, componentName: name } =
+  defineProps<ITextProps>();
 
 const elem = ref<HTMLDivElement | null>(null)
 useEvent(event, elem)
 
 const { animationMap } = useAnimation(animation, elem, position)
 
-const { className } = useEffect(effect)
+useEffect(effect, name)
 
 const style = $computed(() =>
   useStyle({
@@ -47,15 +50,22 @@ const style = $computed(() =>
     ...useContainerStyle(container),
     ...usePositionStyle(position),
     ...useAnimationStyle(animationMap),
-    ...useEffectStyle(effect)
+    ...useEffectStyle(effect, name)
   })
 )
 
+const uName = $computed(() => getUniqueName(name))
+const classNames = $computed(() => ['text', uName])
 
 </script>
 
 <template>
-  <div ref="elem" class="text" :style="style" :class="className">{{ basic.text }}</div>
+  <div
+    ref="elem"
+    :id="uName"
+    :style="style"
+    :class="classNames"
+  >{{ basic.text }}</div>
 </template>
 
 <style scoped>

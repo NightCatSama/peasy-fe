@@ -14,8 +14,10 @@ import { ref } from 'vue'
 import { useEvent } from './event'
 import { useAnimation } from './animation';
 import { useEffect } from './effect';
+import { getUniqueName } from '@/config';
 
 interface IImageProps {
+  componentName: string
   direction?: 'row' | 'column'
   basic: IImageBasicType
   position: IPosition
@@ -28,7 +30,7 @@ interface IImageProps {
   animation: IAnimation
 }
 
-const { basic, size, border, direction, spacing, container, position, event, effect, animation } =
+const { componentName: name, basic, size, border, direction, spacing, container, position, event, effect, animation } =
   defineProps<IImageProps>()
 
 const elem = ref<HTMLDivElement | null>(null)
@@ -36,7 +38,7 @@ useEvent(event, elem)
 
 const { animationMap } = useAnimation(animation, elem, position)
 
-const { className } = useEffect(effect)
+useEffect(effect, name)
 
 const style = $computed(() =>
   useStyle({
@@ -47,15 +49,18 @@ const style = $computed(() =>
     ...useContainerStyle(container),
     ...usePositionStyle(position),
     ...useAnimationStyle(animationMap),
-    ...useEffectStyle(effect)
+    ...useEffectStyle(effect, name)
   })
 )
 
 const src = $computed(() => basic.src.trim() || '')
+
+const uName = $computed(() => getUniqueName(name))
+const classNames = $computed(() => ['image', uName, { 'no-image': !basic.src }])
 </script>
 
 <template>
-  <img ref="elem" :class="['image', className, { 'no-image': !basic.src }]" :style="style" :src="src" />
+  <img ref="elem" :class="classNames" :style="style" :id="uName" :src="src" />
 </template>
 
 <style lang="scss" scoped>

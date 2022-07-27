@@ -14,10 +14,11 @@ useEffectStyle,
 import { useEvent } from './event'
 import { onBeforeMount, onMounted, ref, watchEffect } from 'vue'
 import { useAnimation } from './animation';
-import type { PageNode } from '@/config';
+import { getUniqueName, PageNode } from '@/config';
 import { useEffect } from './effect';
 
 interface IBlockProps {
+  componentName: string
   direction?: 'row' | 'column'
   position: IPosition
   size: ISize
@@ -31,7 +32,7 @@ interface IBlockProps {
   animation: IAnimation
 }
 
-const { size, layout, border, direction, spacing, background, container, position, event, effect, animation } =
+const { componentName: name, size, layout, border, direction, spacing, background, container, position, event, effect, animation } =
   defineProps<IBlockProps>()
 
 const elem = ref<HTMLDivElement | null>(null)
@@ -39,7 +40,7 @@ useEvent(event, elem)
 
 const { animationMap } = useAnimation(animation, elem, position)
 
-const { className } = useEffect(effect)
+useEffect(effect, name)
 
 const style = $computed(() =>
   useStyle({
@@ -51,14 +52,16 @@ const style = $computed(() =>
     ...useContainerStyle(container),
     ...usePositionStyle(position),
     ...useAnimationStyle(animationMap),
-    ...useEffectStyle(effect),
+    ...useEffectStyle(effect, name),
   })
 )
 
+const uName = $computed(() => getUniqueName(name))
+const classNames = $computed(() => ['block', uName])
 </script>
 
 <template>
-  <div ref="elem" :class="['block', className]" :style="style">
+  <div ref="elem" :class="classNames" :style="style" :id="uName">
     <slot></slot>
   </div>
 </template>

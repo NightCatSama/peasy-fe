@@ -8,7 +8,7 @@ import PreviewItem from '@/components/configs/items/PreviewItem.vue'
 import Icon from '../widgets/Icon.vue'
 import Tip from '../widgets/Tip.vue'
 import Btn from '../widgets/Btn.vue'
-import { getEffectShowItemByGroup, IEffectShowItemMap } from '@/utils/effect'
+import { getEffectMapByNode, getEffectShowItemByGroup, IEffectShowItemMap } from '@/utils/effect'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import CollapseItem from './items/CollapseItem.vue'
@@ -20,41 +20,36 @@ interface IEffectGroupProps {
 const { effect, node } = defineProps<IEffectGroupProps>()
 
 const pageStore = usePageStore()
+const { getAllChildNode, nameMap } = pageStore
 const { activeNodeGroups } = storeToRefs(pageStore)
 
 let collapsedIndex = $ref(0)
 
 const handleAddEffect = () => {
-  effect.effectList.push(getDefaultEffectItem())
+  effect.effectList.push(getDefaultEffectItem(node.name))
   collapsedIndex = effect.effectList.length - 1
 }
 
-/** 当前设置的组件类别下的，可设置动效 */
-const effectMap: IEffectShowItemMap = $computed(() => {
-  let map = {}
-  ;(activeNodeGroups.value || [])
-    .map(group => getEffectShowItemByGroup(group, node))
-    .filter(Boolean)
-    .forEach(obj => {
-      map = { ...map, ...obj }
-    })
-  return map
-})
+/** 得到当前目标下可用的动画属性 */
+const getEffectMap: (target: string) => IEffectShowItemMap =
+  $computed(() => (target: string) => {
+    const node = nameMap[target]
+    return getEffectMapByNode(node) || {}
+  })
 
-/** 已经设置了的动效名称列表 */
-const existEffectName = $computed(() => effect.effectList.map(item => item.name))
-
-/** 过滤掉已存在的 */
-const showEffectNameMap: { [name: string]: string } = $computed(() => Object.fromEntries(
-  Object.entries(effectMap)
-    .filter(([name]) => !existEffectName.includes(name))
-    .map(
-      ([name, obj]) => [name, obj.label]
-    )
-))
+const getEffectLabel = (target: string) => Object.fromEntries(
+  Object.entries(getEffectMap(target)).map(([key, item]) => [key, item.label])
+)
 
 const handleNameChange = (val: string, item: IEffectItem) => {
   item.name = val
+  handleSetStyle('hover', 'delete', item)
+  handleSetStyle('active', 'delete', item)
+}
+
+const handleTargetChange = (target: string, item: IEffectItem) => {
+  item.target = target
+  item.name = ''
   handleSetStyle('hover', 'delete', item)
   handleSetStyle('active', 'delete', item)
 }
@@ -65,11 +60,13 @@ const handleSetStyle = (
   item: IEffectItem
 ) => {
   if (operation === 'add') {
-    item.styles[styleType] = effectMap[item.name].defaultValue
+    item.styles[styleType] = getEffectMap(item.target)[item.name].defaultValue
   } else {
     delete item.styles[styleType]
   }
 }
+
+const childrenNodeList = $computed(() => [node].concat(getAllChildNode(node)))
 
 const actionMap: { name: keyof IEffectItem['styles'], label: string }[] = $computed(() => [{
   name: 'hover',
@@ -93,33 +90,36 @@ const timingFunction = {
     title="Effect"
     class="effect-group"
     :can-advanced="false"
-    :default-collapsed="true"
+    :default-collapsed="false"
   >
-    <div class="item">
-      <Tip type="warning" message="只可在 Preview 模式下能预览动效效果" :block="true"></Tip>
-    </div>
-
     <CollapseItem
       v-for="(item, index) in effect.effectList"
       class="animation-item"
       :key="index"
       :collapsed="index === collapsedIndex || !item.name"
       :name="item.name || 'Choose a style'"
-      :tag="index === collapsedIndex ? '' : Object.keys(item.styles).length ? Object.keys(item.styles) : 'Need Action'"
+      :tag="index === collapsedIndex ? '' : Object.keys(item.styles).length ? Object.keys(item.styles) : ''"
       :tag-type="Object.keys(item.styles).length ? 'theme' : 'red'"
       @delete="() => effect.effectList.splice(index, 1)"
       @collapse="() => collapsedIndex = collapsedIndex === index ? -1 : index"
     >
       <template #default>
         <SelectItem
+          v-if="childrenNodeList.length > 1"
+          label="Target"
+          :options="Object.fromEntries(childrenNodeList.map(item => [item.name, item.name]))"
+          :model-value="item.target"
+          @update:model-value="handleTargetChange($event, item)"
+        ></SelectItem>
+        <SelectItem
           label="Style"
-          :options="showEffectNameMap"
+          :options="getEffectLabel(item.target)"
           :model-value="item.name"
-          :disabled="Object.keys(showEffectNameMap).length === 0"
           @update:model-value="handleNameChange($event, item)"
         ></SelectItem>
         <template v-if="item.name">
           <SliderItem
+            v-if="item.target == node.name"
             label="Duration"
             :min="0"
             :max="5"
@@ -127,6 +127,7 @@ const timingFunction = {
             v-model="item.duration"
           ></SliderItem>
           <SelectItem
+            v-if="item.target == node.name"
             label="Timing"
             :options="timingFunction"
             v-model="item.timingFunction"
@@ -139,9 +140,9 @@ const timingFunction = {
             <component
               v-if="item.styles[obj.name] !== void 0"
               :label="obj.label"
-              :is="effectMap[item.name].component"
+              :is="getEffectMap(item.target)[item.name].component"
               :model-value="item.styles[obj.name]"
-              v-bind="effectMap[item.name].handler"
+              v-bind="getEffectMap(item.target)[item.name].handler"
               @update:model-value="item.styles[obj.name] = $event"
             >
               <Icon
@@ -160,7 +161,7 @@ const timingFunction = {
         </template>
       </template>
     </CollapseItem>
-    <div class="item" v-show="Object.keys(showEffectNameMap).length && existEffectName.every(Boolean)">
+    <div class="item">
       <Btn type="text" :is-block="true" icon="plus" @click="handleAddEffect">Add Effect</Btn>
     </div>
   </Group>

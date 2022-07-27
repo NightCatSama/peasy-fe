@@ -68,6 +68,20 @@ export const usePageStore = defineStore('page', {
         if (newIndex < 0 || newIndex >= nodeList!.length) return null
         return nodeList![newIndex]
       },
+    getAllChildNode:
+      (state) =>
+      (node: PageNode): PageNode[] => {
+        if (!node.children) return []
+        const children = [...node.children]
+        let i = 0;
+        while (i < children.length) {
+          if (children[i]?.children?.length) {
+            children.push(...children[i]?.children!)
+          }
+          i++
+        }
+        return children
+      }
   },
   actions: {
     async getPageData() {

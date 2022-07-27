@@ -10,8 +10,10 @@ useEffectStyle,
 import { ref, watch } from 'vue'
 import { useEvent } from './event'
 import { useEffect } from './effect';
+import { getUniqueName } from '@/config';
 
 interface IBlockProps {
+  componentName: string
   direction?: 'row' | 'column'
   basic: IIconBasicType
   spacing: ISpacing
@@ -20,16 +22,16 @@ interface IBlockProps {
   effect: IEffect
 }
 
-const { basic, border, direction, spacing, event, effect } = defineProps<IBlockProps>()
+const { componentName: name, basic, border, direction, spacing, event, effect } = defineProps<IBlockProps>()
 
-const { className } = useEffect(effect)
+useEffect(effect, name)
 
 const style = $computed(() =>
   useStyle({
     ...useIconBasicStyle(basic),
     ...useBorderStyle(border),
     ...useSpacingStyle(spacing),
-    ...useEffectStyle(effect),
+    ...useEffectStyle(effect, name),
   })
 )
 
@@ -54,14 +56,20 @@ watch(
 
 const elem = ref<HTMLDivElement | null>(null)
 useEvent(event, elem)
+
+const uName = $computed(() => getUniqueName(name))
+
+const classNames = $computed(() => [
+  'fa',
+  uName,
+  `${basic.prefixClass || ''}${basic.name}`,
+  `${basic?.extraClass || ''}`
+ ])
 </script>
 
 <template>
   <div :class="['fa-icon']">
-    <i
-      :class="['fa', `${basic.prefixClass || ''}${basic.name}`, `${basic?.extraClass || ''}`, className]"
-      :style="style"
-    />
+    <i :class="classNames" :style="style" :id="uName" />
   </div>
 </template>
 

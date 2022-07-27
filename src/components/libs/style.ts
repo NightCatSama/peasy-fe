@@ -256,16 +256,18 @@ export const useAnimationStyle = (animationMap: AnimationMapType) => {
   }
 }
 
-export const useEffectStyle = (effect: IEffect) => {
+export const useEffectStyle = (effect: IEffect, name: string) => {
   if (!effect) return {}
 
   return {
-    transition: effect.effectList.map((item: IEffectItem) => `${
+    transition: effect.effectList.map((item: IEffectItem) => item.target === name ? `${
       effectName2PropertyMap[item.name]
     } ${
       item.duration
     }s ${
       item.timingFunction
-    }`).join(', '),
+    }` : '')
+      .filter(Boolean)
+      .join(', '),
   }
 }

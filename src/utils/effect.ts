@@ -1,17 +1,30 @@
 import ColorItemVue from "@/components/configs/items/ColorItem.vue";
 import InputItemVue from "@/components/configs/items/InputItem.vue";
 import SliderItemVue from "@/components/configs/items/SliderItem.vue";
-import { GroupType, isSomeBasicType, PageNode } from "@/config";
+import { ComponentName, ComponentPropsGroup, GroupType, isSomeBasicType, PageNode } from "@/config";
 
 export interface IEffectShowItem {
   label: string
   component: any
   handler: any
   defaultValue: any
+  setValue?: (value: any) => any
 }
 
 export type IEffectShowItemMap = {
   [name: string]: IEffectShowItem
+}
+
+export const getEffectMapByNode = (node: PageNode): IEffectShowItemMap | null => {
+  const nodeGroups = ComponentPropsGroup[node.component as ComponentName]
+  let map = {}
+  ;(nodeGroups || [])
+    .map(group => getEffectShowItemByGroup(group, node))
+    .filter(Boolean)
+    .forEach(obj => {
+      map = { ...map, ...obj }
+    })
+  return map
 }
 
 export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): IEffectShowItemMap | null => {
@@ -37,13 +50,15 @@ export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): 
         }
       }
     case 'border': {
+      const border = node?.props?.border as IBorder
       return {
         borderColor: {
           label: 'Border Color',
           component: ColorItemVue,
           handler: {
           },
-          defaultValue: (node?.props?.border as IBorder)?.borderColor ?? '#000',
+          defaultValue: Array.isArray(border?.borderColor) ? border?.borderColor[0] : (border?.borderColor || '#000'),
+          setValue: (value: any) => [value, value, value, value]
         }
       }
     }

@@ -220,10 +220,11 @@ export const getDefaultEffect = (initConfig?: Partial<IEffect>): IEffect =>
     effectList: []
   }, initConfig)
 
-export const getDefaultEffectItem = (): IEffectItem => {
+export const getDefaultEffectItem = (target: string): IEffectItem => {
   return {
+    target,
     name: '',
-    duration: .3,
+    duration: .5,
     timingFunction: 'ease',
     styles: {
     },
