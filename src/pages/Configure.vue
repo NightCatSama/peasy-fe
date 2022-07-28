@@ -27,7 +27,6 @@ const handleDownload = async () => {
 }
 
 let showLeftPanel = $ref(false)
-let minimizeRight = $ref(false)
 
 onMounted(() => {
   getAssetsData()
@@ -68,9 +67,7 @@ watch(
         <!-- 页面编辑区 -->
         <EditSection></EditSection>
         <!-- 右侧组件参数配置区 -->
-        <div class="right" :style="{ marginRight: minimizeRight ? '-255px' : 0 }" @click="minimizeRight = !minimizeRight">
-          <ConfigSection></ConfigSection>
-        </div>
+        <ConfigSection></ConfigSection>
       </div>
     </div>
   </div>
@@ -89,7 +86,6 @@ watch(
   height: 100vh;
   overflow: hidden;
   background: $bg-default;
-
   .left-panel {
     position: absolute;
     left: 0;
@@ -103,18 +99,11 @@ watch(
       transform: translateX(0);
     }
   }
-
   .content {
     position: relative;
     flex: 1;
     display: flex;
     overflow: hidden;
-
-    .right {
-      width: $config-width;
-      flex-shrink: 0;
-      transition: all .3s;
-    }
   }
 }
 </style>

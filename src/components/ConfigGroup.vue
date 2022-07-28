@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GroupType } from '@/config'
+import { GroupType, groupIconMap } from '@/config'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import BasicGroup from './configs/BasicGroup.vue'
@@ -14,11 +14,14 @@ import PositionGroup from './configs/PositionGroup.vue'
 import EventGroup from './configs/EventGroup.vue'
 import AnimationGroup from './configs/AnimationGroup.vue'
 import EffectGroup from './configs/EffectGroup.vue'
+import Dropdown from './widgets/Dropdown.vue'
+import Icon from './widgets/Icon.vue'
 
 interface IConfigGroupProps {
   groupType: GroupType
+  minimize?: boolean
 }
-const { groupType } = defineProps<IConfigGroupProps>()
+const { groupType, minimize } = defineProps<IConfigGroupProps>()
 
 const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
@@ -47,10 +50,31 @@ const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
     class="config-group"
   >
     <Component
+      v-if="!minimize"
       :is="componentNameMap[groupType]"
       :node="activeNode"
       v-bind="activeNode.props"
     ></Component>
+    <Dropdown
+      v-else
+      :triggers="['hover']"
+      type="pure"
+      :is-menu="true"
+      :show-group="groupType"
+      :popper-class="'group-dropdown'"
+      placement="left-start"
+    >
+      <div class="config-group-mini-item">
+        <Icon :name="groupIconMap[groupType]" :size="16"></Icon>
+      </div>
+      <template #content>
+        <Component
+          :is="componentNameMap[groupType]"
+          :node="activeNode"
+          v-bind="activeNode.props"
+        ></Component>
+      </template>
+    </Dropdown>
   </div>
 </template>
 
@@ -76,6 +100,22 @@ const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
   &:last-child::after {
     top: auto;
     bottom: 0;
+  }
+
+  &-mini-item {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 44px;
+  }
+}
+
+</style>
+
+<style lang="scss">
+.group-dropdown {
+  .group {
+    width: 300px;
   }
 }
 </style>

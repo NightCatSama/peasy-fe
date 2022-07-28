@@ -58,6 +58,7 @@ const uploadImage = async (e: InputEvent) => {
 <template>
   <Group
     title="Background"
+    group-name="background"
     class="background-group"
     :can-advanced="false"
     :default-collapsed="false"

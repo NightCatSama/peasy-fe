@@ -43,7 +43,7 @@ const allPadding = $computed({
 </script>
 
 <template>
-  <Group title="Spacing" class="spacing-group" :can-advanced="false" :default-collapsed="false">
+  <Group title="Spacing" group-name="spacing" class="spacing-group" :can-advanced="false" :default-collapsed="false">
     <div class="spacing-block" data-text="Margin">
       <div class="margin-sign"></div>
       <div class="inner-block" data-text="Padding">

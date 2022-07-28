@@ -88,6 +88,7 @@ const timingFunction = {
 <template>
   <Group
     title="Effect"
+    group-name="effect"
     class="effect-group"
     :can-advanced="false"
     :default-collapsed="false"

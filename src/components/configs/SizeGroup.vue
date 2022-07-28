@@ -72,7 +72,7 @@ const list: any = $computed(() => [
 </script>
 
 <template>
-  <Group title="Size" class="size-group" :can-advanced="true" :default-collapsed="false">
+  <Group title="Size" group-name="size" class="size-group" :can-advanced="true" :default-collapsed="false">
     <template #default="{ showAdvanced }">
       <template v-for="(item, index) in list" :key="item.name">
         <InputItem

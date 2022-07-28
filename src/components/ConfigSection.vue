@@ -4,64 +4,98 @@ import { storeToRefs } from 'pinia'
 import ConfigGroup from './ConfigGroup.vue'
 import Icon from './widgets/Icon.vue'
 import Btn from './widgets/Btn.vue'
+import { useDisplayStore } from '@/stores/display'
 
 const pageStore = usePageStore()
 const { allPageData, activeNode, activeParentNode, activeNodeGroups } = storeToRefs(pageStore)
 const { setActiveNode, deleteActiveNode, copyActiveNode } = pageStore
+
+const displayStore = useDisplayStore()
+const { minimize } = storeToRefs(displayStore)
+const { setMinimize } = displayStore
+
 </script>
 
 <template>
-  <div class="config-section">
-    <div v-if="activeNode">
-      <div class="header">
-        <div class="config-info">
+  <div :class="['config-section', { minimize: minimize }]">
+    <Icon class="mini-btn" type="circle" name="down" :size="14" @click="setMinimize(!minimize)"></Icon>
+    <div class="config-mini-main">
+      <div class="top"></div>
+      <div class="mini-content" v-if="activeNode">
+        <ConfigGroup
+          v-for="(groupType, index) in activeNodeGroups"
+          :group-type="groupType"
+          :minimize="true"
+          :key="groupType + activeNode.name"
+        ></ConfigGroup>
+      </div>
+      <div class="bottom">
+        <Icon
+          class="op-icon copy-icon"
+          name="copy"
+          :size="16"
+          v-tooltip="{ content: 'Copy Node', placement: 'left-bottom' }"
+          @click="copyActiveNode"
+        ></Icon>
+        <Icon
+          class="op-icon delete-icon"
+          name="delete"
+          :size="16"
+          v-tooltip="{ content: 'Delete Node', placement: 'left-bottom' }"
+          @click="deleteActiveNode"
+        ></Icon>
+      </div>
+    </div>
+    <div class="config-main">
+      <div v-if="activeNode">
+        <div class="header">
           <div class="title">{{ activeNode.name }}</div>
           <Icon
-            class="icon copy-icon"
+            class="op-icon copy-icon"
             name="copy"
             :size="16"
             v-tooltip="'Copy Node'"
             @click="copyActiveNode"
           ></Icon>
           <Icon
-            class="icon delete-icon"
+            class="op-icon delete-icon"
             name="delete"
             :size="16"
             v-tooltip="'Delete Node'"
             @click="deleteActiveNode"
           ></Icon>
         </div>
+        <div class="content">
+          <ConfigGroup
+            v-for="(groupType, index) in activeNodeGroups"
+            :group-type="groupType"
+            :key="groupType + activeNode.name"
+          ></ConfigGroup>
+        </div>
       </div>
-      <div class="content">
-        <ConfigGroup
-          v-for="(groupType, index) in activeNodeGroups"
-          :group-type="groupType"
-          :key="groupType + activeNode.name"
-        ></ConfigGroup>
-      </div>
-    </div>
-    <div class="layers" v-else>
-      <div class="header">
-        <div class="title">Layers</div>
-      </div>
-      <div class="content layers-content">
-        <div :style="{ marginBottom: '20px', color: 'pink' }">TODO: 后续替换成 Tree</div>
-        <div v-for="(item, index) in allPageData" :key="item.name">
-          {{ item.name }}
-          <div
-            v-if="item.children"
-            v-for="subItem in item.children"
-            :style="{ marginLeft: 20 + 'px' }"
-            @click.stop="setActiveNode(subItem, item)"
-          >
-            - {{ subItem.name }}
+      <div class="layers" v-else>
+        <div class="header">
+          <div class="title">Layers</div>
+        </div>
+        <div class="content layers-content">
+          <div :style="{ marginBottom: '20px', color: 'pink' }">TODO: 后续替换成 Tree</div>
+          <div v-for="(item, index) in allPageData" :key="item.name">
+            {{ item.name }}
             <div
-              v-if="subItem.children"
-              v-for="son in subItem.children"
-              :style="{ marginLeft: 40 + 'px' }"
-              @click.stop="setActiveNode(son, subItem)"
+              v-if="item.children"
+              v-for="subItem in item.children"
+              :style="{ marginLeft: 20 + 'px' }"
+              @click.stop="setActiveNode(subItem, item)"
             >
-              - {{ son.name }}
+              - {{ subItem.name }}
+              <div
+                v-if="subItem.children"
+                v-for="son in subItem.children"
+                :style="{ marginLeft: 40 + 'px' }"
+                @click.stop="setActiveNode(son, subItem)"
+              >
+                - {{ son.name }}
+              </div>
             </div>
           </div>
         </div>
@@ -71,18 +105,81 @@ const { setActiveNode, deleteActiveNode, copyActiveNode } = pageStore
 </template>
 
 <style lang="scss" scoped>
+$mini-width: 50px;
+$header-height: 54px;
 .config-section {
+  position: relative;
   color: $color;
   background: $panel;
   height: 100%;
-  overflow-y: auto;
   display: flex;
   flex-direction: column;
+  width: $config-width;
+  flex-shrink: 0;
+  transition: all .3s;
+  will-change: margin-right;
+
+  .config-main {
+    width: 100%;
+    height: 100%;
+    overflow-y: auto;
+  }
+
+  .config-mini-main {
+    position: absolute;
+    top: 0;
+    left: 100%;
+    width: $mini-width;
+    height: 100%;
+    background: $panel;
+    transition: all .3s;
+    opacity: 0;
+    z-index: 9;
+    display: flex;
+    flex-direction: column;
+
+    .top {
+      width: 100%;
+      height: $header-height;
+    }
+  }
+
+  &.minimize {
+    margin-right: -($config-width - $mini-width);
+
+    .config-main {
+      opacity: 0;
+    }
+    .config-mini-main {
+      left: 0;
+      opacity: 1;
+    }
+    .mini-btn {
+      transform: translateX(40px) rotateZ(90deg);
+    }
+  }
+
+  .mini-btn {
+    position: absolute;
+    right: 100%;
+    top: 13px;
+    padding: 8px;
+    z-index: 100;
+    transform: translateX(-10px) rotateZ(-90deg);
+    background-color: $panel-light;
+    transition: all .3s;
+    cursor: pointer;
+
+    &:hover {
+      background-color: $theme;
+    }
+  }
 
   .header {
     display: flex;
-    padding: 16px 16px 10px;
-    flex-direction: column;
+    padding: 0 16px;
+    height: $header-height;
+    align-items: center;
 
     .title {
       flex: 1;
@@ -93,32 +190,30 @@ const { setActiveNode, deleteActiveNode, copyActiveNode } = pageStore
       color: $yellow;
       text-overflow: ellipsis;
     }
-    .icon {
-      width: 24px;
-      height: 24px;
-      cursor: pointer;
-      margin-left: 4px;
-      transition: all 0.1s;
+  }
 
-      &.delete-icon {
-        color: $color;
+  .mini-content {
+    flex: 1;
+    overflow-y: auto;
+  }
 
-        &:hover {
-          color: $red;
-        }
-      }
-      &.copy-icon {
-        color: $color;
+  .bottom {
+    display: flex;
+    flex-direction: column;
+    padding-bottom: 20px;
 
-        &:hover {
-          color: $theme;
-        }
-      }
-    }
-
-    .config-info {
+    .op-icon {
+      width: 100%;
+      height: 44px;
       display: flex;
-      margin-bottom: 6px;
+      justify-content: center;
+      align-items: center;
+      border-top: 1px solid $border;
+      border-radius: 0;
+      margin-left: 0;
+      &:last-child {
+        border-bottom: 1px solid $border;
+      }
     }
   }
 
@@ -138,6 +233,29 @@ const { setActiveNode, deleteActiveNode, copyActiveNode } = pageStore
     background: $panel-content;
     flex: 1;
     overflow: auto;
+  }
+}
+
+.op-icon {
+  width: 24px;
+  height: 24px;
+  cursor: pointer;
+  margin-left: 4px;
+  transition: all 0.1s;
+
+  &.delete-icon {
+    color: $color;
+
+    &:hover {
+      color: $red;
+    }
+  }
+  &.copy-icon {
+    color: $color;
+
+    &:hover {
+      color: $theme;
+    }
   }
 }
 </style>

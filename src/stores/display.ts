@@ -48,6 +48,8 @@ export const useDisplayStore = defineStore('display', {
     displayMode: 'edit' as DisplayMode,
     /** 手动锁定拖拽修改 position */
     lockDragSetPosition: false,
+    /** 是否右侧设置栏收起状态 */
+    minimize: true
   }),
   getters: {
     /** 当前展示的宽高（缩放后） */
@@ -86,5 +88,8 @@ export const useDisplayStore = defineStore('display', {
     setLockDragSetPosition(lock: boolean) {
       this.lockDragSetPosition = lock
     },
+    setMinimize(minimize: boolean) {
+      this.minimize = minimize
+    }
   },
 })

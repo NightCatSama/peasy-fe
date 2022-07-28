@@ -81,7 +81,7 @@ const textShadowPreset = [
 </script>
 
 <template>
-  <Group title="Font" class="size-group" :can-advanced="true" :default-collapsed="false">
+  <Group title="Font" group-name="font" class="size-group" :can-advanced="true" :default-collapsed="false">
     <template #default="{ showAdvanced }">
       <InputItem
         :label="fontSetting.fontSize.name"

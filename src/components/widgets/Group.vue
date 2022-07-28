@@ -1,15 +1,19 @@
 <script setup lang="ts">
 import { useDisplayStore } from '@/stores/display'
 import { onMounted, onUpdated, watchEffect } from 'vue'
+import { groupIconMap } from '@/config'
 import Icon from './Icon.vue'
+import { storeToRefs } from 'pinia';
 interface IGroupProps {
   title: string
+  groupName: string
   defaultCollapsed?: boolean
   canAdvanced?: boolean
 }
-const { title, defaultCollapsed = true, canAdvanced } = defineProps<IGroupProps>()
+const { title, groupName, defaultCollapsed = true, canAdvanced } = defineProps<IGroupProps>()
 
 const displayStore = useDisplayStore()
+const { minimize } = storeToRefs(displayStore)
 const { saveGroupStatus, getGroupStatus } = displayStore
 
 const status = getGroupStatus(title)
@@ -20,32 +24,18 @@ let showAdvanced = $ref(status ? status.advanced : false)
 onUpdated(() => {
   saveGroupStatus(title, { collapsed, advanced: showAdvanced })
 })
-
-const iconName = {
-  Layout: 'layout',
-  Size: 'size',
-  Spacing: 'spacing',
-  Border: 'border',
-  Font: 'font',
-  Background: 'background',
-  Container: 'container',
-  Basic: 'basic',
-  Position: 'absolute',
-  Event: 'event',
-  Animation: 'animation',
-  Effect: 'effect',
-} as any
 </script>
 
 <template>
   <div class="group">
     <div class="info">
-      <span class="title" @click="collapsed = !collapsed">
-        <Icon class="icon" :name="iconName[title]" :size="14"></Icon>
+      <span class="title" @click="minimize ? (collapsed = !collapsed) : null">
+        <Icon class="icon" :name="groupIconMap[groupName]" :size="14"></Icon>
         <span>{{ title }}</span>
       </span>
       <span class="info-op">
         <Icon
+          v-if="!minimize"
           :class="{ rotate: collapsed }"
           @click="collapsed = !collapsed"
           name="down"
@@ -54,7 +44,7 @@ const iconName = {
         />
       </span>
     </div>
-    <div class="content" v-collapse="collapsed">
+    <div class="content" v-collapse="minimize || collapsed">
       <slot :showAdvanced="showAdvanced"></slot>
       <div class="advanced-switch" v-if="canAdvanced" @click="showAdvanced = !showAdvanced">
         <span>{{ !showAdvanced ? 'Advanced Options' : 'Hide Advanced Options' }}</span>

@@ -1,37 +1,50 @@
 <script setup lang="ts">
+import { Menu as VMenu } from 'floating-vue'
 import { Dropdown as VDropdown } from 'floating-vue'
 interface IDropdownProps {
   type?: 'default' | 'color-picker' | 'pure'
   disabled?: boolean
   triggers?: string[]
   placement?: string
+  popperClass?: string
+  delay?: any
+  isMenu?: boolean
+  showGroup?: string
 }
 const {
   type = 'default',
   disabled,
   triggers = ['click'],
   placement = 'bottom-end',
+  popperClass = '',
+  delay,
+  isMenu,
+  showGroup,
 } = defineProps<IDropdownProps>()
 
 const distance = type === 'color-picker' ? 10 : 5
 </script>
 
 <template>
-  <VDropdown
+  <component
+    :is="isMenu ? VMenu : VDropdown"
     :disabled="disabled"
     :triggers="triggers"
-    :popperClass="['dropdown-popper', `dropdown-popper-${type}`]"
+    :popperClass="['dropdown-popper', `dropdown-popper-${type}`, popperClass]"
     :distance="distance"
     :arrow-padding="10"
     :placement="placement"
-    auto-hide
+    :delay="delay"
+    :show-group="showGroup"
+    :instant-move="true"
+    :auto-hide="!isMenu"
     v-bind="$attrs"
   >
     <slot></slot>
     <template #popper="{ hide }">
       <slot name="content" :hide="hide"></slot>
     </template>
-  </VDropdown>
+  </component>
 </template>
 
 <style lang="scss">
