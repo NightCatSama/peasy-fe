@@ -1,16 +1,17 @@
 <script setup lang="ts">
 import { useDisplayStore } from '@/stores/display'
 import { onMounted, onUpdated, watchEffect } from 'vue'
-import { groupIconMap } from '@/config'
+import { groupIconMap, defaultGroupIcon } from '@/config'
 import Icon from './Icon.vue'
 import { storeToRefs } from 'pinia';
 interface IGroupProps {
   title: string
-  groupName: string
+  groupName?: string
+  icon?: string
   defaultCollapsed?: boolean
   canAdvanced?: boolean
 }
-const { title, groupName, defaultCollapsed = true, canAdvanced } = defineProps<IGroupProps>()
+const { title, groupName, icon, defaultCollapsed = true, canAdvanced } = defineProps<IGroupProps>()
 
 const displayStore = useDisplayStore()
 const { minimize } = storeToRefs(displayStore)
@@ -24,13 +25,15 @@ let showAdvanced = $ref(status ? status.advanced : false)
 onUpdated(() => {
   saveGroupStatus(title, { collapsed, advanced: showAdvanced })
 })
+
+const iconName = $computed(() => icon || groupIconMap[groupName || defaultGroupIcon])
 </script>
 
 <template>
   <div class="group">
     <div class="info">
-      <span class="title" @click="minimize ? (collapsed = !collapsed) : null">
-        <Icon class="icon" :name="groupIconMap[groupName]" :size="14"></Icon>
+      <span class="title" @click="!minimize ? (collapsed = !collapsed) : null">
+        <Icon class="icon" :name="iconName" :size="14"></Icon>
         <span>{{ title }}</span>
       </span>
       <span class="info-op">

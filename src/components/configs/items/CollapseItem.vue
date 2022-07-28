@@ -2,7 +2,7 @@
 import Icon from '@/components/widgets/Icon.vue';
 
 interface ICollapseItemProps {
-  name: string
+  name?: string
   collapsed: boolean
   tag?: string | string[]
   tagType?: 'default' | 'red' | 'theme'
@@ -22,7 +22,9 @@ const tags = $computed(() => !tag ? [] : Array.isArray(tag) ? tag : [tag])
   <div :class="['item column collapse-item', { active: collapsed }]">
     <div class="collapse-content">
       <div class="collapse-header" @click="() => $emit('collapse', !collapsed)">
-        <div class="collapse-name">{{ name }}</div>
+        <div class="collapse-name">
+          <slot name="name">{{ name }}</slot>
+        </div>
         <div v-for="item in tags" :class="['collapse-tag', `collapse-tag-${tagType}`]" v-show="item">{{ item }}</div>
         <Icon class="close-btn" name="close" :size="18" @click.stop="$emit('delete')"></Icon>
       </div>
@@ -70,6 +72,7 @@ const tags = $computed(() => !tag ? [] : Array.isArray(tag) ? tag : [tag])
         margin-right: 4px;
         color: $color;
         white-space: nowrap;
+        flex-shrink: 0;
         transform: scale(.9);
         transform-origin: right center;
 
@@ -88,6 +91,7 @@ const tags = $computed(() => !tag ? [] : Array.isArray(tag) ? tag : [tag])
       }
 
       .close-btn {
+        flex-shrink: 0;
         padding: 2px;
         color: darken($color, 27%);
         &:hover {

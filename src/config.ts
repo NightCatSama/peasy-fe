@@ -92,6 +92,35 @@ export interface PageNode<T extends ComponentName = any> {
   children?: PageNode[]
   /** 组件封面图，在物料栏里展示 */
   cover?: string
+  /** 是否已封装成模块 */
+  isModule?: boolean
+  /** 模块设置 */
+  moduleConfig?: IModuleConfigItem[]
+}
+
+/** 模块配置支持类型 */
+export const enum ModuleConfigType {
+  /** 按钮 */
+  Btn = 'btn',
+  /** 文本 */
+  Text = 'text',
+  /** 颜色 */
+  Color = 'color',
+  /** 字体大小 */
+  FontSize = 'fontSize',
+  /** 一组数据 */
+  Group = 'group'
+}
+export interface IModuleConfigItem {
+  /** 配置类型 */
+  type: ModuleConfigType
+  /** 配置名称 */
+  title: string
+  /** 分组数据 */
+  group?: {
+    groupName: string;
+    data: IModuleConfigItem[]
+  }
 }
 
 /** 判断是否某个基础类型 */
@@ -122,3 +151,5 @@ export const groupIconMap = {
   animation: 'animation',
   effect: 'effect',
 } as any
+
+export const defaultGroupIcon = 'basic'

@@ -98,12 +98,19 @@ const timingFunction = {
       class="animation-item"
       :key="index"
       :collapsed="index === collapsedIndex || !item.name"
-      :name="item.name || 'Choose a style'"
       :tag="index === collapsedIndex ? '' : Object.keys(item.styles).length ? Object.keys(item.styles) : ''"
       :tag-type="Object.keys(item.styles).length ? 'theme' : 'red'"
       @delete="() => effect.effectList.splice(index, 1)"
       @collapse="() => collapsedIndex = collapsedIndex === index ? -1 : index"
     >
+      <template #name>
+        <span v-if="!item.name">Choose a style</span>
+        <span v-else-if="item.target && item.target !== node.name">
+          <span class="highlight">{{ item.target }}<br/></span>
+          <span>{{ item.name }}</span>
+        </span>
+        <span v-else>{{ item.name }}</span>
+      </template>
       <template #default>
         <SelectItem
           v-if="childrenNodeList.length > 1"
@@ -170,5 +177,10 @@ const timingFunction = {
 
 <style lang="scss" scoped>
 .effect-group {
+  .highlight {
+    color: $orange;
+    font-weight: bold;
+    margin-bottom: 4px;
+  }
 }
 </style>

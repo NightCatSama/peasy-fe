@@ -29,19 +29,19 @@ const { setMinimize } = displayStore
           :key="groupType + activeNode.name"
         ></ConfigGroup>
       </div>
-      <div class="bottom">
+      <div class="bottom" v-if="activeNode">
         <Icon
           class="op-icon copy-icon"
           name="copy"
           :size="16"
-          v-tooltip="{ content: 'Copy Node', placement: 'left-bottom' }"
+          v-tooltip="{ content: 'Copy Node', placement: 'left' }"
           @click="copyActiveNode"
         ></Icon>
         <Icon
           class="op-icon delete-icon"
           name="delete"
           :size="16"
-          v-tooltip="{ content: 'Delete Node', placement: 'left-bottom' }"
+          v-tooltip="{ content: 'Delete Node', placement: 'left' }"
           @click="deleteActiveNode"
         ></Icon>
       </div>
@@ -163,7 +163,7 @@ $header-height: 54px;
     position: absolute;
     right: 100%;
     top: 13px;
-    padding: 8px;
+    padding: 6px;
     z-index: 100;
     transform: translateX(-10px) rotateZ(-90deg);
     background-color: $panel-light;
