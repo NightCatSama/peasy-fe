@@ -1,4 +1,4 @@
-import { PageNode, PropsTypes } from '@/config'
+import { ModuleConfigType, PageNode, PropsTypes } from '@/config'
 import {
   getDefaultAnimation,
   getDefaultBackground,
@@ -20,6 +20,47 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
     type: type,
     name: name || (type === 'component' ? 'Block' : 'Section'),
     component: 'Block',
+    isModule: true,
+    moduleConfig: [{
+      /** 配置名称 */
+      title: 'Text',
+      defaultCollapsed: true,
+      /** 分组数据 */
+      data: [
+        {
+          type: ModuleConfigType.Text,
+          label: '文本',
+          props: {
+            type: 'textarea',
+            realTime: true
+          },
+          getValue: (node: PageNode) => {
+            return node.children?.[0]?.children?.[1]?.props?.basic?.text
+          },
+          setValue: (value: string, node: PageNode) => {
+            if (node.children?.[0]?.children?.[1]?.props?.basic?.text !== void 0) {
+              node.children[0].children[1].props.basic.text = value
+            }
+          }
+        },
+        {
+          type: ModuleConfigType.Color,
+          label: '颜色',
+          props: {
+          },
+          getValue: (node: PageNode) => {
+            return node.children?.[0]?.children?.[1]?.props?.font?.color
+          },
+          setValue: (value: string, node: PageNode) => {
+            if (node.children?.[0]?.children?.[1]?.props?.font?.color !== void 0) {
+              node.children[0].children[1].props.font.color = value
+            }
+          }
+        },
+      ],
+      /** 图标 */
+      icon: 'font',
+    }],
     props: {
       size: getDefaultSize(type),
       layout: getDefaultLayout(),
@@ -72,7 +113,7 @@ export const getMockText = (): PageNode<'Text'> => {
     component: 'Text',
     props: {
       basic: getDefaultBasic('Text'),
-      font: getDefaultFont({ fontSize: '100px' }),
+      font: getDefaultFont({ fontSize: '30px' }),
       spacing: getDefaultSpacing({ margin: [50, 50, 50, 50] }),
       border: getDefaultBorder(),
       background: getDefaultBackground(),

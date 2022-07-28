@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { GroupType, groupIconMap } from '@/config'
+import { GroupType, groupIconMap, defaultGroupIcon } from '@/config'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import BasicGroup from './configs/BasicGroup.vue'
@@ -16,12 +16,14 @@ import AnimationGroup from './configs/AnimationGroup.vue'
 import EffectGroup from './configs/EffectGroup.vue'
 import Dropdown from './widgets/Dropdown.vue'
 import Icon from './widgets/Icon.vue'
+import CustomGroup from './configs/CustomGroup.vue'
 
 interface IConfigGroupProps {
   groupType: GroupType
+  index: number
   minimize?: boolean
 }
-const { groupType, minimize } = defineProps<IConfigGroupProps>()
+const { groupType, index, minimize } = defineProps<IConfigGroupProps>()
 
 const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
@@ -39,9 +41,14 @@ const componentNameMap: { [type in GroupType]: any | null } = {
   event: EventGroup,
   effect: EffectGroup,
   animation: AnimationGroup,
+  custom: CustomGroup,
 }
 
 const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
+
+const bindProps = $computed(() => activeNode.value?.isModule ? activeNode.value.moduleConfig?.[index] : activeNode.value?.props)
+
+const iconName = $computed(() => bindProps?.icon || groupIconMap[groupType] || defaultGroupIcon)
 </script>
 
 <template>
@@ -53,7 +60,7 @@ const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
       v-if="!minimize"
       :is="componentNameMap[groupType]"
       :node="activeNode"
-      v-bind="activeNode.props"
+      v-bind="bindProps"
     ></Component>
     <Dropdown
       v-else
@@ -65,13 +72,13 @@ const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
       placement="left-start"
     >
       <div class="config-group-mini-item">
-        <Icon :name="groupIconMap[groupType]" :size="16"></Icon>
+        <Icon :name="iconName" :size="16"></Icon>
       </div>
       <template #content>
         <Component
           :is="componentNameMap[groupType]"
           :node="activeNode"
-          v-bind="activeNode.props"
+          v-bind="bindProps"
         ></Component>
       </template>
     </Dropdown>

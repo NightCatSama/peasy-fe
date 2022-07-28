@@ -3,12 +3,11 @@ import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import ConfigGroup from './ConfigGroup.vue'
 import Icon from './widgets/Icon.vue'
-import Btn from './widgets/Btn.vue'
 import { useDisplayStore } from '@/stores/display'
 
 const pageStore = usePageStore()
 const { allPageData, activeNode, activeParentNode, activeNodeGroups } = storeToRefs(pageStore)
-const { setActiveNode, deleteActiveNode, copyActiveNode } = pageStore
+const { setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } = pageStore
 
 const displayStore = useDisplayStore()
 const { minimize } = storeToRefs(displayStore)
@@ -25,23 +24,32 @@ const { setMinimize } = displayStore
         <ConfigGroup
           v-for="(groupType, index) in activeNodeGroups"
           :group-type="groupType"
+          :index="index"
           :minimize="true"
           :key="groupType + activeNode.name"
         ></ConfigGroup>
       </div>
       <div class="bottom" v-if="activeNode">
         <Icon
+          v-if="activeNode.isModule"
+          class="op-icon separate-icon"
+          name="separate"
+          :size="16"
+          v-tooltip="{ content: 'Ungroup', placement: 'left' }"
+          @click="separateActiveNode"
+        ></Icon>
+        <Icon
           class="op-icon copy-icon"
           name="copy"
           :size="16"
-          v-tooltip="{ content: 'Copy Node', placement: 'left' }"
+          v-tooltip="{ content: 'Copy', placement: 'left' }"
           @click="copyActiveNode"
         ></Icon>
         <Icon
           class="op-icon delete-icon"
           name="delete"
           :size="16"
-          v-tooltip="{ content: 'Delete Node', placement: 'left' }"
+          v-tooltip="{ content: 'Delete', placement: 'left' }"
           @click="deleteActiveNode"
         ></Icon>
       </div>
@@ -51,17 +59,25 @@ const { setMinimize } = displayStore
         <div class="header">
           <div class="title">{{ activeNode.name }}</div>
           <Icon
+            v-if="activeNode.isModule"
+            class="op-icon separate-icon"
+            name="separate"
+            :size="16"
+            v-tooltip="'Ungroup'"
+            @click="separateActiveNode"
+          ></Icon>
+          <Icon
             class="op-icon copy-icon"
             name="copy"
             :size="16"
-            v-tooltip="'Copy Node'"
+            v-tooltip="'Copy'"
             @click="copyActiveNode"
           ></Icon>
           <Icon
             class="op-icon delete-icon"
             name="delete"
             :size="16"
-            v-tooltip="'Delete Node'"
+            v-tooltip="'Delete'"
             @click="deleteActiveNode"
           ></Icon>
         </div>
@@ -69,6 +85,7 @@ const { setMinimize } = displayStore
           <ConfigGroup
             v-for="(groupType, index) in activeNodeGroups"
             :group-type="groupType"
+            :index="index"
             :key="groupType + activeNode.name"
           ></ConfigGroup>
         </div>
@@ -211,6 +228,7 @@ $header-height: 54px;
       border-top: 1px solid $border;
       border-radius: 0;
       margin-left: 0;
+      cursor: pointer;
       &:last-child {
         border-bottom: 1px solid $border;
       }
@@ -255,6 +273,13 @@ $header-height: 54px;
 
     &:hover {
       color: $theme;
+    }
+  }
+  &.separate-icon {
+    color: $color;
+
+    &:hover {
+      color: $pink;
     }
   }
 }

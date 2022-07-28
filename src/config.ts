@@ -42,6 +42,7 @@ export type GroupType =
   | 'event'
   | 'effect'
   | 'animation'
+  | 'custom'
 
 /** 配置对应约束类型 */
 export interface GroupPropType<T extends ComponentName = any> {
@@ -95,32 +96,39 @@ export interface PageNode<T extends ComponentName = any> {
   /** 是否已封装成模块 */
   isModule?: boolean
   /** 模块设置 */
-  moduleConfig?: IModuleConfigItem[]
+  moduleConfig?: IModuleConfigGroup[]
 }
 
 /** 模块配置支持类型 */
 export const enum ModuleConfigType {
   /** 按钮 */
-  Btn = 'btn',
+  // Btn = 'btn',
   /** 文本 */
   Text = 'text',
   /** 颜色 */
   Color = 'color',
   /** 字体大小 */
-  FontSize = 'fontSize',
+  // FontSize = 'fontSize',
   /** 一组数据 */
-  Group = 'group'
+  // Group = 'group'
 }
-export interface IModuleConfigItem {
-  /** 配置类型 */
-  type: ModuleConfigType
+export interface IModuleConfigGroup {
   /** 配置名称 */
   title: string
   /** 分组数据 */
-  group?: {
-    groupName: string;
-    data: IModuleConfigItem[]
-  }
+  data: IModuleConfigItem[]
+  /** 图标 */
+  icon?: string
+  /** 是否默认展开 */
+  defaultCollapsed?: boolean
+}
+/** 模块单项配置 */
+export interface IModuleConfigItem {
+  type: ModuleConfigType
+  label: string
+  props?: any
+  getValue?: (node: PageNode) => any
+  setValue?: (value: any, node: PageNode) => void
 }
 
 /** 判断是否某个基础类型 */

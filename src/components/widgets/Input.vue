@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { emitter } from '@/utils/event';
 import { covertSizeToOtherUnit, fixedPointToNumber, isUnitType } from '@/utils/sizeHelper'
 import { watchEffect, defineEmits, nextTick, watch, onMounted } from 'vue'
 import Select from './Select.vue'
@@ -121,7 +122,19 @@ const handleSuffixClick = (key: SuffixType) => {
   nextTick(() => inputRef?.focus?.())
 }
 
-const handleInput = (e: any) => realTime && handleChange(e)
+const handleInput = (e: Event) => realTime && handleChange(e)
+
+const handleFocus = (e: Event) => {
+  focus = true
+  emitter.emit('focus', e)
+}
+
+const handleBlur = (e: Event) => {
+  focus = false
+  onBlur?.()
+  handleChange(e)
+  emitter.emit('blur', e)
+}
 
 onMounted(() => {
   if (autoFocus) inputRef?.focus()
@@ -141,12 +154,8 @@ onMounted(() => {
       :rows="4"
       v-bind="$attrs"
       @keyup.enter="handleChange"
-      @focus="focus = true"
-      @blur="(e: Event) => {
-        focus = false
-        onBlur?.()
-        handleChange(e)
-      }"
+      @focus="handleFocus"
+      @blur="handleBlur"
       @input.stop.prevent="handleInput"
     />
     <slot name="suffix">
@@ -184,6 +193,7 @@ onMounted(() => {
 
   &.focus {
     border-color: $theme;
+    pointer-events: none;
   }
 
   input,

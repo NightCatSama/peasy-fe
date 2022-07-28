@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
-import { PageNode, isSomeBasicType, DefaultIconStyleLink, IModuleConfigItem } from '@/config'
+import { PageNode, isSomeBasicType, DefaultIconStyleLink, IModuleConfigItem, ModuleConfigType } from '@/config'
 import ImageItem from './items/ImageItem.vue'
 import SelectItem from './items/SelectItem.vue'
 import { usePageStore } from '@/stores/page'
@@ -11,6 +11,7 @@ import Tip from '../widgets/Tip.vue'
 
 interface ICustomGroupProps {
   node: PageNode
+  title: string
   /** 图标 */
   icon?: string
   /** 是否默认展开 */
@@ -18,24 +19,30 @@ interface ICustomGroupProps {
   /** 展示数据 */
   data: IModuleConfigItem[]
 }
-const { node, icon, data, defaultCollapsed } = defineProps<ICustomGroupProps>()
+const { node, title, icon, data, defaultCollapsed } = defineProps<ICustomGroupProps>()
 
-interface ShowItem {
-  isAdvanced?: boolean
-  component: any
-  props: any
-  setValue?: (val: any) => void
-  hide?: boolean
-}
+const getComponentByType = (type: ModuleConfigType) => ({
+  [ModuleConfigType.Text]: InputItem,
+  [ModuleConfigType.Color]: ColorItem,
+})[type]
 </script>
 
 <template>
   <Group
-    title="Basic"
-    group-name="basic"
+    :title="title"
+    :icon="icon"
     class="basic-group"
     :default-collapsed="defaultCollapsed"
   >
+    <template v-for="item in data">
+      <component
+        :is="getComponentByType(item.type)"
+        :model-value="item.getValue?.(node) || ''"
+        :label="item.label"
+        v-bind="item.props || {}"
+        @update:model-value="(val: any) => item.setValue?.(val, node)"
+      ></component>
+    </template>
   </Group>
 </template>
 

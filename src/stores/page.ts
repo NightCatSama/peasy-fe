@@ -34,7 +34,11 @@ export const usePageStore = defineStore('page', {
   getters: {
     /** 当前激活节点对应的配置数据 */
     activeNodeGroups: (state) =>
-      state.activeNode ? ComponentPropsGroup[state.activeNode.component as ComponentName] : null,
+      state.activeNode
+        ? state.activeNode.isModule
+          ? new Array(state.activeNode?.moduleConfig?.length || 0).fill('custom')
+          : ComponentPropsGroup[state.activeNode.component as ComponentName]
+        : null,
     isActiveAllSection: (state) => state.activeSection === null,
     /** 当前预览的展示数据 */
     pageData: (state): typeof state.allPageData => {
@@ -53,6 +57,7 @@ export const usePageStore = defineStore('page', {
         })
       }
       dfs(state.allPageData)
+      console.log('getNameMap => ');
       return nameMap
     },
     getActiveNodeRound:
@@ -174,7 +179,12 @@ export const usePageStore = defineStore('page', {
     },
     /** 添加节点链 */
     addActiveParentChain(node: PageNode) {
-      this.activeParentChain.push(node)
+      if (node.isModule && !this.activeNode?.isModule) {
+        this.activeNode = node
+        this.activeParentChain.length = 0
+      } else {
+        this.activeParentChain.push(node)
+      }
     },
     /** 移除当前节点 */
     deleteActiveNode() {
@@ -216,5 +226,10 @@ export const usePageStore = defineStore('page', {
     setActiveSection(node: PageNode | null) {
       this.activeSection = node
     },
+    separateActiveNode() {
+      if (!this.activeNode) return
+      this.activeNode.isModule = false
+      delete this.activeNode.moduleConfig
+    }
   },
 })

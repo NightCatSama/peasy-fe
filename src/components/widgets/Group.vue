@@ -26,7 +26,7 @@ onUpdated(() => {
   saveGroupStatus(title, { collapsed, advanced: showAdvanced })
 })
 
-const iconName = $computed(() => icon || groupIconMap[groupName || defaultGroupIcon])
+const iconName = $computed(() => icon || groupIconMap[groupName!] || defaultGroupIcon)
 </script>
 
 <template>
