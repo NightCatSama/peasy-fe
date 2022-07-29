@@ -108,7 +108,7 @@ export const enum ModuleConfigType {
   /** 颜色 */
   Color = 'color',
   /** 字体大小 */
-  // FontSize = 'fontSize',
+  FontSize = 'fontSize',
   /** 一组数据 */
   // Group = 'group'
 }
@@ -144,20 +144,3 @@ export const DefaultIconStyleLink =
   '//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
 
 export const getUniqueName = (name: string) => `__${name}__`
-
-export const groupIconMap = {
-  layout: 'layout',
-  size: 'size',
-  spacing: 'spacing',
-  border: 'border',
-  font: 'font',
-  background: 'background',
-  container: 'container',
-  basic: 'basic',
-  position: 'absolute',
-  event: 'event',
-  animation: 'animation',
-  effect: 'effect',
-} as any
-
-export const defaultGroupIcon = 'basic'

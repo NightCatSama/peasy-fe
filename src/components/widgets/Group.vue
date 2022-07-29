@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useDisplayStore } from '@/stores/display'
 import { onMounted, onUpdated, watchEffect } from 'vue'
-import { groupIconMap, defaultGroupIcon } from '@/config'
+import { groupIconMap, defaultGroupIcon } from '@/constants/group'
 import Icon from './Icon.vue'
 import { storeToRefs } from 'pinia';
 interface IGroupProps {

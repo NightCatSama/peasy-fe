@@ -8,6 +8,7 @@ import { usePageStore } from '@/stores/page'
 import SliderItem from './items/SliderItem.vue'
 import ColorItem from './items/ColorItem.vue'
 import Tip from '../widgets/Tip.vue'
+import { getFormPropsByType } from '@/constants/form'
 
 interface ICustomGroupProps {
   node: PageNode
@@ -21,10 +22,7 @@ interface ICustomGroupProps {
 }
 const { node, title, icon, data, defaultCollapsed } = defineProps<ICustomGroupProps>()
 
-const getComponentByType = (type: ModuleConfigType) => ({
-  [ModuleConfigType.Text]: InputItem,
-  [ModuleConfigType.Color]: ColorItem,
-})[type]
+const getComponentData = (type: string) => getFormPropsByType(type)
 </script>
 
 <template>
@@ -36,10 +34,10 @@ const getComponentByType = (type: ModuleConfigType) => ({
   >
     <template v-for="item in data">
       <component
-        :is="getComponentByType(item.type)"
+        :is="getComponentData(item.type).component"
         :model-value="item.getValue?.(node) || ''"
         :label="item.label"
-        v-bind="item.props || {}"
+        v-bind="{ ...getComponentData(item.type).props, ...item.props }"
         @update:model-value="(val: any) => item.setValue?.(val, node)"
       ></component>
     </template>

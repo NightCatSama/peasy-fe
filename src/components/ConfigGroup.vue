@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { GroupType, groupIconMap, defaultGroupIcon } from '@/config'
+import { GroupType } from '@/config'
+import { groupIconMap, defaultGroupIcon } from '@/constants/group'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import BasicGroup from './configs/BasicGroup.vue'

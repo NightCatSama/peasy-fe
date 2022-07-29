@@ -26,7 +26,7 @@ const { setMinimize } = displayStore
           :group-type="groupType"
           :index="index"
           :minimize="true"
-          :key="groupType + activeNode.name"
+          :key="groupType + activeNode.name + '_mini'"
         ></ConfigGroup>
       </div>
       <div class="bottom" v-if="activeNode">

@@ -30,10 +30,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
         {
           type: ModuleConfigType.Text,
           label: '文本',
-          props: {
-            type: 'textarea',
-            realTime: true
-          },
+          props: {},
           getValue: (node: PageNode) => {
             return node.children?.[0]?.children?.[1]?.props?.basic?.text
           },
@@ -46,14 +43,26 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
         {
           type: ModuleConfigType.Color,
           label: '颜色',
-          props: {
-          },
+          props: {},
           getValue: (node: PageNode) => {
             return node.children?.[0]?.children?.[1]?.props?.font?.color
           },
           setValue: (value: string, node: PageNode) => {
             if (node.children?.[0]?.children?.[1]?.props?.font?.color !== void 0) {
               node.children[0].children[1].props.font.color = value
+            }
+          }
+        },
+        {
+          type: ModuleConfigType.FontSize,
+          label: '文字大小',
+          props: {},
+          getValue: (node: PageNode) => {
+            return node.children?.[0]?.children?.[1]?.props?.font?.fontSize
+          },
+          setValue: (value: string, node: PageNode) => {
+            if (node.children?.[0]?.children?.[1]?.props?.font?.fontSize !== void 0) {
+              node.children[0].children[1].props.font.fontSize = value
             }
           }
         },

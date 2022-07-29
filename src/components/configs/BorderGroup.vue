@@ -41,12 +41,19 @@ const showList: any = $computed(() => {
       name: 'Border Color',
       type: 'color',
       value:
-        curShowBorderIndex > -1 ? border.borderColor[curShowBorderIndex] : border.borderColor[0],
+        Array.isArray(border.borderColor)
+          ? curShowBorderIndex > -1
+            ? border.borderColor[curShowBorderIndex]
+            : border.borderColor[0]
+          : border.borderColor,
       setValue: (value: string) => {
         if (curShowBorderIndex === -1) {
           border.borderColor = value
         } else {
-          Array.isArray(border.borderColor) ? border.borderColor.splice(curShowBorderIndex, 1, value) : (border.borderColor = value)
+          if (!Array.isArray(border.borderColor)) {
+            border.borderColor = (new Array(4).fill(border.borderColor as string) as [string, string, string, string])
+          }
+          border.borderColor.splice(curShowBorderIndex, 1, value)
         }
       },
     },

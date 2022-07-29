@@ -1,12 +1,10 @@
-import ColorItemVue from "@/components/configs/items/ColorItem.vue";
-import InputItemVue from "@/components/configs/items/InputItem.vue";
-import SliderItemVue from "@/components/configs/items/SliderItem.vue";
 import { ComponentName, ComponentPropsGroup, GroupType, isSomeBasicType, PageNode } from "@/config";
+import { getFormPropsByType } from "@/constants/form";
 
 export interface IEffectShowItem {
   label: string
   component: any
-  handler: any
+  props: any
   defaultValue: any
   setValue?: (value: any) => any
 }
@@ -33,19 +31,12 @@ export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): 
       return {
         color: {
           label: 'Font Color',
-          component: ColorItemVue,
-          handler: {
-          },
+          ...getFormPropsByType('color'),
           defaultValue: (node?.props?.font as IFont)?.color ?? '#000',
         },
         fontSize: {
           label: 'Font Size',
-          component: InputItemVue,
-          handler: {
-            name: 'Font Size',
-            type: 'number',
-            suffix: ['px', 'rem', 'vw'],
-          },
+          ...getFormPropsByType('fontSize'),
           defaultValue: (node?.props?.font as IFont)?.fontSize ?? '18px',
         }
       }
@@ -54,9 +45,7 @@ export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): 
       return {
         borderColor: {
           label: 'Border Color',
-          component: ColorItemVue,
-          handler: {
-          },
+          ...getFormPropsByType('borderColor'),
           defaultValue: Array.isArray(border?.borderColor) ? border?.borderColor[0] : (border?.borderColor || '#000'),
           setValue: (value: any) => [value, value, value, value]
         }
@@ -67,9 +56,7 @@ export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): 
       return background?.backgroundType === 'color' || background?.backgroundType === 'none' ? {
         backgroundColor: {
           label: 'Background Color',
-          component: ColorItemVue,
-          handler: {
-          },
+          ...getFormPropsByType('backgroundColor'),
           defaultValue: background?.backgroundColor ?? '#000',
         }
       } : null
@@ -78,12 +65,7 @@ export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): 
       return {
         opacity: {
           label: 'Opacity',
-          component: SliderItemVue,
-          handler: {
-            min: 0,
-            max: 1,
-            interval: 0.01
-          },
+          ...getFormPropsByType('opacity'),
           defaultValue: (node?.props?.container as IContainer)?.opacity ?? 1,
         }
       }
@@ -94,19 +76,12 @@ export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): 
         return {
           fontSize: {
             label: 'Icon Size',
-            component: InputItemVue,
-            handler: {
-              name: 'Font Size',
-              type: 'number',
-              suffix: ['px', 'rem', 'vw'],
-            },
+            ...getFormPropsByType('fontSize'),
             defaultValue: basic?.size ?? '18px',
           },
           color: {
             label: 'Icon Color',
-            component: ColorItemVue,
-            handler: {
-            },
+            ...getFormPropsByType('color'),
             defaultValue: basic?.color ?? '#000',
           }
         }

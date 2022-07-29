@@ -150,7 +150,7 @@ const timingFunction = {
               :label="obj.label"
               :is="getEffectMap(item.target)[item.name].component"
               :model-value="item.styles[obj.name]"
-              v-bind="getEffectMap(item.target)[item.name].handler"
+              v-bind="getEffectMap(item.target)[item.name].props"
               @update:model-value="item.styles[obj.name] = $event"
             >
               <Icon

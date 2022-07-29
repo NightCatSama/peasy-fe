@@ -2,6 +2,7 @@
 import { Chrome } from '@ckpack/vue-color'
 import InputItem from './InputItem.vue'
 import Dropdown from '@/components/widgets/Dropdown.vue'
+import { isColor } from '@/utils/color';
 
 interface IColorItemProps {
   label: string
@@ -14,17 +15,19 @@ const emit = defineEmits(['update:model-value'])
 const value = $computed({
   get: () => modelValue,
   set: (val: any) => {
+    if (!isColor(val)) {
+      val = modelValue
+      return
+    }
     emit('update:model-value', val.hex8 ? (val.hex8.slice(-2) === 'FF' ? val.hex : val.hex8) : val)
   },
 })
-
-const test = () => emit('update:model-value', value)
 </script>
 
 <template>
   <InputItem type="text" :label="label" v-model="value">
     <template #suffix>
-      <Dropdown type="color-picker" :skidding="20" @apply-hide="test">
+      <Dropdown type="color-picker" :skidding="20">
         <div class="color-preview" :style="{ background: modelValue }"></div>
         <template #content>
           <Chrome v-model="value"></Chrome>
