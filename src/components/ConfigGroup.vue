@@ -69,6 +69,7 @@ const iconName = $computed(() => bindProps?.icon || groupIconMap[groupType] || d
       type="pure"
       :show-group="groupType"
       :popper-class="'group-dropdown'"
+      is-menu
       placement="left-start"
     >
       <template #default="{ shown }">

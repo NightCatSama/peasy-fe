@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { useDisplayStore } from '@/stores/display';
 import { emitter } from '@/utils/event';
 import { Menu as VMenu } from 'floating-vue'
 import { Dropdown as VDropdown } from 'floating-vue'
@@ -24,76 +25,33 @@ const {
 } = defineProps<IDropdownProps>()
 
 const distance = type === 'color-picker' ? 10 : 5
-
-// 以下这一堆是为了修复在弹窗内输入时如果鼠标在输入法上，会导致弹窗消失的问题
-// 所以在 Input 组件中 focus/blur 时去派发事件控制
-let inFocus = $ref(false)
-let disabledRef = $ref(!!disabled)
-let el = $ref<HTMLDivElement | null>(null)
-let mouseLeave = false
-
-const handleMouseLeave = () => {
-  mouseLeave = true
-  if (!inFocus) disabledRef = true
-}
-const handleMouseEnter = () => mouseLeave = false
-
-const onShow = () => {
- emitter.on('focus', (event) => {
-  if (el?.contains(event.target as Element)) {
-    inFocus = true
-    console.log('inFocus => ', inFocus)
-    // el.addEventListener('mouseleave', handleMouseLeave)
-    // el.addEventListener('mouseenter', handleMouseEnter)
-  }
- })
- emitter.on('blur', (event) => {
-  if (inFocus) {
-    inFocus = false
-    if (mouseLeave) {
-      disabledRef = true
-    }
-  }
-  mouseLeave = false
- })
-}
-
-const onHide = () => {
-  inFocus = false
-  disabledRef = !!disabled
-  emitter.off('focus')
-  emitter.off('blur')
-  // el?.removeEventListener('mouseleave', handleMouseLeave)
-  // el?.removeEventListener('mouseenter', handleMouseEnter)
-}
-
-const iTriggers = $computed(() => inFocus ? ['click'] : triggers)
 </script>
 
 <template>
   <component
     :is="VDropdown"
-    :show="inFocus || void 0"
-    :disabled="disabledRef"
+    :disabled="disabled"
     :triggers="triggers"
-    :popper-triggers="isMenu ? iTriggers : void 0"
     :popperClass="['dropdown-popper', `dropdown-popper-${type}`, popperClass]"
     :distance="distance"
     :arrow-padding="10"
     :placement="placement"
     :delay="delay"
-    :show-group="showGroup"
-    :instant-move="true"
+    :instant-move="!!isMenu"
     :auto-hide="!isMenu"
     v-bind="$attrs"
-    @show="onShow"
-    @hide="onHide"
   >
     <template #default="{ shown }">
       <slot :shown="shown"></slot>
     </template>
     <template #popper="{ hide }">
-      <div ref="el"><slot name="content" :hide="hide"></slot></div>
+      <div
+        ref="el"
+        v-click-outside="isMenu ? {
+          handler: () => hide(),
+          extraSelectors: ['.dropdown-popper'],
+        } : null"
+      ><slot name="content" :hide="hide"></slot></div>
     </template>
   </component>
 </template>

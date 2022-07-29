@@ -59,6 +59,7 @@ export default {
      */
     app.directive('click-outside', {
       created(el, binding) {
+        if (!binding.value) return
         if (typeof binding.value !== 'function' && typeof binding.value.handler !== 'function') {
           console.warn(
             '[Vue-click-outside:] provided expression',
@@ -79,18 +80,19 @@ export default {
             el.contains(target) ||
             (includeParent ? el.parentElement?.contains(target) : false) ||
             extraSelectors.some((selector: string) =>
-              document.querySelector(selector)?.contains(target)
+              Array.from(document.querySelectorAll(selector)).some(elem => elem.contains(target))
             )
           )
             return
 
-          el.__clickOutside_cb__(e)
+          el.__clickOutside_cb__?.(e)
         }
         const clickHandler = 'ontouchstart' in document.documentElement ? 'touchstart' : 'click'
-        document.addEventListener(clickHandler, handleClick)
+        document.addEventListener(clickHandler, handleClick, true)
         el.__clickOutside_rm__ = () => document.removeEventListener(clickHandler, handleClick)
       },
       updated(el, binding) {
+        if (!binding.value) return
         el.__clickOutside_cb__ =
           typeof binding.value === 'function' ? binding.value : binding.value.handler
       },
