@@ -4,10 +4,11 @@ import { storeToRefs } from 'pinia'
 import ConfigGroup from './ConfigGroup.vue'
 import Icon from './widgets/Icon.vue'
 import { useDisplayStore } from '@/stores/display'
+import TagList from './biz/TagList.vue'
 
 const pageStore = usePageStore()
 const { allPageData, activeNode, activeParentNode, activeNodeGroups } = storeToRefs(pageStore)
-const { setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } = pageStore
+const { getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } = pageStore
 
 const displayStore = useDisplayStore()
 const { minimize } = storeToRefs(displayStore)
@@ -81,6 +82,11 @@ const { setMinimize } = displayStore
             @click="deleteActiveNode"
           ></Icon>
         </div>
+        <TagList
+          :tags="activeNode.tags"
+          :auto-complete-tags="getAllTags()"
+          @change="(newTags: string[]) => activeNode!.tags = newTags"
+        ></TagList>
         <div class="content">
           <ConfigGroup
             v-for="(groupType, index) in activeNodeGroups"
@@ -283,4 +289,5 @@ $header-height: 54px;
     }
   }
 }
+
 </style>

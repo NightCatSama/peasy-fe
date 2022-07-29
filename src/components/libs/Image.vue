@@ -2,11 +2,11 @@
 import { ref, useAttrs } from 'vue'
 import { IProps, useProps } from './hooks/common';
 
-const { elem, uName, style, props } = useProps(useAttrs() as unknown as IProps<'Image'>, 'Image')
+const { elem, uName, style, props, tagClassNames } = useProps(useAttrs() as unknown as IProps<'Image'>, 'Image')
 
 const src = $computed(() => props.basic.src.trim() || '')
 
-const classNames = $computed(() => ['image', uName, { 'no-image': !props.basic.src }])
+const classNames = $computed(() => ['image', uName.value, ...tagClassNames.value, { 'no-image': !props.basic.src }])
 
 </script>
 

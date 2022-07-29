@@ -57,8 +57,22 @@ export const usePageStore = defineStore('page', {
         })
       }
       dfs(state.allPageData)
-      console.log('getNameMap => ');
       return nameMap
+    },
+    getTagsByNode: (state): (node: PageNode[]) => string[] =>
+      (node: PageNode[]) => {
+        const tagList: string[] = []
+        const dfs = (nodes: PageNode[]) => {
+          nodes.forEach((item) => {
+            tagList.push(...item.tags)
+            if (item.children) dfs(item.children)
+          })
+        }
+        dfs(node)
+        return Array.from(new Set(tagList))
+      },
+    getAllTags: function (state) {
+      return () => this.getTagsByNode(state.allPageData);
     },
     getActiveNodeRound:
       (state) =>

@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import Select from '@/components/widgets/Select.vue'
+import Select, { ISelectItem } from '@/components/widgets/Select.vue'
 
 interface ISelectItemProps {
   label: string
   modelValue: string
-  options: { [key: string]: string }
+  options: { [key: string]: string | ISelectItem }
 }
 
 const { label, modelValue, options } = defineProps<ISelectItemProps>()
@@ -21,7 +21,9 @@ const value = $computed({
 <template>
   <div class="item">
     <div class="label">{{ label }}</div>
-    <Select v-model="value" :options="options" v-bind="$attrs"></Select>
+    <Select v-model="value" :options="options" v-bind="$attrs">
+      <template #item="{ item }"><slot name="item" :item="item"></slot></template>
+    </Select>
     <slot></slot>
   </div>
 </template>

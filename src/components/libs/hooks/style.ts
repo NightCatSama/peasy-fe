@@ -260,7 +260,7 @@ export const useEffectStyle = (effect: IEffect, name: string) => {
   if (!effect) return {}
 
   return {
-    transition: effect.effectList.map((item: IEffectItem) => item.target === name ? `${
+    transition: effect.effectList.map((item: IEffectItem) => item.name && item.targetType === 'self' ? `${
       effectName2PropertyMap[item.name]
     } ${
       item.duration

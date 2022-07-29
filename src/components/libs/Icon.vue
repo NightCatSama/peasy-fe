@@ -2,7 +2,7 @@
 import { ref, useAttrs, watch } from 'vue'
 import { IProps, useProps } from './hooks/common';
 
-const { elem, uName, style, props } = useProps(useAttrs() as unknown as IProps<'Icon'>, 'Icon')
+const { elem, uName, style, props, tagClassNames } = useProps(useAttrs() as unknown as IProps<'Icon'>, 'Icon')
 
 let styleElem = $ref<HTMLLinkElement | null>(null)
 
@@ -25,7 +25,8 @@ watch(
 
 const classNames = $computed(() => [
   'fa',
-  uName,
+  uName.value,
+  ...tagClassNames.value,
   `${props.basic.prefixClass || ''}${props.basic.name}`,
   `${props.basic?.extraClass || ''}`
  ])

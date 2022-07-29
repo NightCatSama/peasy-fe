@@ -93,23 +93,13 @@ const iconName = $computed(() => bindProps?.icon || groupIconMap[groupType] || d
   position: relative;
   display: flex;
   flex-direction: column;
-  // padding: 12px 18px;
 
-  &::before,
-  &:last-child::after {
-    content: '';
-    position: absolute;
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 1px;
-    background: rgba(255, 255, 255, 0.15);
-    transform: scaleY(0.5);
+  & {
+    border-top: 1px solid $border;
   }
 
-  &:last-child::after {
-    top: auto;
-    bottom: 0;
+  &:last-child {
+    border-bottom: 1px solid $border;
   }
 
   &-mini-item {
@@ -131,6 +121,8 @@ const iconName = $computed(() => bindProps?.icon || groupIconMap[groupType] || d
 .group-dropdown {
   .group {
     width: 300px;
+    max-height: 60vh;
+    overflow-y: auto;
   }
 }
 </style>

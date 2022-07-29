@@ -47,7 +47,7 @@ $bg-default-gradient: linear-gradient(lighten($bg-default, 7%), $bg-default);
 $panel-content-gradient: linear-gradient(lighten($panel-content, 7%), $panel-content);
 
 $color: #cecece;
-$border: rgba(#5a5a5c, 0.7);
+$border: rgba($panel-light, 25%);
 
 $inner-radius: 4px;
 $normal-radius: 6px;

@@ -1,14 +1,16 @@
+<script lang="ts">
+export interface ISelectItem {
+  title: string
+  icon?: string
+  [key: string]: any
+}
+</script>
 <script setup lang="ts">
 import { watchEffect, defineEmits } from 'vue'
 import Icon from './Icon.vue'
 import Dropdown from './Dropdown.vue'
 
 const emit = defineEmits(['update:model-value'])
-
-interface ISelectItem {
-  title: string
-  icon?: string
-}
 
 interface ISelectProps {
   display?: 'inline' | 'block'
@@ -51,11 +53,13 @@ const handleChange = (val: string) => {
             hide()
           }"
         >
-          <template v-if="typeof label === 'string'">{{ label }}</template>
-          <template v-else>
-            <Icon class="option-icon" v-if="label.icon" :name="label.icon" :size="11" />
-            <div>{{ label.title }}</div>
-          </template>
+          <slot name="item" :item="label">
+            <template v-if="typeof label === 'string'">{{ label }}</template>
+            <template v-else>
+              <Icon class="option-icon" v-if="label.icon" :name="label.icon" :size="11" />
+              <div>{{ label.title }}</div>
+            </template>
+          </slot>
         </div>
       </div>
     </template>
@@ -111,6 +115,8 @@ const handleChange = (val: string) => {
   z-index: 999;
   min-width: 120px;
   border: 1px solid $theme;
+  max-height: 320px;
+  overflow-y: auto;
 
   .select-option {
     padding: 4px 12px 4px 8px;

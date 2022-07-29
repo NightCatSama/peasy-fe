@@ -2,9 +2,9 @@
 import { useAttrs } from 'vue'
 import { IProps, useProps } from './hooks/common';
 
-const { elem, uName, style, props } = useProps(useAttrs() as unknown as IProps<'Block'>, 'Block')
+const { elem, uName, style, props, tagClassNames } = useProps(useAttrs() as unknown as IProps<'Block'>, 'Block')
 
-const classNames = $computed(() => ['block', uName])
+const classNames = $computed(() => ['block', uName.value, ...tagClassNames.value])
 </script>
 
 <template>

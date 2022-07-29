@@ -177,7 +177,15 @@ interface IAnimation {
 
 /** 过渡设置 */
 interface IEffectItem {
+  /** 过渡目标（子元素） */
   target: string
+  /**
+   * 过渡目标选择器类型
+   * self: 选择自身
+   * name: 通过 name 选择子元素
+   * tag: 通过标签选择子元素
+   */
+  targetType: 'self' | 'name' | 'tag'
   /** 名称 */
   name: string
   /** 过渡时长 */

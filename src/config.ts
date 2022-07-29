@@ -86,7 +86,7 @@ export interface PageNode<T extends ComponentName = any> {
   /** 组件名称 */
   name: string
   /** 标签 */
-  tag: string[]
+  tags: string[]
   /** 组件名称 */
   component: T
   /** 参数 */
@@ -149,4 +149,5 @@ export const isSomeBasicType = <T extends ComponentName, P extends GroupPropType
 export const DefaultIconStyleLink =
   '//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
 
-export const getUniqueName = (name: string) => `__${name}__`
+export const getUniqueName = (name: string) => `_n_${name}_`
+export const getTagClassName = (tag: string) => `_t_${tag}_`

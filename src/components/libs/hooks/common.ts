@@ -1,4 +1,4 @@
-import { ComponentName, getUniqueName, GroupPropType } from "@/config"
+import { ComponentName, getTagClassName, getUniqueName, GroupPropType } from "@/config"
 import { computed, ref } from "vue"
 import { useAnimation } from "./animation"
 import { useEffect } from "./effect"
@@ -6,6 +6,7 @@ import { useEvent } from "./event"
 import { useAnimationStyle, useBackgroundStyle, useBorderStyle, useContainerStyle, useEffectStyle, useFontStyle, useIconBasicStyle, useImageBasicStyle, useLayoutStyle, usePositionStyle, useSizeStyle, useSpacingStyle, useStyle } from "./style"
 
 export type IProps<T extends ComponentName = any> = {
+  tags: string[]
   componentName: string
   direction?: 'row' | 'column'
 } & GroupPropType<T>
@@ -14,6 +15,7 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
   const {
     componentName: name,
     direction,
+    tags,
     basic,
     font,
     layout,
@@ -59,11 +61,13 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
   )
 
   const uName = computed(() => getUniqueName(name))
+  const tagClassNames = computed(() => tags?.map(tag => getTagClassName(tag)) || [])
 
   return {
     elem,
     style,
     uName,
+    tagClassNames,
     props,
   }
 }

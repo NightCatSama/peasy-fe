@@ -223,6 +223,7 @@ export const getDefaultEffect = (initConfig?: Partial<IEffect>): IEffect =>
 export const getDefaultEffectItem = (target: string): IEffectItem => {
   return {
     target,
+    targetType: 'self',
     name: '',
     duration: .5,
     timingFunction: 'ease',

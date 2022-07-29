@@ -161,6 +161,7 @@ const preventMousedown = (e: MouseEvent, subItem: PageNode) => {
     :tag="item.component"
     :component-data="{
       ...item.props,
+      tags: item.tags,
       componentName: item.name,
       direction: parent?.props?.layout?.direction,
     }"

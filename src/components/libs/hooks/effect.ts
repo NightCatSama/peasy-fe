@@ -1,4 +1,4 @@
-import { getUniqueName } from "@/config"
+import { getTagClassName, getUniqueName } from "@/config"
 import { onBeforeUnmount, ref, watch } from "vue"
 
 export const effectName2PropertyMap: { [name: string]: string } = {
@@ -37,10 +37,14 @@ export const useEffect = (effect: IEffect, name: string) => {
     effectList.forEach(item => {
       if (!Object.keys(item?.styles).length) return
       Object.entries(item?.styles).forEach(([key, value]) => {
-        if (item?.target !== name) {
-          styles[key === 'hover' ? 'unshift' : 'push'](`.${uName}:${key} .${getUniqueName(item.target)} { ${effectName2PropertyMap[item.name]}: ${value}!important; }`)
-        } else {
+        if (item?.targetType === 'self') {
           styles[key === 'hover' ? 'unshift' : 'push'](`#${uName}:${key} { ${effectName2PropertyMap[item.name]}: ${value}!important; }`)
+        }
+        if (item?.targetType === 'name') {
+          styles[key === 'hover' ? 'unshift' : 'push'](`.${uName}:${key} .${getUniqueName(item.target)} { ${effectName2PropertyMap[item.name]}: ${value}!important; }`)
+        }
+        if (item?.targetType === 'tag') {
+          styles[key === 'hover' ? 'unshift' : 'push'](`.${uName}:${key} .${getTagClassName(item.target)} { ${effectName2PropertyMap[item.name]}: ${value}!important; }`)
         }
       })
     })

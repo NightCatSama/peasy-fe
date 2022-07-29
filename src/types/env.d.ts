@@ -13,3 +13,7 @@ declare module '*.vue' {
 declare module '@ckpack/vue-color' {
   export const Chrome: any
 }
+
+declare module '@sipec/vue3-tags-input' {
+  export const VueTagsInput: any
+}

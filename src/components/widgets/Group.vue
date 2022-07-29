@@ -67,6 +67,7 @@ const iconName = $computed(() => icon || groupIconMap[groupName!] || defaultGrou
     height: 44px;
     display: flex;
     align-items: center;
+    flex-shrink: 0;
 
     .title {
       flex: 1;

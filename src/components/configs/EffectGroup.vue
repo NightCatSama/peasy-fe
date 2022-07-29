@@ -12,6 +12,7 @@ import { getEffectMapByNode, getEffectShowItemByGroup, IEffectShowItemMap } from
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import CollapseItem from './items/CollapseItem.vue'
+import type { ISelectItem } from '../widgets/Select.vue'
 
 interface IEffectGroupProps {
   node: PageNode
@@ -20,7 +21,7 @@ interface IEffectGroupProps {
 const { effect, node } = defineProps<IEffectGroupProps>()
 
 const pageStore = usePageStore()
-const { getAllChildNode, nameMap } = pageStore
+const { getAllChildNode, getTagsByNode, nameMap } = pageStore
 const { activeNodeGroups } = storeToRefs(pageStore)
 
 let collapsedIndex = $ref(0)
@@ -47,8 +48,10 @@ const handleNameChange = (val: string, item: IEffectItem) => {
   handleSetStyle('active', 'delete', item)
 }
 
-const handleTargetChange = (target: string, item: IEffectItem) => {
-  item.target = target
+const handleTargetChange = (key: string, item: IEffectItem) => {
+  const obj = childrenNodeList[key]
+  item.target = obj.target
+  item.targetType = obj.type
   item.name = ''
   handleSetStyle('hover', 'delete', item)
   handleSetStyle('active', 'delete', item)
@@ -66,7 +69,24 @@ const handleSetStyle = (
   }
 }
 
-const childrenNodeList = $computed(() => [node].concat(getAllChildNode(node)))
+const childrenNodeList: { [key: string]: ISelectItem } = $computed(() => {
+  let obj: { [key: string]: ISelectItem } = {
+    // 加 % 避免和 tag 命名重复
+    ['%' + node.name]: {
+      target: node.name,
+      title: node.name,
+      type: 'self'
+    }
+  }
+  getTagsByNode([node]).forEach(tag => {
+    obj[tag] = {
+      target: tag,
+      title: tag,
+      type: 'tag'
+    }
+  })
+  return obj
+})
 
 const actionMap: { name: keyof IEffectItem['styles'], label: string }[] = $computed(() => [{
   name: 'hover',
@@ -113,12 +133,19 @@ const timingFunction = {
       </template>
       <template #default>
         <SelectItem
-          v-if="childrenNodeList.length > 1"
+          v-if="Object.keys(childrenNodeList).length > 1"
           label="Target"
-          :options="Object.fromEntries(childrenNodeList.map(item => [item.name, item.name]))"
+          :options="childrenNodeList"
           :model-value="item.target"
           @update:model-value="handleTargetChange($event, item)"
-        ></SelectItem>
+        >
+          <template #item="{ item }">
+            <div :class="['select-target-item']">
+              <div :class="['type-tag', (item as any).type]">{{ (item as any).type }}</div>
+              {{ (item as ISelectItem).title }}
+            </div>
+          </template>
+        </SelectItem>
         <SelectItem
           label="Style"
           :options="getEffectLabel(item.target)"
@@ -181,6 +208,39 @@ const timingFunction = {
     color: $orange;
     font-weight: bold;
     margin-bottom: 4px;
+  }
+}
+
+.select-target-item {
+  display: flex;
+  flex-wrap: nowrap;
+  align-items: center;
+
+  .type-tag {
+    margin-left: -4px;
+    padding: 2px 4px;
+    min-width: 44px;
+    text-align: center;
+    font-size: 12px;
+    color: $color;
+    background: $theme;
+    border-radius: $inner-radius;
+    margin-right: 6px;
+    transform-origin: left center;
+    transform: scale(.85);
+
+    &.self {
+      color: $panel-dark;
+      background: $yellow-gradient;
+    }
+
+    &.group {
+      background: $green-gradient;
+    }
+
+    &.tag {
+      background: $purple-gradient;
+    }
   }
 }
 </style>

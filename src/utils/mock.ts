@@ -20,7 +20,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
     type: type,
     name: name || (type === 'component' ? 'Block' : 'Section'),
     component: 'Block',
-    tag: [],
+    tags: [],
     props: {
       size: getDefaultSize(type),
       layout: getDefaultLayout(),
@@ -41,7 +41,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
               type: 'component',
               name: `${type}-Block`,
               component: 'Block',
-              tag: [],
+              tags: [],
               isModule: true,
               moduleConfig: [{
                 /** 配置名称 */
@@ -194,7 +194,7 @@ export const getMockText = (): PageNode<'Text'> => {
     type: 'component',
     name: 'Text',
     component: 'Text',
-    tag: ['Text'],
+    tags: ['Text'],
     props: {
       basic: getDefaultBasic('Text'),
       font: getDefaultFont({ fontSize: '30px' }),
@@ -215,7 +215,7 @@ export const getMockImage = (src?: string): PageNode<'Image'> => {
     type: 'component',
     name: 'Image',
     component: 'Image',
-    tag: ['Image'],
+    tags: ['Image'],
     props: {
       basic: getDefaultBasic('Image'),
       size: getDefaultSize('component', {
@@ -238,7 +238,7 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
     type: 'component',
     name: 'Icon',
     component: 'Icon',
-    tag: ['Icon'],
+    tags: ['Icon'],
     props: {
       basic: getDefaultBasic('Icon', { name: 'apple' }),
       spacing: getDefaultSpacing(),
