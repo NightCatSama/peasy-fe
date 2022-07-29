@@ -65,16 +65,17 @@ const iconName = $computed(() => bindProps?.icon || groupIconMap[groupType] || d
     ></Component>
     <Dropdown
       v-else
-      :triggers="['hover']"
+      :triggers="['click']"
       type="pure"
-      :is-menu="true"
       :show-group="groupType"
       :popper-class="'group-dropdown'"
       placement="left-start"
     >
-      <div class="config-group-mini-item">
-        <Icon :name="iconName" :size="16"></Icon>
-      </div>
+      <template #default="{ shown }">
+        <div :class="['config-group-mini-item', { active: shown }]">
+          <Icon :name="iconName" :size="16"></Icon>
+        </div>
+      </template>
       <template #content>
         <Component
           :is="componentNameMap[groupType]"
@@ -115,6 +116,11 @@ const iconName = $computed(() => bindProps?.icon || groupIconMap[groupType] || d
     justify-content: center;
     align-items: center;
     height: 44px;
+    cursor: pointer;
+
+    &.active {
+      color: $yellow;
+    }
   }
 }
 

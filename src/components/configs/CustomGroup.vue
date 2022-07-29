@@ -1,13 +1,6 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
-import InputItem from '@/components/configs/items/InputItem.vue'
 import { PageNode, isSomeBasicType, DefaultIconStyleLink, IModuleConfigItem, ModuleConfigType } from '@/config'
-import ImageItem from './items/ImageItem.vue'
-import SelectItem from './items/SelectItem.vue'
-import { usePageStore } from '@/stores/page'
-import SliderItem from './items/SliderItem.vue'
-import ColorItem from './items/ColorItem.vue'
-import Tip from '../widgets/Tip.vue'
 import { getFormPropsByType } from '@/constants/form'
 
 interface ICustomGroupProps {

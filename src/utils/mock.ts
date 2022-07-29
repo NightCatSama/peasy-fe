@@ -24,6 +24,9 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
     moduleConfig: [{
       /** 配置名称 */
       title: 'Text',
+      /** 图标 */
+      icon: 'font',
+      /** 是否折叠 */
       defaultCollapsed: true,
       /** 分组数据 */
       data: [
@@ -66,9 +69,78 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
             }
           }
         },
+        {
+          type: ModuleConfigType.Opacity,
+          label: '透明度',
+          props: {},
+          getValue: (node: PageNode) => {
+            return node.children?.[0]?.children?.[1]?.props?.container?.opacity
+          },
+          setValue: (value: string, node: PageNode) => {
+            if (node.children?.[0]?.children?.[1]?.props?.container?.opacity !== void 0) {
+              node.children[0].children[1].props.container.opacity = value
+            }
+          }
+        },
       ],
+    }, {
+      /** 配置名称 */
+      title: 'Icon',
       /** 图标 */
-      icon: 'font',
+      icon: 'check',
+      defaultCollapsed: true,
+      /** 分组数据 */
+      data: [
+        {
+          type: ModuleConfigType.FontSize,
+          label: '图标大小',
+          props: {},
+          getValue: (node: PageNode) => {
+            return node.children?.[0]?.children?.[0]?.props?.basic?.size
+          },
+          setValue: (value: string, node: PageNode) => {
+            if (node.children?.[0]?.children?.[0]?.props?.basic?.size !== void 0) {
+              node.children[0].children[0].props.basic.size = value
+            }
+          }
+        },
+        {
+          type: ModuleConfigType.Color,
+          label: '图标颜色',
+          props: {},
+          getValue: (node: PageNode) => {
+            return node.children?.[0]?.children?.[0]?.props?.basic?.color
+          },
+          setValue: (value: string, node: PageNode) => {
+            if (node.children?.[0]?.children?.[0]?.props?.basic?.color !== void 0) {
+              node.children[0].children[0].props.basic.color = value
+            }
+          }
+        },
+      ],
+    }, {
+      /** 配置名称 */
+      title: 'Image',
+      /** 图标 */
+      icon: 'background',
+      /** 是否折叠 */
+      defaultCollapsed: true,
+      /** 分组数据 */
+      data: [
+        {
+          type: ModuleConfigType.Image,
+          label: '图片',
+          props: {},
+          getValue: (node: PageNode) => {
+            return node.children?.[0]?.children?.[2]?.props?.basic?.src
+          },
+          setValue: (value: string, node: PageNode) => {
+            if (node.children?.[0]?.children?.[2]?.props?.basic?.src !== void 0) {
+              node.children[0].children[2].props.basic.src = value
+            }
+          }
+        },
+      ],
     }],
     props: {
       size: getDefaultSize(type),
@@ -91,7 +163,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
               name: `${type}-Block`,
               component: 'Block',
               props: {
-                size: getDefaultSize('component', { width: '50%', height: 'auto' }),
+                size: getDefaultSize('component', { width: '80%', height: 'auto' }),
                 layout: getDefaultLayout(),
                 spacing: getDefaultSpacing(),
                 border: getDefaultBorder(),

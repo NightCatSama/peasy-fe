@@ -109,6 +109,10 @@ export const enum ModuleConfigType {
   Color = 'color',
   /** 字体大小 */
   FontSize = 'fontSize',
+  /** 透明度 */
+  Opacity = 'opacity',
+  /** 图片 */
+  Image = 'image'
   /** 一组数据 */
   // Group = 'group'
 }

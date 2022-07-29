@@ -2,6 +2,7 @@ import type { ModuleConfigType } from "@/config"
 import ColorItemVue from "@/components/configs/items/ColorItem.vue";
 import InputItemVue from "@/components/configs/items/InputItem.vue";
 import SliderItemVue from "@/components/configs/items/SliderItem.vue";
+import ImageItemVue from "@/components/configs/items/ImageItem.vue";
 
 export const getFormPropsByType = (type: ModuleConfigType | string) => {
   switch (type) {
@@ -37,6 +38,12 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
           min: 0,
           max: 1,
           interval: 0.01
+        }
+      }
+    case 'image':
+      return {
+        component: ImageItemVue,
+        props: {
         }
       }
     default:

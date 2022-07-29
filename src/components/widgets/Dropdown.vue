@@ -25,29 +25,31 @@ const {
 
 const distance = type === 'color-picker' ? 10 : 5
 
-let show = $ref(false)
-
 // 以下这一堆是为了修复在弹窗内输入时如果鼠标在输入法上，会导致弹窗消失的问题
 // 所以在 Input 组件中 focus/blur 时去派发事件控制
-
-let disabledRef = $ref(disabled)
+let inFocus = $ref(false)
+let disabledRef = $ref(!!disabled)
 let el = $ref<HTMLDivElement | null>(null)
 let mouseLeave = false
 
-const handleMouseLeave = () => mouseLeave = true
+const handleMouseLeave = () => {
+  mouseLeave = true
+  if (!inFocus) disabledRef = true
+}
 const handleMouseEnter = () => mouseLeave = false
 
 const onShow = () => {
  emitter.on('focus', (event) => {
   if (el?.contains(event.target as Element)) {
-    show = true
-    el.addEventListener('mouseleave', handleMouseLeave)
-    el.addEventListener('mouseenter', handleMouseEnter)
+    inFocus = true
+    console.log('inFocus => ', inFocus)
+    // el.addEventListener('mouseleave', handleMouseLeave)
+    // el.addEventListener('mouseenter', handleMouseEnter)
   }
  })
  emitter.on('blur', (event) => {
-  if (show) {
-    show = false
+  if (inFocus) {
+    inFocus = false
     if (mouseLeave) {
       disabledRef = true
     }
@@ -57,23 +59,24 @@ const onShow = () => {
 }
 
 const onHide = () => {
-  show = false
-  disabledRef = disabled!
+  inFocus = false
+  disabledRef = !!disabled
   emitter.off('focus')
   emitter.off('blur')
-  el?.removeEventListener('mouseleave', handleMouseLeave)
-  el?.removeEventListener('mouseenter', handleMouseEnter)
+  // el?.removeEventListener('mouseleave', handleMouseLeave)
+  // el?.removeEventListener('mouseenter', handleMouseEnter)
 }
 
-const iTriggers = $computed(() => show ? void 0 : triggers)
+const iTriggers = $computed(() => inFocus ? ['click'] : triggers)
 </script>
 
 <template>
   <component
     :is="VDropdown"
+    :show="inFocus || void 0"
     :disabled="disabledRef"
-    :triggers="iTriggers"
-    :popperTriggers="isMenu ? iTriggers : void 0"
+    :triggers="triggers"
+    :popper-triggers="isMenu ? iTriggers : void 0"
     :popperClass="['dropdown-popper', `dropdown-popper-${type}`, popperClass]"
     :distance="distance"
     :arrow-padding="10"
@@ -86,7 +89,9 @@ const iTriggers = $computed(() => show ? void 0 : triggers)
     @show="onShow"
     @hide="onHide"
   >
-    <slot></slot>
+    <template #default="{ shown }">
+      <slot :shown="shown"></slot>
+    </template>
     <template #popper="{ hide }">
       <div ref="el"><slot name="content" :hide="hide"></slot></div>
     </template>
