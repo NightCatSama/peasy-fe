@@ -203,7 +203,7 @@ const handleLeaveTrash = (e: DragEvent) => {
         v-on="dragEvents"
       >
         <template #item="{ element: item }">
-          <LibComponent :item="item" :key="item.name"></LibComponent>
+          <LibComponent :item="item" :key="item.name" :in-module="item.isModule"></LibComponent>
         </template>
       </draggable>
     </div>

@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
 import Tabs from '../widgets/Tabs.vue'
-import { useLayoutStyle } from '@/components/libs/style'
+import { useLayoutStyle } from '@/components/libs/hooks/style'
 import SelectItem from './items/SelectItem.vue'
 import { PageNode } from '@/config'
 import TabsItem from './items/TabsItem.vue'

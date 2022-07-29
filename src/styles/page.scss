@@ -56,6 +56,19 @@
       &.fa-icon::before {
         outline: 3px dashed rgba($orange, 65%);
       }
+
+      &.module::before {
+        content: 'Can be Drop After Ungroup';
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        color: $yellow;
+        font-size: 44px;
+        font-weight: bold;
+        text-shadow: 0 0 10px rgba($white, 30%);
+        background: rgba($black, 50%);
+        z-index: 1000;
+      }
     }
     .moveable-control-box {
       // display: none !important;

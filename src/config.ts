@@ -85,6 +85,8 @@ export interface PageNode<T extends ComponentName = any> {
   type: 'component' | 'section' | 'template'
   /** 组件名称 */
   name: string
+  /** 标签 */
+  tag: string[]
   /** 组件名称 */
   component: T
   /** 参数 */

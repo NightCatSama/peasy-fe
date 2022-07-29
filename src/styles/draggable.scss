@@ -17,13 +17,7 @@
     height: 60px;
     max-width: none;
     max-height: none;
-
-    &:first-child {
-      margin-top: 20px;
-    }
-    &:last-child {
-      margin-bottom: 20px;
-    }
+    margin: 20px 0;
   }
 
   &::after,

@@ -242,7 +242,7 @@ export const useContainerStyle = (container: IContainer) => {
 }
 
 export const useAnimationStyle = (animationMap: AnimationMapType) => {
-  if (!animationMap.size) return {}
+  if (!animationMap || !animationMap.size) return {}
 
   const animationList: string[] = []
   animationMap.forEach((item, anim) => {

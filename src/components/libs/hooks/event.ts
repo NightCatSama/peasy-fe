@@ -3,6 +3,7 @@ import { inject, onBeforeMount, onMounted, Ref } from 'vue'
 
 export const useEvent = (event: IEvent, el: Ref<HTMLDivElement | null>) => {
   let stop = $ref<(() => void) | null>(null)
+
   onMounted(() => {
     if (!el.value) return
     stop = eventHandler(event, el.value)

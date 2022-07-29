@@ -1,62 +1,13 @@
 <script setup lang="ts">
-import {
-  useStyle,
-  useSizeStyle,
-  useBorderStyle,
-  usePositionStyle,
-  useSpacingStyle,
-  useContainerStyle,
-  useImageBasicStyle,
-useAnimationStyle,
-useEffectStyle,
-} from './style'
-import { ref } from 'vue'
-import { useEvent } from './event'
-import { useAnimation } from './animation';
-import { useEffect } from './effect';
-import { getUniqueName } from '@/config';
+import { ref, useAttrs } from 'vue'
+import { IProps, useProps } from './hooks/common';
 
-interface IImageProps {
-  componentName: string
-  direction?: 'row' | 'column'
-  basic: IImageBasicType
-  position: IPosition
-  size: ISize
-  spacing: ISpacing
-  border: IBorder
-  container: IContainer
-  event: IEvent
-  effect: IEffect
-  animation: IAnimation
-}
+const { elem, uName, style, props } = useProps(useAttrs() as unknown as IProps<'Image'>, 'Image')
 
-const { componentName: name, basic, size, border, direction, spacing, container, position, event, effect, animation } =
-  defineProps<IImageProps>()
+const src = $computed(() => props.basic.src.trim() || '')
 
-const elem = ref<HTMLDivElement | null>(null)
-useEvent(event, elem)
+const classNames = $computed(() => ['image', uName, { 'no-image': !props.basic.src }])
 
-const { animationMap } = useAnimation(animation, elem, position)
-
-useEffect(effect, name)
-
-const style = $computed(() =>
-  useStyle({
-    ...useImageBasicStyle(basic),
-    ...useSizeStyle(size, direction),
-    ...useBorderStyle(border),
-    ...useSpacingStyle(spacing),
-    ...useContainerStyle(container),
-    ...usePositionStyle(position),
-    ...useAnimationStyle(animationMap),
-    ...useEffectStyle(effect, name)
-  })
-)
-
-const src = $computed(() => basic.src.trim() || '')
-
-const uName = $computed(() => getUniqueName(name))
-const classNames = $computed(() => ['image', uName, { 'no-image': !basic.src }])
 </script>
 
 <template>

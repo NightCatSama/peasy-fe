@@ -14,9 +14,10 @@ import { PageNode } from '@/config'
 interface ILibComponentProps {
   parent?: PageNode
   item: PageNode
+  inModule?: boolean
 }
 
-const { parent, item } = defineProps<ILibComponentProps>()
+const { parent, item, inModule } = defineProps<ILibComponentProps>()
 
 const pageStore = usePageStore()
 const { setActiveNode, insertNode, swapNode, addActiveParentChain } = pageStore
@@ -155,7 +156,7 @@ const preventMousedown = (e: MouseEvent, subItem: PageNode) => {
     ref="componentRef"
     :model-value="item.children || []"
     :group="{ name: 'component', put: isBlockComponent ? true : false, pull: true }"
-    :class="['lib-component', { active: isActive, grading: inDraggable }]"
+    :class="['lib-component', { active: isActive, grading: inDraggable, module: !!item.isModule }]"
     :item-key="'name'"
     :tag="item.component"
     :component-data="{
@@ -163,7 +164,12 @@ const preventMousedown = (e: MouseEvent, subItem: PageNode) => {
       componentName: item.name,
       direction: parent?.props?.layout?.direction,
     }"
-    :disabled="displayMode !== 'drag' || (dragNode && dragNodeType !== 'component')"
+    :disabled="(
+      inModule ||
+      displayMode !== 'drag' ||
+      (dragNode && dragNodeType !== 'component') ||
+      (dragNode && dragNodeType === item.type && (item.isModule || inModule))
+    )"
     :sort="true"
     :ghost-class="dragNode && dragType === 'clone' ? 'ghost-clone' : 'ghost-move'"
     :chosen-class="'chosen-clone'"
@@ -175,6 +181,7 @@ const preventMousedown = (e: MouseEvent, subItem: PageNode) => {
       <LibComponent
         :item="subItem"
         :parent="item"
+        :in-module="item.isModule || inModule"
         :key="subItem.name"
         @mousedown="(e) => preventMousedown(e, subItem)"
         @dragstart="(event: DragEvent) => handleDragStart(event, subItem)"
