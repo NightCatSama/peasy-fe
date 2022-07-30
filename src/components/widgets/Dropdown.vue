@@ -32,12 +32,14 @@ const distance = type === 'color-picker' ? 10 : 5
     :is="VDropdown"
     :disabled="disabled"
     :triggers="triggers"
+    :class="'dropdown-handle'"
     :popperClass="['dropdown-popper', `dropdown-popper-${type}`, popperClass]"
     :distance="distance"
     :arrow-padding="10"
     :placement="placement"
     :delay="delay"
     :instant-move="!!isMenu"
+    :show-group="showGroup"
     :auto-hide="!isMenu"
     v-bind="$attrs"
   >
@@ -49,7 +51,7 @@ const distance = type === 'color-picker' ? 10 : 5
         ref="el"
         v-click-outside="isMenu ? {
           handler: () => hide(),
-          extraSelectors: ['.dropdown-popper'],
+          extraSelectors: ['.dropdown-popper', '.dropdown-handle'],
         } : null"
       ><slot name="content" :hide="hide"></slot></div>
     </template>

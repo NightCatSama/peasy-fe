@@ -149,5 +149,7 @@ export const isSomeBasicType = <T extends ComponentName, P extends GroupPropType
 export const DefaultIconStyleLink =
   '//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
 
+export const DefaultColor = '#333'
+
 export const getUniqueName = (name: string) => `_n_${name}_`
 export const getTagClassName = (tag: string) => `_t_${tag}_`

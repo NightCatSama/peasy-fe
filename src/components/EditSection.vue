@@ -4,7 +4,7 @@ import { onMounted, onUnmounted, reactive, watch, ref, watchEffect, nextTick } f
 import draggable from 'vuedraggable'
 import panzoom, { PanZoom } from 'panzoom'
 import type { SortableEvent } from 'sortablejs'
-import { useSize } from 'ahooks-vue'
+import { useKeyPress, useSize } from 'ahooks-vue'
 
 import LibComponent from '@/components/LibComponent.vue'
 import { usePageStore } from '@/stores/page'
@@ -14,6 +14,7 @@ import { emitter } from '@/utils/event'
 import { useDragStore } from '@/stores/drag'
 import { disabledMoveable } from '@/utils/moveable'
 import Btn from './widgets/Btn.vue'
+import { ShortcutKey } from '@/constants/shortcut'
 
 const pageStore = usePageStore()
 const {
@@ -167,6 +168,11 @@ const hideMaterialsPanel = (e: Event) => {
   // }
   emitter.emit('switchMaterialsPanel', false)
 }
+
+useKeyPress(ShortcutKey.location, (e) => {
+  e.preventDefault()
+  handleLocationPage()
+})
 
 // draggable
 const dragEvents = $computed(() =>

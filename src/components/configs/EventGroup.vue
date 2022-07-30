@@ -19,7 +19,7 @@ const { node, event } = defineProps<IEventGroupProps>()
 </script>
 
 <template>
-  <Group title="Event" group-name="event" class="event-group" :default-collapsed="false" :can-advanced="true">
+  <Group group-name="event" class="event-group" :default-collapsed="false" :can-advanced="true">
     <template #default="{ showAdvanced }">
       <SelectItem
         label="Trigger Type"

@@ -3,12 +3,11 @@ import Group from '../widgets/Group.vue'
 import SliderItem from '@/components/configs/items/SliderItem.vue'
 import SelectItem from '@/components/configs/items/SelectItem.vue'
 import { PageNode } from '@/config'
-import { getDefaultAnimationItem, getDefaultAnimationSettings, getDefaultEffectItem } from '@/utils/defaultConfig'
-import PreviewItem from '@/components/configs/items/PreviewItem.vue'
+import { getDefaultEffectItem } from '@/utils/defaultConfig'
 import Icon from '../widgets/Icon.vue'
 import Tip from '../widgets/Tip.vue'
 import Btn from '../widgets/Btn.vue'
-import { getEffectMapByNode, getEffectShowItemByGroup, IEffectShowItemMap } from '@/utils/effect'
+import { getEffectMapByNode, IEffectShowItemMap, allEffectMap } from '@/utils/effect'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import CollapseItem from './items/CollapseItem.vue'
@@ -31,15 +30,14 @@ const handleAddEffect = () => {
   collapsedIndex = effect.effectList.length - 1
 }
 
-/** 得到当前目标下可用的动画属性 */
-const getEffectMap: (target: string) => IEffectShowItemMap =
-  $computed(() => (target: string) => {
-    const node = nameMap[target]
-    return getEffectMapByNode(node) || {}
-  })
+/** 得到当前目标下可用的过渡属性 */
+const getEffectMap = $computed(() => (target: string, targetType: string): IEffectShowItemMap => {
+  const node = nameMap[target]
+  return targetType === 'tag' ? allEffectMap : getEffectMapByNode(node) || {}
+})
 
-const getEffectLabel = (target: string) => Object.fromEntries(
-  Object.entries(getEffectMap(target)).map(([key, item]) => [key, item.label])
+const getEffectLabel = (target: string, targetType: string) => Object.fromEntries(
+  Object.entries(getEffectMap(target, targetType)).map(([key, item]) => [key, item.label])
 )
 
 const handleNameChange = (val: string, item: IEffectItem) => {
@@ -49,7 +47,7 @@ const handleNameChange = (val: string, item: IEffectItem) => {
 }
 
 const handleTargetChange = (key: string, item: IEffectItem) => {
-  const obj = childrenNodeList[key]
+  const obj = effectTargetMap[key]
   item.target = obj.target
   item.targetType = obj.type
   item.name = ''
@@ -63,13 +61,13 @@ const handleSetStyle = (
   item: IEffectItem
 ) => {
   if (operation === 'add') {
-    item.styles[styleType] = getEffectMap(item.target)[item.name].defaultValue
+    item.styles[styleType] = getEffectMap(item.target, item.targetType)[item.name].defaultValue
   } else {
     delete item.styles[styleType]
   }
 }
 
-const childrenNodeList: { [key: string]: ISelectItem } = $computed(() => {
+const effectTargetMap: { [key: string]: ISelectItem } = $computed(() => {
   let obj: { [key: string]: ISelectItem } = {
     // 加 % 避免和 tag 命名重复
     ['%' + node.name]: {
@@ -78,7 +76,14 @@ const childrenNodeList: { [key: string]: ISelectItem } = $computed(() => {
       type: 'self'
     }
   }
-  getTagsByNode([node]).forEach(tag => {
+  getAllChildNode(node).forEach(child => {
+    obj['#' + child.name] = {
+      target: child.name,
+      title: child.name,
+      type: 'name'
+    }
+  })
+  getTagsByNode(node.children || []).forEach(tag => {
     obj[tag] = {
       target: tag,
       title: tag,
@@ -133,9 +138,9 @@ const timingFunction = {
       </template>
       <template #default>
         <SelectItem
-          v-if="Object.keys(childrenNodeList).length > 1"
+          v-if="Object.keys(effectTargetMap).length > 1"
           label="Target"
-          :options="childrenNodeList"
+          :options="effectTargetMap"
           :model-value="item.target"
           @update:model-value="handleTargetChange($event, item)"
         >
@@ -148,7 +153,7 @@ const timingFunction = {
         </SelectItem>
         <SelectItem
           label="Style"
-          :options="getEffectLabel(item.target)"
+          :options="getEffectLabel(item.target, item.targetType)"
           :model-value="item.name"
           @update:model-value="handleNameChange($event, item)"
         ></SelectItem>
@@ -175,9 +180,9 @@ const timingFunction = {
             <component
               v-if="item.styles[obj.name] !== void 0"
               :label="obj.label"
-              :is="getEffectMap(item.target)[item.name].component"
+              :is="getEffectMap(item.target, item.targetType)[item.name].component"
               :model-value="item.styles[obj.name]"
-              v-bind="getEffectMap(item.target)[item.name].props"
+              v-bind="getEffectMap(item.target, item.targetType)[item.name].props"
               @update:model-value="item.styles[obj.name] = $event"
             >
               <Icon

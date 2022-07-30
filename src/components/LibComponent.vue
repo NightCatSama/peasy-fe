@@ -92,9 +92,10 @@ const scrollList: Set<HTMLDivElement> = new Set()
 const componentEvents = $computed(() =>
   isBlockComponent
     ? {
-        dragenter: (e: DragEvent) => {
+        onDragenter: (e: DragEvent) => {
           if (
             dragNode.value &&
+            !item.isModule &&
             !inDraggable &&
             !getIsInDragNode(item.name) &&
             (e.target as HTMLDivElement)?.dataset?.name === item.name
@@ -102,20 +103,14 @@ const componentEvents = $computed(() =>
             setDropZone(item)
           }
         },
-        add: handleAddNode,
-        end: handleSortNode,
-        scroll: (e: Event) => {
+        onAdd: handleAddNode,
+        onEnd: handleSortNode,
+        onScroll: (e: Event) => {
           const elem = e.target as HTMLDivElement
           scrollList.add(elem)
         },
-        'active-node': () => {
+        onActiveNode: () => {
           addActiveParentChain(item)
-        },
-      }
-    : item.component === 'Image'
-    ? {
-        load: (e: Event) => {
-          console.log('image', e)
         },
       }
     : {}
@@ -136,7 +131,9 @@ watch(
 )
 
 const handleDragStart = (event: DragEvent, node: PageNode) => {
-  if (dragNode.value) return
+  if (dragNode.value || item.isModule) {
+    return
+  }
   setDragNode(node, 'move')
 }
 
@@ -155,8 +152,7 @@ const preventMousedown = (e: MouseEvent, subItem: PageNode) => {
   <draggable
     ref="componentRef"
     :model-value="item.children || []"
-    :group="{ name: 'component', put: isBlockComponent ? true : false, pull: true }"
-    :class="['lib-component', { active: isActive, grading: inDraggable, module: !!item.isModule }]"
+    :group="{ name: 'component', put: isBlockComponent ? !item.isModule : false, pull: item.isModule ? false : true }"
     :item-key="'name'"
     :tag="item.component"
     :component-data="{
@@ -164,19 +160,30 @@ const preventMousedown = (e: MouseEvent, subItem: PageNode) => {
       tags: item.tags,
       componentName: item.name,
       direction: parent?.props?.layout?.direction,
+      inheritAttrs: {
+        class: [
+          'lib-component',
+          {
+            active: isActive,
+            grading: inDraggable,
+            module: !!item.isModule,
+            inModule: inModule,
+          }
+        ],
+        'data-name': item.name,
+        ...componentEvents,
+        ...$attrs,
+      }
     }"
     :disabled="(
-      inModule ||
       displayMode !== 'drag' ||
-      (dragNode && dragNodeType !== 'component') ||
-      (dragNode && dragNodeType === item.type && (item.isModule || inModule))
+      (dragNode && dragNodeType !== 'component')
+      // (dragNode && item.isModule)
     )"
     :sort="true"
     :ghost-class="dragNode && dragType === 'clone' ? 'ghost-clone' : 'ghost-move'"
     :chosen-class="'chosen-clone'"
-    :data-name="item.name"
     v-tap.stop="setActive"
-    v-on="componentEvents"
   >
     <template #item="{ element: subItem }">
       <LibComponent

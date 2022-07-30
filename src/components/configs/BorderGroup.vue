@@ -121,7 +121,7 @@ const boxStyles = $computed(() => {
 </script>
 
 <template>
-  <Group title="Border" group-name="border" class="border-group" :can-advanced="false" :default-collapsed="false">
+  <Group group-name="border" class="border-group" :can-advanced="false" :default-collapsed="false">
     <div class="spacing-block" data-text="Preview">
       <div class="inner-block" :style="boxStyles">
         <Icon

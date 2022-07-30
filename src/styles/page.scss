@@ -8,7 +8,7 @@
       user-select: none;
       animation: none!important;
 
-      &:not(.active):hover::before {
+      &:not(.active):not(.inModule):hover::before {
         content: '';
         left: 0;
         top: 0;
@@ -33,7 +33,11 @@
       // transition: font-size 0.3s;
       animation: none!important;
 
-      &::before {
+      .inModule {
+        pointer-events: none;
+      }
+
+      &:not(.inModule)::before {
         content: '';
         left: 0;
         top: 0;

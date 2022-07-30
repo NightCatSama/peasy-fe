@@ -177,7 +177,6 @@ const configs: ShowItem[] = $computed(() => {
 
 <template>
   <Group
-    title="Basic"
     group-name="basic"
     class="basic-group"
     :default-collapsed="true"

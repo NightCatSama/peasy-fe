@@ -1,4 +1,4 @@
-import { ComponentName, ComponentPropsGroup, GroupType, isSomeBasicType, PageNode } from "@/config";
+import { ComponentName, ComponentPropsGroup, DefaultColor, GroupType, isSomeBasicType, PageNode } from "@/config";
 import { getFormPropsByType } from "@/constants/form";
 
 export interface IEffectShowItem {
@@ -25,65 +25,80 @@ export const getEffectMapByNode = (node: PageNode): IEffectShowItemMap | null =>
   return map
 }
 
+export const allEffectMap: IEffectShowItemMap = {
+  color: {
+    label: 'Font Color',
+    ...getFormPropsByType('color'),
+    defaultValue: DefaultColor
+  },
+  fontSize: {
+    label: 'Font Size',
+    ...getFormPropsByType('fontSize'),
+    defaultValue: DefaultColor
+  },
+  borderColor: {
+    label: 'Border Color',
+    ...getFormPropsByType('borderColor'),
+    defaultValue: DefaultColor,
+  },
+  backgroundColor: {
+    label: 'Background Color',
+    ...getFormPropsByType('backgroundColor'),
+    defaultValue: DefaultColor,
+  },
+  opacity: {
+    label: 'Opacity',
+    ...getFormPropsByType('opacity'),
+    defaultValue: 1,
+  }
+}
+
 export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): IEffectShowItemMap | null => {
   switch (groupType) {
     case 'font':
       return {
-        color: {
-          label: 'Font Color',
-          ...getFormPropsByType('color'),
-          defaultValue: (node?.props?.font as IFont)?.color ?? '#000',
-        },
-        fontSize: {
-          label: 'Font Size',
-          ...getFormPropsByType('fontSize'),
+        color: Object.assign(allEffectMap['color'], {
+          defaultValue: (node?.props?.font as IFont)?.color ?? DefaultColor,
+        }),
+        fontSize: Object.assign(allEffectMap['fontSize'], {
           defaultValue: (node?.props?.font as IFont)?.fontSize ?? '18px',
-        }
+        })
       }
     case 'border': {
       const border = node?.props?.border as IBorder
       return {
-        borderColor: {
-          label: 'Border Color',
-          ...getFormPropsByType('borderColor'),
-          defaultValue: Array.isArray(border?.borderColor) ? border?.borderColor[0] : (border?.borderColor || '#000'),
-          setValue: (value: any) => [value, value, value, value]
-        }
+        borderColor: Object.assign(allEffectMap['borderColor'], {
+          defaultValue: Array.isArray(border?.borderColor) ? border?.borderColor[0] : (border?.borderColor || DefaultColor),
+        })
       }
     }
     case 'background': {
       const background = node?.props?.background as IBackground
       return background?.backgroundType === 'color' || background?.backgroundType === 'none' ? {
-        backgroundColor: {
-          label: 'Background Color',
-          ...getFormPropsByType('backgroundColor'),
-          defaultValue: background?.backgroundColor ?? '#000',
-        }
+        backgroundColor: Object.assign(allEffectMap['backgroundColor'], {
+          defaultValue: background?.backgroundColor ?? DefaultColor,
+        })
       } : null
     }
     case 'container': {
       return {
-        opacity: {
-          label: 'Opacity',
-          ...getFormPropsByType('opacity'),
+        opacity: Object.assign(allEffectMap['opacity'], {
           defaultValue: (node?.props?.container as IContainer)?.opacity ?? 1,
-        }
+        })
       }
     }
     case 'basic': {
       if (isSomeBasicType('Icon', node.component, node?.props?.basic)) {
         const basic = node?.props?.basic as IIconBasicType
         return {
-          fontSize: {
+          fontSize: Object.assign(allEffectMap['fontSize'], {
             label: 'Icon Size',
-            ...getFormPropsByType('fontSize'),
             defaultValue: basic?.size ?? '18px',
-          },
-          color: {
+          }),
+          color: Object.assign(allEffectMap['color'], {
             label: 'Icon Color',
-            ...getFormPropsByType('color'),
-            defaultValue: basic?.color ?? '#000',
-          }
+            defaultValue: basic?.color ?? DefaultColor,
+          }),
         }
       }
       return null

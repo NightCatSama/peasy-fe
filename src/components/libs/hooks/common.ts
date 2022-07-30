@@ -1,11 +1,12 @@
 import { ComponentName, getTagClassName, getUniqueName, GroupPropType } from "@/config"
-import { computed, ref } from "vue"
+import { computed, reactive, ref } from "vue"
 import { useAnimation } from "./animation"
 import { useEffect } from "./effect"
 import { useEvent } from "./event"
 import { useAnimationStyle, useBackgroundStyle, useBorderStyle, useContainerStyle, useEffectStyle, useFontStyle, useIconBasicStyle, useImageBasicStyle, useLayoutStyle, usePositionStyle, useSizeStyle, useSpacingStyle, useStyle } from "./style"
 
 export type IProps<T extends ComponentName = any> = {
+  inheritAttrs?: any
   tags: string[]
   componentName: string
   direction?: 'row' | 'column'
@@ -31,6 +32,8 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
   } = props
 
   const elem = ref<HTMLDivElement | null>(null)
+
+  const propsRef = reactive(props)
 
   useEvent(event, elem)
 
@@ -61,13 +64,13 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
   )
 
   const uName = computed(() => getUniqueName(name))
-  const tagClassNames = computed(() => tags?.map(tag => getTagClassName(tag)) || [])
+  const tagClassNames = computed(() => propsRef.tags.map(tag => getTagClassName(tag)))
 
   return {
     elem,
     style,
     uName,
     tagClassNames,
-    props,
+    props: propsRef,
   }
 }

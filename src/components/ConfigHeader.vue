@@ -11,6 +11,7 @@ import Slider from './widgets/Slider.vue'
 import Select from './widgets/Select.vue'
 import { useKeyPress } from 'ahooks-vue'
 import { emitter } from '@/utils/event'
+import { ShortcutKey } from '@/constants/shortcut'
 
 const displayStore = useDisplayStore()
 const { device, displayMode } = storeToRefs(displayStore)
@@ -61,14 +62,14 @@ const handleModeClick = (value: any) => {
   setDisplayMode(value)
 }
 
-useKeyPress('meta.e', (e) => {
+useKeyPress(ShortcutKey.SwitchDisplayMode, (e) => {
   e.preventDefault()
   const displayModeList = ['edit', 'drag', 'preview'] as const
   setDisplayMode(
     displayModeList[(displayModeList.indexOf(displayMode.value) + 1) % 3]
   )
 })
-useKeyPress('meta.shift.a', (e) => {
+useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
   e.preventDefault()
   emitter.emit('switchMaterialsPanel')
 })

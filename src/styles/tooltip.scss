@@ -1,5 +1,7 @@
 .v-popper--theme-tooltip.v-popper__popper {
   .v-popper__inner {
+    padding: 6px 12px;
     font-size: 13px;
+    color: $color;
   }
 }

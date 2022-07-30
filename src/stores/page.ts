@@ -141,7 +141,7 @@ export const usePageStore = defineStore('page', {
      */
     swapNode(parentNode: PageNode, index: number, targetIndex: number) {
       const dropZone = useDragStore().dropZone
-      if (!parentNode?.children || !dropZone?.children) return
+      if (!parentNode?.children || !dropZone?.children || dropZone.isModule) return
 
       const node = parentNode.children[index]
       if (!node) return

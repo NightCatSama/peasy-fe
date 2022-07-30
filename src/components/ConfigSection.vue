@@ -5,6 +5,8 @@ import ConfigGroup from './ConfigGroup.vue'
 import Icon from './widgets/Icon.vue'
 import { useDisplayStore } from '@/stores/display'
 import TagList from './biz/TagList.vue'
+import { useKeyPress } from 'ahooks-vue'
+import { ShortcutKey } from '@/constants/shortcut'
 
 const pageStore = usePageStore()
 const { allPageData, activeNode, activeParentNode, activeNodeGroups } = storeToRefs(pageStore)
@@ -13,6 +15,11 @@ const { getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateAct
 const displayStore = useDisplayStore()
 const { minimize } = storeToRefs(displayStore)
 const { setMinimize } = displayStore
+
+useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
+  e.preventDefault()
+  setMinimize(!minimize.value)
+})
 
 </script>
 
@@ -187,7 +194,7 @@ $header-height: 54px;
     right: 100%;
     top: 13px;
     padding: 6px;
-    z-index: 100;
+    z-index: 10000;
     transform: translateX(-10px) rotateZ(-90deg);
     background-color: $panel-light;
     transition: all .3s;

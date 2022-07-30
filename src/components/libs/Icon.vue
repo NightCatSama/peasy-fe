@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  inheritAttrs: false
+}
+</script>
+
 <script setup lang="ts">
 import { ref, useAttrs, watch } from 'vue'
 import { IProps, useProps } from './hooks/common';
@@ -33,7 +39,7 @@ const classNames = $computed(() => [
 </script>
 
 <template>
-  <div :class="['fa-icon']">
+  <div :class="['fa-icon']" v-bind="props.inheritAttrs">
     <i :class="classNames" :style="style" :id="uName" />
   </div>
 </template>

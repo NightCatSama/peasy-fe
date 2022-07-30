@@ -83,7 +83,6 @@ let showAdvancedSettings = $ref(false)
 
 <template>
   <Group
-    title="Animation"
     group-name="animation"
     class="animation-group"
     :can-advanced="false"

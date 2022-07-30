@@ -1,3 +1,9 @@
+<script lang="ts">
+export default {
+  inheritAttrs: false
+}
+</script>
+
 <script setup lang="ts">
 import { ref, useAttrs } from 'vue'
 import { IProps, useProps } from './hooks/common';
@@ -11,7 +17,7 @@ const classNames = $computed(() => ['image', uName.value, ...tagClassNames.value
 </script>
 
 <template>
-  <img ref="elem" :class="classNames" :style="style" :id="uName" :src="src" />
+  <img ref="elem" :class="classNames" :style="style" :id="uName" :src="src" v-bind="props.inheritAttrs" />
 </template>
 
 <style lang="scss" scoped>
