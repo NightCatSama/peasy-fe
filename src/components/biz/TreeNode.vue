@@ -1,0 +1,200 @@
+<script setup lang="ts">
+import { PageNode } from '@/config';
+import { useDisplayStore } from '@/stores/display';
+import { Alert } from '@/utils/alert';
+import { watch, ref } from 'vue'
+import { storeToRefs } from 'pinia';
+import Icon from '../widgets/Icon.vue';
+import { usePageStore } from '@/stores/page';
+
+interface ITreeNodeListProps {
+  node: PageNode
+}
+
+const { node } = defineProps<ITreeNodeListProps>()
+
+const displayStore = useDisplayStore()
+const { layerStatus } = storeToRefs(displayStore)
+
+const pageStore = usePageStore()
+const { activeNode, activeParentChain } = storeToRefs(pageStore)
+const { getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } = pageStore
+
+let collapse = ref(!!layerStatus.value.get(node))
+
+const isActive = $computed(() => activeNode.value === node)
+
+const canCollapse = $computed(() => node.children?.length && !node.isModule)
+
+const icon = $computed(() => {
+  if (node.type === 'section') {
+    return 'circle'
+  }
+  if (node.isModule) {
+    return 'module'
+  }
+  return ({
+    'Image': 'image',
+    'Text': 'text',
+    'Block': 'block',
+    'Icon': 'symbol'
+  } as any)[node.component]
+})
+
+watch(() => collapse.value, (val: boolean) => layerStatus.value.set(node, val))
+
+watch([activeNode], () => {
+  if (activeNode.value && activeParentChain.value.some(n => n === node)) {
+    collapse.value = true
+  }
+}, { immediate: true, flush: 'post' })
+</script>
+
+<template>
+  <div :class="['tree-node', { collapse, active: isActive }]">
+    <Icon
+      v-if="canCollapse"
+      class="collapse-btn"
+      name="caret-down"
+      :size="10"
+      @click="collapse = !collapse"
+    ></Icon>
+    <div class="tree-node-info" @click="setActiveNode(node)">
+      <Icon
+        class="tree-node-info-icon"
+        :name="icon"
+        :size="12"
+       ></Icon>
+      <div class="tree-node-info-name">{{ node.name }}</div>
+      <template v-if="activeNode === node">
+        <Icon
+          v-if="activeNode.isModule"
+          class="tree-node-info-op-icon separate-icon"
+          name="separate"
+          :size="10"
+          v-tooltip="'Ungroup'"
+          @click="separateActiveNode"
+        ></Icon>
+        <Icon
+          class="tree-node-info-op-icon copy-icon"
+          name="copy"
+          :size="10"
+          v-tooltip="'Copy'"
+          @click.stop="copyActiveNode"
+        ></Icon>
+        <Icon
+          class="tree-node-info-op-icon delete-icon"
+          name="delete"
+          :size="10"
+          v-tooltip="'Delete'"
+          @click.stop="deleteActiveNode"
+        ></Icon>
+      </template>
+    </div>
+    <div class="tree-node-children">
+      <TreeNode
+        v-show="canCollapse && collapse"
+        v-for="child in node.children"
+        :key="child.name"
+        :node="child"
+      ></TreeNode>
+    </div>
+  </div>
+</template>
+
+<style lang="scss">
+.tree-node {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  font-size: 14px;
+  cursor: pointer;
+
+  &.active {
+    // color: $yellow;
+    background-color: $panel-dark;
+
+    > .tree-node-info {
+      color: $theme;
+      font-weight: bold;
+    }
+  }
+
+  &-info {
+    display: flex;
+    align-items: center;
+    height: 24px;
+    border-radius: $inner-radius;
+
+    &:hover {
+      background-color: rgba($theme, 6%);
+    }
+
+    &-icon {
+      flex-shrink: 0;
+      margin-right: 2px;
+    }
+
+    &-name {
+      flex: 1;
+    }
+
+    &-op-icon {
+      color: rgba($color, 80%);
+      flex-shrink: 0;
+      &.delete-icon {
+        &:hover {
+          color: $red;
+        }
+      }
+      &.copy-icon {
+        &:hover {
+          color: $theme;
+        }
+      }
+      &.separate-icon {
+        &:hover {
+          color: $pink;
+        }
+      }
+    }
+  }
+
+  &-children {
+    position: relative;
+    padding-left: 16px;
+
+    &::before {
+      content: '';
+      position: absolute;
+      left: 9px;
+      top: 6px;
+      bottom: 6px;
+      height: auto;
+      width: 2px;
+      border-left: 1px dashed lighten($panel, 10%);
+    }
+  }
+
+  .collapse-btn {
+    opacity: 0;
+    position: absolute;
+    left: -15px;
+    top: 3px;
+    transform: rotateZ(-90deg);
+    transition: all .2s;
+  }
+
+  &.collapse {
+    > .collapse-btn {
+      transform: rotateZ(0);
+    }
+  }
+
+  &:hover {
+    > .collapse-btn {
+      opacity: 1;
+    }
+  }
+}
+</style>

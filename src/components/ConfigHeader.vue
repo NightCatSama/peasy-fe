@@ -19,7 +19,6 @@ const { device, displayMode } = storeToRefs(displayStore)
 const { setDevice, curPresetDeviceList, setDisplayMode } = displayStore
 
 const name = $ref('index')
-const colorRef = ref(null)
 
 const text = $computed(
   () => `${device.value.width || 'width'} x ${device.value.height || 'height'}`
@@ -75,10 +74,6 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
   e.preventDefault()
   emitter.emit('switchMaterialsPanel')
 })
-
-onMounted(() => {
-  console.log(colorRef)
-})
 </script>
 
 <template>
@@ -88,7 +83,7 @@ onMounted(() => {
       <div class="ext">.html</div>
     </div>
     <div class="center">
-      <Dropdown ref="colorRef" placement="bottom" type="pure-dropdown" :distance="10">
+      <Dropdown placement="bottom" type="pure-dropdown" :distance="10">
         <template #default="{ shown }">
           <div :class="['color-plate', { active: shown }]">
             <Icon name="color" :size="18" />

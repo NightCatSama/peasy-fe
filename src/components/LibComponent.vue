@@ -38,7 +38,6 @@ const $el = $computed(() => (componentRef?.value as any)?.$el as HTMLDivElement)
 const setActive = () => {
   if (!$el || !$el.parentElement) return
   setActiveNode(item, parent)
-  $el.parentElement!.dispatchEvent(new Event('active-node', { bubbles: true }))
   emitter.emit('switchMaterialsPanel', false)
 }
 
@@ -54,6 +53,7 @@ watch(
       }
       const moveable = getMoveable()
       if (!moveable || !$el) return
+
       useMoveable($el, item, parent)
       setTimeout(() => emitter.emit('updateMoveable'), 300) // drag 视图切回来有个缩放动画，需要等动画完毕后重新定位
     }
@@ -65,6 +65,12 @@ watch(
   () => isActive,
   () => !isActive && disabledMoveable(),
   { flush: 'pre' }
+)
+
+watch(
+  () => isActive,
+  () => isActive && $el?.parentElement!.dispatchEvent(new Event('active-node', { bubbles: true })),
+  { flush: 'post' }
 )
 
 onBeforeUnmount(() => isActive && disabledMoveable())

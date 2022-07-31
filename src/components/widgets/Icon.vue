@@ -46,6 +46,14 @@ import EffectIcon from '@/assets/effect.svg'
 import PlusIcon from '@/assets/plus.svg'
 import SeparateIcon from '@/assets/separate.svg'
 import ColorIcon from '@/assets/color.svg'
+import ImageIcon from '@/assets/image.svg'
+import TextIcon from '@/assets/text.svg'
+import BlockIcon from '@/assets/block.svg'
+import CircleIcon from '@/assets/circle.svg'
+import SymbolIcon from '@/assets/symbol.svg'
+import LayersIcon from '@/assets/layers.svg'
+import LayersSlashIcon from '@/assets/layers-slash.svg'
+import ModuleIcon from '@/assets/module.svg'
 
 interface IIconProps {
   name: string
@@ -102,6 +110,14 @@ const iconMap = {
   plus: PlusIcon,
   separate: SeparateIcon,
   color: ColorIcon,
+  image: ImageIcon,
+  text: TextIcon,
+  block: BlockIcon,
+  circle: CircleIcon,
+  symbol: SymbolIcon,
+  layers: LayersIcon,
+  'layers-slash': LayersSlashIcon,
+  module: ModuleIcon,
 } as any
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()

@@ -18,8 +18,6 @@ export const usePageStore = defineStore('page', {
     allPageData: [] as PageNode[],
     // 当前激活的节点
     activeNode: null as PageNode | null,
-    // 当前激活的节点的父节点
-    activeParentNode: null as PageNode | null,
     // 当前激活的节点到最顶层的节点链
     activeParentChain: [] as PageNode[],
     /** 物料数据 */
@@ -75,19 +73,19 @@ export const usePageStore = defineStore('page', {
     getAllTags: function (state) {
       return () => this.getTagsByNode(state.allPageData);
     },
-    getActiveNodeRound:
-      (state) =>
-      (change: number): PageNode | null => {
+    getActiveNodeRound: function (state) {
+      return (change: number): PageNode | null => {
         if (!state.activeNode) return null
         const nodeList =
-          state.activeNode.type === 'section' ? state.allPageData : state.activeParentNode?.children
+          state.activeNode.type === 'section' ? state.allPageData : this.activeParentNode?.children
         if (!nodeList || nodeList.length === 0) return null
         const index = nodeList?.indexOf(state.activeNode)!
         if (index === -1) return null
         const newIndex = index + change
         if (newIndex < 0 || newIndex >= nodeList!.length) return null
         return nodeList![newIndex]
-      },
+      }
+    },
     getAllChildNode:
       (state) =>
       (node: PageNode): PageNode[] => {
@@ -101,7 +99,8 @@ export const usePageStore = defineStore('page', {
           i++
         }
         return children
-      }
+      },
+      activeParentNode: (state) => state.activeParentChain?.[0] || null
   },
   actions: {
     async getPageData() {
@@ -171,8 +170,8 @@ export const usePageStore = defineStore('page', {
     },
     /** 设置当前激活节点 */
     setActiveNode(node?: PageNode | null, parent?: PageNode | null) {
+      if (this.activeNode === node) return
       this.activeNode = node || null
-      this.activeParentNode = parent || null
       this.activeParentChain.length = 0
     },
     /** 设置当前激活节点的父节点设置为激活节点 */
@@ -180,7 +179,6 @@ export const usePageStore = defineStore('page', {
       if (!this.activeParentNode) return
       this.activeNode = this.activeParentNode
       this.activeParentChain.shift()
-      this.activeParentNode = this.activeParentChain?.[0] || null
     },
     setActiveNodeToRound(change: number) {
       const node = this.getActiveNodeRound(change)
@@ -195,11 +193,12 @@ export const usePageStore = defineStore('page', {
     },
     /** 添加节点链 */
     addActiveParentChain(node: PageNode) {
+      // 如果激活的是 Module 内的子节点，则将设置为激活 Module 节点
       if (node.isModule && !this.activeNode?.isModule) {
         this.activeNode = node
         this.activeParentChain.length = 0
       } else {
-        this.activeParentChain.push(node)
+        !this.activeParentChain.includes(node) && this.activeParentChain.push(node)
       }
     },
     /** 移除当前节点 */
@@ -220,7 +219,6 @@ export const usePageStore = defineStore('page', {
         }
       }
       this.activeNode = null
-      this.activeParentNode = null
       this.activeParentChain = []
     },
     /** 复制当前激活节点 */

@@ -7,9 +7,10 @@ import { useDisplayStore } from '@/stores/display'
 import TagList from './biz/TagList.vue'
 import { useKeyPress } from 'ahooks-vue'
 import { ShortcutKey } from '@/constants/shortcut'
+import TreeNode from './biz/TreeNode.vue'
 
 const pageStore = usePageStore()
-const { allPageData, activeNode, activeParentNode, activeNodeGroups } = storeToRefs(pageStore)
+const { pageData, activeNode, activeNodeGroups } = storeToRefs(pageStore)
 const { getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } = pageStore
 
 const displayStore = useDisplayStore()
@@ -20,6 +21,8 @@ useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
   e.preventDefault()
   setMinimize(!minimize.value)
 })
+
+let showLayer = $ref(true)
 
 </script>
 
@@ -63,7 +66,7 @@ useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
       </div>
     </div>
     <div class="config-main">
-      <div v-if="activeNode">
+      <div v-if="activeNode && !showLayer">
         <div class="header">
           <div class="title">{{ activeNode.name }}</div>
           <Icon
@@ -73,6 +76,13 @@ useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
             :size="16"
             v-tooltip="'Ungroup'"
             @click="separateActiveNode"
+          ></Icon>
+          <Icon
+            class="op-icon separate-icon"
+            name="layers"
+            :size="16"
+            v-tooltip="'Layers'"
+            @click="showLayer = true"
           ></Icon>
           <Icon
             class="op-icon copy-icon"
@@ -106,28 +116,22 @@ useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
       <div class="layers" v-else>
         <div class="header">
           <div class="title">Layers</div>
+          <Icon
+            v-if="activeNode"
+            class="op-icon separate-icon"
+            name="layers-slash"
+            :size="16"
+            v-tooltip="'Setting'"
+            @click="showLayer = false"
+          ></Icon>
         </div>
         <div class="content layers-content">
-          <div :style="{ marginBottom: '20px', color: 'pink' }">TODO: 后续替换成 Tree</div>
-          <div v-for="(item, index) in allPageData" :key="item.name">
-            {{ item.name }}
-            <div
-              v-if="item.children"
-              v-for="subItem in item.children"
-              :style="{ marginLeft: 20 + 'px' }"
-              @click.stop="setActiveNode(subItem, item)"
-            >
-              - {{ subItem.name }}
-              <div
-                v-if="subItem.children"
-                v-for="son in subItem.children"
-                :style="{ marginLeft: 40 + 'px' }"
-                @click.stop="setActiveNode(son, subItem)"
-              >
-                - {{ son.name }}
-              </div>
-            </div>
-          </div>
+          <TreeNode
+            v-for="node in pageData"
+            :key="node.name"
+            :node="node"
+          >
+          </TreeNode>
         </div>
       </div>
     </div>
@@ -256,6 +260,7 @@ $header-height: 54px;
     flex: 1;
     display: flex;
     flex-direction: column;
+    height: 100%;
   }
 
   .layers-content {
@@ -263,7 +268,7 @@ $header-height: 54px;
     padding: 16px;
     background: $panel-content;
     flex: 1;
-    overflow: auto;
+    overflow-y: auto;
   }
 }
 

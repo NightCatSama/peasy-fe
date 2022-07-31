@@ -1,3 +1,4 @@
+import { PageNode } from '@/config'
 import { getDefaultDevice } from '@/utils/device'
 import { defineStore } from 'pinia'
 
@@ -38,6 +39,8 @@ export const useDisplayStore = defineStore('display', {
     device: { width: 0, height: 0, zoom: 1, fontSize: 16 } as IDeviceInfo,
     /** 编辑组的状态保存，避免每次切换都恢复 */
     groupStatus: {} as { [key: string]: IGroupStatus },
+    /** Layers 的状态保存，避免每次切换都恢复 */
+    layerStatus: new WeakMap() as WeakMap<PageNode, boolean>,
     /**
      * 当前页面展示模式
      * edit: 编辑模式
@@ -49,7 +52,7 @@ export const useDisplayStore = defineStore('display', {
     /** 手动锁定拖拽修改 position */
     lockDragSetPosition: false,
     /** 是否右侧设置栏收起状态 */
-    minimize: true,
+    minimize: false,
     /** 当前展示的颜色类型 */
     colorType: 'variable' as 'variable' | 'recent',
   }),
