@@ -13,10 +13,15 @@ import { useKeyPress } from 'ahooks-vue'
 import { emitter } from '@/utils/event'
 import { ShortcutKey } from '@/constants/shortcut'
 import ColorVatList from './biz/ColorVatList.vue'
+import { useHistoryStore } from '@/stores/history'
 
 const displayStore = useDisplayStore()
 const { device, displayMode } = storeToRefs(displayStore)
 const { setDevice, curPresetDeviceList, setDisplayMode } = displayStore
+
+const historyStore = useHistoryStore()
+const { canUndoHistory, canRedoHistory } = storeToRefs(historyStore)
+const { saveHistory, undoHistory, redoHistory } = historyStore
 
 const name = $ref('index')
 
@@ -145,6 +150,20 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
       </Select>
     </div>
     <div class="right">
+      <Icon
+        :class="['undo-icon', { disabled: !canUndoHistory }]"
+        name="redo"
+        :size="16"
+        type="btn"
+        v-tooltip="'撤销'"
+      ></Icon>
+      <Icon
+        :class="['redo-icon', { disabled: !canRedoHistory }]"
+        name="redo"
+        :size="16"
+        type="btn"
+        v-tooltip="'重做'"
+      ></Icon>
       <Btn @click="$emit('download')" text="Download"></Btn>
       <Avatar :size="36" />
     </div>
@@ -183,6 +202,25 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
   .right {
     display: flex;
     flex-shrink: 0;
+
+    .redo-icon,
+    .undo-icon {
+      margin-right: 20px;
+
+      &:not(.disabled):hover {
+        color: $theme;
+      }
+
+      &.disabled {
+        opacity: .3;
+        cursor: not-allowed;
+      }
+    }
+
+    .undo-icon {
+      margin-right: 10px;
+      transform: rotateY(180deg);
+    }
   }
 
   .center {

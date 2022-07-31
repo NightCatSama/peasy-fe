@@ -1,6 +1,5 @@
 import { defineStore } from 'pinia'
 import { mande } from 'mande'
-import { cloneDeep } from 'lodash'
 import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mock'
 import { PageNode, ComponentPropsGroup, ComponentName, IColorVarItem } from '@/config'
 import { useDragStore } from './drag'
@@ -28,6 +27,7 @@ export const usePageStore = defineStore('page', {
     } as MaterialData,
     /** 当前展示的 Section，null 为全部 */
     activeSection: null as PageNode | null,
+    /** 颜色变量 */
     colorVars: [] as IColorVarItem[]
   }),
   getters: {
@@ -244,6 +244,19 @@ export const usePageStore = defineStore('page', {
       if (!this.activeNode) return
       this.activeNode.isModule = false
       delete this.activeNode.moduleConfig
+    },
+    updateAllPageNode(pageNode: PageNode[]) {
+      this.allPageData = pageNode
+      const newNameMap = this.nameMap
+      if (this.activeNode) {
+        this.activeNode = newNameMap[this.activeNode.name]
+      }
+      if (this.activeSection) {
+        this.activeSection = newNameMap[this.activeSection.name]
+      }
+      if (this.activeParentChain.length) {
+        this.activeParentChain = this.activeParentChain.map(node => newNameMap[node.name])
+      }
     }
   },
 })

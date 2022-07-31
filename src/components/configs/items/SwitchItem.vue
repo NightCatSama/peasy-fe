@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Switch from '@/components/widgets/Switch.vue'
+import { emitter } from '@/utils/event';
 
 interface ISwitchItemProps {
   label: string
@@ -13,6 +14,7 @@ const value = $computed({
   get: () => modelValue,
   set: (val: boolean) => {
     emit('update:model-value', val)
+    modelValue !== val && emitter.emit('saveHistory')
   },
 })
 </script>

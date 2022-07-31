@@ -73,7 +73,10 @@ watch([activeNode], () => {
           name="separate"
           :size="10"
           v-tooltip="'Ungroup'"
-          @click="separateActiveNode"
+          @click="() => {
+            separateActiveNode()
+            collapse = true
+          }"
         ></Icon>
         <Icon
           class="tree-node-info-op-icon copy-icon"

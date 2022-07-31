@@ -215,14 +215,14 @@ $header-height: 54px;
       opacity: 1;
     }
     .mini-btn {
-      transform: translateX(40px) rotateZ(90deg);
+      transform: translateX(38px) rotateZ(90deg);
     }
   }
 
   .mini-btn {
     position: absolute;
     right: 100%;
-    top: 13px;
+    top: 15px;
     padding: 6px;
     z-index: $config-btn-zIndex;
     transform: translateX(-10px) rotateZ(-90deg);

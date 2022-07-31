@@ -6,6 +6,9 @@ export default {
 
 <script setup lang="ts">
 import Input from '@/components/widgets/Input.vue'
+import { emitter } from '@/utils/event'
+import { useDebounce } from 'ahooks-vue';
+import { watch } from 'vue';
 
 type IInputProps = Partial<InstanceType<typeof Input>>
 
@@ -13,10 +16,13 @@ interface ISelectItemProps extends IInputProps {
   label: string
   modelValue: string
   type?: IInputProps['type']
+  realTime?: boolean
+  onFocus?: IInputProps['onFocus']
+  onBlur?: IInputProps['onBlur']
 }
 
 const props = defineProps<ISelectItemProps>()
-const { label, modelValue, type } = $(props)
+const { label, modelValue, type, realTime, onFocus, onBlur } = $(props)
 
 const emit = defineEmits(['update:model-value'])
 
@@ -26,6 +32,21 @@ const value = $computed({
     emit('update:model-value', val)
   },
 })
+
+let preValue = $ref('')
+
+const handleFocus = (e: Event) => {
+  preValue = modelValue
+  onFocus?.(e)
+}
+
+const handleBlur = (e: Event) => {
+  if (modelValue !== preValue) {
+    emitter.emit('saveHistory')
+  }
+  onBlur?.(e)
+}
+
 </script>
 
 <template>
@@ -33,7 +54,15 @@ const value = $computed({
     <span class="label">
       <slot name="label" :label="label">{{ label }}</slot>
     </span>
-    <Input class="input" v-model="value" :type="type" v-bind="$attrs">
+    <Input
+      class="input"
+      v-model="value"
+      :type="type"
+      :real-time="realTime"
+      :on-focus="handleFocus"
+      :on-blur="handleBlur"
+      v-bind="$attrs"
+    >
       <template #suffix><slot name="suffix"></slot></template>
     </Input>
     <slot></slot>

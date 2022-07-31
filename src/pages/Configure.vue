@@ -12,15 +12,21 @@ import EditSection from '@/components/EditSection.vue'
 import { emitter } from '@/utils/event'
 import { useDisplayStore } from '@/stores/display'
 import { useColorVars } from '@/components/libs/hooks/color'
+import { useHistoryStore } from '@/stores/history'
+import { useKeyPress } from 'ahooks-vue'
+import { ShortcutKey } from '@/constants/shortcut'
 
 const pageStore = usePageStore()
-
-const { pageData, materialData, colorVars } = storeToRefs(pageStore)
-const { addSection, getAssetsData, getPageData, download } = pageStore
+const { pageData, allPageData, colorVars } = storeToRefs(pageStore)
+const { updateAllPageNode, getAssetsData, getPageData, download } = pageStore
 
 const displayStore = useDisplayStore()
 const { setDeviceByParent } = displayStore
 const { device, displayMode } = storeToRefs(displayStore)
+
+const historyStore = useHistoryStore()
+const { canUndoHistory, canRedoHistory } = storeToRefs(historyStore)
+const { saveHistory, undoHistory, redoHistory } = historyStore
 
 const handleDownload = async () => {
   const res = await download()
@@ -30,12 +36,53 @@ const handleDownload = async () => {
 let showLeftPanel = $ref(false)
 
 onMounted(() => {
-  getAssetsData()
-  getPageData()
-
   emitter.on('switchMaterialsPanel', (show?: boolean) => {
     showLeftPanel = show === void 0 ? !showLeftPanel : show
   })
+
+  /** 记录编辑记录 */
+  let inAction = false
+  pageStore.$onAction(({ name, store, args, after }) => {
+    if (
+      !inAction &&
+      [
+        'getPageData',
+        'insertNode',
+        'swapNode',
+        'addSection',
+        'removeSection',
+        'swapSection',
+        'deleteActiveNode',
+        'copyActiveNode',
+        'separateActiveNode'
+      ].includes(name)
+    ) {
+      inAction = true;
+      after(() => {
+        inAction = false
+        saveHistory(store.allPageData)
+      })
+    }
+  })
+  emitter.on('saveHistory', () => {
+    saveHistory(allPageData.value)
+  })
+
+  getAssetsData()
+  getPageData()
+})
+
+useKeyPress(ShortcutKey.undo, (e) => {
+  if (e.shiftKey) return
+  if (!canUndoHistory.value) return
+  e.preventDefault()
+  updateAllPageNode(undoHistory())
+})
+
+useKeyPress(ShortcutKey.redo, (e) => {
+  if (!canRedoHistory.value) return
+  e.preventDefault()
+  updateAllPageNode(redoHistory())
 })
 
 let context = reactive({ isEditMode: true, displayMode: displayMode.value })
@@ -61,10 +108,7 @@ watch(
 <template>
   <div class="page">
     <!-- 左侧操作栏 -->
-    <Sidebar
-      :active-materials-panel="showLeftPanel"
-      @change-materials-panel="(val) => (showLeftPanel = val)"
-    ></Sidebar>
+    <Sidebar :active-materials-panel="showLeftPanel" @change-materials-panel="(val) => (showLeftPanel = val)"></Sidebar>
     <div class="container">
       <ConfigHeader @download="handleDownload"></ConfigHeader>
       <!-- 页面主体内容 -->
@@ -88,6 +132,7 @@ watch(
   color: $color;
   overflow: hidden;
 }
+
 .container {
   position: relative;
   display: flex;
@@ -96,6 +141,7 @@ watch(
   height: 100vh;
   overflow: hidden;
   background: $bg-default;
+
   .left-panel {
     position: absolute;
     left: 0;
@@ -109,6 +155,7 @@ watch(
       transform: translateX(0);
     }
   }
+
   .content {
     position: relative;
     flex: 1;

@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import { emitter } from '@/utils/event';
 import InputItem from './InputItem.vue'
 interface IPreviewItemProps {
   label: string
@@ -14,6 +15,7 @@ const activeIndex = $computed(() => options.indexOf(modelValue))
 
 const handleChange = (item: string) => {
   emit('update:model-value', item)
+  emitter.emit('saveHistory')
 }
 
 const showCodeInput = $ref(false)

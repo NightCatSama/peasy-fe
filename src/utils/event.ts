@@ -4,8 +4,7 @@ type Events = {
   location?: boolean
   switchMaterialsPanel?: boolean
   updateMoveable?: any
-  focus: Event
-  blur: Event
+  saveHistory?: any
 }
 
 export const emitter = mitt<Events>()

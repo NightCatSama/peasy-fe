@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Slider from '@/components/widgets/Slider.vue'
+import { emitter } from '@/utils/event';
 
 type SliderPropType = Partial<InstanceType<typeof Slider>>
 
@@ -28,6 +29,10 @@ const handleChange = (e: Event) => {
     value = parseFloat(elem.value) || 0
   }
 }
+
+const handleDragEnd = () => {
+  emitter.emit('saveHistory')
+}
 </script>
 
 <template>
@@ -46,8 +51,9 @@ const handleChange = (e: Event) => {
       v-bind="$attrs"
       v-model="value"
       :contained="true"
-      :max="Math.max($attrs.max as number || 0, value as number)
-    "></Slider>
+      :max="Math.max($attrs.max as number || 0, value as number)"
+      @drag-end="handleDragEnd"
+    ></Slider>
     <slot></slot>
   </div>
 </template>

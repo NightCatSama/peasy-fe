@@ -13,57 +13,38 @@ export type IProps<T extends ComponentName = any> = {
 } & GroupPropType<T>
 
 export const useProps = <T extends IProps<any> = IProps>(props: T, componentTypeName: string) => {
-  const {
-    componentName: name,
-    direction,
-    tags,
-    basic,
-    font,
-    layout,
-    size,
-    spacing,
-    border,
-    background,
-    container,
-    position,
-    event,
-    effect,
-    animation,
-  } = props
-
+  const propsRef = reactive(props)
   const elem = ref<HTMLDivElement | null>(null)
 
-  const propsRef = reactive(props)
+  useEvent(propsRef.event, elem)
 
-  useEvent(event, elem)
+  const { animationMap } = useAnimation(propsRef.animation, elem, propsRef.position)
 
-  const { animationMap } = useAnimation(animation, elem, position)
-
-  useEffect(effect, name)
+  useEffect(propsRef.effect, propsRef.componentName)
 
   const style = computed(() =>
     useStyle({
       ...(
         componentTypeName === 'Image'
-          ? useImageBasicStyle(basic)
+          ? useImageBasicStyle(propsRef.basic)
           : componentTypeName === 'Icon'
-            ? useIconBasicStyle(basic)
+            ? useIconBasicStyle(propsRef.basic)
             : {}
       ),
-      ...useFontStyle(font),
-      ...useLayoutStyle(layout),
-      ...useSizeStyle(size),
-      ...useSpacingStyle(spacing),
-      ...useBorderStyle(border),
-      ...useBackgroundStyle(background),
-      ...useContainerStyle(container),
-      ...usePositionStyle(position),
+      ...useFontStyle(propsRef.font),
+      ...useLayoutStyle(propsRef.layout),
+      ...useSizeStyle(propsRef.size),
+      ...useSpacingStyle(propsRef.spacing),
+      ...useBorderStyle(propsRef.border),
+      ...useBackgroundStyle(propsRef.background),
+      ...useContainerStyle(propsRef.container),
+      ...usePositionStyle(propsRef.position),
       ...useAnimationStyle(animationMap),
-      ...useEffectStyle(effect, name)
+      ...useEffectStyle(propsRef.effect, propsRef.componentName)
     })
   )
 
-  const uName = computed(() => getUniqueName(name))
+  const uName = computed(() => getUniqueName(propsRef.componentName))
   const tagClassNames = computed(() => propsRef.tags.map(tag => getTagClassName(tag)))
 
   return {

@@ -240,7 +240,7 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
     component: 'Icon',
     tags: ['Icon'],
     props: {
-      basic: getDefaultBasic('Icon', { name: 'apple' }),
+      basic: getDefaultBasic('Icon', { name: 'apple', color: '$primary' }),
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),
       event: getDefaultEvent(),

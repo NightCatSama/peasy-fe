@@ -13,6 +13,7 @@ import { usePageStore } from '@/stores/page';
 import { useDisplayStore } from '@/stores/display';
 import { storeToRefs } from 'pinia';
 import { variableColorSymbol } from '@/config';
+import { emitter } from '@/utils/event';
 
 interface IColorItemProps {
   label: string
@@ -43,11 +44,19 @@ const value = $computed({
   },
 })
 
+let preColor = $ref('')
+const savePreColor = () => preColor = modelValue
+
 const saveRecentColor = (val: string) => {
   const value = val || modelValue
+
+  // 如果打开前后颜色没变，则不记录
+  if (preColor === value) return
+
   if (value.slice(0, 1) !== variableColorSymbol) {
     recentColors = pushRecentColor(value);
   }
+  emitter.emit('saveHistory')
 }
 
 const handleInputChange = (e: Event) => {
@@ -68,6 +77,7 @@ const showValue = $computed(() => getColor(modelValue))
         popper-class="color-dropdown"
         :skidding="20"
         :distance="10"
+        @apply-show="savePreColor"
         @apply-hide="saveRecentColor"
       >
         <div class="color-preview" :style="{ background: showValue }"></div>

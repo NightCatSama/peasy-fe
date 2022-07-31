@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Select, { ISelectItem } from '@/components/widgets/Select.vue'
+import { emitter } from '@/utils/event';
 
 interface ISelectItemProps {
   label: string
@@ -14,6 +15,7 @@ const value = $computed({
   get: () => modelValue,
   set: (val: string) => {
     emit('update:model-value', val)
+    modelValue !== val && emitter.emit('saveHistory')
   },
 })
 </script>

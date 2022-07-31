@@ -22,7 +22,8 @@ interface IInputProps {
   realTime?: boolean
   hideSuffix?: boolean
   autoFocus?: boolean
-  onBlur?: () => void
+  onBlur?: (e: Event) => void
+  onFocus?: (e: Event) => void
 }
 
 const {
@@ -35,6 +36,7 @@ const {
   hideSuffix,
   autoFocus,
   onBlur,
+  onFocus,
 } = defineProps<IInputProps>()
 
 let inputValue = $ref(modelValue)
@@ -131,14 +133,13 @@ const handleInput = (e: Event) => realTime && handleChange(e)
 
 const handleFocus = (e: Event) => {
   focus = true
-  emitter.emit('focus', e)
+  onFocus?.(e)
 }
 
 const handleBlur = (e: Event) => {
   focus = false
-  onBlur?.()
+  onBlur?.(e)
   handleChange(e)
-  emitter.emit('blur', e)
 }
 
 onMounted(() => {

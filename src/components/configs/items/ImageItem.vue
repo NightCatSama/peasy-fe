@@ -2,6 +2,7 @@
 import { upload } from '@/utils/oss'
 import InputItem from './InputItem.vue'
 import Icon from '@/components/widgets/Icon.vue'
+import { emitter } from '@/utils/event';
 
 interface IImageItemProps {
   label: string
@@ -13,6 +14,7 @@ const emit = defineEmits(['update:model-value'])
 
 const handleChange = (img: string) => {
   emit('update:model-value', img)
+  emitter.emit('saveHistory')
 }
 
 const uploadImage = async (e: InputEvent) => {

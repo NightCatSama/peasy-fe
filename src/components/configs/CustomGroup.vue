@@ -2,6 +2,7 @@
 import Group from '../widgets/Group.vue'
 import { PageNode, isSomeBasicType, DefaultIconStyleLink, IModuleConfigItem, ModuleConfigType } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
+import { onUpdated, reactive } from 'vue';
 
 interface ICustomGroupProps {
   node: PageNode
@@ -14,7 +15,7 @@ interface ICustomGroupProps {
   data: IModuleConfigItem[]
 }
 const { node, title, icon, data, defaultCollapsed } = defineProps<ICustomGroupProps>()
-
+const dataRef = reactive(data)
 const getComponentData = (type: string) => getFormPropsByType(type)
 </script>
 
@@ -25,7 +26,7 @@ const getComponentData = (type: string) => getFormPropsByType(type)
     class="basic-group"
     :default-collapsed="defaultCollapsed"
   >
-    <template v-for="item in data">
+    <template v-for="item in dataRef">
       <component
         :is="getComponentData(item.type).component"
         :model-value="item.getValue?.(node) || ''"
