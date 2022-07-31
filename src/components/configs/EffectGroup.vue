@@ -144,10 +144,10 @@ const timingFunction = {
           :model-value="item.target"
           @update:model-value="handleTargetChange($event, item)"
         >
-          <template #item="{ item }">
+          <template #item="data">
             <div :class="['select-target-item']">
-              <div :class="['type-tag', (item as any).type]">{{ (item as any).type }}</div>
-              {{ (item as ISelectItem).title }}
+              <div :class="['type-tag', (data.item as ISelectItem)?.type]">{{ (data.item as ISelectItem)?.type }}</div>
+              {{ (data.item as ISelectItem).title }}
             </div>
           </template>
         </SelectItem>
