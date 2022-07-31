@@ -8,9 +8,11 @@ import TagList from './biz/TagList.vue'
 import { useKeyPress } from 'ahooks-vue'
 import { ShortcutKey } from '@/constants/shortcut'
 import TreeNode from './biz/TreeNode.vue'
+import { isValidName } from '@/utils/validation'
+import { Alert, AlertError } from '@/utils/alert'
 
 const pageStore = usePageStore()
-const { pageData, activeNode, activeNodeGroups } = storeToRefs(pageStore)
+const { nameMap, pageData, activeNode, activeNodeGroups } = storeToRefs(pageStore)
 const { getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } = pageStore
 
 const displayStore = useDisplayStore()
@@ -22,7 +24,26 @@ useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
   setMinimize(!minimize.value)
 })
 
-let showLayer = $ref(true)
+let showLayer = $ref(false)
+
+const handleActiveNodeChange = async (event: Event) => {
+  const elem = event.target as HTMLDivElement
+  elem.scrollLeft = 0
+  if (!activeNode.value) return
+  const newName = elem.innerText || ''
+  if (newName === activeNode.value.name) return
+  if (!isValidName(newName) || !newName) {
+    AlertError('名字不合法')
+    elem.innerText = activeNode.value.name
+    return
+  }
+  if (nameMap.value[newName]) {
+    AlertError('名字已存在')
+    elem.innerText = activeNode.value.name
+    return
+  }
+  activeNode.value.name = newName
+}
 
 </script>
 
@@ -68,33 +89,38 @@ let showLayer = $ref(true)
     <div class="config-main">
       <div v-if="activeNode && !showLayer">
         <div class="header">
-          <div class="title">{{ activeNode.name }}</div>
+          <div
+            class="title"
+            contenteditable="true"
+            @keydown.enter.stop="(e: Event) => (e.target as HTMLDivElement)?.blur()"
+            @blur="handleActiveNodeChange"
+          >{{ activeNode.name }}</div>
           <Icon
             v-if="activeNode.isModule"
             class="op-icon separate-icon"
             name="separate"
-            :size="16"
+            :size="13"
             v-tooltip="'Ungroup'"
             @click="separateActiveNode"
           ></Icon>
           <Icon
             class="op-icon separate-icon"
             name="layers"
-            :size="16"
+            :size="13"
             v-tooltip="'Layers'"
             @click="showLayer = true"
           ></Icon>
           <Icon
             class="op-icon copy-icon"
             name="copy"
-            :size="16"
+            :size="13"
             v-tooltip="'Copy'"
             @click="copyActiveNode"
           ></Icon>
           <Icon
             class="op-icon delete-icon"
             name="delete"
-            :size="16"
+            :size="13"
             v-tooltip="'Delete'"
             @click="deleteActiveNode"
           ></Icon>
@@ -222,7 +248,16 @@ $header-height: 54px;
       white-space: nowrap;
       overflow: hidden;
       color: $yellow;
-      text-overflow: ellipsis;
+      margin-right: 10px;
+      white-space: nowrap;
+
+      &:not(:focus) {
+        text-overflow: ellipsis;
+      }
+
+      &:focus {
+        outline: none;
+      }
     }
   }
 
@@ -276,7 +311,7 @@ $header-height: 54px;
   width: 24px;
   height: 24px;
   cursor: pointer;
-  margin-left: 4px;
+  margin-left: 0px;
   transition: all 0.1s;
 
   &.delete-icon {

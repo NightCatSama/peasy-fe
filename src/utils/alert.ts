@@ -1,6 +1,6 @@
-/**
- * https://sweetalert2.github.io/#examples
- */
-import Swal from 'sweetalert2'
+import { useToast, TYPE } from 'vue-toastification'
 
-export const Alert = (msg: string) => Swal.fire(msg)
+export const toast = useToast()
+
+export const Alert = (msg: string) => toast(msg, { type: TYPE.INFO })
+export const AlertError = (msg: string) => toast(msg, { type: TYPE.ERROR })
