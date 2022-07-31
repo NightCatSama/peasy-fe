@@ -6,18 +6,20 @@ import Avatar from './widgets/Avatar.vue'
 import { useDisplayStore } from '@/stores/display'
 import Dropdown from './widgets/Dropdown.vue'
 import Icon from './widgets/Icon.vue'
-import { ref } from 'vue'
+import { onMounted, ref } from 'vue'
 import Slider from './widgets/Slider.vue'
 import Select from './widgets/Select.vue'
 import { useKeyPress } from 'ahooks-vue'
 import { emitter } from '@/utils/event'
 import { ShortcutKey } from '@/constants/shortcut'
+import ColorVatList from './biz/ColorVatList.vue'
 
 const displayStore = useDisplayStore()
 const { device, displayMode } = storeToRefs(displayStore)
 const { setDevice, curPresetDeviceList, setDisplayMode } = displayStore
 
 const name = $ref('index')
+const colorRef = ref(null)
 
 const text = $computed(
   () => `${device.value.width || 'width'} x ${device.value.height || 'height'}`
@@ -73,6 +75,10 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
   e.preventDefault()
   emitter.emit('switchMaterialsPanel')
 })
+
+onMounted(() => {
+  console.log(colorRef)
+})
 </script>
 
 <template>
@@ -82,7 +88,17 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
       <div class="ext">.html</div>
     </div>
     <div class="center">
-      <Dropdown placement="bottom">
+      <Dropdown ref="colorRef" placement="bottom" type="pure-dropdown" :distance="10">
+        <template #default="{ shown }">
+          <div :class="['color-plate', { active: shown }]">
+            <Icon name="color" :size="18" />
+          </div>
+        </template>
+        <template #content>
+          <ColorVatList></ColorVatList>
+        </template>
+      </Dropdown>
+      <Dropdown placement="bottom" :distance="10">
         <div class="size">
           {{ text }}<span class="zoom">{{ zoomText }}</span>
         </div>
@@ -207,6 +223,14 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
         padding: 0;
         margin-right: 4px;
         margin-top: -0.03em;
+      }
+    }
+    .color-plate {
+      color: $color;
+      margin: 0 8px;
+      cursor: pointer;
+      &:hover, &.active {
+        color: $roseate;
       }
     }
   }

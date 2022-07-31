@@ -16,6 +16,7 @@ interface IInputProps {
   type?: 'text' | 'number' | 'textarea'
   modelValue?: string
   disabled?: boolean
+  prefix?: string
   suffix?: SuffixType[]
   placeholder?: string
   realTime?: boolean
@@ -27,6 +28,7 @@ interface IInputProps {
 const {
   type = 'text',
   modelValue = '',
+  prefix = '',
   suffix,
   disabled,
   realTime,
@@ -65,7 +67,7 @@ const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
       suffixInValue,
       suffixType
     )
-  return (
+  return (prefix || '') + (
     {
       px: `${getVal()}px`,
       '%': `${getVal()}%`,
@@ -82,6 +84,7 @@ const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
 })
 
 watchEffect(() => {
+  let newValue = modelValue
   if (suffix && suffix.length > 0 && modelValue) {
     if (suffixInValue) {
     } else {
@@ -101,10 +104,12 @@ watchEffect(() => {
         : memoryNumberValue
       suffixInValue = newSuffixInValue
     }
-    inputValue = modelValue.slice(0, -suffixInValue.length)
-  } else {
-    inputValue = modelValue
+    newValue = modelValue.slice(0, -suffixInValue.length)
   }
+  if (prefix) {
+    newValue = newValue.slice(prefix.length)
+  }
+  inputValue = newValue
 })
 
 const handleChange = (event: Event) => {
@@ -143,6 +148,7 @@ onMounted(() => {
 
 <template>
   <div :class="['input-wrapper', { disabled, focus }, $attrs.class || '']">
+    <span v-if="prefix" class="prefix">{{ prefix }}</span>
     <component
       :is="type === 'textarea' ? 'textarea' : 'input'"
       ref="inputRef"
@@ -221,6 +227,16 @@ onMounted(() => {
     padding: 8px;
     resize: none;
     line-height: 1.4;
+  }
+
+  .prefix {
+    position: relative;
+    left: 6px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 4px 0;
+    color: darken($color, 35%);
   }
 
   .suffix {

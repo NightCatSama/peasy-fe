@@ -2,7 +2,7 @@ import { defineStore } from 'pinia'
 import { mande } from 'mande'
 import { cloneDeep } from 'lodash'
 import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mock'
-import { PageNode, ComponentPropsGroup, ComponentName } from '@/config'
+import { PageNode, ComponentPropsGroup, ComponentName, IColorVarItem } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
 import { nextTick } from 'vue'
@@ -30,6 +30,7 @@ export const usePageStore = defineStore('page', {
     } as MaterialData,
     /** 当前展示的 Section，null 为全部 */
     activeSection: null as PageNode | null,
+    colorVars: [] as IColorVarItem[]
   }),
   getters: {
     /** 当前激活节点对应的配置数据 */
@@ -106,6 +107,7 @@ export const usePageStore = defineStore('page', {
     async getPageData() {
       // const { data } = await api.post<any>({})
       this.allPageData = [getMockBlock('section')]
+      this.colorVars = [{ name: '$primary', color: '#00a8ff' }, { name: '$error', color: 'red' }]
     },
     async getAssetsData() {
       // const { data } = await api.post<any>({})

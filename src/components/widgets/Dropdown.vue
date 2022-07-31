@@ -4,7 +4,7 @@ import { emitter } from '@/utils/event';
 import { Menu as VMenu } from 'floating-vue'
 import { Dropdown as VDropdown } from 'floating-vue'
 interface IDropdownProps {
-  type?: 'default' | 'color-picker' | 'pure'
+  type?: 'default' | 'color-picker' | 'pure' | 'pure-dropdown'
   disabled?: boolean
   triggers?: string[]
   placement?: string
@@ -12,6 +12,7 @@ interface IDropdownProps {
   delay?: any
   isMenu?: boolean
   showGroup?: string
+  distance?: number
 }
 const {
   type = 'default',
@@ -22,9 +23,8 @@ const {
   delay,
   isMenu,
   showGroup,
+  distance = 5,
 } = defineProps<IDropdownProps>()
-
-const distance = type === 'color-picker' ? 10 : 5
 </script>
 
 <template>
@@ -51,7 +51,7 @@ const distance = type === 'color-picker' ? 10 : 5
         ref="el"
         v-click-outside="isMenu ? {
           handler: () => hide(),
-          extraSelectors: ['.dropdown-popper', '.dropdown-handle'],
+          extraSelectors: ['.dropdown-popper', '.dropdown-handle.v-popper--shown'],
         } : null"
       ><slot name="content" :hide="hide"></slot></div>
     </template>
@@ -78,7 +78,7 @@ const distance = type === 'color-picker' ? 10 : 5
     }
   }
 
-  &.dropdown-popper-pure {
+  &.dropdown-popper-pure, &.dropdown-popper-pure-dropdown {
     .v-popper__inner {
       background: $panel;
       padding: 0;
@@ -87,6 +87,8 @@ const distance = type === 'color-picker' ? 10 : 5
     .v-popper__arrow-inner {
       border-color: $panel;
     }
+  }
+  &.dropdown-popper-pure {
     .v-popper__arrow-outer,
     .v-popper__arrow-inner {
       display: none;
@@ -100,55 +102,15 @@ const distance = type === 'color-picker' ? 10 : 5
     .v-popper__arrow-container {
       transform: translateX($hack-gap);
     }
-    .v-popper__inner {
+    > .v-popper__wrapper
+    > .v-popper__inner {
+      width: 241px;
       padding: 8px;
       background: lighten($panel-dark, 10%);
     }
     .v-popper__arrow-outer,
     .v-popper__arrow-inner {
       border-color: lighten($panel-dark, 10%);
-    }
-    .vc-chrome,
-    .vc-chrome-body {
-      background-color: $panel-dark;
-      border-radius: $inner-radius;
-    }
-    .vc-chrome-active-color {
-      border-radius: 50%;
-      border: 1px solid rgba($white, 0.5);
-    }
-    .vc-hue,
-    .vc-alpha,
-    .vc-alpha-checkboard-wrap,
-    .vc-alpha-gradient {
-      border-radius: $normal-radius !important;
-    }
-    .vc-input__input {
-      height: 24px;
-      font-size: 12px;
-      color: darken($color, 20%);
-      background-color: $panel-dark;
-      box-shadow: none;
-      background: $panel-gradient;
-      border-radius: $inner-radius;
-    }
-    .vc-chrome-fields .vc-input__label {
-      color: darken($color, 20%);
-    }
-    .vc-chrome-toggle-icon path {
-      fill: darken($color, 20%);
-    }
-    .vc-chrome-toggle-icon-highlight {
-      background-color: transparent;
-    }
-    .vc-chrome-color-wrap {
-      width: 45px;
-    }
-    .vc-hue-picker,
-    .vc-alpha-picker {
-      background-color: $tr;
-      border: 2px solid $white;
-      box-shadow: 0 0 1px 2px rgba($black, 0.1);
     }
   }
 }

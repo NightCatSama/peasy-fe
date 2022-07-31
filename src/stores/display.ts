@@ -49,7 +49,9 @@ export const useDisplayStore = defineStore('display', {
     /** 手动锁定拖拽修改 position */
     lockDragSetPosition: false,
     /** 是否右侧设置栏收起状态 */
-    minimize: true
+    minimize: true,
+    /** 当前展示的颜色类型 */
+    colorType: 'variable' as 'variable' | 'recent',
   }),
   getters: {
     /** 当前展示的宽高（缩放后） */

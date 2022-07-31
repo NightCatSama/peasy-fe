@@ -45,6 +45,7 @@ import CloseIcon from '@/assets/close.svg'
 import EffectIcon from '@/assets/effect.svg'
 import PlusIcon from '@/assets/plus.svg'
 import SeparateIcon from '@/assets/separate.svg'
+import ColorIcon from '@/assets/color.svg'
 
 interface IIconProps {
   name: string
@@ -100,6 +101,7 @@ const iconMap = {
   effect: EffectIcon,
   plus: PlusIcon,
   separate: SeparateIcon,
+  color: ColorIcon,
 } as any
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()

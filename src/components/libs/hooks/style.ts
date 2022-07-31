@@ -3,6 +3,7 @@ import { getIsEditMode } from '@/utils/context'
 import { covertSize, fixedPointToNumber, getUnit } from '@/utils/sizeHelper'
 import type { AnimationMapType } from './animation'
 import { effectName2PropertyMap } from './effect'
+import { getColor } from './color'
 
 export const useStyle = (styles: any) => {
   for (let key in styles) {
@@ -25,7 +26,7 @@ export const useIconBasicStyle = (basic: IIconBasicType) => {
   if (!basic) return {}
 
   return {
-    color: basic.color,
+    color: getColor(basic.color),
     fontSize: basic.size,
   }
 }
@@ -150,14 +151,16 @@ export const useLayoutStyle = (layout: ILayout) => {
 export const useBorderStyle = (border: IBorder) => {
   if (!border) return {}
 
-  const getBorder = (data: string | any[], index: number) =>
-    Array.isArray(data) ? data[index] : data
+  const getBorder = (data: string | any[], index: number, isColor?: boolean) =>
+    isColor
+      ? Array.isArray(data) ? getColor(data[index]) : getColor(data)
+      : Array.isArray(data) ? data[index] : data
 
   const [borderTop, borderRight, borderBottom, borderLeft] = Array.from(new Array(4), (_, i) =>
     [
       getBorder(border.borderWidth, i),
       getBorder(border.borderStyle, i),
-      getBorder(border.borderColor, i),
+      getBorder(border.borderColor, i, true),
     ].join(' ')
   )
 
@@ -187,7 +190,7 @@ export const useFontStyle = (font: IFont) => {
     fontStyle: font.fontStyle,
     textDecoration: font.textDecoration,
     textAlign: font.textAlign,
-    color: font.color,
+    color: getColor(font.color),
     textShadow: font.textShadow,
   }
 }
@@ -208,7 +211,7 @@ export const useBackgroundStyle = (background: IBackground) => {
 
   if (background.backgroundType === 'color') {
     return {
-      backgroundColor: background.backgroundColor,
+      backgroundColor: getColor(background.backgroundColor),
     }
   } else if (background.backgroundType === 'image') {
     return {

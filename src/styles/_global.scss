@@ -65,5 +65,14 @@ $item-gap: 2px;
 $item-height: 32px;
 $item-width: 120px;
 $materials-panel-width: 320px;
+$global-setting-panel-width: 450px;
 
 $font-family: Avenir, Helvetica, Arial, sans-serif;
+
+// z-index
+$config-mini-panel-zIndex: 9;
+$config-btn-zIndex: 1000;
+$module-cover-zIndex: 1001;
+$left-panel-zIndex: 4000;
+$global-setting-panel-zIndex: 4001;
+$select-zIndex: 10000;

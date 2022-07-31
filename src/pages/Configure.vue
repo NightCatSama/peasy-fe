@@ -11,10 +11,11 @@ import MaterialsPanel from '@/components/MaterialsPanel.vue'
 import EditSection from '@/components/EditSection.vue'
 import { emitter } from '@/utils/event'
 import { useDisplayStore } from '@/stores/display'
+import { useColorVars } from '@/components/libs/hooks/color'
 
 const pageStore = usePageStore()
 
-const { pageData, materialData } = storeToRefs(pageStore)
+const { pageData, materialData, colorVars } = storeToRefs(pageStore)
 const { addSection, getAssetsData, getPageData, download } = pageStore
 
 const displayStore = useDisplayStore()
@@ -47,6 +48,14 @@ watch(
   },
   { immediate: true, flush: 'sync' }
 )
+
+watch(
+  () => colorVars.value,
+  () => {
+    useColorVars(colorVars.value)
+  },
+  { deep: true, immediate: true, flush: 'sync' }
+)
 </script>
 
 <template>
@@ -77,6 +86,7 @@ watch(
 .page {
   display: flex;
   color: $color;
+  overflow: hidden;
 }
 .container {
   position: relative;
@@ -93,7 +103,7 @@ watch(
     height: 100%;
     transform: translateX(-100%);
     transition: all 0.5s;
-    z-index: 9999;
+    z-index: $left-panel-zIndex;
 
     &.show {
       transform: translateX(0);

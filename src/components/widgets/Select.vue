@@ -13,14 +13,15 @@ import Dropdown from './Dropdown.vue'
 const emit = defineEmits(['update:model-value'])
 
 interface ISelectProps {
-  display?: 'inline' | 'block'
+  display?: 'inline' | 'block' | 'text'
   placement?: string
   modelValue: string
+  container?: string
   disabled?: boolean
   options: { [key: string]: string | ISelectItem }
 }
 
-const { display = 'block', disabled, placement, options, modelValue } = defineProps<ISelectProps>()
+const { display = 'block', disabled, placement, options, modelValue, container } = defineProps<ISelectProps>()
 
 const showValue = $computed(() => {
   const value = options[modelValue] || modelValue
@@ -36,11 +37,14 @@ const handleChange = (val: string) => {
 </script>
 
 <template>
-  <Dropdown type="pure" :placement="placement" :disabled="disabled">
-    <div :class="['select', `select-display-${display}`]">
-      <slot name="value" :value="showValue"
-        ><div class="select-value">{{ showValue }}</div></slot
-      >
+  <Dropdown type="pure" :placement="placement" :disabled="disabled" :container="container">
+    <div :class="['select', `select-display-${display}`, { disabled }]">
+      <slot name="value" :value="showValue">
+        <div class="select-value">
+          {{ showValue }}
+          <Icon class="select-icon" v-if="display === 'text'" name="down" :size="8"></Icon>
+        </div>
+      </slot>
     </div>
     <template #content="{ hide }">
       <div :class="['select-option-wrapper']">
@@ -87,6 +91,32 @@ const handleChange = (val: string) => {
     flex: 1;
   }
 
+  &-display-text {
+    flex: 1;
+    padding: 0 8px;
+    height: $item-height;
+    background: $tr;
+    font-size: 12px;
+
+    .select-value {
+      background: $tr!important;
+    }
+
+    .select-icon {
+      color: darken($color, 30%);
+      margin-left: 2px;
+    }
+
+    &.disabled {
+      .select-value {
+        cursor: default;
+      }
+      .select-icon {
+        visibility: hidden;
+      }
+    }
+  }
+
   .select-value {
     flex: 1;
     height: 100%;
@@ -112,7 +142,7 @@ const handleChange = (val: string) => {
   border-radius: $normal-radius;
   padding: 4px 6px;
   transition: all 0.3s;
-  z-index: 999;
+  z-index: $select-zIndex;
   min-width: 120px;
   border: 1px solid $theme;
   max-height: 320px;

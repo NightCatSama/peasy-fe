@@ -1,5 +1,6 @@
 import { getTagClassName, getUniqueName } from "@/config"
 import { onBeforeUnmount, ref, watch } from "vue"
+import { getColor } from "./color"
 
 export const effectName2PropertyMap: { [name: string]: string } = {
   color: 'color',
@@ -36,7 +37,8 @@ export const useEffect = (effect: IEffect, name: string) => {
 
     effectList.forEach(item => {
       if (!Object.keys(item?.styles).length) return
-      Object.entries(item?.styles).forEach(([key, value]) => {
+      Object.entries(item?.styles).forEach(([key, val]) => {
+        const value = getColor(val)
         if (item?.targetType === 'self') {
           styles[key === 'hover' ? 'unshift' : 'push'](`#${uName}:${key} { ${effectName2PropertyMap[item.name]}: ${value}!important; }`)
         }

@@ -137,6 +137,14 @@ export interface IModuleConfigItem {
   setValue?: (value: any, node: PageNode) => void
 }
 
+/** 颜色变量 */
+export interface IColorVarItem {
+  /** 颜色变量名 */
+  name: string
+  /** 颜色值 */
+  color: string
+}
+
 /** 判断是否某个基础类型 */
 export const isSomeBasicType = <T extends ComponentName, P extends GroupPropType<T>['basic']>(
   name: string,
@@ -153,3 +161,5 @@ export const DefaultColor = '#333'
 
 export const getUniqueName = (name: string) => `_n_${name}_`
 export const getTagClassName = (tag: string) => `_t_${tag}_`
+
+export const variableColorSymbol = '$'

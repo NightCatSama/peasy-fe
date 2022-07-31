@@ -4,7 +4,8 @@ import { storeToRefs } from 'pinia'
 import { ref } from 'vue'
 import Avatar from './widgets/Avatar.vue'
 import Icon from './widgets/Icon.vue'
-import SectionList from '@/components/SectionList.vue'
+import SectionList from '@/components/biz/SectionList.vue'
+import GlobalSettingPanel from './biz/GlobalSettingPanel.vue'
 
 interface ISidebarProps {
   activeMaterialsPanel: boolean
@@ -13,6 +14,8 @@ interface ISidebarProps {
 const { activeMaterialsPanel } = defineProps<ISidebarProps>()
 
 const pageStore = usePageStore()
+
+const showGlobalSettingPanel = $ref(false)
 </script>
 
 <template>
@@ -32,13 +35,24 @@ const pageStore = usePageStore()
         </div>
         <SectionList />
       </div>
-      <div class="bottom"></div>
+      <div class="bottom">
+        <div class="operator-item">
+          <Icon
+            :size="26"
+            name="advanced"
+            :active="showGlobalSettingPanel"
+            @click.native="showGlobalSettingPanel = !showGlobalSettingPanel"
+          />
+        </div>
+      </div>
     </div>
+    <GlobalSettingPanel :show="showGlobalSettingPanel"></GlobalSettingPanel>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .sidebar {
+  position: relative;
   width: 64px;
   flex-shrink: 0;
   background: $panel-sidebar;
@@ -72,6 +86,12 @@ const pageStore = usePageStore()
   }
 
   .operator-item {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    cursor: pointer;
+
     &:not(:last-child) {
       margin-bottom: 10px;
     }

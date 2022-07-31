@@ -163,9 +163,9 @@ emitter.on('location', (immediate?: boolean) => handleLocationPage(immediate))
 const hideMaterialsPanel = (e: Event) => {
   const target = e.target as HTMLDivElement
   // 点击空白区域，取消当前选择组件
-  // if (target?.classList.contains('edit-wrapper')) {
-  //   setActiveNode()
-  // }
+  if (target?.classList.contains('edit-wrapper')) {
+    setActiveNode()
+  }
   emitter.emit('switchMaterialsPanel', false)
 }
 

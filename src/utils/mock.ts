@@ -197,7 +197,7 @@ export const getMockText = (): PageNode<'Text'> => {
     tags: ['Text'],
     props: {
       basic: getDefaultBasic('Text'),
-      font: getDefaultFont({ fontSize: '30px' }),
+      font: getDefaultFont({ fontSize: '30px', color: '$primary' }),
       spacing: getDefaultSpacing({ margin: [50, 50, 50, 50] }),
       border: getDefaultBorder(),
       background: getDefaultBackground(),

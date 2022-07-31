@@ -71,7 +71,7 @@
         font-weight: bold;
         text-shadow: 0 0 10px rgba($white, 30%);
         background: rgba($black, 50%);
-        z-index: 1000;
+        z-index: $module-cover-zIndex;
       }
     }
     .moveable-control-box {

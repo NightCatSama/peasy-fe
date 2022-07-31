@@ -25,7 +25,7 @@ useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
 
 <template>
   <div :class="['config-section', { minimize: minimize }]">
-    <Icon class="mini-btn" type="circle" name="down" :size="14" @click="setMinimize(!minimize)"></Icon>
+    <Icon class="mini-btn" type="circle" name="down" :size="12" @click="setMinimize(!minimize)"></Icon>
     <div class="config-mini-main">
       <div class="top"></div>
       <div class="mini-content" v-if="activeNode">
@@ -164,7 +164,7 @@ $header-height: 54px;
     background: $panel;
     transition: all .3s;
     opacity: 0;
-    z-index: 9;
+    z-index: $config-mini-panel-zIndex;
     display: flex;
     flex-direction: column;
 
@@ -194,7 +194,7 @@ $header-height: 54px;
     right: 100%;
     top: 13px;
     padding: 6px;
-    z-index: 10000;
+    z-index: $config-btn-zIndex;
     transform: translateX(-10px) rotateZ(-90deg);
     background-color: $panel-light;
     transition: all .3s;
