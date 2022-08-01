@@ -33,7 +33,7 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
       ),
       ...useFontStyle(propsRef.font),
       ...useLayoutStyle(propsRef.layout),
-      ...useSizeStyle(propsRef.size),
+      ...useSizeStyle(propsRef.size, propsRef.direction),
       ...useSpacingStyle(propsRef.spacing),
       ...useBorderStyle(propsRef.border),
       ...useBackgroundStyle(propsRef.background),

@@ -154,7 +154,7 @@ let showAdvancedSettings = $ref(false)
               label="Zoom"
               :min="0"
               :max="1"
-              :interval="0.1"
+              :interval="0.01"
               v-model="item.settings.zoom.zoom"
             ></SliderItem>
             <SliderItem

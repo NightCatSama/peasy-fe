@@ -2,6 +2,7 @@
 import Group from '../widgets/Group.vue'
 import { fixedPointToNumber } from '@/utils/sizeHelper'
 import { PageNode } from '@/config'
+import { emitter } from '@/utils/event';
 
 interface IFontGroupProps {
   node: PageNode
@@ -22,6 +23,7 @@ const handleChange = (e: InputEvent, setValue: (val: number) => void) => {
   const elem = e.target as HTMLInputElement
   const value = elem.value
   setValue(fixedPointToNumber(value))
+  emitter.emit('saveHistory')
 }
 const allPadding = $computed({
   get: () => {
@@ -38,6 +40,7 @@ const allPadding = $computed({
     } else {
       spacing.padding = [value, value, value, value]
     }
+    emitter.emit('saveHistory')
   },
 })
 </script>

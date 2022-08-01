@@ -1,20 +1,22 @@
-export const enum ShortcutKey {
+export const ShortcutKey = {
   /** 切换展示模式 */
-  SwitchDisplayMode = 'meta.e',
+  SwitchDisplayMode: 'meta.e',
   /** 切换物料栏 */
-  SwitchMaterialPanel = 'meta.shift.a',
+  SwitchMaterialPanel: 'meta.shift.a',
   /** 切换设置栏 */
-  SwitchConfigPanel = 'meta.shift.g',
+  SwitchConfigPanel: 'meta.shift.g',
   /** 重新定位 */
-  location = 'meta.shift.s',
+  location: 'meta.shift.s',
   /** 撤销 */
-  undo = 'meta.z',
+  undo: 'meta.z',
   /** 重做 */
-  redo = 'meta.shift.z',
+  redo: 'meta.shift.z',
   /** 删除 */
-  delete = 'meta.delete',
+  delete: 'meta.delete',
   /** 复制 */
-  copy = 'meta.shift.c',
+  copy: 'meta.shift.c',
   /** 粘贴 */
-  paste = 'meta.shift.v',
+  paste: 'meta.shift.v',
+  /** 全部折叠 */
+  collapseAll: (e: KeyboardEvent) => e.metaKey && e.shiftKey && e.key === '.', // 'meta.shift.dot'
 }

@@ -5,6 +5,7 @@ type Events = {
   switchMaterialsPanel?: boolean
   updateMoveable?: any
   saveHistory?: any
+  collapseGroup?: any
 }
 
 export const emitter = mitt<Events>()

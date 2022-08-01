@@ -8,6 +8,7 @@ export const effectName2PropertyMap: { [name: string]: string } = {
   borderColor: 'border-color',
   backgroundColor: 'background-color',
   opacity: 'opacity',
+  hide: 'display',
 }
 
 export const selectorPriority: { [selector: string]: number } = {
@@ -38,7 +39,12 @@ export const useEffect = (effect: IEffect, name: string) => {
     effectList.forEach(item => {
       if (!Object.keys(item?.styles).length) return
       Object.entries(item?.styles).forEach(([key, val]) => {
-        const value = getColor(val)
+        let value = getColor(val)
+
+        if (item.name === 'hide') {
+          if (value) value = 'none'
+          else value = 'flex'
+        }
         if (item?.targetType === 'self') {
           styles[key === 'hover' ? 'unshift' : 'push'](`#${uName}:${key} { ${effectName2PropertyMap[item.name]}: ${value}!important; }`)
         }

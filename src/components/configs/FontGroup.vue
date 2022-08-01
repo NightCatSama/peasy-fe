@@ -130,6 +130,11 @@ const textShadowPreset = [
             <div :class="['inner', { active }]" :style="{ textShadow: shadow }">T</div>
           </template>
         </PreviewItem>
+        <InputItem
+          label="Font Family"
+          placeholder="inherit"
+          v-model="font.fontFamily"
+        />
       </template>
     </template>
   </Group>

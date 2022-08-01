@@ -20,7 +20,7 @@ const { setting } = storeToRefs(pageStore)
     ></InputItem>
     <InputItem
       label="Desc"
-      placeholder="简短描述网站，用于搜索引擎优化"
+      placeholder="网站简短描述，用于搜索引擎优化"
       wrapper-class="title-item"
       v-model="setting.description"
     ></InputItem>

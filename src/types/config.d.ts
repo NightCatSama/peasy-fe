@@ -56,6 +56,7 @@ interface IFont {
   textDecoration: 'none' | 'underline' | 'line-through'
   textAlign: 'left' | 'right' | 'center' | 'justify'
   textShadow: string
+  fontFamily: string
 }
 
 /** 间距信息，上右下左 */

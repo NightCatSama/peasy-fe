@@ -33,7 +33,7 @@ const handleAddEffect = () => {
 /** 得到当前目标下可用的过渡属性 */
 const getEffectMap = $computed(() => (target: string, targetType: string): IEffectShowItemMap => {
   const node = nameMap[target]
-  return targetType === 'tag' ? allEffectMap : getEffectMapByNode(node) || {}
+  return targetType === 'tag' ? allEffectMap : getEffectMapByNode(node, targetType === 'self') || {}
 })
 
 const getEffectLabel = (target: string, targetType: string) => Object.fromEntries(
@@ -76,18 +76,18 @@ const effectTargetMap: { [key: string]: ISelectItem } = $computed(() => {
       type: 'self'
     }
   }
-  getAllChildNode(node).forEach(child => {
-    obj['#' + child.name] = {
-      target: child.name,
-      title: child.name,
-      type: 'name'
-    }
-  })
   getTagsByNode(node.children || []).forEach(tag => {
     obj[tag] = {
       target: tag,
       title: tag,
       type: 'tag'
+    }
+  })
+  getAllChildNode(node).forEach(child => {
+    obj['#' + child.name] = {
+      target: child.name,
+      title: child.name,
+      type: 'name'
     }
   })
   return obj

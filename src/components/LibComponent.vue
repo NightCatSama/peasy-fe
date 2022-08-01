@@ -46,9 +46,9 @@ const setActive = () => {
 
 // 切换编辑模式时，如果当前组件为激活组件，需要重新设置 moveable
 watch(
-  () => [isActive, displayMode.value],
+  () => [isActive, displayMode.value, item.hide],
   () => {
-    if (isActive) {
+    if (isActive && !item.hide) {
       // 预览和拖拽模式下，是不展示 moveable 的
       if (['preview', 'drag'].includes(displayMode.value)) {
         disabledMoveable()
@@ -68,8 +68,8 @@ watch(
 
 // 取消激活时，关闭 moveable
 watch(
-  () => isActive,
-  () => !isActive && disabledMoveable(),
+  () => [isActive, item.hide],
+  () => (!isActive || item.hide) && disabledMoveable(),
   { flush: 'pre' }
 )
 
@@ -196,6 +196,7 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
         class: [
           'lib-component',
           {
+            hide: item.hide,
             active: isActive,
             grading: inDraggable,
             module: !!item.isModule,

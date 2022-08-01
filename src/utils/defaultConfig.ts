@@ -81,6 +81,7 @@ export const getDefaultFont = (initConfig?: Partial<IFont>): IFont =>
       textDecoration: 'none',
       textAlign: 'left',
       textShadow: '',
+      fontFamily: '',
     },
     initConfig
   )

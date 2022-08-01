@@ -192,6 +192,7 @@ export const useFontStyle = (font: IFont) => {
     textAlign: font.textAlign,
     color: getColor(font.color),
     textShadow: font.textShadow,
+    fontFamily: font.fontFamily,
   }
 }
 

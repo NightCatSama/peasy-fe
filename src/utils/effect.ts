@@ -13,7 +13,7 @@ export type IEffectShowItemMap = {
   [name: string]: IEffectShowItem
 }
 
-export const getEffectMapByNode = (node: PageNode): IEffectShowItemMap | null => {
+export const getEffectMapByNode = (node: PageNode, isSelf?: boolean): IEffectShowItemMap | null => {
   const nodeGroups = ComponentPropsGroup[node.component as ComponentName]
   let map = {}
   ;(nodeGroups || [])
@@ -22,6 +22,10 @@ export const getEffectMapByNode = (node: PageNode): IEffectShowItemMap | null =>
     .forEach(obj => {
       map = { ...map, ...obj }
     })
+  map = !isSelf ? {
+    ...map,
+    hide: allEffectMap['hide']
+  } : map
   return map
 }
 
@@ -50,7 +54,12 @@ export const allEffectMap: IEffectShowItemMap = {
     label: 'Opacity',
     ...getFormPropsByType('opacity'),
     defaultValue: 1,
-  }
+  },
+  hide: {
+    label: 'Hidden',
+    ...getFormPropsByType('hide'),
+    defaultValue: true
+  },
 }
 
 export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): IEffectShowItemMap | null => {

@@ -45,6 +45,48 @@ const handleActiveNodeChange = async (event: Event) => {
   activeNode.value.name = newName
 }
 
+const iconList: {
+  hide?: boolean
+  noMini?: boolean
+  name: string
+  tip: string
+  click: () => void
+}[] = $computed(() => [{
+  noMini: true,
+  name: 'layers',
+  tip: 'Layers',
+  click: () => showLayer = true
+}, {
+  hide: !activeNode.value?.isModule,
+  name: 'separate',
+  tip: 'Ungroup',
+  click: separateActiveNode
+}, {
+  hide: !!activeNode.value?.hide,
+  name: 'eye-slash',
+  tip: 'Hidden',
+  click: () => {
+    if (!activeNode.value) return
+    activeNode.value.hide = true
+  }
+}, {
+  hide: !activeNode.value?.hide,
+  name: 'eye',
+  tip: 'Visible',
+  click: () => {
+    if (!activeNode.value) return
+    activeNode.value.hide = false
+  }
+}, {
+  name: 'copy',
+  tip: 'Copy',
+  click: copyActiveNode
+}, {
+  name: 'delete',
+  tip: 'Delete',
+  click: deleteActiveNode
+}])
+
 </script>
 
 <template>
@@ -62,28 +104,16 @@ const handleActiveNodeChange = async (event: Event) => {
         ></ConfigGroup>
       </div>
       <div class="bottom" v-if="activeNode">
-        <Icon
-          v-if="activeNode.isModule"
-          class="op-icon separate-icon"
-          name="separate"
-          :size="16"
-          v-tooltip="{ content: 'Ungroup', placement: 'left' }"
-          @click="separateActiveNode"
-        ></Icon>
-        <Icon
-          class="op-icon copy-icon"
-          name="copy"
-          :size="16"
-          v-tooltip="{ content: 'Copy', placement: 'left' }"
-          @click="copyActiveNode"
-        ></Icon>
-        <Icon
-          class="op-icon delete-icon"
-          name="delete"
-          :size="16"
-          v-tooltip="{ content: 'Delete', placement: 'left' }"
-          @click="deleteActiveNode"
-        ></Icon>
+        <template v-for="(item, index) in iconList" :key="index">
+          <Icon
+            v-if="!item.hide && !item.noMini"
+            :class="['op-icon', `${item.name}-icon`]"
+            :name="item.name"
+            :size="16"
+            v-tooltip="{ content: item.tip, placement: 'left' }"
+            @click="item.click"
+          ></Icon>
+        </template>
       </div>
     </div>
     <div class="config-main">
@@ -95,35 +125,16 @@ const handleActiveNodeChange = async (event: Event) => {
             @keydown.enter.stop="(e: Event) => (e.target as HTMLDivElement)?.blur()"
             @blur="handleActiveNodeChange"
           >{{ activeNode.name }}</div>
-          <Icon
-            v-if="activeNode.isModule"
-            class="op-icon separate-icon"
-            name="separate"
-            :size="13"
-            v-tooltip="'Ungroup'"
-            @click="separateActiveNode"
-          ></Icon>
-          <Icon
-            class="op-icon separate-icon"
-            name="layers"
-            :size="13"
-            v-tooltip="'Layers'"
-            @click="showLayer = true"
-          ></Icon>
-          <Icon
-            class="op-icon copy-icon"
-            name="copy"
-            :size="13"
-            v-tooltip="'Copy'"
-            @click="copyActiveNode"
-          ></Icon>
-          <Icon
-            class="op-icon delete-icon"
-            name="delete"
-            :size="13"
-            v-tooltip="'Delete'"
-            @click="deleteActiveNode"
-          ></Icon>
+          <template v-for="(item, index) in iconList" :key="index">
+            <Icon
+              v-if="!item.hide"
+              :class="['op-icon', `${item.name}-icon`]"
+              :name="item.name"
+              :size="13"
+              v-tooltip="item.tip"
+              @click="item.click"
+            ></Icon>
+          </template>
         </div>
         <TagList
           :tags="activeNode.tags"
@@ -308,8 +319,7 @@ $header-height: 54px;
 }
 
 .op-icon {
-  width: 24px;
-  height: 24px;
+  padding: 5px;
   cursor: pointer;
   margin-left: 0px;
   transition: all 0.1s;
@@ -328,7 +338,17 @@ $header-height: 54px;
       color: $theme;
     }
   }
-  &.separate-icon {
+  &.eye-slash-icon {
+    color: $color;
+
+    &:hover {
+      color: $orange;
+    }
+  }
+  &.eye-icon {
+    color: $orange;
+  }
+  &.separate-icon, &.layers-icon {
     color: $color;
 
     &:hover {

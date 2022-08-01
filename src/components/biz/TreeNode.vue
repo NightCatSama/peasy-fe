@@ -65,7 +65,16 @@ watch([activeNode], () => {
         :name="icon"
         :size="12"
        ></Icon>
-      <div class="tree-node-info-name">{{ node.name }}</div>
+      <div class="tree-node-info-name">
+        <div class="tree-node-info-name-text">{{ node.name }}</div>
+        <Icon
+          v-if="node.hide"
+          class="tree-node-info-name-icon"
+          name="hide"
+          :size="10"
+          @click="node.hide = false"
+         ></Icon>
+      </div>
       <template v-if="activeNode === node">
         <Icon
           v-if="activeNode.isModule"
@@ -78,6 +87,20 @@ watch([activeNode], () => {
             collapse = true
           }"
         ></Icon>
+        <Icon
+          v-if="!node.hide"
+          class="tree-node-info-op-icon eye-slash-icon"
+          name="eye-slash"
+          :size="13"
+          @click="node.hide = true"
+         ></Icon>
+        <Icon
+          v-if="node.hide"
+          class="tree-node-info-op-icon eye-icon"
+          name="eye"
+          :size="13"
+          @click="node.hide = false"
+         ></Icon>
         <Icon
           class="tree-node-info-op-icon copy-icon"
           name="copy"
@@ -119,7 +142,6 @@ watch([activeNode], () => {
 
     > .tree-node-info {
       color: $theme;
-      font-weight: bold;
     }
   }
 
@@ -140,6 +162,12 @@ watch([activeNode], () => {
 
     &-name {
       flex: 1;
+      display: flex;
+      align-items: center;
+      &-icon {
+        margin-left: 2px;
+        color: lighten($red, 30%);
+      }
     }
 
     &-op-icon {
@@ -154,6 +182,14 @@ watch([activeNode], () => {
         &:hover {
           color: $theme;
         }
+      }
+      &.eye-slash-icon {
+        &:hover {
+          color: $orange;
+        }
+      }
+      &.eye-icon {
+        color: $orange;
       }
       &.separate-icon {
         &:hover {

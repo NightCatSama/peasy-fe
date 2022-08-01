@@ -118,8 +118,9 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
                 v-hover="(isHover: boolean) => hoverIndex = isHover ? index : -1"
                 @click="setDeviceBySize(item)"
               >
-                <Icon v-if="index === 0" name="device-sm" type="pure" :size="28" />
-                <Icon v-else-if="index === 1" name="device-md" type="pure" :size="28" />
+                <Icon v-if="index === 0" name="mobile" type="pure" :size="20" />
+                <Icon v-else-if="index === 1" name="device-sm" type="pure" :size="28" />
+                <Icon v-else-if="index === 2" name="device-md" type="pure" :size="28" />
                 <Icon v-else name="device-lg" type="pure" :size="28" />
               </div>
             </div>

@@ -89,6 +89,12 @@ useKeyPress(ShortcutKey.redo, (e) => {
   updateAllPageNode(redoHistory())
 })
 
+// 快捷键 - 折叠/展开全部
+useKeyPress(ShortcutKey.collapseAll, (e) => {
+  e.preventDefault()
+  emitter.emit('collapseGroup')
+})
+
 // 向子组件传递当前编辑模式，在 lib/ 下的组件中使用
 // 为啥使用 provide，因为需要保持 lib/ 下的依赖干净，在纯页面生成时是不需要 store 相关数据引用的
 let context = reactive({ isEditMode: true, displayMode: displayMode.value })

@@ -89,6 +89,8 @@ export interface PageNode<T extends ComponentName = any> {
   tags: string[]
   /** 组件名称 */
   component: T
+  /** 是否隐藏组件 */
+  hide?: boolean
   /** 参数 */
   props: PropsTypes<T>
   /** 包含的子组件 */

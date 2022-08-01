@@ -8,6 +8,7 @@ import ColorItem from './items/ColorItem.vue'
 import Tabs from '../widgets/Tabs.vue'
 import Icon from '../widgets/Icon.vue'
 import TabsItem from './items/TabsItem.vue'
+import { emitter } from '@/utils/event'
 
 interface IFontGroupProps {
   node: PageNode
@@ -103,6 +104,7 @@ const handleChange = (e: InputEvent, setValue: (val: string) => void) => {
   const elem = e.target as HTMLInputElement
   const value = elem.value
   setValue(fixedPointToNumber(value) + 'px')
+  emitter.emit('saveHistory')
 }
 
 const boxStyles = $computed(() => {

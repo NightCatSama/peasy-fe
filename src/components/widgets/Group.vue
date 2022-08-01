@@ -1,10 +1,11 @@
 <script setup lang="ts">
 import { useDisplayStore } from '@/stores/display'
-import { onMounted, onUpdated, watchEffect } from 'vue'
+import { onBeforeUnmount, onMounted, onUpdated, watchEffect } from 'vue'
 import { groupIconMap, defaultGroupIcon, groupTitleMap } from '@/constants/group'
 import Icon from './Icon.vue'
 import { storeToRefs } from 'pinia';
 import { GroupType } from '@/config';
+import { emitter } from '@/utils/event';
 interface IGroupProps {
   title?: string
   groupName?: GroupType
@@ -28,6 +29,13 @@ let showAdvanced = $ref(status ? status.advanced : false)
 
 onUpdated(() => {
   saveGroupStatus(groupStatusKey, { collapsed, advanced: showAdvanced })
+})
+const collapseFn = () => collapsed = false
+onMounted(() => {
+  emitter.on('collapseGroup', collapseFn)
+})
+onBeforeUnmount(() => {
+  emitter.off('collapseGroup', collapseFn)
 })
 
 const iconName = $computed(() => icon || groupIconMap[groupName!] || defaultGroupIcon)
