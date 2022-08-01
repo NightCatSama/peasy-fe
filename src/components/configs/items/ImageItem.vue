@@ -8,8 +8,9 @@ interface IImageItemProps {
   label: string
   modelValue: string
   placeholder?: string
+  accept?: string
 }
-const { modelValue, label, placeholder = 'https://' } = defineProps<IImageItemProps>()
+const { modelValue, label, placeholder = 'https://', accept = 'image/*' } = defineProps<IImageItemProps>()
 const emit = defineEmits(['update:model-value'])
 
 const handleChange = (img: string) => {
@@ -35,11 +36,12 @@ const uploadImage = async (e: InputEvent) => {
     :placeholder="placeholder"
     @update:model-value="handleChange"
   >
+    <template #label><slot name="label"></slot></template>
     <template #suffix>
       <div class="upload-wrapper">
         <div class="upload-btn">
           Upload
-          <input type="file" class="upload-btn-input" accept="image/*" @change="uploadImage" />
+          <input type="file" class="upload-btn-input" :accept="accept" @change="uploadImage" />
         </div>
         <Icon
           name="question"
@@ -66,7 +68,9 @@ const uploadImage = async (e: InputEvent) => {
     display: flex;
     align-items: center;
     z-index: 1;
-    padding: 4px;
+    padding: 4px 4px 4px 8px;
+    background: rgba($panel, 70%);
+    border-radius: $inner-radius;
 
     .upload-btn {
       position: relative;

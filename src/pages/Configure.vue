@@ -111,7 +111,7 @@ watch(
 // 更新字体配置
 watch(
   () => font.value,
-  () => useFont(font.value, '.edit-section'),
+  () => useFont(font.value, '.edit-content'),
   { deep: true, immediate: true, flush: 'sync' }
 )
 </script>
@@ -173,5 +173,11 @@ watch(
     display: flex;
     overflow: hidden;
   }
+}
+</style>
+
+<style lang="scss">
+body {
+  overflow: hidden;
 }
 </style>

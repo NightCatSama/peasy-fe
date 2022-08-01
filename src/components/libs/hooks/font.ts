@@ -28,7 +28,6 @@ export const useFont = (font: IFontSetting, wrapper = 'body') => {
           }
         `.trim()
       } else if (item) {
-        console.log('item => ', item)
         stylesheet = `
           @import url('${item}');
         `.trim() + stylesheet;

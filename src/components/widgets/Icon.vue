@@ -55,6 +55,7 @@ import LayersIcon from '@/assets/layers.svg'
 import LayersSlashIcon from '@/assets/layers-slash.svg'
 import ModuleIcon from '@/assets/module.svg'
 import RedoIcon from '@/assets/redo.svg'
+import UploadIcon from '@/assets/upload.svg'
 
 interface IIconProps {
   name: string
@@ -120,6 +121,7 @@ const iconMap = {
   'layers-slash': LayersSlashIcon,
   module: ModuleIcon,
   redo: RedoIcon,
+  upload: UploadIcon,
 } as any
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()

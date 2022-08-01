@@ -18,12 +18,15 @@ const MockPageData = {
   pageData: [getMockBlock('section')],
   /** 颜色变量 */
   colorVars: [{ name: '$primary', color: '#00a8ff' }, { name: '$error', color: 'red' }],
-  /** 页面标题 */
-  title: '页面标题',
-  /** 页面图标 */
-  favicon: '',
-  /** meta 标签展示，用于 SEO 优化 */
-  seo: ['Page'],
+  /** 全局设置 */
+  setting: {
+    /** 页面标题 */
+    title: 'Your Page Title',
+    /** 页面图标 */
+    favicon: '',
+    /** meta 标签展示，用于 SEO 优化 */
+    description: '',
+  },
   /** 全局的字体设置 */
   font: {
     fontFamily: `'ZCOOL XiaoWei', PingFang SC, sans-serif`,
@@ -65,7 +68,8 @@ export const usePageStore = defineStore('page', {
     /** 颜色变量 */
     colorVars: [] as IColorVarItem[],
     /** 全局字体配置 */
-    font: MockPageData.font as IFontSetting
+    font: MockPageData.font as IFontSetting,
+    setting: MockPageData.setting as IPageSetting,
   }),
   getters: {
     /** 当前激活节点对应的配置数据 */

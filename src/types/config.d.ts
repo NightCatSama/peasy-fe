@@ -221,3 +221,13 @@ interface IFontSetting {
     fontWeight: IFont['fontWeight'],
   })[];
 }
+
+/** 全局页面设置 */
+interface IPageSetting {
+  /** 页面标题 */
+  title: string,
+  /** 页面图标 */
+  favicon: string,
+  /** 网站描述，用于 SEO 优化 */
+  description: string,
+}

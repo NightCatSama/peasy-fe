@@ -6,21 +6,17 @@ import { storeToRefs } from 'pinia'
 import GroupItem from '../configs/items/GroupItem.vue';
 import Btn from '../widgets/Btn.vue';
 
-interface FontFamilyPanelListProps {
-}
-
-// const { } = defineProps<FontFamilyPanelListProps>()
-
 const pageStore = usePageStore()
 const { font } = storeToRefs(pageStore)
 
 const handleAddFontFace = () => {
-  font.value.customFontFace.push({
-    fontFamily: '',
-    url: '',
-    fontStyle: 'normal',
-    fontWeight: 'normal',
-  })
+  font.value.customFontFace.push('')
+  // font.value.customFontFace.push({
+  //   fontFamily: '',
+  //   url: '',
+  //   fontStyle: 'normal',
+  //   fontWeight: 'normal',
+  // })
 }
 
 const deleteFontFace = (index: number) => {
@@ -52,6 +48,9 @@ const deleteFontFace = (index: number) => {
         v-else
         label="Link"
         type="textarea"
+        :rows="2"
+        :placeholder="'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'"
+        :auto-focus="true"
         :model-value="item"
         @update:model-value="(val: string) => font.customFontFace[index] = val"
       ></InputItem>
@@ -89,6 +88,8 @@ const deleteFontFace = (index: number) => {
       }
       .input {
         flex: 1;
+        word-break: break-all;
+        padding: 4px;
       }
     }
   }
