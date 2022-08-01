@@ -200,7 +200,6 @@ onMounted(() => {
 
   &.focus {
     border-color: $theme;
-    pointer-events: none;
   }
 
   input,

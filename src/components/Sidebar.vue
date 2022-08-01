@@ -6,6 +6,8 @@ import Avatar from './widgets/Avatar.vue'
 import Icon from './widgets/Icon.vue'
 import SectionList from '@/components/biz/SectionList.vue'
 import GlobalSettingPanel from './biz/GlobalSettingPanel.vue'
+import Dropdown from './widgets/Dropdown.vue'
+import FontFamilyPanel from './biz/FontFamilyPanel.vue'
 
 interface ISidebarProps {
   activeMaterialsPanel: boolean
@@ -15,7 +17,6 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
 
 const pageStore = usePageStore()
 
-const showGlobalSettingPanel = $ref(false)
 </script>
 
 <template>
@@ -36,17 +37,36 @@ const showGlobalSettingPanel = $ref(false)
         <SectionList />
       </div>
       <div class="bottom">
-        <div class="operator-item">
-          <Icon
-            :size="26"
-            name="advanced"
-            :active="showGlobalSettingPanel"
-            @click.native="showGlobalSettingPanel = !showGlobalSettingPanel"
-          />
-        </div>
+        <Dropdown :placement="'right-end'" popper-class="sidebar-dropdown" :distance="16" type="pure">
+          <template #default="{ shown }">
+            <div class="operator-item not-last">
+              <Icon
+                :size="26"
+                name="font"
+                :active="shown"
+              />
+            </div>
+          </template>
+          <template #content>
+            <FontFamilyPanel />
+          </template>
+        </Dropdown>
+        <Dropdown :placement="'right-end'" popper-class="sidebar-dropdown" :distance="16" type="pure">
+          <template #default="{ shown }">
+            <div class="operator-item">
+              <Icon
+                :size="26"
+                name="advanced"
+                :active="shown"
+              />
+            </div>
+          </template>
+          <template #content>
+            <GlobalSettingPanel />
+          </template>
+        </Dropdown>
       </div>
     </div>
-    <GlobalSettingPanel :show="showGlobalSettingPanel"></GlobalSettingPanel>
   </div>
 </template>
 
@@ -92,13 +112,24 @@ const showGlobalSettingPanel = $ref(false)
     align-items: center;
     cursor: pointer;
 
-    &:not(:last-child) {
-      margin-bottom: 10px;
+    &.not-last {
+      margin-bottom: 16px;
     }
 
     &.add-item :deep(.icon) {
       background: $panel;
     }
+  }
+}
+</style>
+
+<style lang="scss">
+.sidebar-dropdown {
+  // 手动 hack 与边缘间距
+  $hack-gap: 8px;
+  top: -$hack-gap;
+  .v-popper__arrow-container {
+    transform: translateY($hack-gap);
   }
 }
 </style>

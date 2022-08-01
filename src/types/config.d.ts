@@ -201,3 +201,23 @@ interface IEffectItem {
 interface IEffect {
   effectList: IEffectItem[]
 }
+
+/** 颜色变量 */
+interface IColorVarItem {
+  /** 颜色变量名 */
+  name: string
+  /** 颜色值 */
+  color: string
+}
+
+/** 字体设置 */
+interface IFontSetting {
+  fontFamily: string;
+  fontSize: string | { [key: string]: string };
+  customFontFace: (string | {
+    fontFamily: string,
+    url: string,
+    fontStyle: IFont['fontStyle'],
+    fontWeight: IFont['fontWeight'],
+  })[];
+}

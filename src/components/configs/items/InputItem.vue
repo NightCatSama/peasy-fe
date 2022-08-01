@@ -19,10 +19,11 @@ interface ISelectItemProps extends IInputProps {
   realTime?: boolean
   onFocus?: IInputProps['onFocus']
   onBlur?: IInputProps['onBlur']
+  wrapperClass?: string
 }
 
 const props = defineProps<ISelectItemProps>()
-const { label, modelValue, type, realTime, onFocus, onBlur } = $(props)
+const { label, modelValue, type, realTime, wrapperClass, onFocus, onBlur } = $(props)
 
 const emit = defineEmits(['update:model-value'])
 
@@ -36,7 +37,7 @@ const value = $computed({
 let preValue = $ref('')
 
 const handleFocus = (e: Event) => {
-  preValue = modelValue
+  // preValue = modelValue
   onFocus?.(e)
 }
 
@@ -50,7 +51,7 @@ const handleBlur = (e: Event) => {
 </script>
 
 <template>
-  <div :class="['item', { column: type === 'textarea' }]">
+  <div :class="['item', { column: type === 'textarea' }, wrapperClass]">
     <span class="label">
       <slot name="label" :label="label">{{ label }}</slot>
     </span>

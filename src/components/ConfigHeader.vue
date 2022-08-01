@@ -12,7 +12,7 @@ import Select from './widgets/Select.vue'
 import { useKeyPress } from 'ahooks-vue'
 import { emitter } from '@/utils/event'
 import { ShortcutKey } from '@/constants/shortcut'
-import ColorVatList from './biz/ColorVatList.vue'
+import ColorVarList from './biz/ColorVarList.vue'
 import { useHistoryStore } from '@/stores/history'
 
 const displayStore = useDisplayStore()
@@ -95,7 +95,7 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
           </div>
         </template>
         <template #content>
-          <ColorVatList></ColorVatList>
+          <ColorVarList></ColorVarList>
         </template>
       </Dropdown>
       <Dropdown placement="bottom" :distance="10">

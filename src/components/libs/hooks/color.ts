@@ -1,4 +1,4 @@
-import { IColorVarItem, variableColorSymbol } from "@/config";
+import { variableColorSymbol } from "@/config";
 
 let dynamicAnimationStyles = null as HTMLStyleElement | null;
 export const useColorVars = (colorVars: IColorVarItem[]) => {

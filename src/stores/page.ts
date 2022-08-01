@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { mande } from 'mande'
 import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mock'
-import { PageNode, ComponentPropsGroup, ComponentName, IColorVarItem } from '@/config'
+import { PageNode, ComponentPropsGroup, ComponentName } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
 import { nextTick } from 'vue'
@@ -10,6 +10,41 @@ const api = mande('http://localhost:3030/api/page')
 
 type MaterialData = {
   [key in PageNode['type']]: PageNode[]
+}
+
+/** 模拟后端返回的页面数据 */
+const MockPageData = {
+  /** 页面数据 */
+  pageData: [getMockBlock('section')],
+  /** 颜色变量 */
+  colorVars: [{ name: '$primary', color: '#00a8ff' }, { name: '$error', color: 'red' }],
+  /** 页面标题 */
+  title: '页面标题',
+  /** 页面图标 */
+  favicon: '',
+  /** meta 标签展示，用于 SEO 优化 */
+  seo: ['Page'],
+  /** 全局的字体设置 */
+  font: {
+    fontFamily: `'ZCOOL XiaoWei', PingFang SC, sans-serif`,
+    /** 自定义字体 */
+    customFontFace: [
+      'https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap',
+      // {
+      //   fontFamily: 'Lobster',
+      //   url: 'https://fonts.gstatic.com/s/lobster/v28/neILzCirqoswsqX9zo-mM4MwWJXNqA.woff2',
+      //   fontStyle: 'normal',
+      //   fontWeight: 'normal',
+      // }
+    ],
+    /** 全局的字体大小 */
+    // fontSize: '14px',
+    fontSize: {
+      '980': '12px',
+      '1920': '16px',
+      '2560': '20px',
+    },
+  },
 }
 
 export const usePageStore = defineStore('page', {
@@ -28,7 +63,9 @@ export const usePageStore = defineStore('page', {
     /** 当前展示的 Section，null 为全部 */
     activeSection: null as PageNode | null,
     /** 颜色变量 */
-    colorVars: [] as IColorVarItem[]
+    colorVars: [] as IColorVarItem[],
+    /** 全局字体配置 */
+    font: MockPageData.font as IFontSetting
   }),
   getters: {
     /** 当前激活节点对应的配置数据 */
@@ -105,8 +142,8 @@ export const usePageStore = defineStore('page', {
   actions: {
     async getPageData() {
       // const { data } = await api.post<any>({})
-      this.allPageData = [getMockBlock('section')]
-      this.colorVars = [{ name: '$primary', color: '#00a8ff' }, { name: '$error', color: 'red' }]
+      this.allPageData = MockPageData.pageData
+      this.colorVars = MockPageData.colorVars
     },
     async getAssetsData() {
       // const { data } = await api.post<any>({})

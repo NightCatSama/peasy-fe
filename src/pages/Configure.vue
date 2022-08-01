@@ -15,9 +15,10 @@ import { useColorVars } from '@/components/libs/hooks/color'
 import { useHistoryStore } from '@/stores/history'
 import { useKeyPress } from 'ahooks-vue'
 import { ShortcutKey } from '@/constants/shortcut'
+import { useFont } from '@/components/libs/hooks/font'
 
 const pageStore = usePageStore()
-const { pageData, allPageData, colorVars } = storeToRefs(pageStore)
+const { pageData, allPageData, colorVars, font } = storeToRefs(pageStore)
 const { updateAllPageNode, getAssetsData, getPageData, download } = pageStore
 
 const displayStore = useDisplayStore()
@@ -104,6 +105,13 @@ watch(
 watch(
   () => colorVars.value,
   () => useColorVars(colorVars.value),
+  { deep: true, immediate: true, flush: 'sync' }
+)
+
+// 更新字体配置
+watch(
+  () => font.value,
+  () => useFont(font.value, '.edit-section'),
   { deep: true, immediate: true, flush: 'sync' }
 )
 </script>
