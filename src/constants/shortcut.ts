@@ -10,5 +10,11 @@ export const enum ShortcutKey {
   /** 撤销 */
   undo = 'meta.z',
   /** 重做 */
-  redo = 'meta.shift.z'
+  redo = 'meta.shift.z',
+  /** 删除 */
+  delete = 'meta.delete',
+  /** 复制 */
+  copy = 'meta.shift.c',
+  /** 粘贴 */
+  paste = 'meta.shift.v',
 }

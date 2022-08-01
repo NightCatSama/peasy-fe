@@ -68,10 +68,12 @@ onMounted(() => {
     saveHistory(allPageData.value)
   })
 
+  // 初始化加载页面数据
   getAssetsData()
   getPageData()
 })
 
+// 快捷键 - 重做
 useKeyPress(ShortcutKey.undo, (e) => {
   if (e.shiftKey) return
   if (!canUndoHistory.value) return
@@ -79,28 +81,29 @@ useKeyPress(ShortcutKey.undo, (e) => {
   updateAllPageNode(undoHistory())
 })
 
+// 快捷键 - 撤销
 useKeyPress(ShortcutKey.redo, (e) => {
   if (!canRedoHistory.value) return
   e.preventDefault()
   updateAllPageNode(redoHistory())
 })
 
+// 向子组件传递当前编辑模式，在 lib/ 下的组件中使用
+// 为啥使用 provide，因为需要保持 lib/ 下的依赖干净，在纯页面生成时是不需要 store 相关数据引用的
 let context = reactive({ isEditMode: true, displayMode: displayMode.value })
 provide('editContext', context)
 
+// 更新 provide 的 displayMode
 watch(
   () => displayMode.value,
-  () => {
-    context.displayMode = displayMode.value
-  },
+  () => context.displayMode = displayMode.value,
   { immediate: true, flush: 'sync' }
 )
 
+// 更新颜色变量
 watch(
   () => colorVars.value,
-  () => {
-    useColorVars(colorVars.value)
-  },
+  () => useColorVars(colorVars.value),
   { deep: true, immediate: true, flush: 'sync' }
 )
 </script>

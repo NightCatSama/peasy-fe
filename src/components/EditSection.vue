@@ -23,6 +23,7 @@ const {
   setActiveParentNodeToActive,
   setActiveNodeToRound,
   getActiveNodeRound,
+  deleteActiveNode,
 } = pageStore
 const { pageData, activeNode, activeParentNode } = storeToRefs(pageStore)
 
@@ -38,22 +39,19 @@ const wrapperRef = ref<HTMLDivElement | null>(null)
 const contentRef = ref<HTMLDivElement | null>(null)
 
 const contentElem = $computed(() => ((contentRef.value as any)?.$el as HTMLDivElement) || null)
-const editContentStyle = $computed(() => {
-  return {
-    width: `${device.value.width}px`,
-    fontSize: `${device.value.fontSize}px`,
-  }
-})
+const editContentStyle = $computed(() => ({
+  width: `${device.value.width}px`,
+  fontSize: `${device.value.fontSize}px`,
+}))
+const noPageData = $computed(() => pageData.value.length === 0)
 
+// PanZoom
 const pz = ref<PanZoom | null>(null)
 let isSmoothing = $ref(false)
 
-const noPageData = $computed(() => {
-  return pageData.value.length === 0
-})
-
 const wrapperSize = useSize(wrapperRef) as { width: number; height: number }
 
+/** 设置容器尺寸 */
 const setWrapperSize = () => {
   wrapperSize.width = wrapperRef.value?.clientWidth || 0
   wrapperSize.height = wrapperRef.value?.clientHeight || 0
@@ -61,8 +59,12 @@ const setWrapperSize = () => {
 
 onMounted(() => {
   setWrapperSize()
-  setDeviceByParent(wrapperSize!.width)
   window.addEventListener('resize', setWrapperSize, false)
+
+  // 根据屏幕宽度初始化设备
+  setDeviceByParent(wrapperSize!.width)
+
+  // 初始化 PanZoom
   pz.value = panzoom(contentElem!, {
     initialZoom: device.value.zoom,
     minZoom: 0.2,
@@ -77,13 +79,16 @@ onMounted(() => {
       return shouldIgnore
     },
   })
+  // 缩放和移动时，同步去更新 Moveable 的激活框
   pz.value.on('zoom', (e: any) => {
     device.value.zoom = e.getTransform().scale
     emitter.emit('updateMoveable')
   })
   pz.value.on('pan', () => emitter.emit('updateMoveable'))
 })
+onUnmounted(() => window.removeEventListener('resize', setWrapperSize))
 
+// 手动缩放时，更新 PanZoom 的缩放值
 watchEffect(() => {
   const trans = pz.value?.getTransform()
   const rect = contentElem?.getBoundingClientRect()
@@ -96,14 +101,14 @@ watchEffect(() => {
   }
 })
 
+// 页面数据变化时，同步去更新 Moveable 的激活框
 watch(
   [pageData],
-  () => {
-    emitter.emit('updateMoveable')
-  },
+  () => emitter.emit('updateMoveable'),
   { flush: 'post', deep: true }
 )
 
+// 当首次新建 Section，去居中预览页面窗口
 watch(
   () => noPageData,
   (newValue, oldValue) => {
@@ -114,12 +119,12 @@ watch(
   { flush: 'post' }
 )
 
-onUnmounted(() => {
-  window.removeEventListener('resize', setWrapperSize)
-})
-
-/** 重置预览位置，居中显示 */
+/**
+ * 重置预览位置，居中显示
+ * immediate: 是否跳过过渡动画，立即居中
+ */
 const handleLocationPage = (immediate = false) => {
+  // 平滑滚动过程中，不需要再居中，避免过渡出问题
   if (!contentElem || isSmoothing) return
 
   if (immediate !== true) {
@@ -145,12 +150,14 @@ const handleLocationPage = (immediate = false) => {
   // 先将页面完全居中
   immediate === true ? pz.value!.moveTo(x, y) : pz.value!.smoothMoveTo(x, y)
 
+  // 如果已经有激活的组件，再将激活的组件居中
   if (activeElem) {
     const activeRect = activeElem.getBoundingClientRect()
     left = activeRect.left - rect.left - (wrapperSize.width - activeRect.width) / 2 + Math.min(x, 0)
     top = activeRect.top - rect.top - (wrapperSize.height - activeRect.height) / 2 + Math.min(y, 0)
   }
 
+  // 最后将容器滚动到计算好的位置
   wrapperRef.value?.scrollTo({
     top: Math.max(top, 0),
     left: Math.max(left, 0),
@@ -160,18 +167,26 @@ const handleLocationPage = (immediate = false) => {
 
 // emitter
 emitter.on('location', (immediate?: boolean) => handleLocationPage(immediate))
+
+// 点击编辑区域的空白区域，取消当前选择组件
 const hideMaterialsPanel = (e: Event) => {
   const target = e.target as HTMLDivElement
-  // 点击空白区域，取消当前选择组件
   if (target?.classList.contains('edit-wrapper')) {
     setActiveNode()
   }
   emitter.emit('switchMaterialsPanel', false)
 }
 
+// 快捷键 - 定位当前组件
 useKeyPress(ShortcutKey.location, (e) => {
   e.preventDefault()
   handleLocationPage()
+})
+
+// 快捷键 - 删除激活组件
+useKeyPress(ShortcutKey.delete, (e) => {
+  e.preventDefault()
+  deleteActiveNode()
 })
 
 // draggable
@@ -186,6 +201,8 @@ const dragEvents = $computed(() =>
     : {}
 )
 
+// 拖进垃圾桶则取消本次拖拽
+const handleEnterTrash = () => setIsCancelDrag(true)
 const handleLeaveTrash = (e: DragEvent) => {
   // NOTE: 不知道为啥在垃圾桶上松开后也会触发一次 dragleave 并且数据都是 0
   if (!e.clientX && !e.clientY) return
@@ -220,7 +237,7 @@ const handleLeaveTrash = (e: DragEvent) => {
       :class="['cancel-clone-btn', { active: isCancelDrag }]"
       name="delete"
       :size="24"
-      @dragover="() => setIsCancelDrag(true)"
+      @dragover="handleEnterTrash"
       @dragleave="handleLeaveTrash"
     ></Icon>
     <div class="node-operation" v-if="activeNode">
