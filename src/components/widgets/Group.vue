@@ -75,8 +75,8 @@ const iconName = $computed(() => icon || groupIconMap[groupName!] || defaultGrou
   font-size: 14px;
 
   .info {
-    padding: 0 16px;
-    height: 44px;
+    padding: 0 12px;
+    height: $group-height;
     display: flex;
     align-items: center;
     flex-shrink: 0;
@@ -86,7 +86,7 @@ const iconName = $computed(() => icon || groupIconMap[groupName!] || defaultGrou
       height: 100%;
       display: flex;
       align-items: center;
-      font-size: 18px;
+      font-size: 16px;
       font-weight: bold;
       color: lighten($color, 15%);
       user-select: none;

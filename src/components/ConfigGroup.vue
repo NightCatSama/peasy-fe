@@ -108,7 +108,7 @@ const iconName = $computed(() => bindProps?.icon || groupIconMap[groupType] || d
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 44px;
+    height: $mini-item-height;
     cursor: pointer;
 
     &.active {

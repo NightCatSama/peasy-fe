@@ -51,7 +51,7 @@ const filteredItems = $computed(() => {
 
 <style lang="scss">
 .tag-content {
-  min-height: 40px;
+  min-height: 32px;
   align-items: center;
   padding: 4px;
   display: flex;
@@ -80,12 +80,12 @@ const filteredItems = $computed(() => {
       color: $color;
     }
     .ti-tags li {
-      padding: 4px 6px;
+      padding: 2px 4px;
       display: inline-flex;
       align-items: center;
       justify-content: center;
-      margin: 3px;
       border-radius: $inner-radius;
+      font-size: 12px;
     }
     .ti-tag.dark-font {
       color: #333;
@@ -101,9 +101,10 @@ const filteredItems = $computed(() => {
       input {
         color: $color;
         background: $tr;
-        font-size: 13px;
-        line-height: 14px;
+        font-size: 12px;
+        line-height: 12px;
         min-width: 64px;
+        padding-top: 2px;
       }
     }
     .ti-autocomplete {

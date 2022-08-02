@@ -84,13 +84,13 @@ const effectTargetMap: { [key: string]: ISelectItem } = $computed(() => {
       type: 'tag',
     }
   })
-  getAllChildNode(node).forEach((child) => {
-    obj['#' + child.name] = {
-      target: child.name,
-      title: child.name,
-      type: 'name',
-    }
-  })
+  // getAllChildNode(node).forEach((child) => {
+  //   obj['#' + child.name] = {
+  //     target: child.name,
+  //     title: child.name,
+  //     type: 'name',
+  //   }
+  // })
   return obj
 })
 

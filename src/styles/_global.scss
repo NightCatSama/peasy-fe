@@ -59,12 +59,24 @@ $bulge-shadow: 1px 1px 3px 1px rgba(0, 0, 0, 0.36);
 $float-shadow: 0 2px 5px 0 rgba(0, 0, 0, 0.36), 1px 1px 3px 0 rgb(255, 255, 255, 0.1);
 $dropdown-shadow: 0 2px 5px 2px rgba(0, 0, 0, 0.1);
 
+// Header
 $header-height: 64px;
+
+// 右侧配置栏变量
 $config-width: 300px;
 $item-gap: 2px;
 $item-height: 32px;
 $item-width: 120px;
+$config-header-height: 54px;
+$mini-header-height: 44px;
+$mini-width: 44px;
+$group-height: 40px;
+$mini-item-height: 40px;
+
+// 物料栏
 $materials-panel-width: 320px;
+
+// 全局设置
 $font-family-panel-width: 320px;
 $global-setting-panel-width: 340px;
 

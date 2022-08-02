@@ -19,7 +19,7 @@
       right: 0;
       bottom: 100%;
       transform-origin: right bottom;
-      transform: translateY(-2px) scale(0.9);
+      transform: translateY(-4px) scale(0.9);
       background: $theme;
       color: $white;
     }
@@ -28,7 +28,7 @@
       left: 0;
       top: 100%;
       transform-origin: left top;
-      transform: translateY(2px) scale(0.9);
+      transform: translateY(4px) scale(0.9);
       background: $theme;
       color: $white;
     }

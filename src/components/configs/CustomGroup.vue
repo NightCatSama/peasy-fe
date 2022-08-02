@@ -48,5 +48,8 @@ const getComponentData = (type: string) => getFormPropsByType(type)
     flex: 1;
     margin-right: 8px;
   }
+  :deep(.tip) {
+    margin-bottom: 8px;
+  }
 }
 </style>

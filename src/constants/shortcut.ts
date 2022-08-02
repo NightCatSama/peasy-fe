@@ -18,9 +18,9 @@ export const ShortcutKey = {
   /** 粘贴 */
   paste: 'meta.shift.v',
   /** 全部折叠 */
-  collapseAll: (e: KeyboardEvent) => e.metaKey && e.altKey && e.key === '.', // 'meta.shift.dot'
+  collapseAll: (e: KeyboardEvent) => e.metaKey && e.shiftKey && e.key === '.', // 'meta.shift.dot'
   /** 切换 Section */
-  switchSection: (e: KeyboardEvent) => e.metaKey && e.altKey && /\d/.test(e.key), // 'meta.shift.number'
+  switchSection: (e: KeyboardEvent) => e.metaKey && e.shiftKey && /\d/.test(e.key), // 'meta.shift.number'
   /** 下一个 Section */
   nextSection: 'alt.tab',
   /** 上一个 Section */

@@ -8,6 +8,19 @@
       user-select: none;
       animation: none !important;
 
+      &:not(.active):not(.inModule)::before {
+        content: '';
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 1;
+        outline: 1px dashed rgba($theme, 35%);
+        pointer-events: none;
+        transition: outline .15s;
+      }
+
       &:not(.active):not(.inModule):hover::before {
         content: '';
         left: 0;
@@ -16,7 +29,7 @@
         height: 100%;
         position: absolute;
         z-index: 1;
-        outline: 1px solid rgba($theme, 35%);
+        outline: 1px solid rgba($theme, 60%);
         pointer-events: none;
       }
 

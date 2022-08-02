@@ -1,21 +1,5 @@
 /** 组件对应支持的配置分组 */
 export const ComponentPropsGroup = {
-  All: [
-    'common',
-    'basic',
-    'size',
-    'layout',
-    'font',
-    'spacing',
-    'border',
-    'background',
-    'container',
-    'position',
-    'event',
-    'effect',
-    'animation',
-    'custom',
-  ],
   Block: [
     'common',
     'layout',
@@ -101,13 +85,15 @@ export type ComponentPropsGroupType = typeof ComponentPropsGroup
 export type ComponentName = keyof ComponentPropsGroupType
 
 /** 将配置分组名和约束类型相对应 */
-export type PropsTypes<T extends ComponentName = 'All'> = Pick<
-  GroupPropType<T>,
-  ComponentPropsGroupType[T][number]
->
+export type PropsTypes<T extends ComponentName = any> = T extends any
+  ? Partial<GroupPropType> & Pick<GroupPropType, 'common'>
+  : Pick<
+    GroupPropType<T>,
+    ComponentPropsGroupType[T][number]
+  >
 
 /** 单个可配置的组件 */
-export interface PageNode<T extends ComponentName = 'All'> {
+export interface PageNode<T extends ComponentName = any> {
   /**
    * 组件类型
    * component: 最小粒度组件，无法添加 children
@@ -134,7 +120,7 @@ export interface PageNode<T extends ComponentName = 'All'> {
 }
 
 /** 组件配置 */
-export interface INodePropMap<T extends ComponentName = 'All'> {
+export interface INodePropMap<T extends ComponentName = any> {
   /** 一个组件名对应一套配置 */
   [name: string]: PropsTypes<T>
 }
@@ -195,7 +181,7 @@ export const isSomeBasicType = <T extends ComponentName, P extends GroupPropType
 export const DefaultIconStyleLink =
   '//netdna.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css'
 
-export const DefaultColor = '#333'
+export const DefaultColor = '#333333'
 
 export const getUniqueName = (name: string) => `_n_${name}_`
 export const getTagClassName = (tag: string) => `_t_${tag}_`

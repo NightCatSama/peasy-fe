@@ -68,7 +68,6 @@ export const useEffect = (effect: IEffect, name: string) => {
           }
         })
       })
-
       dynamicAnimationStyles.innerHTML = styles.join('\n')
     },
     { immediate: true, deep: true }

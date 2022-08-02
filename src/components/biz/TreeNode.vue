@@ -175,9 +175,14 @@ watch(
       flex: 1;
       display: flex;
       align-items: center;
+      overflow: hidden;
       &-icon {
         margin-left: 2px;
         color: lighten($red, 30%);
+      }
+      &-text {
+        overflow: hidden;
+        text-overflow: ellipsis;
       }
     }
 

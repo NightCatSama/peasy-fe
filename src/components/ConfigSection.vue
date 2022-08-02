@@ -135,16 +135,23 @@ const iconList: {
           >
             {{ activeNode.name }}
           </div>
-          <template v-for="(item, index) in iconList" :key="index">
+        </div>
+        <div class="op-icon-wrapper">
+          <div
+            class="op-icon-btn"
+            v-for="(item, index) in iconList"
+            :key="index"
+            v-show="!item.hide"
+          >
             <Icon
-              v-if="!item.hide"
               :class="['op-icon', `${item.name}-icon`]"
               :name="item.name"
               :size="13"
               v-tooltip="item.tip"
               @click="item.click"
             ></Icon>
-          </template>
+            <!-- <span>{{ item.tip }}</span> -->
+          </div>
         </div>
         <TagList
           :tags="activeNode.tags"
@@ -181,8 +188,6 @@ const iconList: {
 </template>
 
 <style lang="scss" scoped>
-$mini-width: 50px;
-$header-height: 54px;
 .config-section {
   position: relative;
   color: $color;
@@ -216,7 +221,7 @@ $header-height: 54px;
 
     .top {
       width: 100%;
-      height: $header-height;
+      height: $mini-header-height;
     }
   }
 
@@ -231,16 +236,17 @@ $header-height: 54px;
       opacity: 1;
     }
     .mini-btn {
-      transform: translateX(38px) rotateZ(90deg);
+      transform: translateX((24px + $mini-width) * 0.5) rotateZ(90deg);
     }
   }
 
   .mini-btn {
     position: absolute;
     right: 100%;
-    top: 15px;
+    top: ($mini-header-height - 24px) * 0.5;
     padding: 6px;
     z-index: $config-btn-zIndex;
+    transform-origin: center;
     transform: translateX(-10px) rotateZ(-90deg);
     background-color: $panel-light;
     transition: all 0.3s;
@@ -254,7 +260,7 @@ $header-height: 54px;
   .header {
     display: flex;
     padding: 0 16px;
-    height: $header-height;
+    height: $config-header-height;
     align-items: center;
 
     .title {
@@ -289,7 +295,7 @@ $header-height: 54px;
 
     .op-icon {
       width: 100%;
-      height: 44px;
+      height: $mini-item-height;
       display: flex;
       justify-content: center;
       align-items: center;
@@ -320,6 +326,23 @@ $header-height: 54px;
     background: $panel-content;
     flex: 1;
     overflow-y: auto;
+  }
+}
+
+.op-icon-wrapper {
+  display: flex;
+  justify-content: flex-start;
+  flex-wrap: wrap;
+  padding: 0px 8px 4px 8px;
+  .op-icon-btn {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    background: $panel-dark;
+    margin: 0 4px 4px 0;
+    border-radius: $inner-radius;
+    overflow: hidden;
+    cursor: pointer;
   }
 }
 

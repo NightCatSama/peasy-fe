@@ -101,7 +101,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                       getValue: (node: PageNode) => {
                         return node?.children?.[1]?.props?.container?.opacity
                       },
-                      setValue: (value: string, node: PageNode) => {
+                      setValue: (value: number, node: PageNode) => {
                         if (node?.children?.[1]?.props?.container?.opacity !== void 0) {
                           node.children[1].props.container.opacity = value
                         }
