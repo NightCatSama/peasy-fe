@@ -70,13 +70,13 @@ const deleteFontFace = (index: number) => {
   z-index: $global-setting-panel-zIndex;
   box-shadow: $shadow;
   background: $panel-sidebar-gradient;
-  padding: 12px 16px;
+  padding: 12px 12px;
   display: flex;
   flex-direction: column;
 
   .item.column > .label {
     display: flex;
-    margin-bottom: 10px;
+    margin-bottom: 6px;
   }
 
   .font-face-group {
@@ -85,19 +85,20 @@ const deleteFontFace = (index: number) => {
       align-items: flex-start;
       .label {
         flex: 0;
-        margin: 4px 0 8px 0;
+        margin: 2px 0 4px 0;
         font-size: 14px;
       }
       .input {
         flex: 1;
         word-break: break-all;
         padding: 4px;
+        font-size: 13px;
       }
     }
   }
 
   .font-family-item {
-    margin-bottom: 16px;
+    margin-bottom: 12px;
   }
 
   .group-item-delete {
