@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { useDisplayStore } from '@/stores/display';
-import { emitter } from '@/utils/event';
+import { useDisplayStore } from '@/stores/display'
+import { emitter } from '@/utils/event'
 import { Menu as VMenu } from 'floating-vue'
 import { Dropdown as VDropdown } from 'floating-vue'
 interface IDropdownProps {
@@ -49,11 +49,17 @@ const {
     <template #popper="{ hide }">
       <div
         ref="el"
-        v-click-outside="isMenu ? {
-          handler: () => hide(),
-          extraSelectors: ['.dropdown-popper', '.dropdown-handle.v-popper--shown'],
-        } : null"
-      ><slot name="content" :hide="hide"></slot></div>
+        v-click-outside="
+          isMenu
+            ? {
+                handler: () => hide(),
+                extraSelectors: ['.dropdown-popper', '.dropdown-handle.v-popper--shown'],
+              }
+            : null
+        "
+      >
+        <slot name="content" :hide="hide"></slot>
+      </div>
     </template>
   </component>
 </template>
@@ -78,7 +84,8 @@ const {
     }
   }
 
-  &.dropdown-popper-pure, &.dropdown-popper-pure-dropdown {
+  &.dropdown-popper-pure,
+  &.dropdown-popper-pure-dropdown {
     .v-popper__inner {
       background: $panel;
       padding: 0;
@@ -102,8 +109,7 @@ const {
     .v-popper__arrow-container {
       transform: translateX($hack-gap);
     }
-    > .v-popper__wrapper
-    > .v-popper__inner {
+    > .v-popper__wrapper > .v-popper__inner {
       width: 241px;
       padding: 8px;
       background: lighten($panel-dark, 10%);

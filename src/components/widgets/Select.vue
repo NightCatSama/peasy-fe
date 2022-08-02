@@ -21,7 +21,14 @@ interface ISelectProps {
   options: { [key: string]: string | ISelectItem }
 }
 
-const { display = 'block', disabled, placement, options, modelValue, container } = defineProps<ISelectProps>()
+const {
+  display = 'block',
+  disabled,
+  placement,
+  options,
+  modelValue,
+  container,
+} = defineProps<ISelectProps>()
 
 const showValue = $computed(() => {
   const value = options[modelValue] || modelValue
@@ -99,7 +106,7 @@ const handleChange = (val: string) => {
     font-size: 12px;
 
     .select-value {
-      background: $tr!important;
+      background: $tr !important;
     }
 
     .select-icon {

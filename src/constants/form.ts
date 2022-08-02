@@ -1,10 +1,10 @@
-import type { ModuleConfigType } from "@/config"
-import ColorItemVue from "@/components/configs/items/ColorItem.vue";
-import InputItemVue from "@/components/configs/items/InputItem.vue";
-import SliderItemVue from "@/components/configs/items/SliderItem.vue";
-import ImageItemVue from "@/components/configs/items/ImageItem.vue";
-import SwitchItemVue from "@/components/configs/items/SwitchItem.vue";
-import TipVue from "@/components/widgets/Tip.vue";
+import type { ModuleConfigType } from '@/config'
+import ColorItemVue from '@/components/configs/items/ColorItem.vue'
+import InputItemVue from '@/components/configs/items/InputItem.vue'
+import SliderItemVue from '@/components/configs/items/SliderItem.vue'
+import ImageItemVue from '@/components/configs/items/ImageItem.vue'
+import SwitchItemVue from '@/components/configs/items/SwitchItem.vue'
+import TipVue from '@/components/widgets/Tip.vue'
 
 export const getFormPropsByType = (type: ModuleConfigType | string) => {
   switch (type) {
@@ -13,7 +13,7 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
         component: InputItemVue,
         props: {
           type: 'textarea',
-          realTime: true
+          realTime: true,
         },
       }
     case 'color':
@@ -39,31 +39,28 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
         props: {
           min: 0,
           max: 1,
-          interval: 0.01
-        }
+          interval: 0.01,
+        },
       }
     case 'image':
       return {
         component: ImageItemVue,
-        props: {
-        }
+        props: {},
       }
     case 'hide':
       return {
         component: SwitchItemVue,
-        props: {
-        }
+        props: {},
       }
     case 'tip':
       return {
         component: TipVue,
-        props: {
-        }
+        props: {},
       }
     default:
       return {
         component: null,
-        props: {}
+        props: {},
       }
   }
 }

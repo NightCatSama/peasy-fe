@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { emitter } from '@/utils/event';
+import { emitter } from '@/utils/event'
 import { covertSizeToOtherUnit, fixedPointToNumber, isUnitType } from '@/utils/sizeHelper'
 import { watchEffect, defineEmits, nextTick, watch, onMounted } from 'vue'
 import Select from './Select.vue'
@@ -69,8 +69,9 @@ const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
       suffixInValue,
       suffixType
     )
-  return (prefix || '') + (
-    {
+  return (
+    (prefix || '') +
+    ({
       px: `${getVal()}px`,
       '%': `${getVal()}%`,
       rem: `${getVal()}rem`,
@@ -81,7 +82,7 @@ const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
       auto: 'auto',
       none: 'none',
       stretch: 'stretch',
-    }[suffixType] || inputValue
+    }[suffixType] || inputValue)
   )
 })
 

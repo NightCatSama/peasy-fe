@@ -1,5 +1,12 @@
-import { ComponentName, ComponentPropsGroup, DefaultColor, GroupType, isSomeBasicType, PageNode } from "@/config";
-import { getFormPropsByType } from "@/constants/form";
+import {
+  ComponentName,
+  ComponentPropsGroup,
+  DefaultColor,
+  GroupType,
+  isSomeBasicType,
+  PageNode,
+} from '@/config'
+import { getFormPropsByType } from '@/constants/form'
 
 export interface IEffectShowItem {
   label: string
@@ -17,15 +24,17 @@ export const getEffectMapByNode = (node: PageNode, isSelf?: boolean): IEffectSho
   const nodeGroups = ComponentPropsGroup[node.component as ComponentName]
   let map = {}
   ;(nodeGroups || [])
-    .map(group => getEffectShowItemByGroup(group, node))
+    .map((group) => getEffectShowItemByGroup(group, node))
     .filter(Boolean)
-    .forEach(obj => {
+    .forEach((obj) => {
       map = { ...map, ...obj }
     })
-  map = !isSelf ? {
-    ...map,
-    hide: allEffectMap['hide']
-  } : map
+  map = !isSelf
+    ? {
+        ...map,
+        hide: allEffectMap['hide'],
+      }
+    : map
   return map
 }
 
@@ -33,12 +42,12 @@ export const allEffectMap: IEffectShowItemMap = {
   color: {
     label: 'Font Color',
     ...getFormPropsByType('color'),
-    defaultValue: DefaultColor
+    defaultValue: DefaultColor,
   },
   fontSize: {
     label: 'Font Size',
     ...getFormPropsByType('fontSize'),
-    defaultValue: DefaultColor
+    defaultValue: DefaultColor,
   },
   borderColor: {
     label: 'Border Color',
@@ -58,11 +67,14 @@ export const allEffectMap: IEffectShowItemMap = {
   hide: {
     label: 'Hidden',
     ...getFormPropsByType('hide'),
-    defaultValue: true
+    defaultValue: true,
   },
 }
 
-export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): IEffectShowItemMap | null => {
+export const getEffectShowItemByGroup = (
+  groupType: GroupType,
+  node: PageNode
+): IEffectShowItemMap | null => {
   switch (groupType) {
     case 'font':
       return {
@@ -71,29 +83,33 @@ export const getEffectShowItemByGroup = (groupType: GroupType, node: PageNode): 
         }),
         fontSize: Object.assign(allEffectMap['fontSize'], {
           defaultValue: (node?.props?.font as IFont)?.fontSize ?? '18px',
-        })
+        }),
       }
     case 'border': {
       const border = node?.props?.border as IBorder
       return {
         borderColor: Object.assign(allEffectMap['borderColor'], {
-          defaultValue: Array.isArray(border?.borderColor) ? border?.borderColor[0] : (border?.borderColor || DefaultColor),
-        })
+          defaultValue: Array.isArray(border?.borderColor)
+            ? border?.borderColor[0]
+            : border?.borderColor || DefaultColor,
+        }),
       }
     }
     case 'background': {
       const background = node?.props?.background as IBackground
-      return background?.backgroundType === 'color' || background?.backgroundType === 'none' ? {
-        backgroundColor: Object.assign(allEffectMap['backgroundColor'], {
-          defaultValue: background?.backgroundColor ?? DefaultColor,
-        })
-      } : null
+      return background?.backgroundType === 'color' || background?.backgroundType === 'none'
+        ? {
+            backgroundColor: Object.assign(allEffectMap['backgroundColor'], {
+              defaultValue: background?.backgroundColor ?? DefaultColor,
+            }),
+          }
+        : null
     }
     case 'container': {
       return {
         opacity: Object.assign(allEffectMap['opacity'], {
           defaultValue: (node?.props?.container as IContainer)?.opacity ?? 1,
-        })
+        }),
       }
     }
     case 'basic': {

@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { emitter } from '@/utils/event';
+import { emitter } from '@/utils/event'
 import InputItem from './InputItem.vue'
 interface IPreviewItemProps {
   label: string
@@ -23,7 +23,9 @@ const showCodeInput = $ref(false)
 
 <template>
   <div class="item preview-item">
-    <div class="label" @dblclick="showCodeInput = hideAdvanced ? false : !showCodeInput">{{ label }}</div>
+    <div class="label" @dblclick="showCodeInput = hideAdvanced ? false : !showCodeInput">
+      {{ label }}
+    </div>
     <div class="preview-wrapper">
       <div
         v-for="(item, index) in options"

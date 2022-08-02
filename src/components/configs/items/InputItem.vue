@@ -7,8 +7,8 @@ export default {
 <script setup lang="ts">
 import Input from '@/components/widgets/Input.vue'
 import { emitter } from '@/utils/event'
-import { useDebounce } from 'ahooks-vue';
-import { watch } from 'vue';
+import { useDebounce } from 'ahooks-vue'
+import { watch } from 'vue'
 
 type IInputProps = Partial<InstanceType<typeof Input>>
 
@@ -47,7 +47,6 @@ const handleBlur = (e: Event) => {
   }
   onBlur?.(e)
 }
-
 </script>
 
 <template>

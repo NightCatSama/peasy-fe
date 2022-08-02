@@ -1,13 +1,13 @@
-import { variableColorSymbol } from "@/config";
+import { variableColorSymbol } from '@/config'
 
-let dynamicAnimationStyles = null as HTMLStyleElement | null;
+let dynamicAnimationStyles = null as HTMLStyleElement | null
 export const useFont = (font: IFontSetting, wrapper = 'body') => {
   // 初始化动态样式表
   if (!dynamicAnimationStyles) {
-    dynamicAnimationStyles = document.createElement('style');
-    document.head.appendChild(dynamicAnimationStyles);
+    dynamicAnimationStyles = document.createElement('style')
+    document.head.appendChild(dynamicAnimationStyles)
   }
-  let stylesheet = ``;
+  let stylesheet = ``
   if (font.fontFamily) {
     stylesheet += `${wrapper} { font-family: ${font.fontFamily}; }`
   }
@@ -18,7 +18,7 @@ export const useFont = (font: IFontSetting, wrapper = 'body') => {
   if (font.customFontFace) {
     font.customFontFace.forEach((item) => {
       if (typeof item === 'object') {
-        if (!item.fontFamily || !item.url) return;
+        if (!item.fontFamily || !item.url) return
         stylesheet += `
           @font-face {
             font-family: ${item.fontFamily};
@@ -28,9 +28,10 @@ export const useFont = (font: IFontSetting, wrapper = 'body') => {
           }
         `.trim()
       } else if (item) {
-        stylesheet = `
+        stylesheet =
+          `
           @import url('${item}');
-        `.trim() + stylesheet;
+        `.trim() + stylesheet
       }
     })
   }

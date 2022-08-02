@@ -17,17 +17,25 @@ const {
   color = 'primary',
   icon,
   disabled,
-  isBlock
+  isBlock,
 } = defineProps<IBtnProps>()
 </script>
 
 <template>
   <div
-    :class="['btn', `size-${size}`, `${color}`, `btn-type-${type}`, { disabled, 'btn-block': isBlock }]"
+    :class="[
+      'btn',
+      `size-${size}`,
+      `${color}`,
+      `btn-type-${type}`,
+      { disabled, 'btn-block': isBlock },
+    ]"
     role="button"
   >
     <Icon v-if="icon" class="btn-icon" :name="icon" :size="12"></Icon>
-    <div class="text"><slot>{{ text }}</slot></div>
+    <div class="text">
+      <slot>{{ text }}</slot>
+    </div>
   </div>
 </template>
 
@@ -102,7 +110,6 @@ const {
   }
 
   &-type-inner {
-
     &.primary {
       color: $color;
       background: $theme-gradient;

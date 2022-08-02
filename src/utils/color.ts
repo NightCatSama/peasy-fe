@@ -21,13 +21,12 @@ let recentColors = [
   '#7973c9',
   '#f7acbc',
   '#7b5d5f',
-] as string[];
-
+] as string[]
 
 export const getRecentColors = (): string[] => recentColors
 
 export const pushRecentColor = (color: string) => {
-  const index = recentColors.indexOf(color);
+  const index = recentColors.indexOf(color)
   if (index > -1) {
     recentColors.unshift(recentColors.splice(index, 1)[0])
   } else {

@@ -80,7 +80,7 @@ export default {
             el.contains(target) ||
             (includeParent ? el.parentElement?.contains(target) : false) ||
             extraSelectors.some((selector: string) =>
-              Array.from(document.querySelectorAll(selector)).some(elem => elem.contains(target))
+              Array.from(document.querySelectorAll(selector)).some((elem) => elem.contains(target))
             )
           )
             return

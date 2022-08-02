@@ -5,17 +5,17 @@ import { VTooltip, VClosePopper } from 'floating-vue'
 import App from './App.vue'
 import { Text, Block, Image, Icon } from './components/libs'
 import GlobalDirective from './toolkit/global.directive'
-import Toast from "vue-toastification"
+import Toast from 'vue-toastification'
 
 import 'floating-vue/dist/style.css'
-import "vue-toastification/dist/index.css";
+import 'vue-toastification/dist/index.css'
 
 const app = createApp(App)
 
 app.use(createPinia())
 app.use(GlobalDirective)
 app.use(Toast, {
-  position: "bottom-right",
+  position: 'bottom-right',
   timeout: 2000,
   closeOnClick: true,
   pauseOnFocusLoss: true,
@@ -25,7 +25,7 @@ app.use(Toast, {
   hideProgressBar: true,
   closeButton: false,
   icon: true,
-  rtl: false
+  rtl: false,
 })
 
 app.directive('tooltip', VTooltip)

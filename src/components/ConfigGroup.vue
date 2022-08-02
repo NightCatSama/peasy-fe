@@ -47,7 +47,9 @@ const componentNameMap: { [type in GroupType]: any | null } = {
 
 const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
 
-const bindProps = $computed(() => activeNode.value?.isModule ? activeNode.value.moduleConfig?.[index] : activeNode.value?.props)
+const bindProps = $computed(() =>
+  activeNode.value?.isModule ? activeNode.value.moduleConfig?.[index] : activeNode.value?.props
+)
 
 const iconName = $computed(() => bindProps?.icon || groupIconMap[groupType] || defaultGroupIcon)
 </script>
@@ -72,9 +74,7 @@ const iconName = $computed(() => bindProps?.icon || groupIconMap[groupType] || d
       placement="left-start"
     >
       <template #default="{ shown }">
-        <div
-          :class="['config-group-mini-item', { active: shown }]"
-        >
+        <div :class="['config-group-mini-item', { active: shown }]">
           <Icon :name="iconName" :size="16"></Icon>
         </div>
       </template>
@@ -116,7 +116,6 @@ const iconName = $computed(() => bindProps?.icon || groupIconMap[groupType] || d
     }
   }
 }
-
 </style>
 
 <style lang="scss">

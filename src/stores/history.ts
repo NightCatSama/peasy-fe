@@ -28,7 +28,7 @@ export const useHistoryStore = defineStore('history', {
   actions: {
     /** 存储历史记录 */
     saveHistory(data: PageNode[]) {
-      const cloneNode = cloneDeep(data);
+      const cloneNode = cloneDeep(data)
       if (this.currentIndex > 0) {
         this.history.splice(0, this.currentIndex)
         this.currentIndex = 0
@@ -45,6 +45,6 @@ export const useHistoryStore = defineStore('history', {
     redoHistory() {
       this.currentIndex--
       return cloneDeep(this.history[this.currentIndex])
-    }
+    },
   },
 })

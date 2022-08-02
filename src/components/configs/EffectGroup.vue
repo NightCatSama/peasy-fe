@@ -36,9 +36,10 @@ const getEffectMap = $computed(() => (target: string, targetType: string): IEffe
   return targetType === 'tag' ? allEffectMap : getEffectMapByNode(node, targetType === 'self') || {}
 })
 
-const getEffectLabel = (target: string, targetType: string) => Object.fromEntries(
-  Object.entries(getEffectMap(target, targetType)).map(([key, item]) => [key, item.label])
-)
+const getEffectLabel = (target: string, targetType: string) =>
+  Object.fromEntries(
+    Object.entries(getEffectMap(target, targetType)).map(([key, item]) => [key, item.label])
+  )
 
 const handleNameChange = (val: string, item: IEffectItem) => {
   item.name = val
@@ -73,40 +74,43 @@ const effectTargetMap: { [key: string]: ISelectItem } = $computed(() => {
     ['%' + node.name]: {
       target: node.name,
       title: node.name,
-      type: 'self'
-    }
+      type: 'self',
+    },
   }
-  getTagsByNode(node.children || []).forEach(tag => {
+  getTagsByNode(node.children || []).forEach((tag) => {
     obj[tag] = {
       target: tag,
       title: tag,
-      type: 'tag'
+      type: 'tag',
     }
   })
-  getAllChildNode(node).forEach(child => {
+  getAllChildNode(node).forEach((child) => {
     obj['#' + child.name] = {
       target: child.name,
       title: child.name,
-      type: 'name'
+      type: 'name',
     }
   })
   return obj
 })
 
-const actionMap: { name: keyof IEffectItem['styles'], label: string }[] = $computed(() => [{
-  name: 'hover',
-  label: 'Hover'
-}, {
-  name: 'active',
-  label: 'Active'
-}])
+const actionMap: { name: keyof IEffectItem['styles']; label: string }[] = $computed(() => [
+  {
+    name: 'hover',
+    label: 'Hover',
+  },
+  {
+    name: 'active',
+    label: 'Active',
+  },
+])
 
 const timingFunction = {
-  'ease': 'Ease',
+  ease: 'Ease',
   'ease-in': 'Ease In',
   'ease-out': 'Ease Out',
   'ease-in-out': 'Ease In Out',
-  'linear': 'Linear'
+  linear: 'Linear',
 }
 </script>
 
@@ -123,15 +127,21 @@ const timingFunction = {
       class="animation-item"
       :key="index"
       :collapsed="index === collapsedIndex || !item.name"
-      :tag="index === collapsedIndex ? '' : Object.keys(item.styles).length ? Object.keys(item.styles) : ''"
+      :tag="
+        index === collapsedIndex
+          ? ''
+          : Object.keys(item.styles).length
+          ? Object.keys(item.styles)
+          : ''
+      "
       :tag-type="Object.keys(item.styles).length ? 'theme' : 'red'"
       @delete="() => effect.effectList.splice(index, 1)"
-      @collapse="() => collapsedIndex = collapsedIndex === index ? -1 : index"
+      @collapse="() => (collapsedIndex = collapsedIndex === index ? -1 : index)"
     >
       <template #name>
         <span v-if="!item.name">Choose a style</span>
         <span v-else-if="item.target && item.target !== node.name">
-          <span class="highlight">{{ item.target }}<br/></span>
+          <span class="highlight">{{ item.target }}<br /></span>
           <span>{{ item.name }}</span>
         </span>
         <span v-else>{{ item.name }}</span>
@@ -146,7 +156,9 @@ const timingFunction = {
         >
           <template #item="data">
             <div :class="['select-target-item']">
-              <div :class="['type-tag', (data.item as ISelectItem)?.type]">{{ (data.item as ISelectItem)?.type }}</div>
+              <div :class="['type-tag', (data.item as ISelectItem)?.type]">
+                {{ (data.item as ISelectItem)?.type }}
+              </div>
               {{ (data.item as ISelectItem).title }}
             </div>
           </template>
@@ -172,11 +184,8 @@ const timingFunction = {
             :options="timingFunction"
             v-model="item.timingFunction"
           ></SelectItem>
-          <hr class="divider" data-text="Action">
-          <template
-            v-for="obj in actionMap"
-            :key="obj.name"
-          >
+          <hr class="divider" data-text="Action" />
+          <template v-for="obj in actionMap" :key="obj.name">
             <component
               v-if="item.styles[obj.name] !== void 0"
               :label="obj.label"
@@ -232,7 +241,7 @@ const timingFunction = {
     border-radius: $inner-radius;
     margin-right: 6px;
     transform-origin: left center;
-    transform: scale(.85);
+    transform: scale(0.85);
 
     &.self {
       color: $panel-dark;

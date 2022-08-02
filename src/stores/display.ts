@@ -99,6 +99,6 @@ export const useDisplayStore = defineStore('display', {
     },
     setMinimize(minimize: boolean) {
       this.minimize = minimize
-    }
+    },
   },
 })

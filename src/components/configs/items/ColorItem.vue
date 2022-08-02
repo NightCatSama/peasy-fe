@@ -5,15 +5,16 @@ initRecentColors()
 import { Chrome } from '@ckpack/vue-color'
 import InputItem from './InputItem.vue'
 import Dropdown from '@/components/widgets/Dropdown.vue'
-import { initRecentColors, getRecentColors, isColor, pushRecentColor } from '@/utils/color';
-import { getColor } from '@/components/libs/hooks/color';
-import Tabs from '@/components/widgets/Tabs.vue';
-import Select from '@/components/widgets/Select.vue';
-import { usePageStore } from '@/stores/page';
-import { useDisplayStore } from '@/stores/display';
-import { storeToRefs } from 'pinia';
-import { variableColorSymbol } from '@/config';
-import { emitter } from '@/utils/event';
+import { initRecentColors, getRecentColors, isColor, pushRecentColor } from '@/utils/color'
+import { getColor } from '@/components/libs/hooks/color'
+import Tabs from '@/components/widgets/Tabs.vue'
+import Select from '@/components/widgets/Select.vue'
+import { usePageStore } from '@/stores/page'
+import { useDisplayStore } from '@/stores/display'
+import { storeToRefs } from 'pinia'
+import { variableColorSymbol } from '@/config'
+import { emitter } from '@/utils/event'
+import { hide } from '@floating-ui/core'
 
 interface IColorItemProps {
   label: string
@@ -45,7 +46,7 @@ const value = $computed({
 })
 
 let preColor = $ref('')
-const savePreColor = () => preColor = modelValue
+const savePreColor = () => (preColor = modelValue)
 
 const saveRecentColor = (val: string) => {
   const value = val || modelValue
@@ -54,13 +55,13 @@ const saveRecentColor = (val: string) => {
   if (preColor === value) return
 
   if (value.slice(0, 1) !== variableColorSymbol) {
-    recentColors = pushRecentColor(value);
+    recentColors = pushRecentColor(value)
   }
   emitter.emit('saveHistory')
 }
 
 const handleInputChange = (e: Event) => {
-  const value = (e.target as HTMLInputElement).value;
+  const value = (e.target as HTMLInputElement).value
   if (value && value !== modelValue) {
     saveRecentColor(value)
   }
@@ -90,23 +91,29 @@ const showValue = $computed(() => getColor(modelValue))
               :model-value="hideVariable ? 'recent' : colorType"
               placement="bottom-start"
               container=".color-dropdown"
-              :options="hideVariable ? { recent: 'Recent Color' } : {
-                variable: 'Variable',
-                recent: 'Recent Color',
-              }"
-              @update:model-value="val => colorType = val"
+              :options="
+                hideVariable
+                  ? { recent: 'Recent Color' }
+                  : {
+                      variable: 'Variable',
+                      recent: 'Recent Color',
+                    }
+              "
+              @update:model-value="(val) => (colorType = val)"
             ></Select>
             <div v-if="!hideVariable && colorType === 'variable'" class="color-wrapper">
               <div
                 class="color-var-item"
                 v-for="c in colorVars"
                 :key="c.name"
-                @click="value = c.name; hide()"
+                @click="
+                  () => {
+                    value = c.name
+                    hide()
+                  }
+                "
               >
-                <div
-                  class="color-box"
-                  :style="{ background: c.color }"
-                ></div>
+                <div class="color-box" :style="{ background: c.color }"></div>
                 <div class="color-var-name">{{ c.name }}</div>
               </div>
             </div>
@@ -116,7 +123,12 @@ const showValue = $computed(() => getColor(modelValue))
                 v-for="c in recentColors"
                 :key="c"
                 :style="{ background: c }"
-                @click="value = c; hide()"
+                @click="
+                  () => {
+                    value = c
+                    hide()
+                  }
+                "
               ></div>
             </div>
           </div>

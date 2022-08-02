@@ -19,7 +19,8 @@ import { useFont } from '@/components/libs/hooks/font'
 
 const pageStore = usePageStore()
 const { pageData, activeSection, allPageData, colorVars, font } = storeToRefs(pageStore)
-const { setActiveSection, setActiveNode, updateAllPageNode, getAssetsData, getPageData, download } = pageStore
+const { setActiveSection, setActiveNode, updateAllPageNode, getAssetsData, getPageData, download } =
+  pageStore
 
 const displayStore = useDisplayStore()
 const { setDeviceByParent } = displayStore
@@ -55,10 +56,10 @@ onMounted(() => {
         'swapSection',
         'deleteActiveNode',
         'copyActiveNode',
-        'separateActiveNode'
+        'separateActiveNode',
       ].includes(name)
     ) {
-      inAction = true;
+      inAction = true
       after(() => {
         inAction = false
         saveHistory(store.allPageData)
@@ -136,7 +137,7 @@ provide('editContext', context)
 // 更新 provide 的 displayMode
 watch(
   () => displayMode.value,
-  () => context.displayMode = displayMode.value,
+  () => (context.displayMode = displayMode.value),
   { immediate: true, flush: 'sync' }
 )
 
@@ -158,7 +159,10 @@ watch(
 <template>
   <div class="page">
     <!-- 左侧操作栏 -->
-    <Sidebar :active-materials-panel="showLeftPanel" @change-materials-panel="(val) => (showLeftPanel = val)"></Sidebar>
+    <Sidebar
+      :active-materials-panel="showLeftPanel"
+      @change-materials-panel="(val) => (showLeftPanel = val)"
+    ></Sidebar>
     <div class="container">
       <ConfigHeader @download="handleDownload"></ConfigHeader>
       <!-- 页面主体内容 -->

@@ -3,9 +3,9 @@ import { useDisplayStore } from '@/stores/display'
 import { onBeforeUnmount, onMounted, onUpdated, watchEffect } from 'vue'
 import { groupIconMap, defaultGroupIcon, groupTitleMap } from '@/constants/group'
 import Icon from './Icon.vue'
-import { storeToRefs } from 'pinia';
-import { GroupType } from '@/config';
-import { emitter } from '@/utils/event';
+import { storeToRefs } from 'pinia'
+import { GroupType } from '@/config'
+import { emitter } from '@/utils/event'
 interface IGroupProps {
   title?: string
   groupName?: GroupType
@@ -30,7 +30,7 @@ let showAdvanced = $ref(status ? status.advanced : false)
 onUpdated(() => {
   saveGroupStatus(groupStatusKey, { collapsed, advanced: showAdvanced })
 })
-const collapseFn = () => collapsed = false
+const collapseFn = () => (collapsed = false)
 onMounted(() => {
   emitter.on('collapseGroup', collapseFn)
 })

@@ -2,7 +2,7 @@
 import { upload } from '@/utils/oss'
 import InputItem from './InputItem.vue'
 import Icon from '@/components/widgets/Icon.vue'
-import { emitter } from '@/utils/event';
+import { emitter } from '@/utils/event'
 
 interface IImageItemProps {
   label: string
@@ -10,7 +10,12 @@ interface IImageItemProps {
   placeholder?: string
   accept?: string
 }
-const { modelValue, label, placeholder = 'https://', accept = 'image/*' } = defineProps<IImageItemProps>()
+const {
+  modelValue,
+  label,
+  placeholder = 'https://',
+  accept = 'image/*',
+} = defineProps<IImageItemProps>()
 const emit = defineEmits(['update:model-value'])
 
 const handleChange = (img: string) => {

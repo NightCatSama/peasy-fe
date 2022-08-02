@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { PageNode } from '@/config';
-import { useDisplayStore } from '@/stores/display';
-import { Alert } from '@/utils/alert';
+import { PageNode } from '@/config'
+import { useDisplayStore } from '@/stores/display'
+import { Alert } from '@/utils/alert'
 import { watch, ref } from 'vue'
-import { storeToRefs } from 'pinia';
-import Icon from '../widgets/Icon.vue';
-import { usePageStore } from '@/stores/page';
-import { emitter } from '@/utils/event';
+import { storeToRefs } from 'pinia'
+import Icon from '../widgets/Icon.vue'
+import { usePageStore } from '@/stores/page'
+import { emitter } from '@/utils/event'
 
 interface ITreeNodeListProps {
   node: PageNode
@@ -19,7 +19,8 @@ const { layerStatus } = storeToRefs(displayStore)
 
 const pageStore = usePageStore()
 const { activeNode, activeParentChain } = storeToRefs(pageStore)
-const { getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } = pageStore
+const { getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } =
+  pageStore
 
 let collapse = ref(!!layerStatus.value.get(node))
 
@@ -34,12 +35,14 @@ const icon = $computed(() => {
   if (node.isModule) {
     return 'module'
   }
-  return ({
-    'Image': 'image',
-    'Text': 'text',
-    'Block': 'block',
-    'Icon': 'symbol'
-  } as any)[node.component]
+  return (
+    {
+      Image: 'image',
+      Text: 'text',
+      Block: 'block',
+      Icon: 'symbol',
+    } as any
+  )[node.component]
 })
 
 const setActiveNodeHide = (hide: boolean) => {
@@ -48,13 +51,20 @@ const setActiveNodeHide = (hide: boolean) => {
   emitter.emit('saveHistory')
 }
 
-watch(() => collapse.value, (val: boolean) => layerStatus.value.set(node, val))
+watch(
+  () => collapse.value,
+  (val: boolean) => layerStatus.value.set(node, val)
+)
 
-watch([activeNode], () => {
-  if (activeNode.value && activeParentChain.value.some(n => n === node)) {
-    collapse.value = true
-  }
-}, { immediate: true, flush: 'post' })
+watch(
+  [activeNode],
+  () => {
+    if (activeNode.value && activeParentChain.value.some((n) => n === node)) {
+      collapse.value = true
+    }
+  },
+  { immediate: true, flush: 'post' }
+)
 </script>
 
 <template>
@@ -67,11 +77,7 @@ watch([activeNode], () => {
       @click="collapse = !collapse"
     ></Icon>
     <div class="tree-node-info" @click="setActiveNode(node)">
-      <Icon
-        class="tree-node-info-icon"
-        :name="icon"
-        :size="12"
-       ></Icon>
+      <Icon class="tree-node-info-icon" :name="icon" :size="12"></Icon>
       <div class="tree-node-info-name">
         <div class="tree-node-info-name-text">{{ node.name }}</div>
         <Icon
@@ -80,7 +86,7 @@ watch([activeNode], () => {
           name="hide"
           :size="10"
           @click="setActiveNodeHide(false)"
-         ></Icon>
+        ></Icon>
       </div>
       <template v-if="activeNode === node">
         <Icon
@@ -89,10 +95,12 @@ watch([activeNode], () => {
           name="separate"
           :size="10"
           v-tooltip="'Ungroup'"
-          @click="() => {
-            separateActiveNode()
-            collapse = true
-          }"
+          @click="
+            () => {
+              separateActiveNode()
+              collapse = true
+            }
+          "
         ></Icon>
         <Icon
           v-if="!node.hide"
@@ -100,14 +108,14 @@ watch([activeNode], () => {
           name="eye-slash"
           :size="13"
           @click="setActiveNodeHide(true)"
-         ></Icon>
+        ></Icon>
         <Icon
           v-if="node.hide"
           class="tree-node-info-op-icon eye-icon"
           name="eye"
           :size="13"
           @click="setActiveNodeHide(false)"
-         ></Icon>
+        ></Icon>
         <Icon
           class="tree-node-info-op-icon copy-icon"
           name="copy"
@@ -228,7 +236,7 @@ watch([activeNode], () => {
     left: -15px;
     top: 3px;
     transform: rotateZ(-90deg);
-    transition: all .2s;
+    transition: all 0.2s;
   }
 
   &.collapse {

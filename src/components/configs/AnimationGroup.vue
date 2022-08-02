@@ -22,9 +22,19 @@ const handleAddAnimation = () => {
   collapsedIndex = animation.animationList.length - 1
 }
 
-const animationNameList = ['fade', 'slide-up', 'slide-down', 'slide-left', 'slide-right', 'zoom-in', 'zoom-out', 'rotate-x', 'rotate-y']
+const animationNameList = [
+  'fade',
+  'slide-up',
+  'slide-down',
+  'slide-left',
+  'slide-right',
+  'zoom-in',
+  'zoom-out',
+  'rotate-x',
+  'rotate-y',
+]
 const animationNameMap: any = {
-  'fade': 'Fade',
+  fade: 'Fade',
   'slide-up': 'Slide Up',
   'slide-down': 'Slide Down',
   'slide-left': 'Slide Left',
@@ -36,31 +46,31 @@ const animationNameMap: any = {
 }
 
 const animationTriggerMap = {
-  'hover': 'Hover',
-  'click': 'Click',
-  'scrollIntoView': 'Scroll Into View',
-  'always': 'Always',
+  hover: 'Hover',
+  click: 'Click',
+  scrollIntoView: 'Scroll Into View',
+  always: 'Always',
 }
 
 const timingFunction = {
-  'ease': 'Ease',
+  ease: 'Ease',
   'ease-in': 'Ease In',
   'ease-out': 'Ease Out',
   'ease-in-out': 'Ease In Out',
-  'linear': 'Linear'
+  linear: 'Linear',
 }
 
 const fillModeMap = {
-  'forwards': 'Forwards',
-  'backwards': 'Backwards',
-  'both': 'Both',
-  'none': 'None',
+  forwards: 'Forwards',
+  backwards: 'Backwards',
+  both: 'Both',
+  none: 'None',
 }
 
 const directionMap = {
-  'normal': 'Normal',
-  'reverse': 'Reverse',
-  'alternate': 'Alternate',
+  normal: 'Normal',
+  reverse: 'Reverse',
+  alternate: 'Alternate',
   'alternate-reverse': 'Alternate Reverse',
 }
 
@@ -75,10 +85,10 @@ const handleChangeAnimationTrigger = (trigger: IAnimationItem['trigger'], index:
 }
 
 // 只动画一次的动画效果
-const isOneCount = (trigger: IAnimationItem['trigger']) => ['scrollIntoView', 'click'].includes(trigger)
+const isOneCount = (trigger: IAnimationItem['trigger']) =>
+  ['scrollIntoView', 'click'].includes(trigger)
 
 let showAdvancedSettings = $ref(false)
-
 </script>
 
 <template>
@@ -99,14 +109,14 @@ let showAdvancedSettings = $ref(false)
       :name="animationTriggerMap[item.trigger]"
       :tag="index !== collapsedIndex ? animationNameMap[item.name] : ''"
       @delete="() => animation.animationList.splice(index, 1)"
-      @collapse="() => collapsedIndex = collapsedIndex === index ? -1 : index"
+      @collapse="() => (collapsedIndex = collapsedIndex === index ? -1 : index)"
     >
       <template #default>
         <SelectItem
           label="Trigger Type"
           :options="animationTriggerMap"
           :model-value="item.trigger"
-          @update:model-value="val => handleChangeAnimationTrigger(val, index)"
+          @update:model-value="(val) => handleChangeAnimationTrigger(val, index)"
           @dblclick="showAdvancedSettings = !showAdvancedSettings"
         ></SelectItem>
         <PreviewItem
@@ -119,8 +129,12 @@ let showAdvancedSettings = $ref(false)
           <template #default="{ item: name, active }">
             <div
               :class="['inner-box', { active }]"
-              :style="{ 'animation': `${name} 1s infinite ${isOneCount(item.trigger) ? 'normal' : 'alternate-reverse'}` }">
-            </div>
+              :style="{
+                animation: `${name} 1s infinite ${
+                  isOneCount(item.trigger) ? 'normal' : 'alternate-reverse'
+                }`,
+              }"
+            ></div>
             <div class="inner-text">{{ animationNameMap[name] }}</div>
           </template>
         </PreviewItem>
@@ -202,11 +216,7 @@ let showAdvancedSettings = $ref(false)
             :options="timingFunction"
             v-model="item.timingFunction"
           ></SelectItem>
-          <SelectItem
-            label="Fill Mode"
-            :options="fillModeMap"
-            v-model="item.fillMode"
-          ></SelectItem>
+          <SelectItem label="Fill Mode" :options="fillModeMap" v-model="item.fillMode"></SelectItem>
           <SelectItem
             label="Direction"
             :options="directionMap"
@@ -243,7 +253,7 @@ let showAdvancedSettings = $ref(false)
       justify-content: center;
       font-size: 12px;
       user-select: none;
-      transform: translateX(-50%) scale(.86);
+      transform: translateX(-50%) scale(0.86);
       white-space: nowrap;
       color: rgba($panel-light, 80%);
     }

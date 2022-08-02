@@ -1,29 +1,35 @@
-import { onBeforeUnmount, reactive, Ref, watch } from "vue"
-import { getPositionTransform } from "./style"
+import { onBeforeUnmount, reactive, Ref, watch } from 'vue'
+import { getPositionTransform } from './style'
 
-export type AnimationMapType = Map<IAnimationItem, {
-  animationName: string;
-  disabled: boolean;
-}>
+export type AnimationMapType = Map<
+  IAnimationItem,
+  {
+    animationName: string
+    disabled: boolean
+  }
+>
 
-export const useIntersectionObserver = (target: HTMLElement, setIsIntersection: (isIntersecting: boolean) => void) => {
+export const useIntersectionObserver = (
+  target: HTMLElement,
+  setIsIntersection: (isIntersecting: boolean) => void
+) => {
   // 当观察到变动时执行的回调函数
-  const callback: IntersectionObserverCallback = function(entries, observer) {
+  const callback: IntersectionObserverCallback = function (entries, observer) {
     if (entries[0].isIntersecting) {
       setIsIntersection(true)
     } else if (entries[0].boundingClientRect.top >= 0) {
       setIsIntersection(false)
     }
-  };
+  }
 
   // 创建一个观察器实例并传入回调函数
   const observer = new IntersectionObserver(callback, {
     root: document.body,
     rootMargin: '0px',
-    threshold: 0.0
-  });
+    threshold: 0.0,
+  })
 
-  observer.observe(target);
+  observer.observe(target)
 
   return observer
 }
@@ -35,11 +41,17 @@ export const useIntersectionObserver = (target: HTMLElement, setIsIntersection: 
  * 3. 绑定对应的事件去更新 animationMap 中的 disabled 值
  * 4. 返回 animationMap 用于组件中获取
  */
-export const useAnimation = (animation: IAnimation, el: Ref<HTMLDivElement | null>, position: IPosition) => {
+export const useAnimation = (
+  animation: IAnimation,
+  el: Ref<HTMLDivElement | null>,
+  position: IPosition
+) => {
   let dynamicAnimationStyles = $ref<HTMLStyleElement | null>(null)
   let observer = $ref<IntersectionObserver | null>(null)
   let removeListenerList: (() => void)[] = $ref([])
-  let animationMap: AnimationMapType = reactive(new Map<IAnimationItem, { animationName: string; disabled: boolean }>())
+  let animationMap: AnimationMapType = reactive(
+    new Map<IAnimationItem, { animationName: string; disabled: boolean }>()
+  )
   let isBindClick = $ref(false)
   let isBindHover = $ref(false)
 
@@ -62,7 +74,7 @@ export const useAnimation = (animation: IAnimation, el: Ref<HTMLDivElement | nul
       animationMap.forEach((item, anim) => {
         if (anim.trigger === 'click' && item.disabled) {
           item.disabled = false
-          setTimeout(() => item.disabled = true, (anim.duration + anim.delay) * 1000)
+          setTimeout(() => (item.disabled = true), (anim.duration + anim.delay) * 1000)
         }
       })
     }
@@ -95,45 +107,49 @@ export const useAnimation = (animation: IAnimation, el: Ref<HTMLDivElement | nul
     })
   }
 
-  watch(() => [animation, position, el], () => {
-    if (!animation?.animationList?.length || el.value === null) {
-      animationMap.clear()
-      return
-    }
-    // 初始化动态样式表
-    if (!dynamicAnimationStyles) {
-      dynamicAnimationStyles = document.createElement('style');
-      document.head.appendChild(dynamicAnimationStyles);
-      removeListenerList.push(() => document.head.removeChild(dynamicAnimationStyles!))
-    }
+  watch(
+    () => [animation, position, el],
+    () => {
+      if (!animation?.animationList?.length || el.value === null) {
+        animationMap.clear()
+        return
+      }
+      // 初始化动态样式表
+      if (!dynamicAnimationStyles) {
+        dynamicAnimationStyles = document.createElement('style')
+        document.head.appendChild(dynamicAnimationStyles)
+        removeListenerList.push(() => document.head.removeChild(dynamicAnimationStyles!))
+      }
 
-    const animationList = animation?.animationList as IAnimationItem[]
-    let stylesheet = ''
-    let bindEvents: { [key in IAnimationItem['trigger']]?: any } = {}
+      const animationList = animation?.animationList as IAnimationItem[]
+      let stylesheet = ''
+      let bindEvents: { [key in IAnimationItem['trigger']]?: any } = {}
 
-    animationList.forEach((anim) => {
-      bindEvents[anim.trigger] = true
-      const animName = getAnimateName(anim)
-      const keyframeBody = getKeyframeBody(anim, position)
-      const keyframe = getKeyframe(animName, keyframeBody)
-      stylesheet += keyframe
-      animationMap.set(anim, { animationName: animName, disabled: anim.trigger !== 'always' })
-    })
+      animationList.forEach((anim) => {
+        bindEvents[anim.trigger] = true
+        const animName = getAnimateName(anim)
+        const keyframeBody = getKeyframeBody(anim, position)
+        const keyframe = getKeyframe(animName, keyframeBody)
+        stylesheet += keyframe
+        animationMap.set(anim, { animationName: animName, disabled: anim.trigger !== 'always' })
+      })
 
-    dynamicAnimationStyles.innerHTML = stylesheet
+      dynamicAnimationStyles.innerHTML = stylesheet
 
-    if (bindEvents['scrollIntoView'] && el.value) {
-      onBindIntersectionObserver(el.value)
-    }
-    if (bindEvents['click'] && el.value) {
-      onBindClick(el.value)
-    }
-    if (bindEvents['hover'] && el.value) {
-      onBindHover(el.value)
-    }
-  }, { deep: true, immediate: true })
+      if (bindEvents['scrollIntoView'] && el.value) {
+        onBindIntersectionObserver(el.value)
+      }
+      if (bindEvents['click'] && el.value) {
+        onBindClick(el.value)
+      }
+      if (bindEvents['hover'] && el.value) {
+        onBindHover(el.value)
+      }
+    },
+    { deep: true, immediate: true }
+  )
 
-  onBeforeUnmount(() => removeListenerList.forEach(fn => fn()))
+  onBeforeUnmount(() => removeListenerList.forEach((fn) => fn()))
 
   return {
     animationMap,
@@ -159,7 +175,9 @@ function getKeyframeBody(anim: IAnimationItem, position: IPosition) {
     const { horizontal, vertical } = getPositionTransform(position)
     return `
       from {
-        transform: translate(${x + (horizontal?.center ? -50 : 0)}%, ${y + (vertical?.center ? -50 : 0)}%);
+        transform: translate(${x + (horizontal?.center ? -50 : 0)}%, ${
+      y + (vertical?.center ? -50 : 0)
+    }%);
         opacity: ${setting?.opacity ?? 1};
       }
     `
@@ -170,7 +188,9 @@ function getKeyframeBody(anim: IAnimationItem, position: IPosition) {
     const { transform } = getPositionTransform(position)
     return `
       from {
-        transform: scale(${anim.name === 'zoom-in' ? 1 - zoom : 1 + zoom})${transform ? ` ${transform}` : ''};
+        transform: scale(${anim.name === 'zoom-in' ? 1 - zoom : 1 + zoom})${
+      transform ? ` ${transform}` : ''
+    };
         opacity: ${setting?.opacity ?? 1};
       }
     `
@@ -181,7 +201,9 @@ function getKeyframeBody(anim: IAnimationItem, position: IPosition) {
     const { transform } = getPositionTransform(position)
     return `
       from {
-        transform: rotate${anim.name === 'rotate-x' ? 'X' : 'Y'}(${angle}deg)${transform ? ` ${transform}` : ''};
+        transform: rotate${anim.name === 'rotate-x' ? 'X' : 'Y'}(${angle}deg)${
+      transform ? ` ${transform}` : ''
+    };
         opacity: ${setting?.opacity ?? 1};
       }
     `

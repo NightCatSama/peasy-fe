@@ -1,5 +1,5 @@
 <script lang="ts" setup>
-import Icon from '@/components/widgets/Icon.vue';
+import Icon from '@/components/widgets/Icon.vue'
 
 interface ICollapseItemProps {
   name?: string
@@ -8,14 +8,9 @@ interface ICollapseItemProps {
   tagType?: 'default' | 'red' | 'theme'
 }
 
-const {
-  name,
-  collapsed,
-  tag,
-  tagType = 'default',
-} = defineProps<ICollapseItemProps>()
+const { name, collapsed, tag, tagType = 'default' } = defineProps<ICollapseItemProps>()
 
-const tags = $computed(() => !tag ? [] : Array.isArray(tag) ? tag : [tag])
+const tags = $computed(() => (!tag ? [] : Array.isArray(tag) ? tag : [tag]))
 </script>
 
 <template>
@@ -25,7 +20,13 @@ const tags = $computed(() => !tag ? [] : Array.isArray(tag) ? tag : [tag])
         <div class="collapse-name">
           <slot name="name">{{ name }}</slot>
         </div>
-        <div v-for="item in tags" :class="['collapse-tag', `collapse-tag-${tagType}`]" v-show="item">{{ item }}</div>
+        <div
+          v-for="item in tags"
+          :class="['collapse-tag', `collapse-tag-${tagType}`]"
+          v-show="item"
+        >
+          {{ item }}
+        </div>
         <Icon class="close-btn" name="close" :size="18" @click.stop="$emit('delete')"></Icon>
       </div>
       <div class="collapse-main" v-collapse="collapsed">
@@ -41,7 +42,7 @@ const tags = $computed(() => !tag ? [] : Array.isArray(tag) ? tag : [tag])
   border-radius: $normal-radius;
   background: $item-bg;
   border: 1px solid $item-bg;
-  transition: all .3s ease;
+  transition: all 0.3s ease;
   &.active {
     border-color: $theme;
     .collapse-header {
@@ -73,7 +74,7 @@ const tags = $computed(() => !tag ? [] : Array.isArray(tag) ? tag : [tag])
         color: $color;
         white-space: nowrap;
         flex-shrink: 0;
-        transform: scale(.9);
+        transform: scale(0.9);
         transform-origin: right center;
 
         &-default {

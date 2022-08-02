@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Switch from '@/components/widgets/Switch.vue'
-import { emitter } from '@/utils/event';
+import { emitter } from '@/utils/event'
 
 interface ISwitchItemProps {
   label: string

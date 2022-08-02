@@ -153,8 +153,12 @@ export const useBorderStyle = (border: IBorder) => {
 
   const getBorder = (data: string | any[], index: number, isColor?: boolean) =>
     isColor
-      ? Array.isArray(data) ? getColor(data[index]) : getColor(data)
-      : Array.isArray(data) ? data[index] : data
+      ? Array.isArray(data)
+        ? getColor(data[index])
+        : getColor(data)
+      : Array.isArray(data)
+      ? data[index]
+      : data
 
   const [borderTop, borderRight, borderBottom, borderLeft] = Array.from(new Array(4), (_, i) =>
     [
@@ -252,7 +256,9 @@ export const useAnimationStyle = (animationMap: AnimationMapType) => {
   animationMap.forEach((item, anim) => {
     if (item.disabled) return
     const iteration = ['always', 'hover'].includes(anim.trigger) ? 'infinite' : 1
-    animationList.push(`${item.animationName} ${anim.duration}s ${anim.timingFunction} ${anim.delay}s ${iteration} ${anim.direction} ${anim.fillMode} running`)
+    animationList.push(
+      `${item.animationName} ${anim.duration}s ${anim.timingFunction} ${anim.delay}s ${iteration} ${anim.direction} ${anim.fillMode} running`
+    )
   })
 
   return {
@@ -264,13 +270,12 @@ export const useEffectStyle = (effect: IEffect, name: string) => {
   if (!effect) return {}
 
   return {
-    transition: effect.effectList.map((item: IEffectItem) => item.name && item.targetType === 'self' ? `${
-      effectName2PropertyMap[item.name]
-    } ${
-      item.duration
-    }s ${
-      item.timingFunction
-    }` : '')
+    transition: effect.effectList
+      .map((item: IEffectItem) =>
+        item.name && item.targetType === 'self'
+          ? `${effectName2PropertyMap[item.name]} ${item.duration}s ${item.timingFunction}`
+          : ''
+      )
       .filter(Boolean)
       .join(', '),
   }

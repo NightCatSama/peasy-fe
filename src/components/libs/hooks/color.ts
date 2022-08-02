@@ -1,11 +1,11 @@
-import { variableColorSymbol } from "@/config";
+import { variableColorSymbol } from '@/config'
 
-let dynamicAnimationStyles = null as HTMLStyleElement | null;
+let dynamicAnimationStyles = null as HTMLStyleElement | null
 export const useColorVars = (colorVars: IColorVarItem[]) => {
   // 初始化动态样式表
   if (!dynamicAnimationStyles) {
-    dynamicAnimationStyles = document.createElement('style');
-    document.head.appendChild(dynamicAnimationStyles);
+    dynamicAnimationStyles = document.createElement('style')
+    document.head.appendChild(dynamicAnimationStyles)
   }
   let stylesheet = ``
   colorVars.forEach(({ name, color }) => {

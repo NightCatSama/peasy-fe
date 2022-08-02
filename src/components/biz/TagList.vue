@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import { Alert } from '@/utils/alert';
-import { getUnValidChar } from '@/utils/validation';
+import { Alert } from '@/utils/alert'
+import { getUnValidChar } from '@/utils/validation'
 import { VueTagsInput } from '@sipec/vue3-tags-input'
 
 interface ITagListProps {
@@ -14,7 +14,10 @@ const emit = defineEmits(['change'])
 let tag = $ref('')
 
 const handleTagsChange = (newTags: any[]) => {
-  emit('change', newTags.map(item => item.text))
+  emit(
+    'change',
+    newTags.map((item) => item.text)
+  )
 }
 
 const handleAddTag = async (obj: any) => {
@@ -28,8 +31,8 @@ const handleAddTag = async (obj: any) => {
 
 const filteredItems = $computed(() => {
   return autoCompleteTags
-    .filter(i => i.toLowerCase().indexOf(tag.toLowerCase()) !== -1)
-    .map(i => ({ text: i }))
+    .filter((i) => i.toLowerCase().indexOf(tag.toLowerCase()) !== -1)
+    .map((i) => ({ text: i }))
 })
 </script>
 
@@ -38,7 +41,7 @@ const filteredItems = $computed(() => {
     <vue-tags-input
       class="tag-input"
       v-model="tag"
-      :tags="tags.map(i => ({ text: i }))"
+      :tags="tags.map((i) => ({ text: i }))"
       :autocomplete-items="filteredItems"
       @before-adding-tag="handleAddTag"
       @tags-changed="handleTagsChange"
@@ -69,7 +72,8 @@ const filteredItems = $computed(() => {
   .ti-tag span {
     line-height: 1;
   }
-  .ti-tag, .ti-item.ti-selected-item {
+  .ti-tag,
+  .ti-item.ti-selected-item {
     background-color: $purple;
     color: $color;
   }
@@ -87,7 +91,7 @@ const filteredItems = $computed(() => {
   .ti-item {
     padding: 2px 3px;
   }
-  .ti-tag.ti-deletion-mark  {
+  .ti-tag.ti-deletion-mark {
     background-color: $red !important;
     color: $white;
   }

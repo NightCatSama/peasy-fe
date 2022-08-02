@@ -2,7 +2,7 @@
 import Group from '../widgets/Group.vue'
 import { fixedPointToNumber } from '@/utils/sizeHelper'
 import { PageNode } from '@/config'
-import { emitter } from '@/utils/event';
+import { emitter } from '@/utils/event'
 
 interface IFontGroupProps {
   node: PageNode
@@ -46,7 +46,12 @@ const allPadding = $computed({
 </script>
 
 <template>
-  <Group group-name="spacing" class="spacing-group" :can-advanced="false" :default-collapsed="false">
+  <Group
+    group-name="spacing"
+    class="spacing-group"
+    :can-advanced="false"
+    :default-collapsed="false"
+  >
     <div class="spacing-block" data-text="Margin">
       <div class="margin-sign"></div>
       <div class="inner-block" data-text="Padding">

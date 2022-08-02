@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Select, { ISelectItem } from '@/components/widgets/Select.vue'
-import { emitter } from '@/utils/event';
+import { emitter } from '@/utils/event'
 
 interface ISelectItemProps {
   label: string

@@ -26,7 +26,12 @@ const curShadowIndex = $computed(() => presetShadow.indexOf(container.boxShadow)
 </script>
 
 <template>
-  <Group group-name="container" class="container-group" :can-advanced="true" :default-collapsed="false">
+  <Group
+    group-name="container"
+    class="container-group"
+    :can-advanced="true"
+    :default-collapsed="false"
+  >
     <template #default="{ showAdvanced }">
       <SliderItem
         label="Opacity"

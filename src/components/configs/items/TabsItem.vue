@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Tabs, { ITabItem } from '@/components/widgets/Tabs.vue'
-import { emitter } from '@/utils/event';
+import { emitter } from '@/utils/event'
 
 interface ITabsItemProps {
   label?: string

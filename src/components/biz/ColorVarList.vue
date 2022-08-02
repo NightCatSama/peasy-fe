@@ -2,11 +2,11 @@
 import { DefaultColor, PageNode } from '@/config'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
-import ColorItem from '../configs/items/ColorItem.vue';
-import Icon from '../widgets/Icon.vue';
-import InputItem from '../configs/items/InputItem.vue';
-import Btn from '../widgets/Btn.vue';
-import GroupItem from '../configs/items/GroupItem.vue';
+import ColorItem from '../configs/items/ColorItem.vue'
+import Icon from '../widgets/Icon.vue'
+import InputItem from '../configs/items/InputItem.vue'
+import Btn from '../widgets/Btn.vue'
+import GroupItem from '../configs/items/GroupItem.vue'
 
 const pageStore = usePageStore()
 const { addSection, setActiveSection, setActiveNode, swapSection } = pageStore
@@ -32,20 +32,18 @@ const handleAddColor = () => {
       class="color-var-item"
       @delete="deleteColor(index)"
     >
-      <InputItem
-        label="Name"
-        prefix="$"
-        v-model="item.name"
-      ></InputItem>
+      <InputItem label="Name" prefix="$" v-model="item.name"></InputItem>
       <ColorItem
         :model-value="item.color"
         :label="'Color'"
         hide-variable
-        @update:model-value="(color) => item.color = color"
+        @update:model-value="(color) => (item.color = color)"
       >
       </ColorItem>
     </GroupItem>
-    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddColor">Add Color</Btn>
+    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddColor"
+      >Add Color</Btn
+    >
   </div>
 </template>
 

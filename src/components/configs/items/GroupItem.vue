@@ -1,14 +1,11 @@
 <script lang="ts" setup>
-import Icon from '@/components/widgets/Icon.vue';
+import Icon from '@/components/widgets/Icon.vue'
 
 interface ICollapseItemProps {
   canDelete?: boolean
 }
 
-const {
-  canDelete = true
-} = defineProps<ICollapseItemProps>()
-
+const { canDelete = true } = defineProps<ICollapseItemProps>()
 </script>
 
 <template>
@@ -25,7 +22,7 @@ const {
         @click="$emit('delete')"
       ></Icon>
     </div>
-    </div>
+  </div>
 </template>
 
 <style lang="scss" scoped>
@@ -40,7 +37,7 @@ const {
     flex: 1;
     padding: 6px;
     border-radius: 6px;
-    border: 1px dashed rgba($white, .3);
+    border: 1px dashed rgba($white, 0.3);
   }
 
   &-delete {
@@ -59,7 +56,7 @@ const {
       color: $color;
       cursor: pointer;
       &:hover {
-        background: lighten($red, 8%)
+        background: lighten($red, 8%);
       }
     }
   }

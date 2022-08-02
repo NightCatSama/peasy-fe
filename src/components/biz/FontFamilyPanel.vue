@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { Alert } from '@/utils/alert';
-import InputItem from '../configs/items/InputItem.vue';
+import { Alert } from '@/utils/alert'
+import InputItem from '../configs/items/InputItem.vue'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
-import GroupItem from '../configs/items/GroupItem.vue';
-import Btn from '../widgets/Btn.vue';
+import GroupItem from '../configs/items/GroupItem.vue'
+import Btn from '../widgets/Btn.vue'
 
 const pageStore = usePageStore()
 const { font } = storeToRefs(pageStore)
@@ -55,7 +55,9 @@ const deleteFontFace = (index: number) => {
         @update:model-value="(val: string) => font.customFontFace[index] = val"
       ></InputItem>
     </GroupItem>
-    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddFontFace">Add FontFace</Btn>
+    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddFontFace"
+      >Add FontFace</Btn
+    >
   </div>
 </template>
 

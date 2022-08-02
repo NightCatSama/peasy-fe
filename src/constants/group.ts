@@ -1,4 +1,4 @@
-import { GroupType } from "@/config"
+import { GroupType } from '@/config'
 
 export const groupIconMap = {
   layout: 'layout',

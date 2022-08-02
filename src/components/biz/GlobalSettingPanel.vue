@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import { usePageStore } from '@/stores/page';
+import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
-import { Alert } from '@/utils/alert';
-import InputItem from '../configs/items/InputItem.vue';
-import ImageItem from '../configs/items/ImageItem.vue';
+import { Alert } from '@/utils/alert'
+import InputItem from '../configs/items/InputItem.vue'
+import ImageItem from '../configs/items/ImageItem.vue'
 
 const pageStore = usePageStore()
 const { setting } = storeToRefs(pageStore)
-
 </script>
 
 <template>

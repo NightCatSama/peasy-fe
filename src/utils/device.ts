@@ -4,7 +4,7 @@ import type { IDeviceInfo } from '@/stores/display'
 export const getDefaultDevice = (
   parent: { width: number; height: number },
   preset: number[][],
-  type: 'desktop' | 'mobile' = 'desktop',
+  type: 'desktop' | 'mobile' = 'desktop'
 ): IDeviceInfo => {
   const refer = (type === 'desktop' ? parent.width : parent.height) * 0.9 // 尽量不超过容器 90% 的大小)
   const referIndex = type === 'desktop' ? 0 : 1 // desktop 以宽度为参考，mobile 以高度为参考

@@ -123,7 +123,7 @@ const componentEvents = $computed(() =>
           if (
             dragNode.value && // 存在拖拽组件
             !item.isModule && // 当前组件不是 Module 组件
-            !inDraggable &&   // 当前组件不是拖拽中的组件 （避免自己拖拽进自己）
+            !inDraggable && // 当前组件不是拖拽中的组件 （避免自己拖拽进自己）
             !getIsInDragNode(item.name) && // 当前组件不是拖拽组件的子组件 （避免把拖拽自己拖进自己的子组件）
             (e.target as HTMLDivElement)?.dataset?.name === item.name // 确认目前触发的元素是当前组件
           ) {
@@ -187,7 +187,11 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
   <draggable
     ref="componentRef"
     :model-value="item.children || []"
-    :group="{ name: 'component', put: isBlockComponent ? !item.isModule : false, pull: item.isModule ? false : true }"
+    :group="{
+      name: 'component',
+      put: isBlockComponent ? !item.isModule : false,
+      pull: item.isModule ? false : true,
+    }"
     :item-key="'name'"
     :tag="item.component"
     :component-data="{
@@ -204,18 +208,14 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
             grading: inDraggable,
             module: !!item.isModule,
             inModule: inModule,
-          }
+          },
         ],
         'data-name': item.name,
         ...componentEvents,
         ...$attrs,
-      }
+      },
     }"
-    :disabled="(
-      displayMode !== 'drag' ||
-      (dragNode && dragNodeType !== 'component')
-      // (dragNode && item.isModule)
-    )"
+    :disabled="displayMode !== 'drag' || (dragNode && dragNodeType !== 'component')"
     :sort="true"
     :ghost-class="dragNode && dragType === 'clone' ? 'ghost-clone' : 'ghost-move'"
     :chosen-class="'chosen-clone'"

@@ -162,12 +162,15 @@ export const getDefaultEvent = (initConfig?: Partial<IEvent>): IEvent =>
 export const getDefaultAnimation = (initConfig?: Partial<IAnimation>): IAnimation =>
   Object.assign(
     {
-      animationList: []
+      animationList: [],
     },
     initConfig
   )
 
-export const getDefaultAnimationItem = (name: IAnimationItem['name'], initConfig?: Partial<IAnimationItem>): IAnimationItem => {
+export const getDefaultAnimationItem = (
+  name: IAnimationItem['name'],
+  initConfig?: Partial<IAnimationItem>
+): IAnimationItem => {
   return {
     name,
     trigger: 'scrollIntoView',
@@ -177,7 +180,7 @@ export const getDefaultAnimationItem = (name: IAnimationItem['name'], initConfig
     fillMode: 'both',
     direction: 'alternate',
     settings: getDefaultAnimationSettings(name),
-    ...initConfig
+    ...initConfig,
   }
 }
 
@@ -202,7 +205,7 @@ export const getDefaultAnimationSettings = (name: IAnimationItem['name']): IAnim
       zoom: {
         zoom: 0.5,
         opacity: 1,
-      }
+      },
     }
   }
   if (name.startsWith('rotate')) {
@@ -210,25 +213,27 @@ export const getDefaultAnimationSettings = (name: IAnimationItem['name']): IAnim
       rotate: {
         angle: 180,
         opacity: 1,
-      }
+      },
     }
   }
   return {}
 }
 
 export const getDefaultEffect = (initConfig?: Partial<IEffect>): IEffect =>
-  Object.assign({
-    effectList: []
-  }, initConfig)
+  Object.assign(
+    {
+      effectList: [],
+    },
+    initConfig
+  )
 
 export const getDefaultEffectItem = (target: string): IEffectItem => {
   return {
     target,
     targetType: 'self',
     name: '',
-    duration: .5,
+    duration: 0.5,
     timingFunction: 'ease',
-    styles: {
-    },
+    styles: {},
   }
 }

@@ -81,7 +81,13 @@ const textShadowPreset = [
 </script>
 
 <template>
-  <Group group-name="font" class="size-group" :can-advanced="true" :default-collapsed="false" v-bind="$attrs">
+  <Group
+    group-name="font"
+    class="size-group"
+    :can-advanced="true"
+    :default-collapsed="false"
+    v-bind="$attrs"
+  >
     <template #default="{ showAdvanced }">
       <InputItem
         :label="fontSetting.fontSize.name"
@@ -130,11 +136,7 @@ const textShadowPreset = [
             <div :class="['inner', { active }]" :style="{ textShadow: shadow }">T</div>
           </template>
         </PreviewItem>
-        <InputItem
-          label="Font Family"
-          placeholder="inherit"
-          v-model="font.fontFamily"
-        />
+        <InputItem label="Font Family" placeholder="inherit" v-model="font.fontFamily" />
       </template>
     </template>
   </Group>

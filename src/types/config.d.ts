@@ -79,7 +79,7 @@ interface IPosition {
 type BorderStyle = 'solid' | 'dashed' | 'dotted' | 'double'
 interface IBorder {
   borderWidth: [string, string, string, string]
-borderStyle: [BorderStyle, BorderStyle, BorderStyle, BorderStyle]
+  borderStyle: [BorderStyle, BorderStyle, BorderStyle, BorderStyle]
   borderColor: string | [string, string, string, string]
   borderRadius: string | 'circle' | [string, string, string, string]
 }
@@ -144,7 +144,16 @@ interface IAnimationItem {
   /** 动画缓动 */
   timingFunction: 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
   /** 内置动画类型 */
-  name: 'fade' | 'slide-up' | 'slide-down' | 'slide-left' | 'slide-right' | 'zoom-in' | 'zoom-out' | 'rotate-x' | 'rotate-y'
+  name:
+    | 'fade'
+    | 'slide-up'
+    | 'slide-down'
+    | 'slide-left'
+    | 'slide-right'
+    | 'zoom-in'
+    | 'zoom-out'
+    | 'rotate-x'
+    | 'rotate-y'
   /** 动画结束状态 */
   fillMode: 'forwards' | 'backwards' | 'both' | 'none'
   /** 动画播放方向 */
@@ -213,22 +222,25 @@ interface IColorVarItem {
 
 /** 字体设置 */
 interface IFontSetting {
-  fontFamily: string;
-  fontSize: string | { [key: string]: string };
-  customFontFace: (string | {
-    fontFamily: string,
-    url: string,
-    fontStyle: IFont['fontStyle'],
-    fontWeight: IFont['fontWeight'],
-  })[];
+  fontFamily: string
+  fontSize: string | { [key: string]: string }
+  customFontFace: (
+    | string
+    | {
+        fontFamily: string
+        url: string
+        fontStyle: IFont['fontStyle']
+        fontWeight: IFont['fontWeight']
+      }
+  )[]
 }
 
 /** 全局页面设置 */
 interface IPageSetting {
   /** 页面标题 */
-  title: string,
+  title: string
   /** 页面图标 */
-  favicon: string,
+  favicon: string
   /** 网站描述，用于 SEO 优化 */
-  description: string,
+  description: string
 }

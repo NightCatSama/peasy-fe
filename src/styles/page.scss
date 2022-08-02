@@ -6,7 +6,7 @@
       position: relative;
       // transition: font-size 0.3s, box-shadow 0.2s;
       user-select: none;
-      animation: none!important;
+      animation: none !important;
 
       &:not(.active):not(.inModule):hover::before {
         content: '';
@@ -31,7 +31,7 @@
     .lib-component {
       position: relative;
       // transition: font-size 0.3s;
-      animation: none!important;
+      animation: none !important;
 
       .inModule {
         pointer-events: none;

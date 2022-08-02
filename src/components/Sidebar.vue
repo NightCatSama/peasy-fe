@@ -14,7 +14,6 @@ interface ISidebarProps {
 const { activeMaterialsPanel } = defineProps<ISidebarProps>()
 
 const pageStore = usePageStore()
-
 </script>
 
 <template>
@@ -35,28 +34,32 @@ const pageStore = usePageStore()
         <SectionList />
       </div>
       <div class="bottom">
-        <Dropdown :placement="'right-end'" popper-class="sidebar-dropdown" :skidding="40" :distance="16" type="pure">
+        <Dropdown
+          :placement="'right-end'"
+          popper-class="sidebar-dropdown"
+          :skidding="40"
+          :distance="16"
+          type="pure"
+        >
           <template #default="{ shown }">
             <div class="operator-item not-last">
-              <Icon
-                :size="26"
-                name="font"
-                :active="shown"
-              />
+              <Icon :size="26" name="font" :active="shown" />
             </div>
           </template>
           <template #content>
             <FontFamilyPanel />
           </template>
         </Dropdown>
-        <Dropdown :placement="'right-end'" popper-class="sidebar-dropdown" :skidding="10" :distance="16" type="pure">
+        <Dropdown
+          :placement="'right-end'"
+          popper-class="sidebar-dropdown"
+          :skidding="10"
+          :distance="16"
+          type="pure"
+        >
           <template #default="{ shown }">
             <div class="operator-item">
-              <Icon
-                :size="26"
-                name="advanced"
-                :active="shown"
-              />
+              <Icon :size="26" name="advanced" :active="shown" />
             </div>
           </template>
           <template #content>

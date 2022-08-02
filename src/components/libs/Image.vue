@@ -1,23 +1,37 @@
 <script lang="ts">
 export default {
-  inheritAttrs: false
+  inheritAttrs: false,
 }
 </script>
 
 <script setup lang="ts">
 import { ref, useAttrs } from 'vue'
-import { IProps, useProps } from './hooks/common';
+import { IProps, useProps } from './hooks/common'
 
-const { elem, uName, style, props, tagClassNames } = useProps(useAttrs() as unknown as IProps<'Image'>, 'Image')
+const { elem, uName, style, props, tagClassNames } = useProps(
+  useAttrs() as unknown as IProps<'Image'>,
+  'Image'
+)
 
 const src = $computed(() => props.basic.src.trim() || '')
 
-const classNames = $computed(() => ['image', uName.value, ...tagClassNames.value, { 'no-image': !props.basic.src }])
-
+const classNames = $computed(() => [
+  'image',
+  uName.value,
+  ...tagClassNames.value,
+  { 'no-image': !props.basic.src },
+])
 </script>
 
 <template>
-  <img ref="elem" :class="classNames" :style="style" :id="uName" :src="src" v-bind="props.inheritAttrs" />
+  <img
+    ref="elem"
+    :class="classNames"
+    :style="style"
+    :id="uName"
+    :src="src"
+    v-bind="props.inheritAttrs"
+  />
 </template>
 
 <style lang="scss" scoped>

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import Slider from '@/components/widgets/Slider.vue'
-import { emitter } from '@/utils/event';
+import { emitter } from '@/utils/event'
 
 type SliderPropType = Partial<InstanceType<typeof Slider>>
 
@@ -22,7 +22,7 @@ let value = $computed({
 })
 
 const handleChange = (e: Event) => {
-  const elem = (e.target as HTMLInputElement)
+  const elem = e.target as HTMLInputElement
   if (elem.value.length > 4) {
     elem.value = elem.value.slice(0, 4)
   } else {

@@ -1,14 +1,17 @@
 <script lang="ts">
 export default {
-  inheritAttrs: false
+  inheritAttrs: false,
 }
 </script>
 
 <script setup lang="ts">
 import { ref, useAttrs, watch } from 'vue'
-import { IProps, useProps } from './hooks/common';
+import { IProps, useProps } from './hooks/common'
 
-const { elem, uName, style, props, tagClassNames } = useProps(useAttrs() as unknown as IProps<'Icon'>, 'Icon')
+const { elem, uName, style, props, tagClassNames } = useProps(
+  useAttrs() as unknown as IProps<'Icon'>,
+  'Icon'
+)
 
 let styleElem = $ref<HTMLLinkElement | null>(null)
 
@@ -34,8 +37,8 @@ const classNames = $computed(() => [
   uName.value,
   ...tagClassNames.value,
   `${props.basic.prefixClass || ''}${props.basic.name}`,
-  `${props.basic?.extraClass || ''}`
- ])
+  `${props.basic?.extraClass || ''}`,
+])
 </script>
 
 <template>

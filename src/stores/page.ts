@@ -17,7 +17,10 @@ const MockPageData = {
   /** 页面数据 */
   pageData: [getMockBlock('section')],
   /** 颜色变量 */
-  colorVars: [{ name: '$primary', color: '#00a8ff' }, { name: '$error', color: 'red' }],
+  colorVars: [
+    { name: '$primary', color: '#00a8ff' },
+    { name: '$error', color: 'red' },
+  ],
   /** 全局设置 */
   setting: {
     /** 页面标题 */
@@ -99,7 +102,8 @@ export const usePageStore = defineStore('page', {
       dfs(state.allPageData)
       return nameMap
     },
-    getTagsByNode: (state): (node: PageNode[]) => string[] =>
+    getTagsByNode:
+      (state): ((node: PageNode[]) => string[]) =>
       (node: PageNode[]) => {
         const tagList: string[] = []
         const dfs = (nodes: PageNode[]) => {
@@ -112,7 +116,7 @@ export const usePageStore = defineStore('page', {
         return Array.from(new Set(tagList))
       },
     getAllTags: function (state) {
-      return () => this.getTagsByNode(state.allPageData);
+      return () => this.getTagsByNode(state.allPageData)
     },
     getActiveNodeRound: function (state) {
       return (change: number): PageNode | null => {
@@ -132,7 +136,7 @@ export const usePageStore = defineStore('page', {
       (node: PageNode): PageNode[] => {
         if (!node.children) return []
         const children = [...node.children]
-        let i = 0;
+        let i = 0
         while (i < children.length) {
           if (children[i]?.children?.length) {
             children.push(...children[i]?.children!)
@@ -141,7 +145,7 @@ export const usePageStore = defineStore('page', {
         }
         return children
       },
-      activeParentNode: (state) => state.activeParentChain?.[0] || null
+    activeParentNode: (state) => state.activeParentChain?.[0] || null,
   },
   actions: {
     async getPageData() {
@@ -296,8 +300,8 @@ export const usePageStore = defineStore('page', {
         this.activeSection = newNameMap[this.activeSection.name]
       }
       if (this.activeParentChain.length) {
-        this.activeParentChain = this.activeParentChain.map(node => newNameMap[node.name])
+        this.activeParentChain = this.activeParentChain.map((node) => newNameMap[node.name])
       }
-    }
+    },
   },
 })

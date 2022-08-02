@@ -71,9 +71,7 @@ const handleModeClick = (value: any) => {
 useKeyPress(ShortcutKey.SwitchDisplayMode, (e) => {
   e.preventDefault()
   const displayModeList = ['edit', 'drag', 'preview'] as const
-  setDisplayMode(
-    displayModeList[(displayModeList.indexOf(displayMode.value) + 1) % 3]
-  )
+  setDisplayMode(displayModeList[(displayModeList.indexOf(displayMode.value) + 1) % 3])
 })
 useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
   e.preventDefault()
@@ -213,7 +211,7 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
       }
 
       &.disabled {
-        opacity: .3;
+        opacity: 0.3;
         cursor: not-allowed;
       }
     }
@@ -263,7 +261,8 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
       color: $color;
       margin: 0 8px;
       cursor: pointer;
-      &:hover, &.active {
+      &:hover,
+      &.active {
         color: $roseate;
       }
     }
