@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watchEffect, defineEmits } from 'vue'
+import { defineEmits } from 'vue'
 import Icon from './Icon.vue'
 
 const emit = defineEmits(['change'])

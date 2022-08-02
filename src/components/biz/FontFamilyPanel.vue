@@ -49,7 +49,7 @@ const deleteFontFace = (index: number) => {
         label="Link"
         type="textarea"
         :rows="2"
-        :placeholder="'https://fonts.googleapis.com/css?family=Roboto:300,400,500,700|Material+Icons'"
+        :placeholder="'https://'"
         :auto-focus="true"
         :model-value="item"
         @update:model-value="(val: string) => font.customFontFace[index] = val"

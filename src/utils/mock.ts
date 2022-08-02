@@ -150,6 +150,14 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                 /** 分组数据 */
                 data: [
                   {
+                    type: ModuleConfigType.Tip,
+                    label: '',
+                    props: {
+                      type: 'warning',
+                      message: '可以直接输入图片地址，或点击 Upload 上传图片。',
+                    },
+                  },
+                  {
                     type: ModuleConfigType.Image,
                     label: '图片',
                     props: {},

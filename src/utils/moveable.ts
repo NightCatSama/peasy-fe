@@ -1,9 +1,7 @@
 import { PageNode } from '@/config'
 import { useDisplayStore } from '@/stores/display'
 import { usePageStore } from '@/stores/page'
-import { useKeyPress } from 'ahooks-vue'
-import Moveable, { MoveableOptions } from 'moveable'
-import { h } from 'vue'
+import Moveable from 'moveable'
 import { emitter } from './event'
 import { covertPXToUnit, fixedPointToNumber, getUnit, isUnitType } from './sizeHelper'
 

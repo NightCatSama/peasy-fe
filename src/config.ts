@@ -116,9 +116,11 @@ export const enum ModuleConfigType {
   /** 透明度 */
   Opacity = 'opacity',
   /** 图片 */
-  Image = 'image'
+  Image = 'image',
+  /** 提示 */
+  Tip = 'tip',
   /** 一组数据 */
-  // Group = 'group'
+  // Group = 'group',
 }
 export interface IModuleConfigGroup {
   /** 配置名称 */
@@ -133,7 +135,7 @@ export interface IModuleConfigGroup {
 /** 模块单项配置 */
 export interface IModuleConfigItem {
   type: ModuleConfigType
-  label: string
+  label?: string
   props?: any
   getValue?: (node: PageNode) => any
   setValue?: (value: any, node: PageNode) => void

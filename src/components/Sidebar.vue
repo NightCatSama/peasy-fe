@@ -1,7 +1,5 @@
 <script setup lang="ts">
 import { usePageStore } from '@/stores/page'
-import { storeToRefs } from 'pinia'
-import { ref } from 'vue'
 import Avatar from './widgets/Avatar.vue'
 import Icon from './widgets/Icon.vue'
 import SectionList from '@/components/biz/SectionList.vue'

@@ -1,5 +1,3 @@
-import { ref, watch } from "vue";
-
 /** TODO: 判断是否为标准颜色格式 */
 export const isColor = (color: string): boolean => {
   return true

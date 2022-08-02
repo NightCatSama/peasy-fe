@@ -4,6 +4,7 @@ import InputItemVue from "@/components/configs/items/InputItem.vue";
 import SliderItemVue from "@/components/configs/items/SliderItem.vue";
 import ImageItemVue from "@/components/configs/items/ImageItem.vue";
 import SwitchItemVue from "@/components/configs/items/SwitchItem.vue";
+import TipVue from "@/components/widgets/Tip.vue";
 
 export const getFormPropsByType = (type: ModuleConfigType | string) => {
   switch (type) {
@@ -50,6 +51,12 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
     case 'hide':
       return {
         component: SwitchItemVue,
+        props: {
+        }
+      }
+    case 'tip':
+      return {
+        component: TipVue,
         props: {
         }
       }

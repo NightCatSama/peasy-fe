@@ -31,7 +31,11 @@ const getComponentData = (type: string) => getFormPropsByType(type)
         :is="getComponentData(item.type).component"
         :model-value="item.getValue?.(node) || ''"
         :label="item.label"
-        v-bind="{ ...getComponentData(item.type).props, ...item.props }"
+        :class="'item'"
+        v-bind="{
+          ...getComponentData(item.type).props,
+          ...item.props,
+        }"
         @update:model-value="(val: any) => item.setValue?.(val, node)"
       ></component>
     </template>
