@@ -152,6 +152,7 @@ const style = $ref({
   display: inline-flex;
   flex-direction: column;
   justify-content: center;
+  user-select: none;
 
   &-type-circle {
     padding: 4px;

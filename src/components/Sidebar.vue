@@ -37,7 +37,7 @@ const pageStore = usePageStore()
         <SectionList />
       </div>
       <div class="bottom">
-        <Dropdown :placement="'right'" popper-class="sidebar-dropdown" :distance="16" type="pure">
+        <Dropdown :placement="'right-end'" popper-class="sidebar-dropdown" :skidding="40" :distance="16" type="pure">
           <template #default="{ shown }">
             <div class="operator-item not-last">
               <Icon
@@ -51,7 +51,7 @@ const pageStore = usePageStore()
             <FontFamilyPanel />
           </template>
         </Dropdown>
-        <Dropdown :placement="'right'" popper-class="sidebar-dropdown" :distance="16" type="pure">
+        <Dropdown :placement="'right-end'" popper-class="sidebar-dropdown" :skidding="10" :distance="16" type="pure">
           <template #default="{ shown }">
             <div class="operator-item">
               <Icon
