@@ -150,7 +150,7 @@ export const disabledMoveable = () => {
   moveable.off()
 }
 
-export const updateDirection = (item: PageNode) => {
+export const updateDirection = (item: any) => {
   const moveable = getMoveable()
   if (!moveable) return
 

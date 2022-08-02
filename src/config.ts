@@ -85,12 +85,12 @@ export type ComponentPropsGroupType = typeof ComponentPropsGroup
 export type ComponentName = keyof ComponentPropsGroupType
 
 /** 将配置分组名和约束类型相对应 */
-export type PropsTypes<T extends ComponentName = any> = T extends any
-  ? Partial<GroupPropType> & Pick<GroupPropType, 'common'>
-  : Pick<
+export type PropsTypes<T extends ComponentName = any> = T extends ComponentName
+  ? Pick<
     GroupPropType<T>,
     ComponentPropsGroupType[T][number]
   >
+  : Partial<GroupPropType> & Pick<GroupPropType, 'common'>
 
 /** 单个可配置的组件 */
 export interface PageNode<T extends ComponentName = any> {

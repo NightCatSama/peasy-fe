@@ -16,6 +16,7 @@ export const groupIconMap = {
 } as any
 
 export const groupTitleMap: { [key in GroupType]: string } = {
+  common: '',
   layout: 'Layout',
   size: 'Size',
   spacing: 'Spacing',

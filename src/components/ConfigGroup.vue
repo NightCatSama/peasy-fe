@@ -30,6 +30,7 @@ const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
 
 const componentNameMap: { [type in GroupType]: any | null } = {
+  common: null,
   basic: BasicGroup,
   size: SizeGroup,
   font: FontGroup,
@@ -51,7 +52,7 @@ const bindProps = $computed(() =>
   activeNode.value?.isModule ? activeNode.value.moduleConfig?.[index] : activeNode.value?.props
 )
 
-const iconName = $computed(() => bindProps?.icon || groupIconMap[groupType] || defaultGroupIcon)
+const iconName = $computed(() => (bindProps as any)?.icon || groupIconMap[groupType] || defaultGroupIcon)
 </script>
 
 <template>
