@@ -10,6 +10,7 @@ import { ShortcutKey } from '@/constants/shortcut'
 import TreeNode from './biz/TreeNode.vue'
 import { isValidName } from '@/utils/validation'
 import { Alert, AlertError } from '@/utils/alert'
+import { emitter } from '@/utils/event'
 
 const pageStore = usePageStore()
 const { nameMap, pageData, activeNode, activeNodeGroups } = storeToRefs(pageStore)
@@ -68,6 +69,7 @@ const iconList: {
   click: () => {
     if (!activeNode.value) return
     activeNode.value.hide = true
+    emitter.emit('saveHistory')
   }
 }, {
   hide: !activeNode.value?.hide,
@@ -76,6 +78,7 @@ const iconList: {
   click: () => {
     if (!activeNode.value) return
     activeNode.value.hide = false
+    emitter.emit('saveHistory')
   }
 }, {
   name: 'copy',

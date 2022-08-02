@@ -62,7 +62,7 @@ onMounted(() => {
   window.addEventListener('resize', setWrapperSize, false)
 
   // 根据屏幕宽度初始化设备
-  setDeviceByParent(wrapperSize!.width)
+  setDeviceByParent(wrapperSize!.width, wrapperSize!.height)
 
   // 初始化 PanZoom
   pz.value = panzoom(contentElem!, {

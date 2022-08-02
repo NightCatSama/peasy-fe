@@ -78,8 +78,12 @@ export const useDisplayStore = defineStore('display', {
     },
   },
   actions: {
-    setDeviceByParent(parentWidth: number) {
-      this.device = getDefaultDevice(parentWidth, this.presetDevice[this.deviceType])
+    setDeviceByParent(parentWidth: number, parentHeight: number) {
+      this.device = getDefaultDevice(
+        { width: parentWidth, height: parentHeight },
+        this.presetDevice[this.deviceType],
+        this.deviceType
+      )
     },
     setDevice(device: IDeviceInfo) {
       this.device = device

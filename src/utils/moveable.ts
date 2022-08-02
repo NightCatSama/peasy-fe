@@ -38,6 +38,7 @@ export const getMoveable = () => {
           const elem = m.props.target as HTMLDivElement
           const name = elem?.getAttribute('data-name') || ''
           const zoom = useDisplayStore().device.zoom
+          // 绘制激活态的边框、名称、拖拽时的宽高和距离等信息
           return renderer.createElement(
             'div',
             {
@@ -174,8 +175,6 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
   const moveable = getMoveable()
   if (!moveable) return
 
-  const disableWidth = item.type === 'section' || !isUnitType(getUnit(item.props.size?.width))
-  const disableHeight = !isUnitType(getUnit(item.props.size?.height))
   const disableMove = !['absolute', 'fixed'].includes(item.props?.position?.position)
 
   /** 记录原先的单位 */
@@ -186,21 +185,12 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
     heightReferSize?: number
   } = {}
 
-  const renderDirections =
-    disableWidth && disableHeight
-      ? []
-      : disableWidth
-      ? ['s', 'n']
-      : disableHeight
-      ? ['w', 'e']
-      : ['n', 'nw', 'ne', 's', 'se', 'sw', 'e', 'w']
-
   moveable.resizable = true
   moveable.target = elem
-  moveable.renderDirections = renderDirections
 
   moveable.off()
 
+  updateDirection(item)
   setSnappableGuidelines(elem)
   moveable.on('beforeResize', (e) => {
     const shiftKey = e?.inputEvent.shiftKey

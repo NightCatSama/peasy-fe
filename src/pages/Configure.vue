@@ -18,8 +18,8 @@ import { ShortcutKey } from '@/constants/shortcut'
 import { useFont } from '@/components/libs/hooks/font'
 
 const pageStore = usePageStore()
-const { pageData, allPageData, colorVars, font } = storeToRefs(pageStore)
-const { updateAllPageNode, getAssetsData, getPageData, download } = pageStore
+const { pageData, activeSection, allPageData, colorVars, font } = storeToRefs(pageStore)
+const { setActiveSection, setActiveNode, updateAllPageNode, getAssetsData, getPageData, download } = pageStore
 
 const displayStore = useDisplayStore()
 const { setDeviceByParent } = displayStore
@@ -93,6 +93,39 @@ useKeyPress(ShortcutKey.redo, (e) => {
 useKeyPress(ShortcutKey.collapseAll, (e) => {
   e.preventDefault()
   emitter.emit('collapseGroup')
+})
+
+// 快捷键 - 切换 Section
+useKeyPress(ShortcutKey.switchSection, (e) => {
+  e.preventDefault()
+  if (e.key === '0') {
+    switchSectionToIndex(-1)
+  } else if (+e.key > 0) {
+    switchSectionToIndex(+e.key - 1)
+  }
+})
+useKeyPress(ShortcutKey.nextSection, (e) => {
+  if (e.shiftKey) return
+  e.preventDefault()
+  switchSectionByRound(1)
+})
+useKeyPress(ShortcutKey.prevSection, (e) => {
+  e.preventDefault()
+  switchSectionByRound(-1)
+})
+
+const switchSectionByRound = $computed(() => (change: number) => {
+  const index = allPageData.value.findIndex((item) => item === activeSection.value)
+  switchSectionToIndex(index + change)
+})
+const switchSectionToIndex = $computed(() => (index: number) => {
+  if (index === -1) {
+    setActiveSection(null)
+  } else if (allPageData.value[index]) {
+    setActiveSection(allPageData.value[index])
+    setActiveNode(allPageData.value[index])
+  }
+  nextTick(() => emitter.emit('location'))
 })
 
 // 向子组件传递当前编辑模式，在 lib/ 下的组件中使用

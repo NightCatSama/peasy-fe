@@ -6,6 +6,7 @@ import { watch, ref } from 'vue'
 import { storeToRefs } from 'pinia';
 import Icon from '../widgets/Icon.vue';
 import { usePageStore } from '@/stores/page';
+import { emitter } from '@/utils/event';
 
 interface ITreeNodeListProps {
   node: PageNode
@@ -41,6 +42,12 @@ const icon = $computed(() => {
   } as any)[node.component]
 })
 
+const setActiveNodeHide = (hide: boolean) => {
+  if (!activeNode.value) return
+  activeNode.value.hide = hide
+  emitter.emit('saveHistory')
+}
+
 watch(() => collapse.value, (val: boolean) => layerStatus.value.set(node, val))
 
 watch([activeNode], () => {
@@ -72,7 +79,7 @@ watch([activeNode], () => {
           class="tree-node-info-name-icon"
           name="hide"
           :size="10"
-          @click="node.hide = false"
+          @click="setActiveNodeHide(false)"
          ></Icon>
       </div>
       <template v-if="activeNode === node">
@@ -92,14 +99,14 @@ watch([activeNode], () => {
           class="tree-node-info-op-icon eye-slash-icon"
           name="eye-slash"
           :size="13"
-          @click="node.hide = true"
+          @click="setActiveNodeHide(true)"
          ></Icon>
         <Icon
           v-if="node.hide"
           class="tree-node-info-op-icon eye-icon"
           name="eye"
           :size="13"
-          @click="node.hide = false"
+          @click="setActiveNodeHide(false)"
          ></Icon>
         <Icon
           class="tree-node-info-op-icon copy-icon"

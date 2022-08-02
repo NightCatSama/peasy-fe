@@ -44,25 +44,27 @@ const setActive = () => {
   emitter.emit('switchMaterialsPanel', false)
 }
 
+const openMoveable = () => {
+  if (isActive && !item.hide) {
+    // 预览和拖拽模式下，是不展示 moveable 的
+    if (['preview', 'drag'].includes(displayMode.value)) {
+      disabledMoveable()
+      return
+    }
+
+    const moveable = getMoveable()
+    if (!moveable || !$el) return
+
+    // 开启 moveable
+    useMoveable($el, item, parent)
+    setTimeout(() => emitter.emit('updateMoveable'), 300) // drag 视图切回来有个缩放动画，需要等动画完毕后重新定位
+  }
+}
+
 // 切换编辑模式时，如果当前组件为激活组件，需要重新设置 moveable
 watch(
   () => [isActive, displayMode.value, item.hide],
-  () => {
-    if (isActive && !item.hide) {
-      // 预览和拖拽模式下，是不展示 moveable 的
-      if (['preview', 'drag'].includes(displayMode.value)) {
-        disabledMoveable()
-        return
-      }
-
-      const moveable = getMoveable()
-      if (!moveable || !$el) return
-
-      // 开启 moveable
-      useMoveable($el, item, parent)
-      setTimeout(() => emitter.emit('updateMoveable'), 300) // drag 视图切回来有个缩放动画，需要等动画完毕后重新定位
-    }
-  },
+  () => openMoveable(),
   { flush: 'post' }
 )
 
@@ -81,6 +83,7 @@ watch(
 )
 
 // 销毁组件时手动关闭 moveable
+onMounted(() => openMoveable())
 onBeforeUnmount(() => isActive && disabledMoveable())
 
 /** 当前组件是否拖拽中 */
