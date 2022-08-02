@@ -9,7 +9,7 @@ import { nextTick } from 'vue'
 const api = mande('http://localhost:3030/api/page')
 
 type MaterialData = {
-  [key in PageNode['type']]: PageNode[]
+  [key in PageNode['type']]: PageNode<any>[]
 }
 
 /** 模拟后端返回的页面数据 */
@@ -55,10 +55,13 @@ const MockPageData = {
 
 export const usePageStore = defineStore('page', {
   state: () => ({
-    allPageData: [] as PageNode[],
-    // 当前激活的节点
+    /** 所有页面数据 */
+    allPageData: [] as PageNode<any>[],
+    /** 每个节点对应的参数配置 */
+    // propData: {},
+    /** 当前激活的节点 */
     activeNode: null as PageNode | null,
-    // 当前激活的节点到最顶层的节点链
+    /** 当前激活的节点到最顶层的节点链 */
     activeParentChain: [] as PageNode[],
     /** 物料数据 */
     materialData: {
@@ -146,6 +149,7 @@ export const usePageStore = defineStore('page', {
         return children
       },
     activeParentNode: (state) => state.activeParentChain?.[0] || null,
+    activeNodeHide: (state) => state.activeNode?.props.common.hide || false,
   },
   actions: {
     async getPageData() {
@@ -303,5 +307,9 @@ export const usePageStore = defineStore('page', {
         this.activeParentChain = this.activeParentChain.map((node) => newNameMap[node.name])
       }
     },
+    setActiveNodeHide(hide: boolean) {
+      if (!this.activeNode) return
+      this.activeNode.props.common.hide = hide
+    }
   },
 })

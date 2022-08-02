@@ -57,6 +57,7 @@ onMounted(() => {
         'deleteActiveNode',
         'copyActiveNode',
         'separateActiveNode',
+        'setActiveNodeHide',
       ].includes(name)
     ) {
       inAction = true

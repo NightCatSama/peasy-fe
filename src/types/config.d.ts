@@ -3,6 +3,11 @@ type UnitType = '%' | 'px' | 'rem' | 'vw'
 /** 支持的全部选项 */
 type SuffixType = UnitType | 'auto' | 'none' | 'stretch' | 'circle' | 'refined'
 
+/** 组件公共配置 */
+interface ICommonType {
+  hide: boolean
+}
+
 /** Text 组件基础配置 */
 interface ITextBasicType {
   text: string

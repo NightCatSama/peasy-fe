@@ -1,5 +1,6 @@
 import { ModuleConfigType, PageNode, PropsTypes } from '@/config'
 import {
+  getDefaultCommon,
   getDefaultAnimation,
   getDefaultBackground,
   getDefaultBasic,
@@ -22,6 +23,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
     component: 'Block',
     tags: [],
     props: {
+      common: getDefaultCommon(),
       size: getDefaultSize(type),
       layout: getDefaultLayout(),
       spacing: getDefaultSpacing(),
@@ -177,6 +179,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                 },
               ],
               props: {
+                common: getDefaultCommon(),
                 size: getDefaultSize('component', { width: '80%', height: 'auto' }),
                 layout: getDefaultLayout(),
                 spacing: getDefaultSpacing(),
@@ -208,6 +211,7 @@ export const getMockText = (): PageNode<'Text'> => {
     component: 'Text',
     tags: ['Text'],
     props: {
+      common: getDefaultCommon(),
       basic: getDefaultBasic('Text'),
       font: getDefaultFont({ fontSize: '30px', color: '$primary' }),
       spacing: getDefaultSpacing({ margin: [50, 50, 50, 50] }),
@@ -229,6 +233,7 @@ export const getMockImage = (src?: string): PageNode<'Image'> => {
     component: 'Image',
     tags: ['Image'],
     props: {
+      common: getDefaultCommon(),
       basic: getDefaultBasic('Image'),
       size: getDefaultSize('component', {
         minHeight: '100px',
@@ -252,6 +257,7 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
     component: 'Icon',
     tags: ['Icon'],
     props: {
+      common: getDefaultCommon(),
       basic: getDefaultBasic('Icon', { name: 'apple', color: '$primary' }),
       spacing: getDefaultSpacing(),
       border: getDefaultBorder(),

@@ -13,7 +13,7 @@ import { PageNode } from '@/config'
 
 interface ILibComponentProps {
   parent?: PageNode
-  item: PageNode
+  item: PageNode<any>
   inModule?: boolean
 }
 
@@ -36,6 +36,7 @@ const $el = $computed(() => (componentRef?.value as any)?.$el as HTMLDivElement)
 
 /** 当前组件是否为激活组件 */
 const isActive = $computed(() => activeNode.value === item)
+const isHide = $computed(() => item.props.common.hide)
 
 /** 设置当前组件为激活组件 */
 const setActive = () => {
@@ -45,7 +46,7 @@ const setActive = () => {
 }
 
 const openMoveable = () => {
-  if (isActive && !item.hide) {
+  if (isActive && !isHide) {
     // 预览和拖拽模式下，是不展示 moveable 的
     if (['preview', 'drag'].includes(displayMode.value)) {
       disabledMoveable()
@@ -63,15 +64,15 @@ const openMoveable = () => {
 
 // 切换编辑模式时，如果当前组件为激活组件，需要重新设置 moveable
 watch(
-  () => [isActive, displayMode.value, item.hide],
+  () => [isActive, displayMode.value, isHide],
   () => openMoveable(),
   { flush: 'post' }
 )
 
 // 取消激活时，关闭 moveable
 watch(
-  () => [isActive, item.hide],
-  () => (!isActive || item.hide) && disabledMoveable(),
+  () => [isActive, isHide],
+  () => (!isActive || isHide) && disabledMoveable(),
   { flush: 'pre' }
 )
 
@@ -203,7 +204,7 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
         class: [
           'lib-component',
           {
-            hide: item.hide,
+            hide: isHide,
             active: isActive,
             grading: inDraggable,
             module: !!item.isModule,

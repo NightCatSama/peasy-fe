@@ -19,7 +19,7 @@ const { layerStatus } = storeToRefs(displayStore)
 
 const pageStore = usePageStore()
 const { activeNode, activeParentChain } = storeToRefs(pageStore)
-const { getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } =
+const { setActiveNodeHide, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } =
   pageStore
 
 let collapse = ref(!!layerStatus.value.get(node))
@@ -27,6 +27,8 @@ let collapse = ref(!!layerStatus.value.get(node))
 const isActive = $computed(() => activeNode.value === node)
 
 const canCollapse = $computed(() => node.children?.length && !node.isModule)
+
+const isHide = $computed(() => node.props.common.hide)
 
 const icon = $computed(() => {
   if (node.type === 'section') {
@@ -44,12 +46,6 @@ const icon = $computed(() => {
     } as any
   )[node.component]
 })
-
-const setActiveNodeHide = (hide: boolean) => {
-  if (!activeNode.value) return
-  activeNode.value.hide = hide
-  emitter.emit('saveHistory')
-}
 
 watch(
   () => collapse.value,
@@ -81,7 +77,7 @@ watch(
       <div class="tree-node-info-name">
         <div class="tree-node-info-name-text">{{ node.name }}</div>
         <Icon
-          v-if="node.hide"
+          v-if="isHide"
           class="tree-node-info-name-icon"
           name="hide"
           :size="10"
@@ -103,14 +99,14 @@ watch(
           "
         ></Icon>
         <Icon
-          v-if="!node.hide"
+          v-if="!isHide"
           class="tree-node-info-op-icon eye-slash-icon"
           name="eye-slash"
           :size="13"
           @click="setActiveNodeHide(true)"
         ></Icon>
         <Icon
-          v-if="node.hide"
+          v-if="isHide"
           class="tree-node-info-op-icon eye-icon"
           name="eye"
           :size="13"

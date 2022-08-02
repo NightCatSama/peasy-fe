@@ -13,8 +13,8 @@ import { Alert, AlertError } from '@/utils/alert'
 import { emitter } from '@/utils/event'
 
 const pageStore = usePageStore()
-const { nameMap, pageData, activeNode, activeNodeGroups } = storeToRefs(pageStore)
-const { getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } =
+const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide } = storeToRefs(pageStore)
+const { getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode, setActiveNodeHide } =
   pageStore
 
 const displayStore = useDisplayStore()
@@ -67,24 +67,16 @@ const iconList: {
     click: separateActiveNode,
   },
   {
-    hide: !!activeNode.value?.hide,
+    hide: !!activeNodeHide.value,
     name: 'eye-slash',
     tip: 'Hidden',
-    click: () => {
-      if (!activeNode.value) return
-      activeNode.value.hide = true
-      emitter.emit('saveHistory')
-    },
+    click: () => setActiveNodeHide(true),
   },
   {
-    hide: !activeNode.value?.hide,
+    hide: !activeNodeHide.value,
     name: 'eye',
     tip: 'Visible',
-    click: () => {
-      if (!activeNode.value) return
-      activeNode.value.hide = false
-      emitter.emit('saveHistory')
-    },
+    click: () => setActiveNodeHide(false),
   },
   {
     name: 'copy',

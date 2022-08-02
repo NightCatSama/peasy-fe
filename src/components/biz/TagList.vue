@@ -53,9 +53,11 @@ const filteredItems = $computed(() => {
 .tag-content {
   min-height: 40px;
   align-items: center;
-  padding: 4px 8px;
+  padding: 4px;
   display: flex;
   background: $panel-content;
+  margin: 0 8px 8px;
+  border-radius: $normal-radius;
   .tag-input.vue-tags-input {
     background: $tr;
     width: 100%;
@@ -69,7 +71,8 @@ const filteredItems = $computed(() => {
       color: $color;
     }
     .ti-tag span {
-      line-height: 1;
+      position: relative;
+      top: 0.5px;
     }
     .ti-tag,
     .ti-item.ti-selected-item {
@@ -112,6 +115,9 @@ const filteredItems = $computed(() => {
         margin: 3px;
         border-radius: $inner-radius;
       }
+    }
+    .ti-icon-close:hover {
+      color: lighten($red, 30%);
     }
   }
 }

@@ -1,6 +1,23 @@
 /** 组件对应支持的配置分组 */
 export const ComponentPropsGroup = {
+  All: [
+    'common',
+    'basic',
+    'size',
+    'layout',
+    'font',
+    'spacing',
+    'border',
+    'background',
+    'container',
+    'position',
+    'event',
+    'effect',
+    'animation',
+    'custom',
+  ],
   Block: [
+    'common',
     'layout',
     'size',
     'spacing',
@@ -13,6 +30,7 @@ export const ComponentPropsGroup = {
     'animation',
   ] as const,
   Text: [
+    'common',
     'basic',
     'font',
     'spacing',
@@ -25,6 +43,7 @@ export const ComponentPropsGroup = {
     'animation',
   ] as const,
   Image: [
+    'common',
     'basic',
     'size',
     'spacing',
@@ -35,11 +54,12 @@ export const ComponentPropsGroup = {
     'effect',
     'animation',
   ] as const,
-  Icon: ['basic', 'spacing', 'border', 'event', 'effect'] as const,
+  Icon: ['common', 'basic', 'spacing', 'border', 'event', 'effect'] as const,
 } as const
 
 /** 支持的配置分组名 */
 export type GroupType =
+  | 'common'
   | 'basic'
   | 'size'
   | 'layout'
@@ -56,6 +76,7 @@ export type GroupType =
 
 /** 配置对应约束类型 */
 export interface GroupPropType<T extends ComponentName = any> {
+  common: ICommonType,
   basic: {
     Text: ITextBasicType
     Image: IImageBasicType
@@ -73,19 +94,20 @@ export interface GroupPropType<T extends ComponentName = any> {
   event: IEvent
   effect: IEffect
   animation: IAnimation
+  custom: any
 }
 
 export type ComponentPropsGroupType = typeof ComponentPropsGroup
 export type ComponentName = keyof ComponentPropsGroupType
 
 /** 将配置分组名和约束类型相对应 */
-export type PropsTypes<T extends ComponentName> = Pick<
+export type PropsTypes<T extends ComponentName = 'All'> = Pick<
   GroupPropType<T>,
   ComponentPropsGroupType[T][number]
 >
 
 /** 单个可配置的组件 */
-export interface PageNode<T extends ComponentName = any> {
+export interface PageNode<T extends ComponentName = 'All'> {
   /**
    * 组件类型
    * component: 最小粒度组件，无法添加 children
@@ -99,8 +121,6 @@ export interface PageNode<T extends ComponentName = any> {
   tags: string[]
   /** 组件名称 */
   component: T
-  /** 是否隐藏组件 */
-  hide?: boolean
   /** 参数 */
   props: PropsTypes<T>
   /** 包含的子组件 */
@@ -111,6 +131,18 @@ export interface PageNode<T extends ComponentName = any> {
   isModule?: boolean
   /** 模块设置 */
   moduleConfig?: IModuleConfigGroup[]
+}
+
+/** 组件配置 */
+export interface INodePropMap<T extends ComponentName = 'All'> {
+  /** 一个组件名对应一套配置 */
+  [name: string]: PropsTypes<T>
+}
+
+/** 全部的组件 */
+export interface IPageProp {
+  desktop: INodePropMap
+  mobile: INodePropMap
 }
 
 /** 模块配置支持类型 */

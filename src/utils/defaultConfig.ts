@@ -6,6 +6,14 @@ import {
   PageNode,
 } from '@/config'
 
+export const getDefaultCommon = (initConfig?: Partial<ICommonType>): ICommonType =>
+  Object.assign(
+    {
+      hide: false
+    },
+    initConfig
+  )
+
 export const getDefaultBasic = <
   T extends ComponentName = any,
   P extends Partial<GroupPropType<T>['basic']> = any
