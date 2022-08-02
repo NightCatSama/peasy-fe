@@ -56,62 +56,62 @@ const filteredItems = $computed(() => {
   padding: 4px 8px;
   display: flex;
   background: $panel-content;
-}
-.tag-input.vue-tags-input {
-  background: $tr;
-  width: 100%;
-  max-width: none;
-  .ti-input {
-    border: none;
-    border-bottom: 1px solid $tr;
-    padding: 0;
-  }
-  .ti-tag input {
-    color: $color;
-  }
-  .ti-tag span {
-    line-height: 1;
-  }
-  .ti-tag,
-  .ti-item.ti-selected-item {
-    background-color: $purple;
-    color: $color;
-  }
-  .ti-tags li {
-    padding: 4px 6px;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin: 3px;
-    border-radius: $inner-radius;
-  }
-  .ti-tag.dark-font {
-    color: #333;
-  }
-  .ti-item {
-    padding: 2px 3px;
-  }
-  .ti-tag.ti-deletion-mark {
-    background-color: $red !important;
-    color: $white;
-  }
-  .ti-new-tag-input-wrapper {
-    input {
-      color: $color;
-      background: $tr;
-      font-size: 13px;
-      line-height: 14px;
-      min-width: 64px;
+  .tag-input.vue-tags-input {
+    background: $tr;
+    width: 100%;
+    max-width: none;
+    .ti-input {
+      border: none;
+      border-bottom: 1px solid $tr;
+      padding: 0;
     }
-  }
-  .ti-autocomplete {
-    border-radius: $normal-radius;
-    background-color: $panel-dark;
-    border: 1px solid $theme;
-    overflow: hidden;
-    .ti-item {
+    .ti-tag input {
+      color: $color;
+    }
+    .ti-tag span {
+      line-height: 1;
+    }
+    .ti-tag,
+    .ti-item.ti-selected-item {
+      background-color: $purple;
+      color: $color;
+    }
+    .ti-tags li {
+      padding: 4px 6px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
       margin: 3px;
       border-radius: $inner-radius;
+    }
+    .ti-tag.dark-font {
+      color: #333;
+    }
+    .ti-item {
+      padding: 2px 3px;
+    }
+    .ti-tag.ti-deletion-mark {
+      background-color: $red !important;
+      color: $white;
+    }
+    .ti-new-tag-input-wrapper {
+      input {
+        color: $color;
+        background: $tr;
+        font-size: 13px;
+        line-height: 14px;
+        min-width: 64px;
+      }
+    }
+    .ti-autocomplete {
+      border-radius: $normal-radius;
+      background-color: $panel-dark;
+      border: 1px solid $theme;
+      overflow: hidden;
+      .ti-item {
+        margin: 3px;
+        border-radius: $inner-radius;
+      }
     }
   }
 }
