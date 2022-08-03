@@ -23,6 +23,7 @@ const MockPageData = {
   ],
   /** 全局设置 */
   setting: {
+    client: 'desktop',
     /** 页面标题 */
     title: 'Your Page Title',
     /** 页面图标 */
@@ -289,14 +290,18 @@ export const usePageStore = defineStore('page', {
     setActiveSection(node: PageNode | null) {
       this.activeSection = node
     },
+    /** 去除 module 化 */
     separateActiveNode() {
       if (!this.activeNode) return
       this.activeNode.isModule = false
       delete this.activeNode.moduleConfig
     },
+    /** 更新所有页面数据 */
     updateAllPageNode(pageNode: PageNode[]) {
+      // 先直接更新 allPageData 去更新 nameMap
       this.allPageData = pageNode
       const newNameMap = this.nameMap
+      // 之后根据 name 去同步更新 activeNode 等节点
       if (this.activeNode) {
         this.activeNode = newNameMap[this.activeNode.name]
       }

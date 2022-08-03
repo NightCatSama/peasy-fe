@@ -60,6 +60,7 @@ import MobileIcon from '@/assets/mobile.svg'
 import HideIcon from '@/assets/hide.svg'
 import EyeIcon from '@/assets/eye.svg'
 import EyeSlashIcon from '@/assets/eye-slash.svg'
+import SwitchIcon from '@/assets/switch.svg'
 
 interface IIconProps {
   name: string
@@ -130,6 +131,7 @@ const iconMap = {
   hide: HideIcon,
   eye: EyeIcon,
   'eye-slash': EyeSlashIcon,
+  switch: SwitchIcon,
 } as any
 
 const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()

@@ -85,8 +85,14 @@ export const useDisplayStore = defineStore('display', {
         this.deviceType
       )
     },
-    setDevice(device: IDeviceInfo) {
-      this.device = device
+    setDevice(index: number = 0) {
+      const size = this.presetDevice[this.deviceType][index]
+      this.device = {
+        width: size[0],
+        height: size[1],
+        zoom: this.device.zoom,
+        fontSize: size[2],
+      }
     },
     saveGroupStatus(name: string, status: IGroupStatus) {
       this.groupStatus[name] = status

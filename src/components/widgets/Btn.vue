@@ -87,6 +87,10 @@ const {
     &.size-sm {
       font-size: 12px;
       padding: 2px 4px;
+
+      .btn-icon {
+        margin-right: 0;
+      }
     }
   }
 

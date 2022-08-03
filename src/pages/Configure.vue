@@ -67,6 +67,7 @@ onMounted(() => {
       })
     }
   })
+  // 记录数据记录
   emitter.on('saveHistory', () => {
     saveHistory(allPageData.value)
   })

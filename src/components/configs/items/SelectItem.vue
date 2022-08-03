@@ -5,10 +5,11 @@ import { emitter } from '@/utils/event'
 interface ISelectItemProps {
   label: string
   modelValue: string
+  wrapperClass?: string
   options: { [key: string]: string | ISelectItem }
 }
 
-const { label, modelValue, options } = defineProps<ISelectItemProps>()
+const { label, modelValue, options, wrapperClass } = defineProps<ISelectItemProps>()
 const emit = defineEmits(['update:model-value'])
 
 const value = $computed({
@@ -21,7 +22,7 @@ const value = $computed({
 </script>
 
 <template>
-  <div class="item">
+  <div :class="['item', wrapperClass]">
     <div class="label">{{ label }}</div>
     <Select v-model="value" :options="options" v-bind="$attrs">
       <template #item="{ item }"><slot name="item" :item="item"></slot></template>

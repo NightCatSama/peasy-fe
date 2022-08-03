@@ -6,7 +6,7 @@ import Avatar from './widgets/Avatar.vue'
 import { useDisplayStore } from '@/stores/display'
 import Dropdown from './widgets/Dropdown.vue'
 import Icon from './widgets/Icon.vue'
-import { onMounted, ref } from 'vue'
+import { nextTick, onMounted, ref } from 'vue'
 import Slider from './widgets/Slider.vue'
 import Select from './widgets/Select.vue'
 import { useKeyPress } from 'ahooks-vue'
@@ -17,11 +17,12 @@ import { useHistoryStore } from '@/stores/history'
 import { usePageStore } from '@/stores/page'
 
 const pageStore = usePageStore()
+const { setting } = storeToRefs(pageStore)
 const { updateAllPageNode } = pageStore
 
 const displayStore = useDisplayStore()
-const { device, displayMode } = storeToRefs(displayStore)
-const { setDevice, curPresetDeviceList, setDisplayMode } = displayStore
+const { device, displayMode, deviceType, curPresetDeviceList: deviceList } = storeToRefs(displayStore)
+const { setDevice, setDisplayMode } = displayStore
 
 const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory } = storeToRefs(historyStore)
@@ -35,22 +36,22 @@ const text = $computed(
 
 const zoomText = $computed(() => `${Math.round(device.value.zoom * 100)}%`)
 
-const desktop = $ref(curPresetDeviceList)
-
 const hoverIndex = ref(-1)
 const activeIndex = $computed(() =>
-  curPresetDeviceList.findIndex(
+  deviceList.value.findIndex(
     (d: number[]) => device.value.width === d[0] && device.value.height === d[1]
   )
 )
 
-const setDeviceBySize = (size: number[]) => {
-  setDevice({
-    width: size[0],
-    height: size[1],
-    zoom: device.value.zoom,
-    fontSize: size[2],
-  })
+const setDeviceBySize = (index: number) => {
+  setDevice(index)
+  nextTick(() => emitter.emit('location', true))
+}
+
+const handleDeviceChange = () => {
+  deviceType.value = deviceType.value === 'mobile' ? 'desktop' : 'mobile'
+  setDevice(0)
+  nextTick(() => emitter.emit('location', true))
 }
 
 const modeMap = {
@@ -109,21 +110,37 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
             <div class="title">
               Options
               <span class="title-extra" v-if="hoverIndex > -1">
-                {{ desktop[hoverIndex][0] + ' × ' + desktop[hoverIndex][1] }}
+                {{ deviceList[hoverIndex][0] + ' × ' + deviceList[hoverIndex][1] }}
               </span>
+              <Btn
+                v-if="setting.client === 'both'"
+                type="text"
+                icon="switch"
+                size="sm"
+                class="switch-device-btn"
+                @click="handleDeviceChange"
+              >
+                {{ deviceType === 'desktop' ? 'Mobile' : 'Desktop' }}
+              </Btn>
             </div>
             <div class="device-list">
               <div
                 :class="['device-item', { active: activeIndex === index }]"
-                v-for="(item, index) in desktop"
+                v-for="(item, index) in deviceList"
                 :key="index"
                 v-hover="(isHover: boolean) => hoverIndex = isHover ? index : -1"
-                @click="setDeviceBySize(item)"
+                @click="setDeviceBySize(index)"
               >
-                <Icon v-if="index === 0" name="mobile" type="pure" :size="20" />
-                <Icon v-else-if="index === 1" name="device-sm" type="pure" :size="28" />
-                <Icon v-else-if="index === 2" name="device-md" type="pure" :size="28" />
-                <Icon v-else name="device-lg" type="pure" :size="28" />
+                <template v-if="deviceType === 'mobile'">
+                  <Icon v-if="index === 0" name="mobile" type="pure" :size="20" />
+                  <Icon v-else-if="index === 1" name="mobile" type="pure" :size="24" />
+                  <Icon v-else name="mobile" type="pure" :size="28" />
+                </template>
+                <template v-else>
+                  <Icon v-if="index === 0" name="device-sm" type="pure" :size="28" />
+                  <Icon v-else-if="index === 1" name="device-md" type="pure" :size="28" />
+                  <Icon v-else name="device-lg" type="pure" :size="28" />
+                </template>
               </div>
             </div>
             <div class="title">Zoom</div>
@@ -317,16 +334,27 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
 
 .device-wrapper {
   .title {
+    position: relative;
     font-size: 14px;
     color: $color;
     margin-bottom: 5px;
     font-weight: bold;
+    display: flex;
+    align-items: center;
 
     .title-extra {
       margin-left: 10px;
       font-size: 10px;
       font-weight: lighter;
       opacity: 0.7;
+    }
+
+    .switch-device-btn {
+      position: absolute;
+      right: 0;
+      top: 0;
+      font-size: 12px;
+      color: $theme;
     }
   }
   .device-list {

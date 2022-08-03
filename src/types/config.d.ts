@@ -70,7 +70,7 @@ interface ISpacing {
   padding: [number, number, number, number]
 }
 
-/** TODO: 位置信息 */
+/** 位置信息 */
 interface IPosition {
   position: 'static' | 'absolute' | 'fixed'
   left: string | 'auto'
@@ -248,4 +248,6 @@ interface IPageSetting {
   favicon: string
   /** 网站描述，用于 SEO 优化 */
   description: string
+  /** 网站支持的客户端 */
+  client: 'desktop' | 'mobile' | 'both'
 }

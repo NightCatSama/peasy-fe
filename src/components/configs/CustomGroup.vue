@@ -6,21 +6,16 @@ import {
   DefaultIconStyleLink,
   IModuleConfigItem,
   ModuleConfigType,
+  IModuleConfigGroup,
 } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
-import { onUpdated, reactive } from 'vue'
+import { onUpdated, reactive, useAttrs } from 'vue'
 
-interface ICustomGroupProps {
+interface ICustomGroupProps extends IModuleConfigGroup {
   node: PageNode
-  title: string
-  /** 图标 */
-  icon?: string
-  /** 是否默认展开 */
-  defaultCollapsed?: boolean
-  /** 展示数据 */
-  data: IModuleConfigItem[]
 }
-const { node, title, icon, data, defaultCollapsed } = defineProps<ICustomGroupProps>()
+
+const { node, title, icon, data, defaultCollapsed } = useAttrs() as unknown as ICustomGroupProps
 const dataRef = reactive(data)
 const getComponentData = (type: string) => getFormPropsByType(type)
 </script>

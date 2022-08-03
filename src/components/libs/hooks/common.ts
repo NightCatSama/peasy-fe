@@ -26,6 +26,7 @@ export type IProps<T extends ComponentName = any> = {
   direction?: 'row' | 'column'
 } & GroupPropType<T>
 
+/** 所有基础组件的公共处理逻辑 */
 export const useProps = <T extends IProps<any> = IProps>(props: T, componentTypeName: string) => {
   const propsRef = reactive(props)
   const elem = ref<HTMLDivElement | null>(null)

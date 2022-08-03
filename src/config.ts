@@ -119,16 +119,18 @@ export interface PageNode<T extends ComponentName = any> {
   moduleConfig?: IModuleConfigGroup[]
 }
 
+/** 组件配置列表 */
+export interface IPageProp {
+  /** 全量的组件配置，一个 name 对应一套样式 */
+  all: INodePropMap
+  /** 移动端的组件配置，当存在时，则两端样式不再统一 */
+  mobile: INodePropMap
+}
+
 /** 组件配置 */
 export interface INodePropMap<T extends ComponentName = any> {
   /** 一个组件名对应一套配置 */
   [name: string]: PropsTypes<T>
-}
-
-/** 全部的组件 */
-export interface IPageProp {
-  desktop: INodePropMap
-  mobile: INodePropMap
 }
 
 /** 模块配置支持类型 */
