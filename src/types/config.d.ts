@@ -5,6 +5,7 @@ type SuffixType = UnitType | 'auto' | 'none' | 'stretch' | 'circle' | 'refined'
 
 /** 组件公共配置 */
 interface ICommonType {
+  /** 是否隐藏 */
   hide: boolean
 }
 
@@ -36,12 +37,12 @@ interface IIconBasicType {
 
 /** 尺寸信息 */
 interface ISize {
-  width?: string | 'auto' | 'stretch'
-  height?: string | 'auto' | 'stretch'
-  minWidth?: string | 'auto'
-  minHeight?: string | 'auto'
-  maxWidth?: string | 'none'
-  maxHeight?: string | 'none'
+  width: string | 'auto' | 'stretch'
+  height: string | 'auto' | 'stretch'
+  minWidth: string | 'auto'
+  minHeight: string | 'auto'
+  maxWidth: string | 'none'
+  maxHeight: string | 'none'
 }
 
 /** 容器的布局信息 */

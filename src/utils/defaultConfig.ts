@@ -61,9 +61,12 @@ export const getDefaultSize = (
           maxWidth: 'none',
         }
       : {
+          width: '',
           height: '100%',
+          minWidth: '',
           minHeight: '50px',
           maxHeight: 'none',
+          maxWidth: '',
         },
     initConfig || null
   )

@@ -7,6 +7,7 @@ import {
   PageNode,
 } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
+import { useConfig } from './config'
 
 export interface IEffectShowItem {
   label: string
@@ -47,7 +48,7 @@ export const allEffectMap: IEffectShowItemMap = {
   fontSize: {
     label: 'Font Size',
     ...getFormPropsByType('fontSize'),
-    defaultValue: DefaultColor,
+    defaultValue: '16px',
   },
   borderColor: {
     label: 'Border Color',
@@ -75,18 +76,19 @@ export const getEffectShowItemByGroup = (
   groupType: GroupType,
   node: PageNode
 ): IEffectShowItemMap | null => {
+  const props = useConfig(node)
   switch (groupType) {
     case 'font':
       return {
         color: Object.assign(allEffectMap['color'], {
-          defaultValue: (node?.props?.font as IFont)?.color ?? DefaultColor,
+          defaultValue: (props.font as IFont)?.color ?? DefaultColor,
         }),
         fontSize: Object.assign(allEffectMap['fontSize'], {
-          defaultValue: (node?.props?.font as IFont)?.fontSize ?? '18px',
+          defaultValue: (props.font as IFont)?.fontSize ?? '18px',
         }),
       }
     case 'border': {
-      const border = node?.props?.border as IBorder
+      const border = props.border as IBorder
       return {
         borderColor: Object.assign(allEffectMap['borderColor'], {
           defaultValue: Array.isArray(border?.borderColor)
@@ -96,7 +98,7 @@ export const getEffectShowItemByGroup = (
       }
     }
     case 'background': {
-      const background = node?.props?.background as IBackground
+      const background = props.background as IBackground
       return background?.backgroundType === 'color' || background?.backgroundType === 'none'
         ? {
             backgroundColor: Object.assign(allEffectMap['backgroundColor'], {
@@ -108,13 +110,13 @@ export const getEffectShowItemByGroup = (
     case 'container': {
       return {
         opacity: Object.assign(allEffectMap['opacity'], {
-          defaultValue: (node?.props?.container as IContainer)?.opacity ?? 1,
+          defaultValue: (props.container as IContainer)?.opacity ?? 1,
         }),
       }
     }
     case 'basic': {
-      if (isSomeBasicType('Icon', node.component, node?.props?.basic)) {
-        const basic = node?.props?.basic as IIconBasicType
+      if (isSomeBasicType('Icon', node.component, props.basic)) {
+        const basic = props.basic as IIconBasicType
         return {
           fontSize: Object.assign(allEffectMap['fontSize'], {
             label: 'Icon Size',

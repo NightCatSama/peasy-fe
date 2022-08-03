@@ -2,6 +2,7 @@ import { PageNode } from '@/config'
 import { useDisplayStore } from '@/stores/display'
 import { usePageStore } from '@/stores/page'
 import Moveable from 'moveable'
+import { useConfig } from './config'
 import { emitter } from './event'
 import { covertPXToUnit, fixedPointToNumber, getUnit, isUnitType } from './sizeHelper'
 
@@ -150,12 +151,13 @@ export const disabledMoveable = () => {
   moveable.off()
 }
 
-export const updateDirection = (item: any) => {
+export const updateDirection = (item: PageNode) => {
   const moveable = getMoveable()
   if (!moveable) return
 
-  const disableWidth = item.type === 'section' || !isUnitType(getUnit(item.props.size?.width))
-  const disableHeight = !isUnitType(getUnit(item.props.size?.height))
+  const props = useConfig(item)
+  const disableWidth = item.type === 'section' || !isUnitType(getUnit(props.size?.width))
+  const disableHeight = !isUnitType(getUnit(props.size?.height))
   const renderDirections =
     disableWidth && disableHeight
       ? []
@@ -173,7 +175,8 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
   const moveable = getMoveable()
   if (!moveable) return
 
-  const disableMove = !['absolute', 'fixed'].includes(item.props?.position?.position)
+  const props = useConfig(item)
+  const disableMove = !['absolute', 'fixed'].includes(props?.position?.position || '')
 
   /** 记录原先的单位 */
   let units: {
@@ -198,11 +201,11 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
     elem.scrollLeft = 0
     elem.scrollTop = 0
 
-    units.width = getUnit(item.props.size.width)
+    units.width = getUnit(props.size?.width)
     units.widthReferSize =
       parent && elem.parentElement ? elem.parentElement.clientWidth : useDisplayStore().device.width
 
-    units.height = getUnit(item.props.size.height)
+    units.height = getUnit(props.size?.height)
     units.heightReferSize =
       parent && elem.parentElement
         ? elem.parentElement.clientHeight
@@ -225,12 +228,12 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
     }
   })
   moveable.on('resizeEnd', (e) => {
-    if (units.width && elem.dataset.resizeWidth) {
-      item.props.size.width = elem.dataset.resizeWidth
+    if (props.size && units.width && elem.dataset.resizeWidth) {
+      props.size.width = elem.dataset.resizeWidth
       delete elem.dataset.resizeWidth
     }
-    if (units.height && elem.dataset.resizeHeight) {
-      item.props.size.height = elem.dataset.resizeHeight
+    if (props.size && units.height && elem.dataset.resizeHeight) {
+      props.size.height = elem.dataset.resizeHeight
       delete elem.dataset.resizeHeight
     }
     isResizing = false
@@ -251,6 +254,7 @@ export const openDragMode = (activeElem?: HTMLDivElement) => {
   const elem = activeElem || (moveable.target as HTMLDivElement)
   setSnappableGuidelines(elem)
   const item = usePageStore().activeNode
+  const props = useConfig(item)
   const positionMap = ['left', 'right', 'top', 'bottom'] as const
   let units: {
     left?: string
@@ -273,8 +277,8 @@ export const openDragMode = (activeElem?: HTMLDivElement) => {
     }
     isDragging = true
     positionMap.forEach((key) => {
-      if (item?.props?.position?.[key] !== 'auto') {
-        units[key] = getUnit(item?.props?.position?.[key])
+      if (props.position?.[key] !== 'auto') {
+        units[key] = getUnit(props.position?.[key]!)
       }
     })
   })
@@ -294,8 +298,8 @@ export const openDragMode = (activeElem?: HTMLDivElement) => {
     const elem = e.target as HTMLDivElement
     isDragging = false
     positionMap.forEach((key) => {
-      if (units[key] && elem.dataset[`${key}Move`]) {
-        item!.props!.position![key] = elem.dataset[`${key}Move`]
+      if (units[key] && elem.dataset[`${key}Move`] && props.position) {
+        props.position[key] = elem.dataset[`${key}Move`]!
         delete elem.dataset[`${key}Move`]
       }
     })

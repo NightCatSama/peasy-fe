@@ -4,7 +4,7 @@ import { getIsEditMode } from './context'
 export const isUnitType = (type: string): type is UnitType =>
   (['%', 'px', 'rem', 'vw'] as UnitType[]).includes(type as unknown as UnitType)
 
-export const getUnit = (s: string): UnitType | '' => {
+export const getUnit = (s?: string): UnitType | '' => {
   if (!s || typeof s !== 'string') return ''
   if (s.slice(-3) === 'rem') {
     return 'rem'

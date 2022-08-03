@@ -2,6 +2,7 @@
 import { GroupType } from '@/config'
 import { groupIconMap, defaultGroupIcon } from '@/constants/group'
 import { usePageStore } from '@/stores/page'
+import { useConfig } from '@/utils/config'
 import { storeToRefs } from 'pinia'
 import BasicGroup from './configs/BasicGroup.vue'
 import BorderGroup from './configs/BorderGroup.vue'
@@ -49,7 +50,8 @@ const componentNameMap: { [type in GroupType]: any | null } = {
 const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
 
 const bindProps = $computed(() =>
-  activeNode.value?.isModule ? activeNode.value.moduleConfig?.[index] : activeNode.value?.props
+  // TODO mobile
+  activeNode.value?.isModule ? activeNode.value.moduleConfig?.[index] : useConfig(activeNode.value)
 )
 
 const iconName = $computed(() => (bindProps as any)?.icon || groupIconMap[groupType] || defaultGroupIcon)

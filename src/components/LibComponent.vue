@@ -10,6 +10,7 @@ import { emitter } from '@/utils/event'
 import { disabledMoveable, getMoveable, updateMoveableRect, useMoveable } from '@/utils/moveable'
 import { useDisplayStore } from '@/stores/display'
 import { PageNode } from '@/config'
+import { useConfig } from '@/utils/config'
 
 interface ILibComponentProps {
   parent?: PageNode
@@ -36,7 +37,7 @@ const $el = $computed(() => (componentRef?.value as any)?.$el as HTMLDivElement)
 
 /** 当前组件是否为激活组件 */
 const isActive = $computed(() => activeNode.value === item)
-const isHide = $computed(() => item.props.common.hide)
+const isHide = $computed(() => useConfig(item).common.hide)
 
 /** 设置当前组件为激活组件 */
 const setActive = () => {
@@ -177,7 +178,7 @@ watch(
 const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
   if (
     displayMode.value === 'drag' || // 拖拽模式下
-    (!lockDrag && ['absolute', 'fixed'].includes(subItem.props?.position?.position)) // 组件调整绝对定位位置时
+    (!lockDrag && ['absolute', 'fixed'].includes(useConfig(subItem).position?.position || '')) // 组件调整绝对定位位置时
   ) {
     e.stopPropagation()
   }
@@ -196,10 +197,10 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
     :item-key="'name'"
     :tag="item.component"
     :component-data="{
-      ...item.props,
+      ...useConfig(item),
       tags: item.tags,
       componentName: item.name,
-      direction: parent?.props?.layout?.direction,
+      direction: parent ? useConfig(parent).layout?.direction : void 0,
       inheritAttrs: {
         class: [
           'lib-component',

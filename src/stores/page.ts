@@ -4,6 +4,7 @@ import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mo
 import { PageNode, ComponentPropsGroup, ComponentName } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
+import { useConfig } from '@/utils/config'
 import { nextTick } from 'vue'
 
 const api = mande('http://localhost:3030/api/page')
@@ -58,8 +59,6 @@ export const usePageStore = defineStore('page', {
   state: () => ({
     /** 所有页面数据 */
     allPageData: [] as PageNode<any>[],
-    /** 每个节点对应的参数配置 */
-    // propData: {},
     /** 当前激活的节点 */
     activeNode: null as PageNode | null,
     /** 当前激活的节点到最顶层的节点链 */
@@ -150,7 +149,7 @@ export const usePageStore = defineStore('page', {
         return children
       },
     activeParentNode: (state) => state.activeParentChain?.[0] || null,
-    activeNodeHide: (state) => state.activeNode?.props.common.hide || false,
+    activeNodeHide: (state) => state.activeNode ? useConfig(state.activeNode).common.hide || false : false,
   },
   actions: {
     async getPageData() {
@@ -312,9 +311,10 @@ export const usePageStore = defineStore('page', {
         this.activeParentChain = this.activeParentChain.map((node) => newNameMap[node.name])
       }
     },
+    /** 设置当前激活组件隐藏 */
     setActiveNodeHide(hide: boolean) {
       if (!this.activeNode) return
-      this.activeNode.props.common.hide = hide
-    }
+      useConfig(this.activeNode).common.hide = hide
+    },
   },
 })

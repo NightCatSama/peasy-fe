@@ -11,6 +11,7 @@ import { storeToRefs } from 'pinia'
 import Tip from '../widgets/Tip.vue'
 import Icon from '../widgets/Icon.vue'
 import { useDisplayStore } from '@/stores/display'
+import { useConfig } from '@/utils/config'
 
 interface IPositionGroupProps {
   node: PageNode
@@ -56,8 +57,9 @@ const values = $computed(() => {
 const handlePositionChange = (value: IPosition['position']) => {
   position.position = value
   if (value !== 'static') {
-    if (node?.props?.spacing?.margin) {
-      node.props.spacing.margin = [0, 0, 0, 0]
+    const props = useConfig(node)
+    if (props.spacing?.margin) {
+      props.spacing.margin = [0, 0, 0, 0]
     }
     openDragMode()
   } else {

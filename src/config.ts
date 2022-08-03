@@ -84,13 +84,25 @@ export interface GroupPropType<T extends ComponentName = any> {
 export type ComponentPropsGroupType = typeof ComponentPropsGroup
 export type ComponentName = keyof ComponentPropsGroupType
 
+type IsAny<T> = 0 extends (1 & T) ? true : false;
+
 /** 将配置分组名和约束类型相对应 */
-export type PropsTypes<T extends ComponentName = any> = T extends ComponentName
-  ? Pick<
-    GroupPropType<T>,
-    ComponentPropsGroupType[T][number]
-  >
-  : Partial<GroupPropType> & Pick<GroupPropType, 'common'>
+export type PropsTypes<T extends ComponentName = any> =
+  IsAny<T> extends false
+    ? Pick<
+      GroupPropType<T>,
+      ComponentPropsGroupType[T][number]
+    >
+    : Partial<{
+      [key in GroupType]: GroupPropType[key]
+    }> & Pick<GroupPropType<'Block'>, 'common' | 'effect' | 'event' | 'border' | 'spacing'>
+
+export interface IPropConfig<T extends ComponentName = any> {
+  /** 配置参数 */
+  props: PropsTypes<T>
+  /** 当客户端支持 Desktop & Mobile 时，可以单独配置 mobile 配置 */
+  mobile?: PropsTypes<T>
+}
 
 /** 单个可配置的组件 */
 export interface PageNode<T extends ComponentName = any> {
@@ -108,7 +120,11 @@ export interface PageNode<T extends ComponentName = any> {
   /** 组件名称 */
   component: T
   /** 参数 */
-  props: PropsTypes<T>
+  props?: PropsTypes<T>
+  /** 组件配置 */
+  config: IPropConfig<T>
+  /** 配置参数链接到其他组件 */
+  propLink?: string
   /** 包含的子组件 */
   children?: PageNode[]
   /** 组件封面图，在物料栏里展示 */
@@ -117,20 +133,6 @@ export interface PageNode<T extends ComponentName = any> {
   isModule?: boolean
   /** 模块设置 */
   moduleConfig?: IModuleConfigGroup[]
-}
-
-/** 组件配置列表 */
-export interface IPageProp {
-  /** 全量的组件配置，一个 name 对应一套样式 */
-  all: INodePropMap
-  /** 移动端的组件配置，当存在时，则两端样式不再统一 */
-  mobile: INodePropMap
-}
-
-/** 组件配置 */
-export interface INodePropMap<T extends ComponentName = any> {
-  /** 一个组件名对应一套配置 */
-  [name: string]: PropsTypes<T>
 }
 
 /** 模块配置支持类型 */
