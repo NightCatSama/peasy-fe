@@ -103,6 +103,9 @@ const handleClientChange = (client: IPageSetting['client']) => {
     .label {
       flex: 1;
     }
+    .select-value {
+      background: $panel-content-gradient;
+    }
   }
 }
 </style>

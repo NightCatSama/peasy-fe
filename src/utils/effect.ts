@@ -7,7 +7,7 @@ import {
   PageNode,
 } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
-import { useConfig } from './config'
+import { useConfigProps } from './config'
 
 export interface IEffectShowItem {
   label: string
@@ -76,7 +76,7 @@ export const getEffectShowItemByGroup = (
   groupType: GroupType,
   node: PageNode
 ): IEffectShowItemMap | null => {
-  const props = useConfig(node)
+  const props = useConfigProps(node)
   switch (groupType) {
     case 'font':
       return {

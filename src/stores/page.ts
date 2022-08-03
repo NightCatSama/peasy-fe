@@ -4,8 +4,9 @@ import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mo
 import { PageNode, ComponentPropsGroup, ComponentName } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
-import { useConfig } from '@/utils/config'
+import { useConfig, useConfigProps } from '@/utils/config'
 import { nextTick } from 'vue'
+import { cloneDeep, merge } from 'lodash'
 
 const api = mande('http://localhost:3030/api/page')
 
@@ -24,7 +25,7 @@ const MockPageData = {
   ],
   /** 全局设置 */
   setting: {
-    client: 'desktop',
+    client: 'both',
     /** 页面标题 */
     title: 'Your Page Title',
     /** 页面图标 */
@@ -149,7 +150,7 @@ export const usePageStore = defineStore('page', {
         return children
       },
     activeParentNode: (state) => state.activeParentChain?.[0] || null,
-    activeNodeHide: (state) => state.activeNode ? useConfig(state.activeNode).common.hide || false : false,
+    activeNodeHide: (state) => state.activeNode ? useConfigProps(state.activeNode).common.hide || false : false,
   },
   actions: {
     async getPageData() {
@@ -178,8 +179,8 @@ export const usePageStore = defineStore('page', {
       return res
     },
     /** 插入 Component 组件 */
-    insertNode(dragNode: PageNode, parentNode: PageNode, index: number) {
-      const newNode = formatNodeByUniqueName(dragNode, this.nameMap)
+    insertNode(dragNode: PageNode, parentNode: PageNode, index: number, isLinkProp = false) {
+      const newNode = formatNodeByUniqueName(dragNode, this.nameMap, isLinkProp)
       parentNode.children?.splice(index, 0, newNode)
       return newNode
     },
@@ -280,7 +281,8 @@ export const usePageStore = defineStore('page', {
         const newNode = this.insertNode(
           this.activeNode,
           this.activeParentNode,
-          index !== void 0 ? index + 1 : this.activeParentNode?.children?.length!
+          index !== void 0 ? index + 1 : this.activeParentNode?.children?.length!,
+          true
         )
         nextTick(() => (this.activeNode = newNode))
       }
@@ -314,7 +316,34 @@ export const usePageStore = defineStore('page', {
     /** 设置当前激活组件隐藏 */
     setActiveNodeHide(hide: boolean) {
       if (!this.activeNode) return
-      useConfig(this.activeNode).common.hide = hide
+      useConfigProps(this.activeNode).common.hide = hide
     },
+    /** 切换激活组件的配置模式 */
+    switchActiveNodeProp() {
+      if (!this.activeNode) return
+      let config = useConfig(this.activeNode)
+      if (config.mobile) {
+        delete config.mobile
+      } else {
+        config.mobile = cloneDeep(config.props)
+      }
+    },
+    /** 取消组件关联 */
+    unlinkActiveNodeProp(includeChildren = false) {
+      if (!this.activeNode) return
+      const list: PageNode[] = [this.activeNode]
+      while (list.length) {
+        const node = list.shift()!
+        const linkName = node.propLink
+        if (!linkName) break
+        const linkNode = this.nameMap[linkName]
+        const linkNodeConfig = cloneDeep(linkNode.config)
+        node.config = merge(linkNodeConfig, node.config)
+        node.propLink = ''
+        if (includeChildren && Array.isArray(node.children) && node.children.length > 0) {
+          list.push(...node.children!)
+        }
+      }
+    }
   },
 })

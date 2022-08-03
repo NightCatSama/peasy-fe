@@ -95,7 +95,8 @@ export type PropsTypes<T extends ComponentName = any> =
     >
     : Partial<{
       [key in GroupType]: GroupPropType[key]
-    }> & Pick<GroupPropType<'Block'>, 'common' | 'effect' | 'event' | 'border' | 'spacing'>
+    }>
+    & Pick<GroupPropType<'Block'>, 'common' | 'effect' | 'event' | 'border' | 'spacing'>
 
 export interface IPropConfig<T extends ComponentName = any> {
   /** 配置参数 */

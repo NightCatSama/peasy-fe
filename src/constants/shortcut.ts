@@ -25,4 +25,6 @@ export const ShortcutKey = {
   nextSection: 'alt.tab',
   /** 上一个 Section */
   prevSection: 'alt.shift.tab',
+  /** 切换设备模式 */
+  switchDevice: (e: KeyboardEvent) => e.metaKey && e.key === '/', // 'meta + /'
 }

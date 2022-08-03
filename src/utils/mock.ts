@@ -26,7 +26,9 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
       props: {
         common: getDefaultCommon(),
         size: getDefaultSize(type),
-        layout: getDefaultLayout(),
+        layout: getDefaultLayout({
+          direction: 'column'
+        }),
         spacing: getDefaultSpacing(),
         border: getDefaultBorder(),
         container: getDefaultContainer(),
@@ -53,186 +55,174 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
         animation: getDefaultAnimation(),
       }
     },
-    props: {
-      common: getDefaultCommon(),
-      size: getDefaultSize(type),
-      layout: getDefaultLayout(),
-      spacing: getDefaultSpacing(),
-      border: getDefaultBorder(),
-      container: getDefaultContainer(),
-      background: getDefaultBackground({}),
-      position: getDefaultPosition(),
-      event: getDefaultEvent(),
-      effect: getDefaultEffect(),
-      animation: getDefaultAnimation(),
-    },
-    children: [getMockIcon('apple'), getMockText(), getMockImage()],
-    // children:
-      // type === 'component'
-      //   ? []
-      //   : [
-      //       {
-      //         type: 'component',
-      //         name: `${type}-Block`,
-      //         component: 'Block',
-      //         tags: [],
-      //         isModule: true,
-      //         moduleConfig: [
-      //           {
-      //             /** 配置名称 */
-      //             title: 'Text',
-      //             /** 图标 */
-      //             icon: 'font',
-      //             /** 是否折叠 */
-      //             defaultCollapsed: true,
-      //             /** 分组数据 */
-      //             data: [
-      //               {
-      //                 type: ModuleConfigType.Text,
-      //                 label: '文本',
-      //                 props: {},
-      //                 getValue: (node: PageNode) => {
-      //                   return node?.children?.[1]?.props?.basic?.text
-      //                 },
-      //                 setValue: (value: string, node: PageNode) => {
-      //                   if (node?.children?.[1]?.props?.basic?.text !== void 0) {
-      //                     node.children[1].props.basic.text = value
-      //                   }
-      //                 },
-      //               },
-      //               {
-      //                 type: ModuleConfigType.Color,
-      //                 label: '颜色',
-      //                 props: {},
-      //                 getValue: (node: PageNode) => {
-      //                   return node?.children?.[1]?.props?.font?.color
-      //                 },
-      //                 setValue: (value: string, node: PageNode) => {
-      //                   if (node?.children?.[1]?.props?.font?.color !== void 0) {
-      //                     node.children[1].props.font.color = value
-      //                   }
-      //                 },
-      //               },
-      //               {
-      //                 type: ModuleConfigType.FontSize,
-      //                 label: '文字大小',
-      //                 props: {},
-      //                 getValue: (node: PageNode) => {
-      //                   return node?.children?.[1]?.props?.font?.fontSize
-      //                 },
-      //                 setValue: (value: string, node: PageNode) => {
-      //                   if (node?.children?.[1]?.props?.font?.fontSize !== void 0) {
-      //                     node.children[1].props.font.fontSize = value
-      //                   }
-      //                 },
-      //               },
-      //               {
-      //                 type: ModuleConfigType.Opacity,
-      //                 label: '透明度',
-      //                 props: {},
-      //                 getValue: (node: PageNode) => {
-      //                   return node?.children?.[1]?.props?.container?.opacity
-      //                 },
-      //                 setValue: (value: number, node: PageNode) => {
-      //                   if (node?.children?.[1]?.props?.container?.opacity !== void 0) {
-      //                     node.children[1].props.container.opacity = value
-      //                   }
-      //                 },
-      //               },
-      //             ],
-      //           },
-      //           {
-      //             /** 配置名称 */
-      //             title: 'Icon',
-      //             /** 图标 */
-      //             icon: 'check',
-      //             defaultCollapsed: true,
-      //             /** 分组数据 */
-      //             data: [
-      //               {
-      //                 type: ModuleConfigType.FontSize,
-      //                 label: '图标大小',
-      //                 props: {},
-      //                 getValue: (node: PageNode) => {
-      //                   return node?.children?.[0]?.props?.basic?.size
-      //                 },
-      //                 setValue: (value: string, node: PageNode) => {
-      //                   if (node?.children?.[0]?.props?.basic?.size !== void 0) {
-      //                     node.children[0].props.basic.size = value
-      //                   }
-      //                 },
-      //               },
-      //               {
-      //                 type: ModuleConfigType.Color,
-      //                 label: '图标颜色',
-      //                 props: {},
-      //                 getValue: (node: PageNode) => {
-      //                   return node?.children?.[0]?.props?.basic?.color
-      //                 },
-      //                 setValue: (value: string, node: PageNode) => {
-      //                   if (node?.children?.[0]?.props?.basic?.color !== void 0) {
-      //                     node.children[0].props.basic.color = value
-      //                   }
-      //                 },
-      //               },
-      //             ],
-      //           },
-      //           {
-      //             /** 配置名称 */
-      //             title: 'Image',
-      //             /** 图标 */
-      //             icon: 'background',
-      //             /** 是否折叠 */
-      //             defaultCollapsed: true,
-      //             /** 分组数据 */
-      //             data: [
-      //               {
-      //                 type: ModuleConfigType.Tip,
-      //                 label: '',
-      //                 props: {
-      //                   type: 'warning',
-      //                   message: '可以直接输入图片地址，或点击 Upload 上传图片。',
-      //                 },
-      //               },
-      //               {
-      //                 type: ModuleConfigType.Image,
-      //                 label: '图片',
-      //                 props: {},
-      //                 getValue: (node: PageNode) => {
-      //                   return node?.children?.[2]?.props?.basic?.src
-      //                 },
-      //                 setValue: (value: string, node: PageNode) => {
-      //                   if (node?.children?.[2]?.props?.basic?.src !== void 0) {
-      //                     node.children[2].props.basic.src = value
-      //                   }
-      //                 },
-      //               },
-      //             ],
-      //           },
-      //         ],
-      //         props: {
-      //           common: getDefaultCommon(),
-      //           size: getDefaultSize('component', { width: '80%', height: 'auto' }),
-      //           layout: getDefaultLayout(),
-      //           spacing: getDefaultSpacing(),
-      //           border: getDefaultBorder(),
-      //           container: getDefaultContainer(),
-      //           background: getDefaultBackground({
-      //             // backgroundType: 'image',
-      //             // backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4',
-      //           }),
-      //           position: getDefaultPosition({
-      //             // position: 'absolute',
-      //             // left: 'auto',
-      //             // top: 'auto'
-      //           }),
-      //           event: getDefaultEvent(),
-      //           effect: getDefaultEffect(),
-      //           animation: getDefaultAnimation(),
-      //         },
-      //         children: [getMockIcon('apple'), getMockText(), getMockImage()],
-      //       },
-      //     ],
+    children:
+      type === 'component'
+        ? []
+        : [
+            {
+              type: 'component',
+              name: `${type}-Block`,
+              component: 'Block',
+              tags: [],
+              isModule: false,
+              // moduleConfig: [
+              //   {
+              //     /** 配置名称 */
+              //     title: 'Text',
+              //     /** 图标 */
+              //     icon: 'font',
+              //     /** 是否折叠 */
+              //     defaultCollapsed: true,
+              //     /** 分组数据 */
+              //     data: [
+              //       {
+              //         type: ModuleConfigType.Text,
+              //         label: '文本',
+              //         props: {},
+              //         getValue: (node: PageNode) => {
+              //           return node?.children?.[1]?.props?.basic?.text
+              //         },
+              //         setValue: (value: string, node: PageNode) => {
+              //           if (node?.children?.[1]?.props?.basic?.text !== void 0) {
+              //             node.children[1].props.basic.text = value
+              //           }
+              //         },
+              //       },
+              //       {
+              //         type: ModuleConfigType.Color,
+              //         label: '颜色',
+              //         props: {},
+              //         getValue: (node: PageNode) => {
+              //           return node?.children?.[1]?.props?.font?.color
+              //         },
+              //         setValue: (value: string, node: PageNode) => {
+              //           if (node?.children?.[1]?.props?.font?.color !== void 0) {
+              //             node.children[1].props.font.color = value
+              //           }
+              //         },
+              //       },
+              //       {
+              //         type: ModuleConfigType.FontSize,
+              //         label: '文字大小',
+              //         props: {},
+              //         getValue: (node: PageNode) => {
+              //           return node?.children?.[1]?.props?.font?.fontSize
+              //         },
+              //         setValue: (value: string, node: PageNode) => {
+              //           if (node?.children?.[1]?.props?.font?.fontSize !== void 0) {
+              //             node.children[1].props.font.fontSize = value
+              //           }
+              //         },
+              //       },
+              //       {
+              //         type: ModuleConfigType.Opacity,
+              //         label: '透明度',
+              //         props: {},
+              //         getValue: (node: PageNode) => {
+              //           return node?.children?.[1]?.props?.container?.opacity
+              //         },
+              //         setValue: (value: number, node: PageNode) => {
+              //           if (node?.children?.[1]?.props?.container?.opacity !== void 0) {
+              //             node.children[1].props.container.opacity = value
+              //           }
+              //         },
+              //       },
+              //     ],
+              //   },
+              //   {
+              //     /** 配置名称 */
+              //     title: 'Icon',
+              //     /** 图标 */
+              //     icon: 'check',
+              //     defaultCollapsed: true,
+              //     /** 分组数据 */
+              //     data: [
+              //       {
+              //         type: ModuleConfigType.FontSize,
+              //         label: '图标大小',
+              //         props: {},
+              //         getValue: (node: PageNode) => {
+              //           return node?.children?.[0]?.props?.basic?.size
+              //         },
+              //         setValue: (value: string, node: PageNode) => {
+              //           if (node?.children?.[0]?.props?.basic?.size !== void 0) {
+              //             node.children[0].props.basic.size = value
+              //           }
+              //         },
+              //       },
+              //       {
+              //         type: ModuleConfigType.Color,
+              //         label: '图标颜色',
+              //         props: {},
+              //         getValue: (node: PageNode) => {
+              //           return node?.children?.[0]?.props?.basic?.color
+              //         },
+              //         setValue: (value: string, node: PageNode) => {
+              //           if (node?.children?.[0]?.props?.basic?.color !== void 0) {
+              //             node.children[0].props.basic.color = value
+              //           }
+              //         },
+              //       },
+              //     ],
+              //   },
+              //   {
+              //     /** 配置名称 */
+              //     title: 'Image',
+              //     /** 图标 */
+              //     icon: 'background',
+              //     /** 是否折叠 */
+              //     defaultCollapsed: true,
+              //     /** 分组数据 */
+              //     data: [
+              //       {
+              //         type: ModuleConfigType.Tip,
+              //         label: '',
+              //         props: {
+              //           type: 'warning',
+              //           message: '可以直接输入图片地址，或点击 Upload 上传图片。',
+              //         },
+              //       },
+              //       {
+              //         type: ModuleConfigType.Image,
+              //         label: '图片',
+              //         props: {},
+              //         getValue: (node: PageNode) => {
+              //           return node?.children?.[2]?.props?.basic?.src
+              //         },
+              //         setValue: (value: string, node: PageNode) => {
+              //           if (node?.children?.[2]?.props?.basic?.src !== void 0) {
+              //             node.children[2].props.basic.src = value
+              //           }
+              //         },
+              //       },
+              //     ],
+              //   },
+              // ],
+              config: {
+                props: {
+                  common: getDefaultCommon(),
+                  size: getDefaultSize('component', { width: '80%', height: 'auto' }),
+                  layout: getDefaultLayout(),
+                  spacing: getDefaultSpacing(),
+                  border: getDefaultBorder(),
+                  container: getDefaultContainer(),
+                  background: getDefaultBackground({
+                    // backgroundType: 'image',
+                    // backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4',
+                  }),
+                  position: getDefaultPosition({
+                    // position: 'absolute',
+                    // left: 'auto',
+                    // top: 'auto'
+                  }),
+                  event: getDefaultEvent(),
+                  effect: getDefaultEffect(),
+                  animation: getDefaultAnimation(),
+                },
+              },
+              children: [getMockIcon('apple'), getMockText(), getMockImage()],
+            },
+          ],
   }
 }
 

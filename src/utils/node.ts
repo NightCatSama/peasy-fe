@@ -19,15 +19,21 @@ const createUnitName = (originName: string, nameMap: { [key: string]: PageNode }
  * @param nameMap 已存在的名字映射
  */
 export const formatNodeByUniqueName = (
-  node: PageNode,
-  nameMap: { [key: string]: PageNode }
+  originNode: PageNode,
+  nameMap: { [key: string]: PageNode },
+  isLinkProp: boolean = false
 ): PageNode => {
-  const newNode = cloneDeep(node)
+  const newNode = cloneDeep(originNode)
   let pendingNodeList = [newNode]
   while (pendingNodeList.length) {
     const node = pendingNodeList.shift()!
     if (node.name in nameMap) {
-      node.name = createUnitName(node.name, nameMap)
+      const originName = node.name
+      node.name = createUnitName(originName, nameMap)
+      if (isLinkProp) {
+        node.propLink = node.propLink || originName
+        node.config = { props: {} } as any
+      }
       nameMap[node.name] = node
     }
     if (node.children) {

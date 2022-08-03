@@ -11,14 +11,16 @@ import TreeNode from './biz/TreeNode.vue'
 import { isValidName } from '@/utils/validation'
 import { Alert, AlertError } from '@/utils/alert'
 import { emitter } from '@/utils/event'
+import Dropdown from './widgets/Dropdown.vue'
+import { useConfig } from '@/utils/config'
 
 const pageStore = usePageStore()
-const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide } = storeToRefs(pageStore)
-const { getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode, setActiveNodeHide } =
+const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, setting } = storeToRefs(pageStore)
+const { unlinkActiveNodeProp, switchActiveNodeProp, getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode, setActiveNodeHide } =
   pageStore
 
 const displayStore = useDisplayStore()
-const { minimize } = storeToRefs(displayStore)
+const { minimize, deviceType } = storeToRefs(displayStore)
 const { setMinimize } = displayStore
 
 useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
@@ -46,6 +48,27 @@ const handleActiveNodeChange = async (event: Event) => {
   }
   activeNode.value.name = newName
 }
+
+/** 是否不需要取消链接选项 */
+const disabledUnlinkDropdown = $computed(() =>
+  !activeNode.value ||
+  !activeNode.value.children ||
+  activeNode.value.children.length === 0
+)
+
+const isMobileStyle = $computed(() => useConfig(activeNode.value!).mobile)
+
+/** 切换移动端样式编辑模式 */
+const handleMobileSwitch = () => switchActiveNodeProp()
+
+/** 取消组件配置关联 */
+const handleUnlink = (includeChildren?: boolean) => unlinkActiveNodeProp(includeChildren)
+
+const handleFocusLinkNode = () =>
+  activeNode.value &&
+  activeNode.value?.propLink &&
+  nameMap.value[activeNode.value.propLink] &&
+  setActiveNode(nameMap.value[activeNode.value.propLink])
 
 const iconList: {
   hide?: boolean
@@ -135,6 +158,14 @@ const iconList: {
           >
             {{ activeNode.name }}
           </div>
+          <Icon
+            v-if="deviceType === 'mobile' && setting.client === 'both'"
+            :name="isMobileStyle ? 'mobile-slash' : 'mobile'"
+            type="btn"
+            :color="isMobileStyle ? 'red' : 'cyan'"
+            :size="18"
+            @click="handleMobileSwitch"
+          ></Icon>
         </div>
         <div class="op-icon-wrapper">
           <div
@@ -150,7 +181,29 @@ const iconList: {
               v-tooltip="item.tip"
               @click="item.click"
             ></Icon>
-            <!-- <span>{{ item.tip }}</span> -->
+          </div>
+          <div class="link-btn-wrapper">
+            <Dropdown
+              v-if="activeNode.propLink"
+              type="pure"
+              :disabled="disabledUnlinkDropdown"
+              popper-class="link-dropdown"
+              placement="bottom-end"
+              :distance="0"
+              :skidding="-5"
+            >
+              <div class="op-icon-btn link-btn" @click="() => disabledUnlinkDropdown ? handleUnlink(false) : null">
+                <Icon
+                  :name="activeNode.propLink ? 'link-broken' : 'link'"
+                  :size="14"
+                ></Icon>
+                  Unlink with<span class="link-text" @click.stop="handleFocusLinkNode">{{ activeNode.propLink }}</span>
+              </div>
+              <template #content>
+                <div class="select-option" @click="() => handleUnlink(false)">Self-Unlink</div>
+                <div class="select-option" @click="() => handleUnlink(true)">Includes Children</div>
+              </template>
+            </Dropdown>
           </div>
         </div>
         <TagList
@@ -334,6 +387,14 @@ const iconList: {
   justify-content: flex-start;
   flex-wrap: wrap;
   padding: 0px 8px 4px 8px;
+  .link-btn-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: flex-end;
+    overflow: hidden;
+    white-space: nowrap;
+    user-select: none;
+  }
   .op-icon-btn {
     font-size: 12px;
     display: flex;
@@ -343,6 +404,24 @@ const iconList: {
     border-radius: $inner-radius;
     overflow: hidden;
     cursor: pointer;
+
+    &.link-btn {
+      padding-right: 8px;
+      .link-text {
+        margin-left: 4px;
+        color: $orange;
+        overflow: hidden;
+        text-overflow: ellipsis;
+        &:hover {
+          color: $theme;
+          // text-decoration: underline;
+          border-bottom: 1px solid $theme;
+        }
+      }
+      &:hover {
+        color: $orange;
+      }
+    }
   }
 }
 
@@ -382,6 +461,44 @@ const iconList: {
 
     &:hover {
       color: $pink;
+    }
+  }
+}
+</style>
+
+<style lang="scss">
+.link-dropdown {
+  display: flex;
+  flex-direction: column;
+  background: $panel-dark;
+  border-radius: $normal-radius;
+  padding: 3px;
+  transition: all 0.3s;
+  z-index: $select-zIndex;
+  min-width: 120px;
+  border: 1px solid $theme;
+  max-height: 320px;
+  overflow-y: auto;
+
+  .select-option {
+    padding: 4px 12px 4px 8px;
+    font-size: 12px;
+    color: darken($color, 20%);
+    background: $tr;
+    border-radius: $inner-radius;
+    white-space: nowrap;
+    width: 100%;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
+
+    &:not(:last-child) {
+      margin-bottom: 4px;
+    }
+
+    &:hover {
+      color: $theme;
+      background: rgba($theme, 8%);
     }
   }
 }

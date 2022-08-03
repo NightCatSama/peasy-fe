@@ -7,7 +7,7 @@ import { storeToRefs } from 'pinia'
 import Icon from '../widgets/Icon.vue'
 import { usePageStore } from '@/stores/page'
 import { emitter } from '@/utils/event'
-import { useConfig } from '@/utils/config'
+import { useConfigProps } from '@/utils/config'
 
 interface ITreeNodeListProps {
   node: PageNode
@@ -29,7 +29,7 @@ const isActive = $computed(() => activeNode.value === node)
 
 const canCollapse = $computed(() => node.children?.length && !node.isModule)
 
-const isHide = $computed(() => useConfig(node).common?.hide)
+const isHide = $computed(() => useConfigProps(node).common?.hide)
 
 const icon = $computed(() => {
   if (node.type === 'section') {

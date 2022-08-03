@@ -73,6 +73,9 @@ const handleModeClick = (value: any) => {
   setDisplayMode(value)
 }
 
+useKeyPress(ShortcutKey.switchDevice, () => {
+  handleDeviceChange()
+})
 useKeyPress(ShortcutKey.SwitchDisplayMode, (e) => {
   e.preventDefault()
   const displayModeList = ['edit', 'drag', 'preview'] as const
@@ -108,7 +111,7 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
         <template #content>
           <div class="device-wrapper">
             <div class="title">
-              Options
+              Simulator
               <span class="title-extra" v-if="hoverIndex > -1">
                 {{ deviceList[hoverIndex][0] + ' × ' + deviceList[hoverIndex][1] }}
               </span>

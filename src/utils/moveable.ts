@@ -2,7 +2,7 @@ import { PageNode } from '@/config'
 import { useDisplayStore } from '@/stores/display'
 import { usePageStore } from '@/stores/page'
 import Moveable from 'moveable'
-import { useConfig } from './config'
+import { useConfigProps } from './config'
 import { emitter } from './event'
 import { covertPXToUnit, fixedPointToNumber, getUnit, isUnitType } from './sizeHelper'
 
@@ -155,7 +155,7 @@ export const updateDirection = (item: PageNode) => {
   const moveable = getMoveable()
   if (!moveable) return
 
-  const props = useConfig(item)
+  const props = useConfigProps(item)
   const disableWidth = item.type === 'section' || !isUnitType(getUnit(props.size?.width))
   const disableHeight = !isUnitType(getUnit(props.size?.height))
   const renderDirections =
@@ -175,7 +175,7 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
   const moveable = getMoveable()
   if (!moveable) return
 
-  const props = useConfig(item)
+  const props = useConfigProps(item)
   const disableMove = !['absolute', 'fixed'].includes(props?.position?.position || '')
 
   /** 记录原先的单位 */
@@ -254,7 +254,7 @@ export const openDragMode = (activeElem?: HTMLDivElement) => {
   const elem = activeElem || (moveable.target as HTMLDivElement)
   setSnappableGuidelines(elem)
   const item = usePageStore().activeNode
-  const props = useConfig(item)
+  const props = useConfigProps(item)
   const positionMap = ['left', 'right', 'top', 'bottom'] as const
   let units: {
     left?: string

@@ -57,14 +57,18 @@ import ModuleIcon from '@/assets/module.svg'
 import RedoIcon from '@/assets/redo.svg'
 import UploadIcon from '@/assets/upload.svg'
 import MobileIcon from '@/assets/mobile.svg'
+import MobileSlashIcon from '@/assets/mobile-slash.svg'
 import HideIcon from '@/assets/hide.svg'
 import EyeIcon from '@/assets/eye.svg'
 import EyeSlashIcon from '@/assets/eye-slash.svg'
 import SwitchIcon from '@/assets/switch.svg'
+import LinkBrokenIcon from '@/assets/link-broken.svg'
+import LinkIcon from '@/assets/link.svg'
 
 interface IIconProps {
   name: string
   type?: 'circle' | 'pure' | 'btn'
+  color?: string
   size?: number
   active?: boolean
 }
@@ -128,13 +132,16 @@ const iconMap = {
   redo: RedoIcon,
   upload: UploadIcon,
   mobile: MobileIcon,
+  'mobile-slash': MobileSlashIcon,
   hide: HideIcon,
   eye: EyeIcon,
   'eye-slash': EyeSlashIcon,
   switch: SwitchIcon,
+  'link-broken': LinkBrokenIcon,
+  link: LinkIcon,
 } as any
 
-const { name, size = 26, type = 'circle', active } = defineProps<IIconProps>()
+const { name, size = 26, type = 'circle', active, color } = defineProps<IIconProps>()
 
 const style = $ref({
   width: size + 'px',
@@ -143,7 +150,7 @@ const style = $ref({
 </script>
 
 <template>
-  <div :class="['icon', `icon-type-${type}`, { active }]">
+  <div :class="['icon', `icon-type-${type}`, { active, [`icon-color-${color}`]: color }]">
     <component :is="iconMap[name]" :class="['icon-inner', { active }]" :style="style"></component>
   </div>
 </template>
@@ -166,8 +173,11 @@ const style = $ref({
     border-radius: $normal-radius;
     padding: 4px;
 
-    &:active {
+    &:hover {
       opacity: 0.8;
+    }
+    &:active {
+      opacity: 0.9;
     }
   }
 
@@ -178,6 +188,19 @@ const style = $ref({
       color: $theme;
       transform: rotateY(360deg);
     }
+  }
+
+  &.icon-color-orange {
+    color: $orange;
+  }
+  &.icon-color-cyan {
+    color: $cyan;
+  }
+  &.icon-color-pink {
+    color: $pink;
+  }
+  &.icon-color-red {
+    color: $red;
   }
 }
 </style>
