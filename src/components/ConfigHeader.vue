@@ -14,6 +14,10 @@ import { emitter } from '@/utils/event'
 import { ShortcutKey } from '@/constants/shortcut'
 import ColorVarList from './biz/ColorVarList.vue'
 import { useHistoryStore } from '@/stores/history'
+import { usePageStore } from '@/stores/page'
+
+const pageStore = usePageStore()
+const { updateAllPageNode } = pageStore
 
 const displayStore = useDisplayStore()
 const { device, displayMode } = storeToRefs(displayStore)
@@ -155,6 +159,7 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
         :size="16"
         type="btn"
         v-tooltip="'撤销'"
+        @click="() => updateAllPageNode(undoHistory())"
       ></Icon>
       <Icon
         :class="['redo-icon', { disabled: !canRedoHistory }]"
@@ -162,6 +167,7 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
         :size="16"
         type="btn"
         v-tooltip="'重做'"
+        @click="() => updateAllPageNode(redoHistory())"
       ></Icon>
       <Btn @click="$emit('download')" text="Download"></Btn>
       <Avatar :size="36" />
