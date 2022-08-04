@@ -5,7 +5,9 @@ import { groupIconMap, defaultGroupIcon, groupTitleMap } from '@/constants/group
 import Icon from './Icon.vue'
 import { storeToRefs } from 'pinia'
 import { GroupType } from '@/config'
+import { useGroupConfigByNode } from '@/utils/config'
 import { emitter } from '@/utils/event'
+import { usePageStore } from '@/stores/page'
 interface IGroupProps {
   title?: string
   groupName?: GroupType
@@ -15,6 +17,10 @@ interface IGroupProps {
   canAdvanced?: boolean
 }
 const { title, groupName, icon, defaultCollapsed = true, canAdvanced } = defineProps<IGroupProps>()
+
+const pageStore = usePageStore()
+const { activeNode } = storeToRefs(pageStore)
+const { unlinkActiveNodePropGroup } = pageStore
 
 const displayStore = useDisplayStore()
 const { saveGroupStatus, getGroupStatus } = displayStore
@@ -39,6 +45,12 @@ onBeforeUnmount(() => {
 })
 
 const iconName = $computed(() => icon || groupIconMap[groupName!] || defaultGroupIcon)
+
+const isLink = $computed(() => !!activeNode.value?.propLink && groupName && !useGroupConfigByNode(activeNode.value, groupName))
+
+const handleUnlinkPropGroup = () => {
+  unlinkActiveNodePropGroup(groupName!)
+}
 </script>
 
 <template>
@@ -49,6 +61,14 @@ const iconName = $computed(() => icon || groupIconMap[groupName!] || defaultGrou
         <span>{{ showTitle }}</span>
       </span>
       <span class="info-op">
+        <Icon
+          v-if="isLink"
+          type="btn"
+          color="pink"
+          :size="14"
+          name="link-broken"
+          @click.stop="handleUnlinkPropGroup"
+        ></Icon>
         <Icon
           v-if="!minimize"
           :class="{ rotate: collapsed }"

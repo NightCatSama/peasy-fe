@@ -1,5 +1,5 @@
 import { ComponentName, getTagClassName, getUniqueName, GroupPropType } from '@/config'
-import { computed, reactive, ref } from 'vue'
+import { watch, computed, reactive, ref } from 'vue'
 import { useAnimation } from './animation'
 import { useEffect } from './effect'
 import { useEvent } from './event'
@@ -31,11 +31,9 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
   const propsRef = reactive(props)
   const elem = ref<HTMLDivElement | null>(null)
 
-  useEvent(propsRef.event, elem)
-
-  const { animationMap } = useAnimation(propsRef.animation, elem, propsRef.position)
-
-  useEffect(propsRef.effect, propsRef.componentName)
+  useEvent(propsRef, elem)
+  const { animationMap } = useAnimation(propsRef, elem)
+  useEffect(propsRef)
 
   const style = computed(() =>
     useStyle({

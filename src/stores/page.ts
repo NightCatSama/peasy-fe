@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import { mande } from 'mande'
 import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mock'
-import { PageNode, ComponentPropsGroup, ComponentName } from '@/config'
+import { PageNode, ComponentPropsGroup, ComponentName, GroupType } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
-import { useConfig, useConfigProps } from '@/utils/config'
+import { useConfig, useConfigProps, useMobileConfig } from '@/utils/config'
 import { nextTick } from 'vue'
 import { cloneDeep, merge } from 'lodash'
 
@@ -328,7 +328,7 @@ export const usePageStore = defineStore('page', {
         config.mobile = cloneDeep(config.props)
       }
     },
-    /** 取消组件关联 */
+    /** 取消关联组件 */
     unlinkActiveNodeProp(includeChildren = false) {
       if (!this.activeNode) return
       const list: PageNode[] = [this.activeNode]
@@ -343,6 +343,21 @@ export const usePageStore = defineStore('page', {
         if (includeChildren && Array.isArray(node.children) && node.children.length > 0) {
           list.push(...node.children!)
         }
+      }
+    },
+    /** 取消关联组件的某组配置 */
+    unlinkActiveNodePropGroup(groupType: GroupType) {
+      if (!this.activeNode) return
+      const node = this.activeNode
+      const linkName = node.propLink
+      if (!linkName) return
+      const linkNode = this.nameMap[linkName]
+      if (!linkNode) return
+      if (useMobileConfig() && linkNode.config.mobile?.[groupType]) {
+        if (!node.config.mobile) node.config.mobile = {} as any
+        ;(node.config.mobile as any)[groupType] = cloneDeep(linkNode.config.mobile[groupType])
+      } else if (linkNode.config.props?.[groupType]) {
+        ;(node.config.props as any)[groupType] = cloneDeep(linkNode.config.props[groupType])
       }
     }
   },

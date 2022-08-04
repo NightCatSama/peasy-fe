@@ -1,14 +1,22 @@
 import { getContext } from '@/utils/context'
-import { inject, onBeforeMount, onMounted, Ref } from 'vue'
+import { watch, onBeforeMount, onMounted, Ref } from 'vue'
+import type { IProps } from './common'
 
-export const useEvent = (event: IEvent, el: Ref<HTMLDivElement | null>) => {
+export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
   let stop = $ref<(() => void) | null>(null)
+  const event = $computed(() => propsRef.event)
 
   onMounted(() => {
     if (!el.value) return
     stop = eventHandler(event, el.value)
   })
   onBeforeMount(() => stop?.())
+
+  watch(() => event, () => {
+    stop?.()
+    if (!el.value) return
+    stop = eventHandler(event, el.value)
+  })
 }
 
 const eventHandler = (event: IEvent, el: HTMLDivElement): (() => void) | null => {

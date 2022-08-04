@@ -1,8 +1,14 @@
-import type { ComponentName, GroupType, IPropConfig, PageNode, PropsTypes } from "@/config";
+import { ComponentName, ComponentPropsGroup, GroupType, IPropConfig, PageNode, PropsTypes } from "@/config";
 import { useDisplayStore } from "@/stores/display";
-import { usePageStore } from "@/stores/page";
+import { usePageStore } from "@/stores/page"
+import { merge } from "lodash";
 
-/** 获得组件 Config */
+/** 当前是否为移动端特化样式处理中 */
+export const useMobileConfig = () =>
+  usePageStore().setting.client === 'both' &&
+  useDisplayStore().deviceType === 'mobile'
+
+/** 获得组件 Config，可能为链接组件的 Config */
 export const useConfig = <T extends ComponentName = any>(node: PageNode<T>): IPropConfig<T> => {
   const linkNode = (node.propLink && usePageStore().nameMap[node.propLink]) as PageNode<T> | null
   return linkNode?.config || node.config
@@ -11,23 +17,31 @@ export const useConfig = <T extends ComponentName = any>(node: PageNode<T>): IPr
 /** 获得组件在对应设备场景下的全量配置 */
 export const useConfigProps = <T extends ComponentName = any>(node: PageNode<T> | null): PropsTypes<T> => {
   if (!node) return { common: { hide: false } } as unknown as PropsTypes<T>
-  const config = useConfig(node)
-  const { props, mobile } = config
-  if (mobile && useDisplayStore().deviceType === 'mobile') {
-    return mobile
+  const groupTypeList = ComponentPropsGroup[node.component]
+  let obj: PropsTypes<T> = {} as any
+  for (let i = 0; i < groupTypeList.length; i++) {
+    const groupType = groupTypeList[i]
+    const group = useGroupConfig(node, groupType)
+    if (group) {
+      (obj as any)[groupType] = group
+    }
   }
-  return props;
+  return obj
 }
 
-/**
- * 获得组件在对应设备场景下的单个配置组的配置
- * 为了支持在组件在 propLink 其他组件的情况下，也允许自己单独设置特化样式
- * TODO: 后续优化
- */
+/** 获得组件在对应设备场景下的单个配置组的配置 */
 export const useGroupConfig = (node: PageNode | null, groupType: GroupType) => {
   if (!node) return null
+  const linkNode = (node.propLink && usePageStore().nameMap[node.propLink]) as PageNode | null
+  // 先从自身取，若自身取不到，则去 propLink 链接元素取
+  return useGroupConfigByNode(node, groupType) || useGroupConfigByNode(linkNode, groupType)
+}
+
+/** 从节点中去获取单个配置组 */
+export const useGroupConfigByNode = (node: PageNode | null, groupType: GroupType) => {
+  if (!node) return null
   if (
-    useDisplayStore().deviceType === 'mobile' &&
+    useMobileConfig() &&
     node.config?.mobile?.[groupType]
   ) {
     return node.config?.mobile?.[groupType]
@@ -35,5 +49,5 @@ export const useGroupConfig = (node: PageNode | null, groupType: GroupType) => {
   if (node.config?.props?.[groupType]) {
     return node.config.props[groupType]
   }
-  return useConfigProps(node)[groupType]
+  return null
 }

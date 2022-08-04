@@ -1,6 +1,7 @@
 import { getTagClassName, getUniqueName } from '@/config'
-import { onBeforeUnmount, ref, watch } from 'vue'
+import { onBeforeUnmount, reactive, ref, watch } from 'vue'
 import { getColor } from './color'
+import type { IProps } from './common'
 
 export const effectName2PropertyMap: { [name: string]: string } = {
   color: 'color',
@@ -16,18 +17,19 @@ export const selectorPriority: { [selector: string]: number } = {
   active: 2,
 }
 
-export const useEffect = (effect: IEffect, name: string) => {
+export const useEffect = (propsRef: IProps<any>) => {
   let dynamicAnimationStyles = $ref<HTMLStyleElement | null>(null)
   let removeListenerList = $ref<(() => void)[]>([])
+  const effect = $computed(() => propsRef.effect)
 
   watch(
-    () => effect.effectList,
+    () => effect,
     () => {
       if (!effect?.effectList?.length) {
         if (dynamicAnimationStyles) dynamicAnimationStyles.innerHTML = ''
         return
       }
-      const uName = getUniqueName(name)
+      const uName = getUniqueName(propsRef.componentName)
       // 初始化动态样式表
       if (!dynamicAnimationStyles) {
         dynamicAnimationStyles = document.createElement('style')

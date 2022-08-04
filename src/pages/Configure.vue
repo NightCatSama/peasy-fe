@@ -60,6 +60,7 @@ onMounted(() => {
         'setActiveNodeHide',
         'switchActiveNodeProp',
         'unlinkActiveNodeProp',
+        'unlinkActiveNodePropGroup',
       ].includes(name)
     ) {
       inAction = true

@@ -1,4 +1,5 @@
 import { onBeforeUnmount, reactive, Ref, watch } from 'vue'
+import type { IProps } from './common'
 import { getPositionTransform } from './style'
 
 export type AnimationMapType = Map<
@@ -42,10 +43,11 @@ export const useIntersectionObserver = (
  * 4. 返回 animationMap 用于组件中获取
  */
 export const useAnimation = (
-  animation: IAnimation,
+  propsRef: IProps,
   el: Ref<HTMLDivElement | null>,
-  position: IPosition
 ) => {
+  const animation = $computed(() => propsRef.animation)
+  const position = $computed(() => propsRef.position)
   let dynamicAnimationStyles = $ref<HTMLStyleElement | null>(null)
   let observer = $ref<IntersectionObserver | null>(null)
   let removeListenerList: (() => void)[] = $ref([])
