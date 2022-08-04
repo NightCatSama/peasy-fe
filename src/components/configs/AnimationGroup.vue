@@ -8,6 +8,7 @@ import PreviewItem from '@/components/configs/items/PreviewItem.vue'
 import Tip from '../widgets/Tip.vue'
 import Btn from '../widgets/Btn.vue'
 import CollapseItem from './items/CollapseItem.vue'
+import InputItem from './items/InputItem.vue'
 
 interface IAnimationGroupProps {
   node: PageNode
@@ -89,6 +90,7 @@ const isOneCount = (trigger: IAnimationItem['trigger']) =>
   ['scrollIntoView', 'click'].includes(trigger)
 
 let showAdvancedSettings = $ref(false)
+let showCodeInput = $ref(false)
 </script>
 
 <template>
@@ -215,7 +217,13 @@ let showAdvancedSettings = $ref(false)
             label="Timing"
             :options="timingFunction"
             v-model="item.timingFunction"
+            @dblclick="showCodeInput = !showCodeInput"
           ></SelectItem>
+          <InputItem
+            v-if="showCodeInput"
+            label="Timing Code"
+            v-model="item.timingFunction"
+          ></InputItem>
           <SelectItem label="Fill Mode" :options="fillModeMap" v-model="item.fillMode"></SelectItem>
           <SelectItem
             label="Direction"

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
+import InputItem from '@/components/configs/items/InputItem.vue'
 import SliderItem from '@/components/configs/items/SliderItem.vue'
 import SelectItem from '@/components/configs/items/SelectItem.vue'
 import { PageNode } from '@/config'
@@ -112,6 +113,8 @@ const timingFunction = {
   'ease-in-out': 'Ease In Out',
   linear: 'Linear',
 }
+
+let showTimingCode = $ref(false)
 </script>
 
 <template>
@@ -183,7 +186,14 @@ const timingFunction = {
             label="Timing"
             :options="timingFunction"
             v-model="item.timingFunction"
+            @dblclick="showTimingCode = !showTimingCode"
           ></SelectItem>
+          <InputItem
+            label="Timing Code"
+            v-if="showTimingCode"
+            v-model="item.timingFunction"
+          >
+          </InputItem>
           <hr class="divider" data-text="Action" />
           <template v-for="obj in actionMap" :key="obj.name">
             <component

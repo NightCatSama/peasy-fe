@@ -238,8 +238,7 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
 
 <style lang="scss" scoped>
 .lib-component {
-  cursor: default;
-
+  // cursor: default;
   &.grading {
     user-select: none;
   }

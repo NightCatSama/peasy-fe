@@ -119,7 +119,7 @@ interface IContainer {
   overflow: 'visible' | 'hidden' | 'scroll' | 'auto'
   boxShadow: string
   opacity: number
-  cursor: 'auto' | 'default' | 'pointer' | 'move' | 'text' | 'wait' | 'help' | 'not-allowed'
+  cursor: 'inherit' | 'auto' | 'default' | 'pointer' | 'move' | 'text' | 'wait' | 'help' | 'not-allowed'
 }
 
 /** 事件处理 */
@@ -148,7 +148,7 @@ interface IAnimationItem {
   /** 动画延迟 */
   delay: number
   /** 动画缓动 */
-  timingFunction: 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
+  timingFunction: string | 'ease' | 'ease-in' | 'ease-out' | 'ease-in-out' | 'linear'
   /** 内置动画类型 */
   name:
     | 'fade'
