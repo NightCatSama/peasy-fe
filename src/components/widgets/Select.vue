@@ -6,7 +6,7 @@ export interface ISelectItem {
 }
 </script>
 <script setup lang="ts">
-import { watchEffect, defineEmits } from 'vue'
+import { watchEffect } from 'vue'
 import Icon from './Icon.vue'
 import Dropdown from './Dropdown.vue'
 

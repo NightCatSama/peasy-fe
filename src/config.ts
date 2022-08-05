@@ -150,6 +150,8 @@ export const enum ModuleConfigType {
   Opacity = 'opacity',
   /** 图片 */
   Image = 'image',
+  /** 背景图片尺寸 */
+  BackgroundSize = 'backgroundSize',
   /** 提示 */
   Tip = 'tip',
   /** 一组数据 */
@@ -174,9 +176,9 @@ export interface IModuleConfigItem {
   /** 配置组件传参参数 */
   props?: any
   /** 获取值 */
-  getValue?: (node: PageNode) => any
+  sourceValue?: string
   /** 设置值 */
-  setValue?: (value: any, node: PageNode) => void
+  targetValue?: string | string[]
 }
 
 /** 判断是否某个基础类型 */

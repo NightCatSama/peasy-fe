@@ -4,6 +4,7 @@ import InputItemVue from '@/components/configs/items/InputItem.vue'
 import SliderItemVue from '@/components/configs/items/SliderItem.vue'
 import ImageItemVue from '@/components/configs/items/ImageItem.vue'
 import SwitchItemVue from '@/components/configs/items/SwitchItem.vue'
+import TabsItemVue from '@/components/configs/items/TabsItem.vue'
 import TipVue from '@/components/widgets/Tip.vue'
 
 export const getFormPropsByType = (type: ModuleConfigType | string) => {
@@ -56,6 +57,13 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
       return {
         component: TipVue,
         props: {},
+      }
+    case 'backgroundSize':
+      return {
+        component: TabsItemVue,
+        props: {
+          data: { cover: 'Cover', contain: 'Contain', auto: 'Auto' },
+        },
       }
     default:
       return {

@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { defineEmits } from 'vue'
 import Icon from './Icon.vue'
 
 const emit = defineEmits(['change'])

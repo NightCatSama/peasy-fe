@@ -10,6 +10,8 @@ import {
 } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
 import { onUpdated, reactive, useAttrs } from 'vue'
+import { get, set } from 'lodash';
+import { useConfig } from '@/utils/config';
 
 interface ICustomGroupProps extends IModuleConfigGroup {
   node: PageNode
@@ -18,6 +20,12 @@ interface ICustomGroupProps extends IModuleConfigGroup {
 const { node, title, icon, data, defaultCollapsed } = useAttrs() as unknown as ICustomGroupProps
 const dataRef = reactive(data)
 const getComponentData = (type: string) => getFormPropsByType(type)
+
+const getValue = (sourceValue: string) => get(node, sourceValue)
+const setValue = (sourceValue: string | string[], value: string) =>
+  Array.isArray(sourceValue)
+    ? sourceValue.forEach((v) => set(node, v, value))
+    : set(node, sourceValue, value)
 </script>
 
 <template>
@@ -25,13 +33,13 @@ const getComponentData = (type: string) => getFormPropsByType(type)
     <template v-for="item in dataRef">
       <component
         :is="getComponentData(item.type).component"
-        :model-value="item.getValue?.(node) || ''"
+        :model-value="item.sourceValue ? getValue(item.sourceValue!) : ''"
         :label="item.label"
         v-bind="{
           ...getComponentData(item.type).props,
           ...item.props,
         }"
-        @update:model-value="(val: any) => item.setValue?.(val, node)"
+        @update:model-value="(val: any) => item.targetValue ? setValue(item.targetValue, val) : null"
       ></component>
     </template>
   </Group>

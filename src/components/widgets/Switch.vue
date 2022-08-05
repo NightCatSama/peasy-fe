@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watchEffect, defineEmits } from 'vue'
+import { watchEffect } from 'vue'
 
 const emit = defineEmits(['update:model-value'])
 

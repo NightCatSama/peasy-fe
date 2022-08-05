@@ -7,7 +7,7 @@ export default {
 <script setup lang="ts">
 import { emitter } from '@/utils/event'
 import { covertSizeToOtherUnit, fixedPointToNumber, isUnitType } from '@/utils/sizeHelper'
-import { watchEffect, defineEmits, nextTick, watch, onMounted } from 'vue'
+import { watchEffect, nextTick, watch, onMounted } from 'vue'
 import Select from './Select.vue'
 
 const emit = defineEmits(['update:model-value'])

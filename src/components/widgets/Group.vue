@@ -33,7 +33,7 @@ const status = getGroupStatus(groupStatusKey)
 let collapsed = $ref(status ? status.collapsed : defaultCollapsed)
 let showAdvanced = $ref(status ? status.advanced : false)
 
-const isMobile = $computed(() => useMobileConfig())
+const showMobileConfig = $computed(() => groupName && useMobileConfig())
 const isMobileStyle = $computed(() => isMobileGroupConfig(activeNode.value, groupName))
 const handleSwitchMobileConfig = () => groupName && switchActiveNodeConfigMode(groupName)
 
@@ -74,7 +74,7 @@ const handleUnlinkPropGroup = () => {
           @click.stop="handleUnlinkPropGroup"
         ></Icon>
         <Icon
-          v-if="isMobile"
+          v-if="showMobileConfig"
           type="btn"
           :color="isMobileStyle ? 'red' : 'cyan'"
           :size="14"
