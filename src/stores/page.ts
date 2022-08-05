@@ -4,7 +4,7 @@ import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mo
 import { PageNode, ComponentPropsGroup, ComponentName, GroupType } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
-import { useConfig, useConfigProps, useMobileConfig } from '@/utils/config'
+import { useConfig, useConfigProps, isMobileGroupConfig, useGroupConfigByNode } from '@/utils/config'
 import { nextTick } from 'vue'
 import { cloneDeep, merge } from 'lodash'
 
@@ -318,14 +318,17 @@ export const usePageStore = defineStore('page', {
       if (!this.activeNode) return
       useConfigProps(this.activeNode).common.hide = hide
     },
-    /** 切换激活组件的配置模式 */
-    switchActiveNodeProp() {
+    /** 切换激活组件的配置模式，open 时则开启 mobile 单独配置 */
+    switchActiveNodeConfigMode(groupType: GroupType) {
       if (!this.activeNode) return
-      let config = useConfig(this.activeNode)
-      if (config.mobile) {
-        delete config.mobile
+      const currentOpen = isMobileGroupConfig(this.activeNode, groupType)
+      const isLink = !!this.activeNode.propLink && groupType && !useGroupConfigByNode(this.activeNode, groupType)
+      let config = isLink ? useConfig(this.activeNode) : this.activeNode.config
+      if (!currentOpen) {
+        if (!config.mobile) config.mobile = {} as any
+        ;(config.mobile as any)[groupType] = cloneDeep(config.props[groupType])
       } else {
-        config.mobile = cloneDeep(config.props)
+        delete config.mobile?.[groupType]
       }
     },
     /** 取消关联组件 */
@@ -353,10 +356,11 @@ export const usePageStore = defineStore('page', {
       if (!linkName) return
       const linkNode = this.nameMap[linkName]
       if (!linkNode) return
-      if (useMobileConfig() && linkNode.config.mobile?.[groupType]) {
+      if (linkNode.config.mobile?.[groupType]) {
         if (!node.config.mobile) node.config.mobile = {} as any
         ;(node.config.mobile as any)[groupType] = cloneDeep(linkNode.config.mobile[groupType])
-      } else if (linkNode.config.props?.[groupType]) {
+      }
+      if (linkNode.config.props?.[groupType]) {
         ;(node.config.props as any)[groupType] = cloneDeep(linkNode.config.props[groupType])
       }
     }

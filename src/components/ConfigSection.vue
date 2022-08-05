@@ -16,7 +16,7 @@ import { useConfig } from '@/utils/config'
 
 const pageStore = usePageStore()
 const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, setting } = storeToRefs(pageStore)
-const { unlinkActiveNodeProp, switchActiveNodeProp, getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode, setActiveNodeHide } =
+const { unlinkActiveNodeProp, switchActiveNodeConfigMode, getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode, setActiveNodeHide } =
   pageStore
 
 const displayStore = useDisplayStore()
@@ -57,9 +57,6 @@ const disabledUnlinkDropdown = $computed(() =>
 )
 
 const isMobileStyle = $computed(() => useConfig(activeNode.value!).mobile)
-
-/** 切换移动端样式编辑模式 */
-const handleMobileSwitch = () => switchActiveNodeProp()
 
 /** 取消组件配置关联 */
 const handleUnlink = (includeChildren?: boolean) => unlinkActiveNodeProp(includeChildren)
@@ -158,14 +155,6 @@ const iconList: {
           >
             {{ activeNode.name }}
           </div>
-          <Icon
-            v-if="deviceType === 'mobile' && setting.client === 'both'"
-            :name="isMobileStyle ? 'mobile-slash' : 'mobile'"
-            type="btn"
-            :color="isMobileStyle ? 'red' : 'cyan'"
-            :size="18"
-            @click="handleMobileSwitch"
-          ></Icon>
         </div>
         <div class="op-icon-wrapper">
           <div

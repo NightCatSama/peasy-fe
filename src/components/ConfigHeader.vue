@@ -74,6 +74,7 @@ const handleModeClick = (value: any) => {
 }
 
 useKeyPress(ShortcutKey.switchDevice, () => {
+  if (setting.value.client !== 'both') return
   handleDeviceChange()
 })
 useKeyPress(ShortcutKey.SwitchDisplayMode, (e) => {

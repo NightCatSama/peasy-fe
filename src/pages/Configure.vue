@@ -58,7 +58,7 @@ onMounted(() => {
         'copyActiveNode',
         'separateActiveNode',
         'setActiveNodeHide',
-        'switchActiveNodeProp',
+        'switchActiveNodeConfigMode',
         'unlinkActiveNodeProp',
         'unlinkActiveNodePropGroup',
       ].includes(name)

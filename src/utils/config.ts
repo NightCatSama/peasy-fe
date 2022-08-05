@@ -51,3 +51,22 @@ export const useGroupConfigByNode = (node: PageNode | null, groupType: GroupType
   }
   return null
 }
+
+/** 是否已开启 mobile 样式 */
+export const isMobileGroupConfig = (node: PageNode | null, groupType?: GroupType): boolean => {
+  if (!node || !groupType) return false
+  const configBySelf = useGroupConfigByNode(node, groupType)
+  // 如果以及取消关联或者无关联情况下，只用自身的该组配置判断，是否已开启 mobile 样式
+  if (configBySelf) {
+    return !!node.config?.mobile?.[groupType]
+  }
+  // 否则拿链接组件的样式来判断
+  const config = useConfig(node)
+  if (
+    useMobileConfig() &&
+    config?.mobile?.[groupType]
+  ) {
+    return true
+  }
+  return false
+}

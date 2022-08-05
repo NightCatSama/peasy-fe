@@ -167,10 +167,15 @@ export interface IModuleConfigGroup {
 }
 /** 模块单项配置 */
 export interface IModuleConfigItem {
+  /** 配置类型 */
   type: ModuleConfigType
+  /** label */
   label?: string
+  /** 配置组件传参参数 */
   props?: any
+  /** 获取值 */
   getValue?: (node: PageNode) => any
+  /** 设置值 */
   setValue?: (value: any, node: PageNode) => void
 }
 

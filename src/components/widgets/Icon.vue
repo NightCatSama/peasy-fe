@@ -205,5 +205,8 @@ const style = $ref({
   &.icon-color-theme {
     color: $theme;
   }
+  &.icon-color-purple {
+    color: $purple;
+  }
 }
 </style>

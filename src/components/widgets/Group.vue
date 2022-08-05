@@ -5,7 +5,7 @@ import { groupIconMap, defaultGroupIcon, groupTitleMap } from '@/constants/group
 import Icon from './Icon.vue'
 import { storeToRefs } from 'pinia'
 import { GroupType } from '@/config'
-import { useGroupConfigByNode } from '@/utils/config'
+import { useGroupConfigByNode, useMobileConfig, isMobileGroupConfig } from '@/utils/config'
 import { emitter } from '@/utils/event'
 import { usePageStore } from '@/stores/page'
 interface IGroupProps {
@@ -20,7 +20,7 @@ const { title, groupName, icon, defaultCollapsed = true, canAdvanced } = defineP
 
 const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
-const { unlinkActiveNodePropGroup } = pageStore
+const { unlinkActiveNodePropGroup, switchActiveNodeConfigMode } = pageStore
 
 const displayStore = useDisplayStore()
 const { saveGroupStatus, getGroupStatus } = displayStore
@@ -32,6 +32,10 @@ const status = getGroupStatus(groupStatusKey)
 
 let collapsed = $ref(status ? status.collapsed : defaultCollapsed)
 let showAdvanced = $ref(status ? status.advanced : false)
+
+const isMobile = $computed(() => useMobileConfig())
+const isMobileStyle = $computed(() => isMobileGroupConfig(activeNode.value, groupName))
+const handleSwitchMobileConfig = () => groupName && switchActiveNodeConfigMode(groupName)
 
 onUpdated(() => {
   saveGroupStatus(groupStatusKey, { collapsed, advanced: showAdvanced })
@@ -70,12 +74,20 @@ const handleUnlinkPropGroup = () => {
           @click.stop="handleUnlinkPropGroup"
         ></Icon>
         <Icon
+          v-if="isMobile"
+          type="btn"
+          :color="isMobileStyle ? 'red' : 'cyan'"
+          :size="14"
+          :name="isMobileStyle ? 'mobile-slash' : 'mobile'"
+          @click.stop="handleSwitchMobileConfig"
+        ></Icon>
+        <Icon
           v-if="!minimize"
           :class="{ rotate: collapsed }"
           @click="collapsed = !collapsed"
           name="down"
           :size="12"
-          type="pure"
+          type="btn"
         />
       </span>
     </div>
@@ -129,10 +141,11 @@ const handleUnlinkPropGroup = () => {
         cursor: pointer;
         user-select: none;
         transition: all 0.3s;
-        margin: 0 3px;
+        margin: 0 1px;
 
         &.rotate {
-          transform: rotateZ(180deg);
+          transform-origin: center;
+          transform: rotateX(180deg);
         }
       }
     }
