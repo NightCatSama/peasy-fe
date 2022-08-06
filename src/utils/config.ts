@@ -8,10 +8,15 @@ export const useMobileConfig = () =>
   usePageStore().setting.client === 'both' &&
   useDisplayStore().deviceType === 'mobile'
 
+/** 获得原始组件 */
+export const useSourceNode = <T extends ComponentName = any>(node: PageNode<T>): PageNode<T> => {
+  const linkNode = (node.propLink && usePageStore().nameMap[node.propLink]) as PageNode<T> | null
+  return linkNode || node
+}
+
 /** 获得组件 Config，可能为链接组件的 Config */
 export const useConfig = <T extends ComponentName = any>(node: PageNode<T>): IPropConfig<T> => {
-  const linkNode = (node.propLink && usePageStore().nameMap[node.propLink]) as PageNode<T> | null
-  return linkNode?.config || node.config
+  return useSourceNode(node).config
 }
 
 /** 获得组件在对应设备场景下的全量配置 */

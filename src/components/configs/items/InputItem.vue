@@ -13,7 +13,7 @@ import { watch } from 'vue'
 type IInputProps = Partial<InstanceType<typeof Input>>
 
 interface ISelectItemProps extends IInputProps {
-  label: string
+  label?: string
   modelValue: string
   type?: IInputProps['type']
   realTime?: boolean
@@ -51,7 +51,7 @@ const handleBlur = (e: Event) => {
 
 <template>
   <div :class="['item', { column: type === 'textarea' }, wrapperClass]">
-    <span class="label">
+    <span class="label" v-if="label">
       <slot name="label" :label="label">{{ label }}</slot>
     </span>
     <Input

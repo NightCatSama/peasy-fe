@@ -13,6 +13,7 @@ import { Alert, AlertError } from '@/utils/alert'
 import { emitter } from '@/utils/event'
 import Dropdown from './widgets/Dropdown.vue'
 import { useConfig } from '@/utils/config'
+import SaveModal from './modal/SaveModal.vue'
 
 const pageStore = usePageStore()
 const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, setting } = storeToRefs(pageStore)
@@ -29,6 +30,8 @@ useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
 })
 
 let showLayer = $ref(false)
+let showSaveModal = $ref(false)
+let saveModelRef = $ref<InstanceType<typeof SaveModal> | null>(null)
 
 const handleActiveNodeChange = async (event: Event) => {
   const elem = event.target as HTMLDivElement
@@ -55,8 +58,6 @@ const disabledUnlinkDropdown = $computed(() =>
   !activeNode.value.children ||
   activeNode.value.children.length === 0
 )
-
-const isMobileStyle = $computed(() => useConfig(activeNode.value!).mobile)
 
 /** 取消组件配置关联 */
 const handleUnlink = (includeChildren?: boolean) => unlinkActiveNodeProp(includeChildren)
@@ -99,6 +100,15 @@ const iconList: {
     click: () => setActiveNodeHide(false),
   },
   {
+    // hide: !activeNode.value?.isModule,
+    name: 'save',
+    tip: 'Save',
+    click: () => {
+      showSaveModal = true
+      saveModelRef && saveModelRef.init()
+    },
+  },
+  {
     name: 'copy',
     tip: 'Copy',
     click: copyActiveNode,
@@ -109,6 +119,12 @@ const iconList: {
     click: deleteActiveNode,
   },
 ])
+
+useKeyPress(ShortcutKey.save, () => {
+  if (!activeNode.value) return
+  showSaveModal = true
+  saveModelRef && saveModelRef.init()
+})
 </script>
 
 <template>
@@ -226,6 +242,7 @@ const iconList: {
         </div>
       </div>
     </div>
+    <SaveModal ref="saveModelRef" v-model="showSaveModal"></SaveModal>
   </div>
 </template>
 
@@ -445,6 +462,7 @@ const iconList: {
     color: $orange;
   }
   &.separate-icon,
+  &.save-icon,
   &.layers-icon {
     color: $color;
 

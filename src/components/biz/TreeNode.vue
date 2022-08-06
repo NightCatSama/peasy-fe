@@ -11,9 +11,10 @@ import { useConfigProps } from '@/utils/config'
 
 interface ITreeNodeListProps {
   node: PageNode
+  preview?: boolean
 }
 
-const { node } = defineProps<ITreeNodeListProps>()
+const { node, preview } = defineProps<ITreeNodeListProps>()
 
 const displayStore = useDisplayStore()
 const { layerStatus } = storeToRefs(displayStore)
@@ -65,7 +66,7 @@ watch(
 </script>
 
 <template>
-  <div :class="['tree-node', { collapse, active: isActive }]">
+  <div :class="['tree-node', { collapse, active: preview ? false : isActive }]">
     <Icon
       v-if="canCollapse"
       class="collapse-btn"
@@ -85,7 +86,7 @@ watch(
           @click="setActiveNodeHide(false)"
         ></Icon>
       </div>
-      <template v-if="activeNode === node">
+      <template v-if="activeNode === node && !preview">
         <Icon
           v-if="activeNode.isModule"
           class="tree-node-info-op-icon separate-icon"
@@ -131,7 +132,7 @@ watch(
     </div>
     <div class="tree-node-children">
       <TreeNode
-        v-show="canCollapse && collapse"
+        v-show="preview || (canCollapse && collapse)"
         v-for="child in node.children"
         :key="child.name"
         :node="child"

@@ -64,6 +64,7 @@ import EyeSlashIcon from '@/assets/eye-slash.svg'
 import SwitchIcon from '@/assets/switch.svg'
 import LinkBrokenIcon from '@/assets/link-broken.svg'
 import LinkIcon from '@/assets/link.svg'
+import SaveIcon from '@/assets/save.svg'
 
 interface IIconProps {
   name: string
@@ -139,6 +140,7 @@ const iconMap = {
   switch: SwitchIcon,
   'link-broken': LinkBrokenIcon,
   link: LinkIcon,
+  save: SaveIcon,
 } as any
 
 const { name, size = 26, type = 'circle', active, color } = defineProps<IIconProps>()

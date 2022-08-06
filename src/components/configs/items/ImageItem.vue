@@ -5,14 +5,16 @@ import Icon from '@/components/widgets/Icon.vue'
 import { emitter } from '@/utils/event'
 
 interface IImageItemProps {
-  label: string
+  label?: string
   modelValue: string
+  hideLabel?: boolean
   placeholder?: string
   accept?: string
 }
 const {
   modelValue,
   label,
+  hideLabel,
   placeholder = 'https://',
   accept = 'image/*',
 } = defineProps<IImageItemProps>()
@@ -26,8 +28,16 @@ const handleChange = (img: string) => {
 const uploadImage = async (e: InputEvent) => {
   const files = (e.target as HTMLInputElement).files
   if (files?.[0]) {
-    const url = await upload(files[0])
-    handleChange(url as string)
+    if (files[0].size <= 10 * 1024) {
+      var reader = new FileReader()
+      reader.readAsDataURL(files[0])
+      reader.onload = function (e) {
+        handleChange(reader.result as string)
+      }
+    } else {
+      const url = await upload(files[0])
+      handleChange(url as string)
+    }
   }
 }
 </script>
@@ -39,9 +49,10 @@ const uploadImage = async (e: InputEvent) => {
     :label="label"
     :type="'textarea'"
     :placeholder="placeholder"
+    v-bind="$attrs"
     @update:model-value="handleChange"
   >
-    <template #label><slot name="label"></slot></template>
+    <template #label v-if="!hideLabel"><slot name="label"></slot></template>
     <template #suffix>
       <div class="upload-wrapper">
         <div class="upload-btn">
@@ -60,6 +71,7 @@ const uploadImage = async (e: InputEvent) => {
         ></Icon>
       </div>
     </template>
+    <template #default><slot></slot></template>
   </InputItem>
 </template>
 
