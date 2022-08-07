@@ -52,6 +52,7 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
       ...usePositionStyle(propsRef.position),
       ...useAnimationStyle(animationMap),
       ...useEffectStyle(propsRef.effect, propsRef.componentName),
+      ...(propsRef.common.hide ? { display: 'none' } : null)
     })
   )
 

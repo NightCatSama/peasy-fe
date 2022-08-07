@@ -1,4 +1,4 @@
-import { variableColorSymbol } from '@/config'
+export const variableColorSymbol = '$'
 
 let dynamicAnimationStyles = null as HTMLStyleElement | null
 export const useColorVars = (colorVars: IColorVarItem[]) => {
@@ -12,13 +12,22 @@ export const useColorVars = (colorVars: IColorVarItem[]) => {
     if (!name || name.length <= 1) return
     stylesheet += `--${name.slice(1)}: ${color};`
   })
-  dynamicAnimationStyles.innerHTML = `
+  dynamicAnimationStyles.innerHTML = getColorVarStylesheet(colorVars)
+}
+
+export const getColorVarStylesheet = (colorVars: IColorVarItem[]) => {
+  let stylesheet = ``
+  colorVars.forEach(({ name, color }) => {
+    if (!name || name.length <= 1) return
+    stylesheet += `--${name.slice(1)}: ${color};`
+  })
+  return `
     :root {${stylesheet}}
   `.trim()
 }
 
 export const getColor = (color: string) => {
-  if (color?.[0] === variableColorSymbol) {
+  if (color?.[0] === '$') {
     return `var(--${color.slice(1)})`
   }
   return color

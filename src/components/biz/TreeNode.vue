@@ -68,13 +68,13 @@ watch(
 <template>
   <div :class="['tree-node', { collapse, active: preview ? false : isActive }]">
     <Icon
-      v-if="canCollapse"
+      v-if="canCollapse && !preview"
       class="collapse-btn"
       name="caret-down"
       :size="10"
       @click="collapse = !collapse"
     ></Icon>
-    <div class="tree-node-info" @click="setActiveNode(node)">
+    <div class="tree-node-info" @click="() => !preview && setActiveNode(node)">
       <Icon class="tree-node-info-icon" :name="icon" :size="12"></Icon>
       <div class="tree-node-info-name">
         <div class="tree-node-info-name-text">{{ node.name }}</div>

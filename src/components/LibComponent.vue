@@ -205,7 +205,6 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
         class: [
           'lib-component',
           {
-            hide: isHide,
             active: isActive,
             grading: inDraggable,
             module: !!item.isModule,

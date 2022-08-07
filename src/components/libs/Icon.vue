@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { getIsEditMode } from '@/utils/context';
 import { ref, useAttrs, watch } from 'vue'
 import { IProps, useProps } from './hooks/common'
 
@@ -14,6 +15,8 @@ const { elem, uName, style, props, tagClassNames } = useProps(
 )
 
 let styleElem = $ref<HTMLLinkElement | null>(null)
+
+const isEditMode = getIsEditMode()
 
 watch(
   () => props.basic.styleLink,

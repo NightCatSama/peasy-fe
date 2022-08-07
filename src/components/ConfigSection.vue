@@ -394,7 +394,6 @@ useKeyPress(ShortcutKey.save, () => {
   flex-wrap: wrap;
   padding: 0px 8px 4px 8px;
   .link-btn-wrapper {
-    flex: 1;
     display: flex;
     justify-content: flex-end;
     overflow: hidden;

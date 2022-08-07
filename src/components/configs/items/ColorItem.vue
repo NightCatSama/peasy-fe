@@ -12,7 +12,7 @@ import Select from '@/components/widgets/Select.vue'
 import { usePageStore } from '@/stores/page'
 import { useDisplayStore } from '@/stores/display'
 import { storeToRefs } from 'pinia'
-import { variableColorSymbol } from '@/config'
+import { variableColorSymbol } from '@/components/libs/hooks/color'
 import { emitter } from '@/utils/event'
 import { hide } from '@floating-ui/core'
 

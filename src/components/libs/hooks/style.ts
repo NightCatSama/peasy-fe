@@ -1,9 +1,17 @@
-import { computed, inject } from 'vue'
 import { getIsEditMode } from '@/utils/context'
-import { covertSize, fixedPointToNumber, getUnit } from '@/utils/sizeHelper'
 import type { AnimationMapType } from './animation'
 import { effectName2PropertyMap } from './effect'
 import { getColor } from './color'
+// import { covertSize as covertSizeUseStore } from '@/utils/sizeHelper'
+
+// NOTE: vite 的 tree-shaking 不知道为啥不起左右，改用 window 调用去解决
+export const covertSize = import.meta.env.VITE_IS_TEMPLATE === 'true'
+  ? (s: string, options?: { isSection?: boolean; type?: 'width' | 'height' }) => (
+    s.slice(-1) === '%' && options?.isSection
+      ? `${s.slice(0, -1)}${options?.type === 'height' ? 'vh' : 'vw'}`
+      : s
+  )
+  : (window as any)?.covertSize
 
 export const useStyle = (styles: any) => {
   for (let key in styles) {
@@ -96,7 +104,6 @@ export const usePositionStyle = (position?: IPosition) => {
 export const useSizeStyle = (size: ISize, direction?: string) => {
   if (!size) return {}
 
-  const isEditMode = getIsEditMode()
   const isSection = !direction
 
   let width = covertSize(size.width, { isSection, type: 'width' })

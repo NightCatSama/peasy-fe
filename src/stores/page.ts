@@ -1,10 +1,10 @@
 import { defineStore } from 'pinia'
 import { mande } from 'mande'
 import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mock'
-import { PageNode, ComponentPropsGroup, ComponentName, GroupType } from '@/config'
+import { PageNode, ComponentPropsGroup, ComponentName, GroupType, IPage } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
-import { useConfig, useConfigProps, isMobileGroupConfig, useGroupConfigByNode } from '@/utils/config'
+import { useConfig, useGroupConfig, isMobileGroupConfig, useMobileConfig, useGroupConfigByNode } from '@/utils/config'
 import { nextTick } from 'vue'
 import { cloneDeep, merge } from 'lodash'
 
@@ -15,7 +15,7 @@ type MaterialData = {
 }
 
 /** 模拟后端返回的页面数据 */
-const MockPageData = {
+const MockPageData: IPage = {
   /** 页面数据 */
   pageData: [getMockBlock('section')],
   /** 颜色变量 */
@@ -150,7 +150,7 @@ export const usePageStore = defineStore('page', {
         return children
       },
     activeParentNode: (state) => state.activeParentChain?.[0] || null,
-    activeNodeHide: (state) => state.activeNode ? useConfigProps(state.activeNode).common.hide || false : false,
+    activeNodeHide: (state) => state.activeNode ? useGroupConfig(state.activeNode, 'common').hide || false : false,
   },
   actions: {
     async getPageData() {
@@ -174,7 +174,12 @@ export const usePageStore = defineStore('page', {
     async download() {
       const data = this.allPageData
       const res = await api.post<any>({
-        data,
+        data: {
+          pageData: this.allPageData,
+          colorVars: this.colorVars,
+          font: this.font,
+          setting: this.setting
+        } as IPage,
       })
       return res
     },
@@ -282,7 +287,7 @@ export const usePageStore = defineStore('page', {
           this.activeNode,
           this.activeParentNode,
           index !== void 0 ? index + 1 : this.activeParentNode?.children?.length!,
-          true
+          !this.activeNode.isModule
         )
         nextTick(() => (this.activeNode = newNode))
       }
@@ -316,7 +321,15 @@ export const usePageStore = defineStore('page', {
     /** 设置当前激活组件隐藏 */
     setActiveNodeHide(hide: boolean) {
       if (!this.activeNode) return
-      useConfigProps(this.activeNode).common.hide = hide
+      if (useMobileConfig()) {
+        if (!this.activeNode.config?.mobile) this.activeNode.config.mobile = {}
+        if (!this.activeNode.config.mobile.common) this.activeNode.config.mobile.common = { hide }
+        this.activeNode.config.mobile.common.hide = hide
+      }
+      if (!useMobileConfig()) {
+        if (!this.activeNode.config.props.common) this.activeNode.config.props.common = { hide }
+        this.activeNode.config.props.common.hide = hide
+      }
     },
     /** 切换激活组件的配置模式，open 时则开启 mobile 单独配置 */
     switchActiveNodeConfigMode(groupType: GroupType) {

@@ -77,6 +77,8 @@ export const covertSize = (
   }
 }
 
+;(window as any).covertSize = covertSize
+
 /** 转换格式时，保持原有数值不变 */
 export const covertSizeToOtherUnit = (n: number, oldUnit: string, newUnit: string): number => {
   if (!n || !isUnitType(oldUnit) || !isUnitType(newUnit) || oldUnit === newUnit) return n

@@ -1,5 +1,3 @@
-import { variableColorSymbol } from '@/config'
-
 let dynamicAnimationStyles = null as HTMLStyleElement | null
 export const useFont = (font: IFontSetting, wrapper = 'body') => {
   // 初始化动态样式表
@@ -7,6 +5,11 @@ export const useFont = (font: IFontSetting, wrapper = 'body') => {
     dynamicAnimationStyles = document.createElement('style')
     document.head.appendChild(dynamicAnimationStyles)
   }
+  const stylesheet = getFontStylesheet(font, wrapper)
+  dynamicAnimationStyles.innerHTML = stylesheet
+}
+
+export const getFontStylesheet = (font: IFontSetting, wrapper: string) => {
   let stylesheet = ``
   if (font.fontFamily) {
     stylesheet += `${wrapper} { font-family: ${font.fontFamily}; }`
@@ -35,5 +38,5 @@ export const useFont = (font: IFontSetting, wrapper = 'body') => {
       }
     })
   }
-  dynamicAnimationStyles.innerHTML = stylesheet.trim()
+  return stylesheet
 }

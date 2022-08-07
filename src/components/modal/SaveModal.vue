@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { DefaultColor, PageNode } from '@/config'
+import { DefaultColor, IModuleConfigGroup, PageNode } from '@/config'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import SelectItem from '../configs/items/SelectItem.vue'
@@ -46,7 +46,19 @@ const initJSONEditor = () => {
       statusBar: false,
     });
   }
-  editor.set(node.moduleConfig || {})
+  editor.set(node.moduleConfig || [{
+    title: 'Title',
+    icon: 'basic',
+    data: [
+      {
+        type: 'text',
+        label: 'Label',
+        props: {},
+        sourceValue: 'children[0].config.props.basic.text',
+        targetValue: 'children[0].config.props.basic.text',
+      }
+    ]
+  }] as IModuleConfigGroup[])
 }
 
 defineExpose({

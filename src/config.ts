@@ -102,7 +102,19 @@ export interface IPropConfig<T extends ComponentName = any> {
   /** 配置参数 */
   props: PropsTypes<T>
   /** 当客户端支持 Desktop & Mobile 时，可以单独配置 mobile 配置 */
-  mobile?: PropsTypes<T>
+  mobile?: Partial<PropsTypes<T>>
+}
+
+/** 一份页面的完整数据 */
+export interface IPage {
+  /** 页面数据 */
+  pageData: PageNode[]
+  /** 颜色变量 */
+  colorVars: IColorVarItem[]
+  /** 页面配置 */
+  setting: IPageSetting
+  /** 字体配置 */
+  font: IFontSetting
 }
 
 /** 单个可配置的组件 */
@@ -199,5 +211,3 @@ export const DefaultColor = '#333333'
 
 export const getUniqueName = (name: string) => `_n_${name}_`
 export const getTagClassName = (tag: string) => `_t_${tag}_`
-
-export const variableColorSymbol = '$'
