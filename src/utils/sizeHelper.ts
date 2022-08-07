@@ -68,7 +68,7 @@ export const covertSize = (
         ? `${n}${type === 'height' ? 'vh' : 'vw'}`
         : s
     case 'rem':
-      return isEditMode ? `${useDisplayStore().device.fontSize * n}px` : s
+      return isEditMode ? `${useDisplayStore().curFootSize * n}px` : s
     case 'vw':
       return isEditMode ? `${n / (100 / useDisplayStore().device.width)}px` : s
     case 'px':

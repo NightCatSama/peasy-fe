@@ -35,7 +35,7 @@ export const useIconBasicStyle = (basic: IIconBasicType) => {
 
   return {
     color: getColor(basic.color),
-    fontSize: basic.size,
+    fontSize: covertSize(basic.size),
   }
 }
 

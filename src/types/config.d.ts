@@ -229,7 +229,8 @@ interface IColorVarItem {
 /** 字体设置 */
 interface IFontSetting {
   fontFamily: string
-  fontSize: string | { [key: string]: string }
+  fontSize: number
+  mediaFontSize: { [key: string]: number }
   customFontFace: (
     | string
     | {

@@ -7,11 +7,12 @@ type SliderPropType = Partial<InstanceType<typeof Slider>>
 interface ISliderItemProps extends SliderPropType {
   label: string
   type?: 'text' | 'angle'
+  wrapperClass?: string
   modelValue: SliderPropType['modelValue']
 }
 
 const props = defineProps<ISliderItemProps>()
-const { label, type = 'text', modelValue } = $(props)
+const { label, wrapperClass, type = 'text', modelValue } = $(props)
 const emit = defineEmits(['update:model-value'])
 
 let value = $computed({
@@ -36,7 +37,7 @@ const handleDragEnd = () => {
 </script>
 
 <template>
-  <div class="item">
+  <div :class="['item', wrapperClass]">
     <div class="label">{{ label }}</div>
     <div :class="['value', `value-type-${type}`]">
       <div

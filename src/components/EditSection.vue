@@ -29,7 +29,7 @@ const { pageData, activeNode, activeParentNode } = storeToRefs(pageStore)
 
 const displayStore = useDisplayStore()
 const { setDeviceByParent } = displayStore
-const { device, displayMode } = storeToRefs(displayStore)
+const { device, displayMode, curFootSize } = storeToRefs(displayStore)
 
 const dragStore = useDragStore()
 const { dragNode, dragType, dragNodeType, isCancelDrag } = storeToRefs(dragStore)
@@ -41,7 +41,7 @@ const contentRef = ref<HTMLDivElement | null>(null)
 const contentElem = $computed(() => ((contentRef.value as any)?.$el as HTMLDivElement) || null)
 const editContentStyle = $computed(() => ({
   width: `${device.value.width}px`,
-  fontSize: `${device.value.fontSize}px`,
+  fontSize: `${curFootSize}px`,
 }))
 const noPageData = $computed(() => pageData.value.length === 0)
 
@@ -82,7 +82,7 @@ onMounted(() => {
   // 缩放和移动时，同步去更新 Moveable 的激活框
   pz.value.on('zoom', (e: any) => {
     device.value.zoom = e.getTransform().scale
-    emitter.emit('updateMoveable')
+    setTimeout(() => emitter.emit('updateMoveable'))
   })
   pz.value.on('pan', () => emitter.emit('updateMoveable'))
 })

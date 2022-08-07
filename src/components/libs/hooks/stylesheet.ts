@@ -18,9 +18,13 @@ export const getFontStylesheet = (font: IFontSetting, wrapper: string) => {
   if (font.fontFamily) {
     stylesheet += `${wrapper} { font-family: ${font.fontFamily}; }`
   }
-  // TODO: 先只处理字符串类型
-  if (typeof font.fontSize === 'string') {
-    stylesheet += `${wrapper} { font-size: ${font.fontSize}; }`
+  if (font.fontSize) {
+    stylesheet += `${wrapper} { font-size: ${font.fontSize}px; }`
+  }
+  if (font.mediaFontSize && Object.keys(font.mediaFontSize).length > 0) {
+    Object.entries(font.mediaFontSize).forEach(([width, size]) => {
+      stylesheet += `@media screen and (min-width: ${width}px) { ${wrapper} { font-size: ${size}px; } }`
+    })
   }
   if (font.customFontFace) {
     font.customFontFace.forEach((item) => {

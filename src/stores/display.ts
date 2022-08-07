@@ -1,13 +1,13 @@
 import { PageNode } from '@/config'
 import { getDefaultDevice } from '@/utils/device'
 import { defineStore } from 'pinia'
+import { usePageStore } from './page'
 
 /** 当前模拟的设备宽高 */
 export interface IDeviceInfo {
   width: number
   height: number
   zoom: number
-  fontSize: number
 }
 
 /** 保存配置组的状态 */
@@ -23,20 +23,20 @@ export const useDisplayStore = defineStore('display', {
     /** 预设 */
     presetDevice: {
       desktop: [
-        [1280, 720, 16],
-        [1920, 1080, 20],
-        [2560, 1440, 24],
+        [1280, 720],
+        [1920, 1080],
+        [2560, 1440],
       ],
       mobile: [
-        [375, 667, 13],
-        [375, 812, 13],
-        [414, 896, 13],
+        [375, 667],
+        [414, 896],
+        [768, 1024],
       ],
     },
     /** 设备模式 */
     deviceType: 'desktop' as 'desktop' | 'mobile',
     /** 当前模拟设备信息 */
-    device: { width: 0, height: 0, zoom: 1, fontSize: 16 } as IDeviceInfo,
+    device: { width: 0, height: 0, zoom: 1 } as IDeviceInfo,
     /** 编辑组的状态保存，避免每次切换都恢复 */
     groupStatus: {} as { [key: string]: IGroupStatus },
     /** Layers 的状态保存，避免每次切换都恢复 */
@@ -70,8 +70,19 @@ export const useDisplayStore = defineStore('display', {
     curPresetDeviceList(state) {
       return state.presetDevice[state.deviceType]
     },
+    curWidthFootSize(state) {
+      return usePageStore().font.mediaFontSize?.[state.device.width] || 0
+    },
     curFootSize(state) {
-      return state.device.fontSize
+      const curWidthFootSize = usePageStore().font.mediaFontSize?.[state.device.width]
+      if (curWidthFootSize) return curWidthFootSize
+      let fontSize = usePageStore().font.fontSize
+      Object.entries(usePageStore().font.mediaFontSize).sort((a, b) => +a[0] - +b[0]).forEach(([width, size]) => {
+        if (state.device.width >= +width) {
+          fontSize = size
+        }
+      })
+      return fontSize
     },
     lockDrag(state) {
       return state.lockDragSetPosition || state.displayMode !== 'edit'
@@ -91,7 +102,6 @@ export const useDisplayStore = defineStore('display', {
         width: size[0],
         height: size[1],
         zoom: this.device.zoom,
-        fontSize: size[2],
       }
     },
     saveGroupStatus(name: string, status: IGroupStatus) {

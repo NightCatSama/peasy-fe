@@ -28,6 +28,5 @@ export const getDefaultDevice = (
     width: size[0],
     height: size[1],
     zoom,
-    fontSize: size[2],
   }
 }

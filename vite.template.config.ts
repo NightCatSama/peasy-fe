@@ -19,7 +19,7 @@ const htmlPlugin = () => {
         file = file.replace(/<!--app-meta-->/g, test.setting?.description ? `<meta name="description" content="${test.setting.description}" />` : '')
         file = file.replace(/<!--app-style-->/g, `
           <style>${getColorVarStylesheet(test.colorVars)}</style>
-          <style>${getFontStylesheet(test.font, 'body')}</style>
+          <style>${getFontStylesheet(test.font, 'html')}</style>
         `.trim())
       }
       return file

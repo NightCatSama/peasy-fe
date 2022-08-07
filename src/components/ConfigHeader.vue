@@ -15,13 +15,14 @@ import { ShortcutKey } from '@/constants/shortcut'
 import ColorVarList from './biz/ColorVarList.vue'
 import { useHistoryStore } from '@/stores/history'
 import { usePageStore } from '@/stores/page'
+import Switch from './widgets/Switch.vue'
 
 const pageStore = usePageStore()
 const { setting } = storeToRefs(pageStore)
-const { updateAllPageNode } = pageStore
+const { updateAllPageNode, setMediaFontSize } = pageStore
 
 const displayStore = useDisplayStore()
-const { device, displayMode, deviceType, curPresetDeviceList: deviceList } = storeToRefs(displayStore)
+const { device, displayMode, deviceType, curWidthFootSize, curFootSize, curPresetDeviceList: deviceList } = storeToRefs(displayStore)
 const { setDevice, setDisplayMode } = displayStore
 
 const historyStore = useHistoryStore()
@@ -73,6 +74,16 @@ const handleModeClick = (value: any) => {
   setDisplayMode(value)
 }
 
+const handleFontSizeSwitch = (value: boolean) => {
+  if (value) {
+    setMediaFontSize(device.value.width, curFootSize.value)
+  } else {
+    setMediaFontSize(device.value.width, 0)
+  }
+}
+
+const handleFontSizeChange = (value: number) => setMediaFontSize(device.value.width, value)
+
 useKeyPress(ShortcutKey.switchDevice, () => {
   if (setting.value.client !== 'both') return
   handleDeviceChange()
@@ -112,9 +123,11 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
         <template #content>
           <div class="device-wrapper">
             <div class="title">
-              Simulator
-              <span class="title-extra" v-if="hoverIndex > -1">
-                {{ deviceList[hoverIndex][0] + ' × ' + deviceList[hoverIndex][1] }}
+              <span>
+                Simulator
+                <span class="title-extra" v-if="hoverIndex > -1">
+                  {{ deviceList[hoverIndex][0] + ' × ' + deviceList[hoverIndex][1] }}
+                </span>
               </span>
               <Btn
                 v-if="setting.client === 'both'"
@@ -138,7 +151,7 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
                 <template v-if="deviceType === 'mobile'">
                   <Icon v-if="index === 0" name="mobile" type="pure" :size="20" />
                   <Icon v-else-if="index === 1" name="mobile" type="pure" :size="24" />
-                  <Icon v-else name="mobile" type="pure" :size="28" />
+                  <Icon v-else name="tablet" type="pure" :size="26" />
                 </template>
                 <template v-else>
                   <Icon v-if="index === 0" name="device-sm" type="pure" :size="28" />
@@ -147,7 +160,9 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
                 </template>
               </div>
             </div>
-            <div class="title">Zoom</div>
+            <div class="title">
+              <span>Zoom <span class="title-extra">{{ zoomText }}</span></span>
+            </div>
             <Slider
               width="200px"
               v-model="device.zoom"
@@ -155,6 +170,26 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
               :max="2"
               :interval="0.01"
               :contained="true"
+            ></Slider>
+            <div class="title media-title">
+              <span>
+                Media Font Size
+                <span class="title-extra">{{ curFootSize }}px</span>
+              </span>
+              <Switch
+                :model-value="!!curWidthFootSize"
+                @update:model-value="handleFontSizeSwitch"
+              ></Switch>
+            </div>
+            <Slider
+              v-if="!!curWidthFootSize"
+              width="200px"
+              :model-value="curWidthFootSize"
+              :min="10"
+              :max="100"
+              :interval="1"
+              :contained="true"
+              @update:model-value="handleFontSizeChange"
             ></Slider>
           </div>
         </template>
@@ -345,18 +380,24 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
     font-weight: bold;
     display: flex;
     align-items: center;
+     justify-content: space-between;
+
+    &.media-title {
+      display: flex;
+      margin-top: 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+    }
 
     .title-extra {
-      margin-left: 10px;
-      font-size: 10px;
-      font-weight: lighter;
-      opacity: 0.7;
+      margin-left: 2px;
+      font-size: 12px;
+      color: rgba($pink, 80%);
     }
 
     .switch-device-btn {
-      position: absolute;
-      right: 0;
-      top: 0;
       font-size: 12px;
       color: $theme;
     }

@@ -47,12 +47,8 @@ const MockPageData: IPage = {
       // }
     ],
     /** 全局的字体大小 */
-    // fontSize: '14px',
-    fontSize: {
-      '980': '12px',
-      '1920': '16px',
-      '2560': '20px',
-    },
+    fontSize: 14,
+    mediaFontSize: {},
   },
 }
 
@@ -375,6 +371,15 @@ export const usePageStore = defineStore('page', {
       }
       if (linkNode.config.props?.[groupType]) {
         ;(node.config.props as any)[groupType] = cloneDeep(linkNode.config.props[groupType])
+      }
+    },
+    /** 设置媒体查询字号 */
+    setMediaFontSize(width: number, fontSize: number) {
+      if (this.font.mediaFontSize[width] && fontSize === 0) {
+        delete this.font.mediaFontSize[width]
+      }
+      if (fontSize > 0) {
+        this.font.mediaFontSize[width] = fontSize
       }
     }
   },

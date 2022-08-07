@@ -1,7 +1,7 @@
 import { getFontStylesheet } from "./stylesheet"
 
 let dynamicAnimationStyles = null as HTMLStyleElement | null
-export const useFont = (font: IFontSetting, wrapper = 'body') => {
+export const useFont = (font: IFontSetting, wrapper = 'html') => {
   // 初始化动态样式表
   if (!dynamicAnimationStyles) {
     dynamicAnimationStyles = document.createElement('style')

@@ -4,6 +4,7 @@ import InputItem from '../configs/items/InputItem.vue'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import GroupItem from '../configs/items/GroupItem.vue'
+import SliderItem from '../configs/items/SliderItem.vue'
 import Btn from '../widgets/Btn.vue'
 
 const pageStore = usePageStore()
@@ -26,6 +27,14 @@ const deleteFontFace = (index: number) => {
 
 <template>
   <div :class="['font-family-panel']">
+    <SliderItem
+      wrapper-class="font-size-item"
+      label="Root Font Size"
+      v-model="font.fontSize"
+      :min="10"
+      :max="100"
+    >
+    </SliderItem>
     <InputItem
       wrapper-class="font-family-item"
       label="Font Family"
@@ -55,16 +64,14 @@ const deleteFontFace = (index: number) => {
         @update:model-value="(val: string) => font.customFontFace[index] = val"
       ></InputItem>
     </GroupItem>
-    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddFontFace"
-      >Add FontFace</Btn
-    >
+    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddFontFace">Add FontFace</Btn>
   </div>
 </template>
 
 <style lang="scss">
 .font-family-panel {
   width: $font-family-panel-width;
-  max-height: 60vh;
+  max-height: 80vh;
   overflow-y: auto;
   border-radius: $normal-radius;
   z-index: $global-setting-panel-zIndex;
@@ -75,6 +82,7 @@ const deleteFontFace = (index: number) => {
   flex-direction: column;
 
   .item.column > .label {
+    font-size: 14px;
     display: flex;
     margin-bottom: 6px;
   }
@@ -97,8 +105,13 @@ const deleteFontFace = (index: number) => {
     }
   }
 
-  .font-family-item {
+  .font-family-item, .font-size-item {
     margin-bottom: 12px;
+  }
+
+  .font-size-item {
+    display: flex;
+    align-items: center;
   }
 
   .group-item-delete {
