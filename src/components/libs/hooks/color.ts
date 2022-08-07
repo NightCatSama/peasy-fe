@@ -1,3 +1,5 @@
+import { getColorVarStylesheet } from "./stylesheet"
+
 export const variableColorSymbol = '$'
 
 let dynamicAnimationStyles = null as HTMLStyleElement | null
@@ -13,17 +15,6 @@ export const useColorVars = (colorVars: IColorVarItem[]) => {
     stylesheet += `--${name.slice(1)}: ${color};`
   })
   dynamicAnimationStyles.innerHTML = getColorVarStylesheet(colorVars)
-}
-
-export const getColorVarStylesheet = (colorVars: IColorVarItem[]) => {
-  let stylesheet = ``
-  colorVars.forEach(({ name, color }) => {
-    if (!name || name.length <= 1) return
-    stylesheet += `--${name.slice(1)}: ${color};`
-  })
-  return `
-    :root {${stylesheet}}
-  `.trim()
 }
 
 export const getColor = (color: string) => {

@@ -8,7 +8,7 @@ import { useConfig, useGroupConfig, isMobileGroupConfig, useMobileConfig, useGro
 import { nextTick } from 'vue'
 import { cloneDeep, merge } from 'lodash'
 
-const api = mande('http://localhost:3030/api/page')
+const downloadApi = mande('http://localhost:3030/api/data/download')
 
 type MaterialData = {
   [key in PageNode['type']]: PageNode<any>[]
@@ -173,7 +173,7 @@ export const usePageStore = defineStore('page', {
     },
     async download() {
       const data = this.allPageData
-      const res = await api.post<any>({
+      const res = await downloadApi.post<any>({
         data: {
           pageData: this.allPageData,
           colorVars: this.colorVars,
