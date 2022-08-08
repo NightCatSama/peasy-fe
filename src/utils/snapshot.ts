@@ -8,13 +8,10 @@ export const createMaterialSnapshot = (el: HTMLElement, options?: any) => {
       if (elem.classList.contains('moveable-control-box')) {
         return true
       }
-      if (elem.classList.contains('active')) {
-        elem.classList.remove('active')
-      }
       return false
     },
-    onclone: (dom: any) => {
-      const activeElements = dom.querySelector('.edit-content')
+    onclone: (document: any) => {
+      const activeElements = document.querySelector('.edit-content')
       activeElements.style.transform = ''
     },
     ...options,

@@ -22,6 +22,10 @@ const handleClose = () => {
   if (onHide?.() === true) return
   onUpdate(false)
 }
+
+defineExpose({
+  hide: handleClose
+})
 </script>
 
 <template>
@@ -40,7 +44,7 @@ const handleClose = () => {
             class="modal-content-close"
             @click="handleClose"
           ></Icon>
-          <slot></slot>
+          <slot :hide="handleClose"></slot>
         </div>
       </div>
     </Transition>

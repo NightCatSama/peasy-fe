@@ -6,6 +6,7 @@ type Events = {
   updateMoveable?: any
   saveHistory?: any
   collapseGroup?: any
+  saveColorVars: string
 }
 
 export const emitter = mitt<Events>()

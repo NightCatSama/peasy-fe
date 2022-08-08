@@ -75,7 +75,7 @@
       }
 
       &.module::before {
-        content: 'Can be Drop After Ungroup';
+        content: '';
         display: flex;
         justify-content: center;
         align-items: center;
@@ -85,6 +85,7 @@
         text-shadow: 0 0 10px rgba($white, 30%);
         background: rgba($black, 50%);
         z-index: $module-cover-zIndex;
+        font-family: $font-family;
       }
     }
     .moveable-control-box {

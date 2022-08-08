@@ -68,6 +68,14 @@ const handleInputChange = (e: Event) => {
 }
 
 const showValue = $computed(() => getColor(modelValue))
+const showSaveBtn = $computed(() =>
+  !hideVariable &&
+  colorType.value === 'variable' &&
+  modelValue[0] !== variableColorSymbol
+)
+const handleSaveColorVar = () => {
+  emitter.emit('saveColorVars', modelValue)
+}
 </script>
 
 <template>
@@ -85,26 +93,31 @@ const showValue = $computed(() => getColor(modelValue))
         <template #content="{ hide }">
           <Chrome v-model="value"></Chrome>
           <div class="color-plus">
-            <Select
-              display="text"
-              :disabled="hideVariable"
-              :model-value="hideVariable ? 'recent' : colorType"
-              placement="bottom-start"
-              container=".color-dropdown"
-              :options="
-                hideVariable
-                  ? { recent: 'Recent Color' }
-                  : {
-                      variable: 'Variable',
-                      recent: 'Recent Color',
-                    }
-              "
-              @update:model-value="(val) => (colorType = val)"
-            ></Select>
+            <div class="select-wrapper">
+              <Select
+                display="text"
+                :disabled="hideVariable"
+                :model-value="hideVariable ? 'recent' : colorType"
+                placement="bottom-start"
+                container=".color-dropdown"
+                :distance="-3"
+                :options="
+                  hideVariable
+                    ? { recent: 'Recent Color' }
+                    : {
+                        variable: 'Variable',
+                        recent: 'Recent Color',
+                      }
+                "
+                @update:model-value="(val) => (colorType = val)"
+              ></Select>
+              <div v-show="showSaveBtn" class="save-btn" @click="handleSaveColorVar">Save Variable</div>
+            </div>
             <div v-if="!hideVariable && colorType === 'variable'" class="color-wrapper">
               <div
                 class="color-var-item"
                 v-for="c in colorVars"
+                v-show="c.name.length > 1"
                 :key="c.name"
                 @click="
                   () => {
@@ -216,10 +229,25 @@ const showValue = $computed(() => getColor(modelValue))
   font-size: 12px;
   padding: 4px 0 8px;
 }
+.select-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding-right: 12px;
+}
+.save-btn {
+  font-size: 12px;
+  color: $pink;
+  cursor: pointer;
+  transform: scale(.9);
+  transform-origin: right center;
+}
 .color-wrapper {
   display: flex;
   flex-wrap: wrap;
   padding: 0 12px 0;
+  max-height: 180px;
+  overflow: auto;
 
   .color-var-item {
     display: flex;

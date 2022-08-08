@@ -8,12 +8,13 @@ import { storeToRefs } from 'pinia'
 import Element from './widgets/Element.vue'
 import { useDragStore } from '@/stores/drag'
 import { DisplayMode, useDisplayStore } from '@/stores/display'
-import { PageNode } from '@/config'
+import { PageNode, IMaterialItem } from '@/config'
 import Tabs from './widgets/Tabs.vue'
+import { Alert } from '@/utils/alert'
 
 const pageStore = usePageStore()
 const { pageData, materialData } = storeToRefs(pageStore)
-const { addSection } = pageStore
+const { addSection, deleteMaterial } = pageStore
 
 const dragStore = useDragStore()
 const { setDragNode, setIsCancelDrag } = dragStore
@@ -25,6 +26,7 @@ const { setDisplayMode } = displayStore
 let preDisplayMode = $ref<DisplayMode>('edit')
 
 let currentType = $ref('section')
+let draggableRef = $ref<any>(null)
 
 const handleAddSection = (template: PageNode) => {
   if (template.type === 'section') {
@@ -47,25 +49,44 @@ const handleDragStart = (event: DragEvent, data: PageNode) => {
   setTimeout(() => emitter.emit('switchMaterialsPanel', false), 100)
 }
 
+const handleDelete = (item: IMaterialItem) => {
+  deleteMaterial(item.id!)
+  Alert('删除成功')
+}
+
 const currentNodeList = $computed(() => (materialData.value as any)[currentType]);
+const tabData = $computed(() => ([
+  {
+    key: 'section',
+    value: 'Section',
+    active: currentType === 'section',
+    onClick: (val: boolean) => val && (currentType = 'section')
+  },
+  {
+    key: 'component',
+    value: 'Component',
+    active: currentType === 'component',
+    onClick: (val: boolean) => val && (currentType = 'component')
+  }
+]))
 </script>
 
 <template>
   <div class="materials-panel">
     <Tabs
       class="materials-panel-tabs"
-      :data="{ 'section': 'Section', 'component': 'Component '}"
-      v-model="currentType"
+      :data="tabData"
       type="float"
     ></Tabs>
     <!-- <section v-for="(list, key) in materialData" v-show="key !== 'template'"> -->
       <!-- <div class="title">{{ currentType.toLocaleUpperCase() }}</div> -->
       <draggable
+        ref="draggableRef"
         class="element-list"
         tag="div"
         :model-value="currentNodeList"
         :sort="false"
-        :item-key="'name'"
+        :item-key="'id'"
         :group="{ name: currentType, pull: 'clone', put: false }"
         @end="handleDragend"
       >
@@ -78,7 +99,9 @@ const currentNodeList = $computed(() => (materialData.value as any)[currentType]
             <Element
               :cover="item.cover"
               :name="item.name"
+              :can-delete="true"
               @click="handleAddSection(item.node)"
+              @delete="handleDelete(item)"
             ></Element>
           </div>
         </template>

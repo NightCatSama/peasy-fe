@@ -21,6 +21,7 @@ import Input from '../widgets/Input.vue'
 import TreeNode from '../biz/TreeNode.vue'
 import JSONEditor from 'jsoneditor'
 import ImageItem from '../configs/items/ImageItem.vue'
+import { Alert, AlertError } from '@/utils/alert'
 
 const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
@@ -35,6 +36,8 @@ let category = $ref('')
 let categoryEn = $ref('')
 let cover = $ref('')
 let editor = $ref<JSONEditor | null>(null)
+
+let modal = $ref<InstanceType<typeof Modal> | null>(null)
 
 const initJSONEditor = () => {
   if (!node) return
@@ -67,8 +70,11 @@ defineExpose({
   init: async () => {
     if (!node) return
     name = node.name
+    enName = ''
     isModule.value = node.isModule || false
     category = ''
+    categoryEn = ''
+    cover = ''
     const elem = document.querySelector(`[data-name="${name}"]`) as HTMLElement
     cover = elem ? await createMaterialSnapshot(elem) : ''
     isModule && initJSONEditor()
@@ -79,21 +85,31 @@ watch(isModule, (val: boolean) => {
   if (val) initJSONEditor()
 })
 
-const handleSave = () => {
+const handleSave = async () => {
   if (!node) return
-  fetchSaveNode({
-    name,
-    enName,
-    node,
-    category,
-    categoryEn,
-    cover,
-  })
+  try {
+    await fetchSaveNode({
+      name,
+      enName,
+      node: {
+        ...node,
+        isModule: isModule.value,
+        moduleConfig: isModule.value && editor ? editor.get() : [],
+      },
+      category,
+      categoryEn,
+      cover,
+    })
+    Alert('Save Success')
+    modal?.hide()
+  } catch (e: any) {
+    AlertError(e?.message || 'Save Error')
+  }
 }
 </script>
 
 <template>
-  <Modal class="save-modal" :title="`Save ${node?.type || ''}`" :width="'70vw'" v-bind="$attrs">
+  <Modal ref="modal" class="save-modal" :title="`Save ${node?.type || ''}`" :width="'70vw'" v-bind="$attrs">
     <div class="info-wrapper">
       <div class="info">
         <InputItem

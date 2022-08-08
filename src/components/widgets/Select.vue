@@ -18,6 +18,7 @@ interface ISelectProps {
   modelValue: string
   container?: string
   disabled?: boolean
+  distance?: number
   options: { [key: string]: string | ISelectItem }
 }
 
@@ -28,6 +29,7 @@ const {
   options,
   modelValue,
   container,
+  distance,
 } = defineProps<ISelectProps>()
 
 const showValue = $computed(() => {
@@ -44,7 +46,7 @@ const handleChange = (val: string) => {
 </script>
 
 <template>
-  <Dropdown type="pure" :placement="placement" :disabled="disabled" :container="container">
+  <Dropdown type="pure" :placement="placement" :disabled="disabled" :container="container" :distance="distance">
     <div :class="['select', `select-display-${display}`, { disabled }]">
       <slot name="value" :value="showValue">
         <div class="select-value">

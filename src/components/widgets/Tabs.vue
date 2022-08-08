@@ -81,11 +81,12 @@ const list: ITabItem[] = $computed(() => {
     min-height: 40px;
 
     .tab-item {
+      font-weight: bold;
       color: $panel-content;
       border-radius: $inner-radius;
 
       &:hover {
-        color: $theme;
+        color: $panel-dark;
       }
 
       &.active {

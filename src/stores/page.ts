@@ -1,7 +1,7 @@
 import { defineStore } from 'pinia'
 import { mande } from 'mande'
 import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mock'
-import { PageNode, ComponentPropsGroup, ComponentName, GroupType, IPage } from '@/config'
+import { PageNode, ComponentPropsGroup, ComponentName, GroupType, IPage, IMaterialItem } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
 import { useConfig, useGroupConfig, isMobileGroupConfig, useMobileConfig, useGroupConfigByNode } from '@/utils/config'
@@ -13,7 +13,7 @@ const saveApi = mande('http://localhost:3030/api/data/save')
 const materialApi = mande('http://localhost:3030/api/data/material')
 
 type MaterialData = {
-  [key in PageNode['type']]: PageNode<any>[]
+  [key in PageNode['type']]: IMaterialItem[]
 }
 
 /** 模拟后端返回的页面数据 */
@@ -171,6 +171,15 @@ export const usePageStore = defineStore('page', {
       const res = await materialApi.get<any>('', {})
       this.materialData = res.data
     },
+    async deleteMaterial(id: number) {
+      await materialApi.delete('' + id)
+      Object.values(this.materialData).forEach((list) => {
+        const index = list.findIndex((item) => item.id === id)
+        if (index > -1) {
+          list.splice(index, 1)
+        }
+      })
+    },
     async download() {
       const data = this.allPageData
       const res = await downloadApi.post<any>({
@@ -184,7 +193,7 @@ export const usePageStore = defineStore('page', {
       return res
     },
     async fetchSaveNode(params: { name: string; enName?: string; node: PageNode; category: string; categoryEn: string; cover: string }) {
-      const res = await saveApi.post<any>({
+      const data = {
         name: params.name,
         enName: params.enName,
         type: params.node.type,
@@ -192,7 +201,10 @@ export const usePageStore = defineStore('page', {
         category: params.category,
         categoryEn: params.categoryEn,
         cover: params.cover,
-      })
+      }
+      const res = await saveApi.post<any>(data)
+      res.data.node = JSON.parse(res.data.node)
+      this.materialData[data.type].push(res.data)
       return res
     },
     /** 插入 Component 组件 */

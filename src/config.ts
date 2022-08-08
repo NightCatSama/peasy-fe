@@ -195,6 +195,21 @@ export interface IModuleConfigItem {
   targetValue?: string | string[]
 }
 
+export interface IMaterialItem {
+  name: string;
+  node: PageNode
+  nodeType?: string;
+  type: string;
+  category?: string;
+  categoryEn?: string;
+  cover?: string;
+  enName?: string;
+  id?: number
+  uid?: number;
+  createDate?: string;
+  updateDate?: string;
+}
+
 /** 判断是否某个基础类型 */
 export const isSomeBasicType = <T extends ComponentName, P extends GroupPropType<T>['basic']>(
   name: string,

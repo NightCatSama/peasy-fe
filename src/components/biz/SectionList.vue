@@ -104,6 +104,7 @@ const dragEvents = $computed(() => ({
   display: flex;
   flex-direction: column;
   overflow: auto;
+  margin-top: 10px;
 
   &-drag {
     border-color: rgba($white, 50%);

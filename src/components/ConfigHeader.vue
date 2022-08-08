@@ -18,7 +18,7 @@ import { usePageStore } from '@/stores/page'
 import Switch from './widgets/Switch.vue'
 
 const pageStore = usePageStore()
-const { setting } = storeToRefs(pageStore)
+const { setting, colorVars } = storeToRefs(pageStore)
 const { updateAllPageNode, setMediaFontSize } = pageStore
 
 const displayStore = useDisplayStore()
@@ -30,6 +30,7 @@ const { canUndoHistory, canRedoHistory } = storeToRefs(historyStore)
 const { saveHistory, undoHistory, redoHistory } = historyStore
 
 const name = $ref('index')
+let showColorVarDropdown = $ref(false)
 
 const text = $computed(
   () => `${device.value.width || 'width'} x ${device.value.height || 'height'}`
@@ -97,6 +98,14 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
   e.preventDefault()
   emitter.emit('switchMaterialsPanel')
 })
+
+emitter.on('saveColorVars', (color: string) => {
+  showColorVarDropdown = true
+  colorVars.value.push({
+    name: '',
+    color,
+  })
+})
 </script>
 
 <template>
@@ -106,7 +115,13 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
       <div class="ext">.html</div>
     </div>
     <div class="center">
-      <Dropdown placement="bottom" type="pure-dropdown" :distance="10">
+      <Dropdown
+        :shown="showColorVarDropdown"
+        placement="bottom"
+        type="pure-dropdown"
+        :distance="10"
+        @apply-hide="showColorVarDropdown = false"
+      >
         <template #default="{ shown }">
           <div :class="['color-plate', { active: shown }]">
             <Icon name="color" :size="18" />
