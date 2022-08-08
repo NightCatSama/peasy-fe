@@ -11,7 +11,7 @@
     "build:template": "rm -rf template-dist/ && vue-tsc --noEmit && VITE_IS_TEMPLATE=true vite build --config vite.template.config.ts && npm run template",
     "template": "npm run cp:template && npm run cp:types && npm run cp:stylesheet",
     "cp:template": "cp -r template-dist/ peasy-be/template/",
-    "cp:types": "cp -r src/types/config.d.ts peasy-be/types/",
+    "cp:types": "cp -r src/types/config.d.ts peasy-be/types/ && cp -r src/config.ts peasy-be/types/",
     "cp:stylesheet": "cp -r src/components/libs/hooks/stylesheet.ts peasy-be/template/",
     "preview": "vite preview",
     "prettier": "npx prettier --write src/"

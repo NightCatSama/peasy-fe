@@ -62,12 +62,12 @@ const handleDragStart = (event: DragEvent, data: PageNode) => {
           <div
             class="element-item"
             :key="item.name"
-            @dragstart="(event: DragEvent) => handleDragStart(event, item)"
+            @dragstart="(event: DragEvent) => handleDragStart(event, item.node)"
           >
             <Element
               :cover="item.cover"
               :name="item.name"
-              @click="handleAddSection(item)"
+              @click="handleAddSection(item.node)"
             ></Element>
           </div>
         </template>

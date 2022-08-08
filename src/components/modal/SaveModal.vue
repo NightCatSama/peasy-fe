@@ -24,13 +24,15 @@ import ImageItem from '../configs/items/ImageItem.vue'
 
 const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
-const { addSection, setActiveSection, setActiveNode, swapSection } = pageStore
+const { fetchSaveNode } = pageStore
 
 const node = $computed(() => activeNode.value ? useSourceNode(activeNode.value) : null)
 
 let name = $ref('')
+let enName = $ref('')
 let isModule = ref(false)
 let category = $ref('')
+let categoryEn = $ref('')
 let cover = $ref('')
 let editor = $ref<JSONEditor | null>(null)
 
@@ -66,7 +68,7 @@ defineExpose({
     if (!node) return
     name = node.name
     isModule.value = node.isModule || false
-    category = node.category || ''
+    category = ''
     const elem = document.querySelector(`[data-name="${name}"]`) as HTMLElement
     cover = elem ? await createMaterialSnapshot(elem) : ''
     isModule && initJSONEditor()
@@ -76,21 +78,40 @@ defineExpose({
 watch(isModule, (val: boolean) => {
   if (val) initJSONEditor()
 })
+
+const handleSave = () => {
+  if (!node) return
+  fetchSaveNode({
+    name,
+    enName,
+    node,
+    category,
+    categoryEn,
+    cover,
+  })
+}
 </script>
 
 <template>
-  <Modal class="save-modal" title="Save Component" :width="'70vw'" v-bind="$attrs">
+  <Modal class="save-modal" :title="`Save ${node?.type || ''}`" :width="'70vw'" v-bind="$attrs">
     <div class="info-wrapper">
       <div class="info">
         <InputItem
           label="Name"
           v-model="name"
         ></InputItem>
-        <SelectItem
+        <InputItem
+          label="Name(En)"
+          v-model="enName"
+        ></InputItem>
+        <InputItem
           label="Category"
-          :options="{ '': 'None', 'intro': 'Intro', 'nav': 'Nav' }"
           v-model="category"
-        ></SelectItem>
+        ></InputItem>
+        <InputItem
+          label="Category(En)"
+          v-model="categoryEn"
+        ></InputItem>
         <SwitchItem
           label="Module"
           v-model="isModule"
@@ -112,7 +133,7 @@ watch(isModule, (val: boolean) => {
       </div>
     </div>
     <div class="btn-wrapper">
-      <Btn class="save-btn" type="inner" text="Save"></Btn>
+      <Btn class="save-btn" type="inner" text="Save" @click="handleSave"></Btn>
     </div>
   </Modal>
 </template>
@@ -147,6 +168,10 @@ watch(isModule, (val: boolean) => {
         background-color: $panel-dark;
         border-radius: $normal-radius;
         z-index: 1;
+      }
+
+      .input {
+        height: 100%;
       }
     }
   }

@@ -9,6 +9,8 @@ import { nextTick } from 'vue'
 import { cloneDeep, merge } from 'lodash'
 
 const downloadApi = mande('http://localhost:3030/api/data/download')
+const saveApi = mande('http://localhost:3030/api/data/save')
+const materialApi = mande('http://localhost:3030/api/data/material')
 
 type MaterialData = {
   [key in PageNode['type']]: PageNode<any>[]
@@ -156,16 +158,18 @@ export const usePageStore = defineStore('page', {
     },
     async getAssetsData() {
       // const { data } = await api.post<any>({})
-      const data = {
-        section: [
-          getMockBlock('section', 'Section-1'),
-          getMockBlock('section', 'Section-2'),
-          getMockBlock('section', 'Section-3'),
-        ],
-        component: [getMockText(), getMockBlock(), getMockImage(), getMockIcon()],
-        template: [],
-      }
-      this.materialData = data
+      // const data = {
+      //   section: [
+      //     getMockBlock('section', 'Section-1'),
+      //     getMockBlock('section', 'Section-2'),
+      //     getMockBlock('section', 'Section-3'),
+      //   ],
+      //   component: [getMockText(), getMockBlock(), getMockImage(), getMockIcon()],
+      //   template: [],
+      // }
+      // this.materialData = data
+      const res = await materialApi.get<any>('', {})
+      this.materialData = res.data
     },
     async download() {
       const data = this.allPageData
@@ -176,6 +180,18 @@ export const usePageStore = defineStore('page', {
           font: this.font,
           setting: this.setting
         } as IPage,
+      })
+      return res
+    },
+    async fetchSaveNode(params: { name: string; enName?: string; node: PageNode; category: string; categoryEn: string; cover: string }) {
+      const res = await saveApi.post<any>({
+        name: params.name,
+        enName: params.enName,
+        type: params.node.type,
+        node: params.node,
+        category: params.category,
+        categoryEn: params.categoryEn,
+        cover: params.cover,
       })
       return res
     },

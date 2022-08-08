@@ -73,7 +73,7 @@ const handleClose = () => {
     min-width: 200px;
     max-height: 70vh;
     overflow: auto;
-    padding: 12px 16px;
+    padding: 16px 20px;
     z-index: 1;
     background-color: $panel;
     border-radius: $normal-radius;
@@ -81,11 +81,16 @@ const handleClose = () => {
     color: $color;
 
     &-header {
-      font-size: 16px;
-      padding-bottom: 16px;
+      padding-bottom: 24px;
 
       &:empty {
         display: none;
+      }
+
+      &-title {
+        font-size: 18px;
+        font-weight: bold;
+        color: $yellow;
       }
     }
 

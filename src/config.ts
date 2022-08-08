@@ -117,6 +117,8 @@ export interface IPage {
   font: IFontSetting
 }
 
+export type PageNodeType = 'component' | 'section' | 'template'
+
 /** 单个可配置的组件 */
 export interface PageNode<T extends ComponentName = any> {
   /**
@@ -125,11 +127,9 @@ export interface PageNode<T extends ComponentName = any> {
    * section: 块组件，可以添加 children
    * template: 模板组件
    */
-  type: 'component' | 'section' | 'template'
+  type: PageNodeType
   /** 组件名称 */
   name: string
-  /** 类别 */
-  category?: string
   /** 标签 */
   tags: string[]
   /** 组件名称 */
