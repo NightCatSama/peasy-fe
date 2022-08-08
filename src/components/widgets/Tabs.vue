@@ -12,9 +12,10 @@ import Icon from './Icon.vue'
 interface ITabsProps {
   data: { [key: string]: string } | string[] | ITabItem[]
   modelValue?: string
+  type?: 'default' | 'float'
   iconMap?: { [key: string]: any }
 }
-const { data, modelValue, iconMap } = defineProps<ITabsProps>()
+const { data, modelValue, iconMap, type = 'default' } = defineProps<ITabsProps>()
 
 const list: ITabItem[] = $computed(() => {
   if (Array.isArray(data)) {
@@ -28,7 +29,7 @@ const list: ITabItem[] = $computed(() => {
 </script>
 
 <template>
-  <div class="tabs">
+  <div :class="['tabs', `tabs-type-${type}`]">
     <div
       v-for="item in list"
       :key="item.key"
@@ -54,10 +55,46 @@ const list: ITabItem[] = $computed(() => {
 .tabs {
   flex: 1;
   display: flex;
-  min-height: 36px;
-  padding: 4px;
   border-radius: $normal-radius;
-  border: 1px solid rgba($panel-light, 0.5);
+
+  &-type-default {
+    border: 1px solid rgba($panel-light, 0.5);
+    padding: 4px;
+    min-height: 36px;
+
+    .tab-item {
+      &:hover {
+        color: $theme;
+      }
+
+      &.active {
+        color: $color;
+        background: $panel-light-gradient;
+        border-radius: $inner-radius;
+      }
+    }
+  }
+
+  &-type-float {
+    background: $color;
+    padding: 3px;
+    min-height: 40px;
+
+    .tab-item {
+      color: $panel-content;
+      border-radius: $inner-radius;
+
+      &:hover {
+        color: $theme;
+      }
+
+      &.active {
+        color: $color;
+        background: $panel-gradient;
+        box-shadow: $float-shadow;
+      }
+    }
+  }
 
   .tab-item {
     flex: 1;
@@ -69,16 +106,6 @@ const list: ITabItem[] = $computed(() => {
 
     &:not(:last-child) {
       margin-right: 4px;
-    }
-
-    &:hover {
-      color: $theme;
-    }
-
-    &.active {
-      color: $color;
-      background: $panel-light-gradient;
-      border-radius: $inner-radius;
     }
   }
 }

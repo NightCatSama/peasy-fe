@@ -9,6 +9,7 @@ import Element from './widgets/Element.vue'
 import { useDragStore } from '@/stores/drag'
 import { DisplayMode, useDisplayStore } from '@/stores/display'
 import { PageNode } from '@/config'
+import Tabs from './widgets/Tabs.vue'
 
 const pageStore = usePageStore()
 const { pageData, materialData } = storeToRefs(pageStore)
@@ -22,6 +23,8 @@ const { displayMode } = storeToRefs(displayStore)
 const { setDisplayMode } = displayStore
 
 let preDisplayMode = $ref<DisplayMode>('edit')
+
+let currentType = $ref('section')
 
 const handleAddSection = (template: PageNode) => {
   if (template.type === 'section') {
@@ -43,19 +46,27 @@ const handleDragStart = (event: DragEvent, data: PageNode) => {
   setDisplayMode('drag')
   setTimeout(() => emitter.emit('switchMaterialsPanel', false), 100)
 }
+
+const currentNodeList = $computed(() => (materialData.value as any)[currentType]);
 </script>
 
 <template>
   <div class="materials-panel">
-    <section v-for="(list, key) in materialData" v-show="key !== 'template'">
-      <div class="title">{{ key.toLocaleUpperCase() }}</div>
+    <Tabs
+      class="materials-panel-tabs"
+      :data="{ 'section': 'Section', 'component': 'Component '}"
+      v-model="currentType"
+      type="float"
+    ></Tabs>
+    <!-- <section v-for="(list, key) in materialData" v-show="key !== 'template'"> -->
+      <!-- <div class="title">{{ currentType.toLocaleUpperCase() }}</div> -->
       <draggable
         class="element-list"
         tag="div"
-        :model-value="list"
+        :model-value="currentNodeList"
         :sort="false"
         :item-key="'name'"
-        :group="{ name: key, pull: 'clone', put: false }"
+        :group="{ name: currentType, pull: 'clone', put: false }"
         @end="handleDragend"
       >
         <template #item="{ element: item }">
@@ -72,7 +83,7 @@ const handleDragStart = (event: DragEvent, data: PageNode) => {
           </div>
         </template>
       </draggable>
-    </section>
+    <!-- </section> -->
   </div>
 </template>
 
@@ -85,6 +96,10 @@ const handleDragStart = (event: DragEvent, data: PageNode) => {
   flex-shrink: 0;
   background: $panel;
   padding: 12px 16px;
+
+  &-tabs {
+    margin-bottom: 12px;
+  }
 
   .title {
     margin-bottom: 15px;
