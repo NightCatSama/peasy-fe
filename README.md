@@ -16,3 +16,10 @@ mysql.server start
 vi ./peasy-be/.env
 ```
 
+## 启动 Logto
+
+按教程安装 Logto
+
+下载 Postgresql
+
+将 logto/.env 放置到 logto 目录，再 npm start 启动

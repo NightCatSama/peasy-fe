@@ -16,11 +16,15 @@ import { ShortcutKey } from '@/constants/shortcut'
 import ColorVarList from './biz/ColorVarList.vue'
 import { useHistoryStore } from '@/stores/history'
 import { usePageStore } from '@/stores/page'
+import { useUserStore } from '@/stores/user'
 import Switch from './widgets/Switch.vue'
 
 const { signIn, signOut, isAuthenticated } = useLogto();
 const onClickSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
 const onClickSignOut = () => signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
+
+const userStore = useUserStore()
+const { userName } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
 const { setting, colorVars } = storeToRefs(pageStore)
@@ -250,6 +254,7 @@ emitter.on('saveColorVars', (color: string) => {
         <Avatar :size="36" />
         <template #content>
           <div v-if="isAuthenticated">
+            <div class="user-name">{{ userName }}</div>
             <div @click="onClickSignOut">退出登录</div>
           </div>
           <div v-else>
