@@ -16,6 +16,7 @@ import { useHistoryStore } from '@/stores/history'
 import { useKeyPress } from 'ahooks-vue'
 import { ShortcutKey } from '@/constants/shortcut'
 import { useFont } from '@/components/libs/hooks/font'
+import { persistToken } from '@/utils/mande'
 
 const pageStore = usePageStore()
 const { pageData, activeSection, allPageData, colorVars, font } = storeToRefs(pageStore)
@@ -37,7 +38,7 @@ const handleDownload = async () => {
 
 let showLeftPanel = $ref(false)
 
-onMounted(() => {
+onMounted(async () => {
   emitter.on('switchMaterialsPanel', (show?: boolean) => {
     showLeftPanel = show === void 0 ? !showLeftPanel : show
   })
@@ -74,6 +75,9 @@ onMounted(() => {
   emitter.on('saveHistory', () => {
     saveHistory(allPageData.value)
   })
+
+  // 先获取 token
+  await persistToken()
 
   // 初始化加载页面数据
   getAssetsData()

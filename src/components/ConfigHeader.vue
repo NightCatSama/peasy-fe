@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
+import { useLogto } from '@logto/vue'
 
 import Btn from './widgets/Btn.vue'
 import Avatar from './widgets/Avatar.vue'
@@ -16,6 +17,10 @@ import ColorVarList from './biz/ColorVarList.vue'
 import { useHistoryStore } from '@/stores/history'
 import { usePageStore } from '@/stores/page'
 import Switch from './widgets/Switch.vue'
+
+const { signIn, signOut, isAuthenticated } = useLogto();
+const onClickSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
+const onClickSignOut = () => signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
 
 const pageStore = usePageStore()
 const { setting, colorVars } = storeToRefs(pageStore)
@@ -241,7 +246,17 @@ emitter.on('saveColorVars', (color: string) => {
         @click="() => updateAllPageNode(redoHistory())"
       ></Icon>
       <Btn @click="$emit('download')" text="Download"></Btn>
-      <Avatar :size="36" />
+      <Dropdown>
+        <Avatar :size="36" />
+        <template #content>
+          <div v-if="isAuthenticated">
+            <div @click="onClickSignOut">退出登录</div>
+          </div>
+          <div v-else>
+            <button @click="onClickSignIn">登录</button>
+          </div>
+        </template>
+      </Dropdown>
     </div>
   </div>
 </template>

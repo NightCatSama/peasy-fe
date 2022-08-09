@@ -1,5 +1,4 @@
 import { defineStore } from 'pinia'
-import { mande } from 'mande'
 import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mock'
 import { PageNode, ComponentPropsGroup, ComponentName, GroupType, IPage, IMaterialItem } from '@/config'
 import { useDragStore } from './drag'
@@ -7,10 +6,7 @@ import { formatNodeByUniqueName } from '@/utils/node'
 import { useConfig, useGroupConfig, isMobileGroupConfig, useMobileConfig, useGroupConfigByNode } from '@/utils/config'
 import { nextTick } from 'vue'
 import { cloneDeep, merge } from 'lodash'
-
-const downloadApi = mande('http://localhost:3030/api/data/download')
-const saveApi = mande('http://localhost:3030/api/data/save')
-const materialApi = mande('http://localhost:3030/api/data/material')
+import { downloadApi, materialApi, saveApi } from '@/utils/mande'
 
 type MaterialData = {
   [key in PageNode['type']]: IMaterialItem[]

@@ -1,9 +1,15 @@
 <script setup lang="ts">
 import Page from './pages/Configure.vue'
+import Redirect from './pages/Redirect.vue'
+
+const path = $computed(() => location.pathname)
 </script>
 
 <template>
-  <Page msg="Hello" />
+  <Suspense>
+    <Redirect v-if="path.startsWith('/no-code/redirect')" />
+    <Page v-else />
+  </Suspense>
 </template>
 
 <style lang="scss">
