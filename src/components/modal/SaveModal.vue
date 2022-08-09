@@ -22,10 +22,14 @@ import TreeNode from '../biz/TreeNode.vue'
 import JSONEditor from 'jsoneditor'
 import ImageItem from '../configs/items/ImageItem.vue'
 import { Alert, AlertError } from '@/utils/alert'
+import { useUserStore } from '@/stores/user'
 
 const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
 const { fetchSaveNode } = pageStore
+
+const userStore = useUserStore()
+const { isAdmin } = storeToRefs(userStore)
 
 const node = $computed(() => activeNode.value ? useSourceNode(activeNode.value) : null)
 
@@ -117,6 +121,7 @@ const handleSave = async () => {
           v-model="name"
         ></InputItem>
         <InputItem
+          v-if="isAdmin"
           label="Name(En)"
           v-model="enName"
         ></InputItem>
@@ -125,6 +130,7 @@ const handleSave = async () => {
           v-model="category"
         ></InputItem>
         <InputItem
+          v-if="isAdmin"
           label="Category(En)"
           v-model="categoryEn"
         ></InputItem>
@@ -253,7 +259,8 @@ const handleSave = async () => {
     justify-content: flex-end;
 
     .save-btn {
-      width: 100%;
+      min-height: 36px;
+      width: 120px;
     }
   }
 }

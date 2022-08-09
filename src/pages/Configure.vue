@@ -76,9 +76,6 @@ onMounted(async () => {
     saveHistory(allPageData.value)
   })
 
-  // 先获取 token
-  await persistToken()
-
   // 初始化加载页面数据
   getAssetsData()
   getPageData()

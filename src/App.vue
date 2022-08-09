@@ -1,15 +1,20 @@
 <script setup lang="ts">
-import Page from './pages/Configure.vue'
-import Redirect from './pages/Redirect.vue'
+import { onBeforeMount } from 'vue';
+import { logtoMeApi, persistToken } from './utils/mande';
 
-const path = $computed(() => location.pathname)
+let isReady = $ref(false)
+
+onBeforeMount(async () => {
+  // 先获取 token
+  const { userInfo } = await persistToken()
+  isReady = true
+
+  console.log(await logtoMeApi.get(''))
+})
 </script>
 
 <template>
-  <Suspense>
-    <Redirect v-if="path.startsWith('/no-code/redirect')" />
-    <Page v-else />
-  </Suspense>
+  <router-view v-if="isReady"></router-view>
 </template>
 
 <style lang="scss">

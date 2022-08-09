@@ -8,16 +8,20 @@ import { Text, Block, Image, Icon } from './components/libs'
 import GlobalDirective from './toolkit/global.directive'
 import Toast from 'vue-toastification'
 
+
 import 'floating-vue/dist/style.css'
 import 'vue-toastification/dist/index.css'
+import { router } from './router';
 
 const config: LogtoConfig = {
   endpoint: import.meta.env.VITE_LOGTO_HOST,
   appId: import.meta.env.VITE_LOGTO_APPID,
+  resources: ['http://localhost:3030'],
 };
 
 const app = createApp(App)
 
+app.use(router)
 app.use(createLogto, config);
 
 app.use(createPinia())

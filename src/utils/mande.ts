@@ -12,7 +12,7 @@ export function clearToken() {
 
 export async function persistToken() {
   const { getAccessToken, getIdTokenClaims } = useLogto()
-  const token = await getAccessToken?.() || ''
+  const token = await getAccessToken?.('http://localhost:3030') || ''
   const userInfo = await getIdTokenClaims()
   if (token) setToken(token)
   if (token && userInfo) {
@@ -20,10 +20,17 @@ export async function persistToken() {
       username: userInfo.username || '',
       avatar: userInfo.avatar || '',
       roleNames: userInfo?.role_names || [],
+      uId: userInfo.sub || '',
     })
+  }
+  return {
+    token,
+    userInfo
   }
 }
 
 export const downloadApi = mande(import.meta.env.VITE_BE_HOST + '/api/data/download')
 export const saveApi = mande(import.meta.env.VITE_BE_HOST + '/api/data/save')
 export const materialApi = mande(import.meta.env.VITE_BE_HOST + '/api/data/material')
+export const logtoMeApi = mande(import.meta.env.VITE_BE_HOST + '/api/users')
+// export const logtoUserApi = mande(import.meta.env.VITE_LOGTO_HOST + '/api/users/')

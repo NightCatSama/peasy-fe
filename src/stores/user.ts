@@ -5,6 +5,7 @@ export interface IUserInfo {
   username: string
   avatar: string
   roleNames: string[]
+  uId: string
 }
 
 export const useUserStore = defineStore('user', {
