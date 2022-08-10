@@ -4,13 +4,19 @@ import { storeToRefs } from 'pinia';
 import { useLogto } from '@logto/vue';
 import Btn from '@/components/widgets/Btn.vue';
 import Avatar from '@/components/widgets/Avatar.vue';
+import ImageItem from '@/components/configs/items/ImageItem.vue';
 
 const userStore = useUserStore()
-const { userInfo } = storeToRefs(userStore)
+const { userName, avatar } = storeToRefs(userStore)
+const { updateAvatar } = userStore
 
 const { signOut, signIn, isAuthenticated } = useLogto();
 const handleSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
 const handleSignOut = () => signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
+
+const handleUpdateAvatar = (img: string) => {
+  updateAvatar(img)
+}
 
 </script>
 
@@ -21,8 +27,9 @@ const handleSignOut = () => signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
       <Btn @click="handleSignIn">登录</Btn>
     </div>
     <div v-else>
-      <div class="user-name">{{ userInfo?.username }}</div>
-      <Avatar :image="userInfo?.avatar"></Avatar>
+      <div class="user-name">{{ userName }}</div>
+      <ImageItem :model-value="avatar" @update:model-value="handleUpdateAvatar"></ImageItem>
+      <Avatar :image="avatar"></Avatar>
       <Btn @click="handleSignOut">退出登录</Btn>
     </div>
   </div>

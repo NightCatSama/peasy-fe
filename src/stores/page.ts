@@ -67,7 +67,9 @@ export const usePageStore = defineStore('page', {
     /** 当前展示的 Section，null 为全部 */
     activeSection: null as PageNode | null,
     /** 颜色变量 */
-    colorVars: [] as IColorVarItem[],
+    colorVars: [
+      { name: '$primary', color: '#00a8ff' },
+    ] as IColorVarItem[],
     /** 全局字体配置 */
     font: MockPageData.font as IFontSetting,
     setting: MockPageData.setting as IPageSetting,
@@ -149,8 +151,8 @@ export const usePageStore = defineStore('page', {
   actions: {
     async getPageData() {
       // const { data } = await api.post<any>({})
-      this.allPageData = MockPageData.pageData
-      this.colorVars = MockPageData.colorVars
+      // this.allPageData = MockPageData.pageData
+      // this.colorVars = MockPageData.colorVars
     },
     async getAssetsData() {
       // const { data } = await api.post<any>({})

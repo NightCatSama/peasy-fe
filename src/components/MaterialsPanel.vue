@@ -124,7 +124,7 @@ const currentCategory = $computed(() => {
   }
 
   .title {
-    margin-top: 20px;
+    margin-top: 12px;
     font-size: 20px;
     font-weight: bold;
     padding: 0px 8px;

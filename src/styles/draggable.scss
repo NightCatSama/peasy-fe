@@ -36,6 +36,7 @@
     align-items: center;
     background: $theme;
     border-radius: $inner-radius;
+    font-family: $font-family;
   }
   &::after {
     box-shadow: inset 0 0 0px 4px rgba($black, 20%);

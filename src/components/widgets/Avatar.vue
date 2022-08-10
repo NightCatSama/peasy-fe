@@ -19,7 +19,7 @@ const src = $computed(() => image || 'data:image/png;base64,iVBORw0KGgoAAAANSUhE
 
 <style lang="scss" scoped>
 .avatar {
-  border-radius: 200px;
+  border-radius: 50%;
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;

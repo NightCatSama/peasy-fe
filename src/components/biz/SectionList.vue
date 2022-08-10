@@ -110,7 +110,7 @@ const dragEvents = $computed(() => ({
     border-color: rgba($white, 50%);
 
     &:empty::after {
-      content: '－';
+      content: '+';
       position: absolute;
       left: 50%;
       top: 50%;

@@ -32,5 +32,5 @@ export async function persistToken() {
 export const downloadApi = mande(import.meta.env.VITE_BE_HOST + '/api/data/download')
 export const saveApi = mande(import.meta.env.VITE_BE_HOST + '/api/data/save')
 export const materialApi = mande(import.meta.env.VITE_BE_HOST + '/api/data/material')
-export const logtoMeApi = mande(import.meta.env.VITE_BE_HOST + '/api/users')
+export const logtoMeApi = mande(import.meta.env.VITE_BE_HOST + '/api/users/me')
 // export const logtoUserApi = mande(import.meta.env.VITE_LOGTO_HOST + '/api/users/')

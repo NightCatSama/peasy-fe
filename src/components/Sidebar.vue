@@ -6,6 +6,7 @@ import SectionList from '@/components/biz/SectionList.vue'
 import GlobalSettingPanel from './biz/GlobalSettingPanel.vue'
 import Dropdown from './widgets/Dropdown.vue'
 import FontFamilyPanel from './biz/FontFamilyPanel.vue'
+import Logo from './Logo.vue'
 
 interface ISidebarProps {
   activeMaterialsPanel: boolean
@@ -18,8 +19,8 @@ const pageStore = usePageStore()
 
 <template>
   <div class="sidebar">
-    <div class="logo">
-      <Avatar :size="32" />
+    <div class="logo-wrapper">
+      <Logo :size="32" />
     </div>
     <div class="operator-panel">
       <div class="top">
@@ -81,7 +82,7 @@ const pageStore = usePageStore()
   flex-direction: column;
   align-items: center;
 
-  .logo {
+  .logo-wrapper {
     height: $header-height;
     display: flex;
     justify-content: center;
@@ -119,6 +120,10 @@ const pageStore = usePageStore()
 
     &.add-item :deep(.icon) {
       background: $panel;
+    }
+
+    &:hover {
+      color: $theme;
     }
   }
 }

@@ -258,7 +258,7 @@ emitter.on('saveColorVars', (color: string) => {
         <template #content>
           <div v-if="isAuthenticated">
             <div class="user-name" @click="gotoMePage">{{ userName }}</div>
-            <div @click="handleSignOut">退出登录</div>
+            <Btn type="inner" @click="handleSignOut">退出登录</Btn>
           </div>
           <div v-else>
             <Btn type="inner" @click="handleSignIn">登录</Btn>

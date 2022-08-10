@@ -56,11 +56,3 @@ export const useHistoryStore = defineStore('history', {
     }
   },
 })
-
-window.addEventListener('beforeunload', (event) => {
-  const historyStore = useHistoryStore()
-  if (historyStore && !historyStore.isSave) {
-    event.preventDefault()
-    event.returnValue = ''
-  }
-});

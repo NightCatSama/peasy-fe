@@ -15,6 +15,7 @@ import { useDragStore } from '@/stores/drag'
 import { disabledMoveable } from '@/utils/moveable'
 import Btn from './widgets/Btn.vue'
 import { ShortcutKey } from '@/constants/shortcut'
+import Logo from './Logo.vue'
 
 const pageStore = usePageStore()
 const {
@@ -209,14 +210,17 @@ const handleLeaveTrash = (e: DragEvent) => {
 <template>
   <div :class="['edit-section', `edit-section-${displayMode}`]" v-tap="hideMaterialsPanel">
     <div ref="wrapperRef" class="edit-wrapper">
+      <Logo :size="320" />
       <draggable
         ref="contentRef"
-        v-show="!noPageData"
         :model-value="pageData || []"
         :item-key="'name'"
         :group="{ name: 'section', put: true, pull: false }"
         :disabled="displayMode !== 'drag' || (dragNode && dragNodeType !== 'section')"
-        :class="['edit-content']"
+        :class="['edit-content', { placeholder: noPageData }]"
+        :component-data="{
+          'data-placeholder': '点击左侧「+」号，点击或拖拽 Section 组件添加内容',
+        }"
         :ghost-class="dragNode && dragType === 'clone' ? 'ghost-clone-section' : 'ghost-move'"
         :style="editContentStyle"
         v-on="dragEvents"
@@ -226,7 +230,6 @@ const handleLeaveTrash = (e: DragEvent) => {
         </template>
       </draggable>
     </div>
-    <div class="no-data" v-if="noPageData">TODO: 没有数据，提示左侧「+」</div>
     <Icon :class="['focus-btn']" name="focus" :size="26" @click="() => handleLocationPage()"></Icon>
     <Icon
       v-if="dragNode && !noPageData && dragType === 'clone'"
@@ -297,6 +300,32 @@ const handleLeaveTrash = (e: DragEvent) => {
       overflow: visible;
       background: #fff;
       color: black;
+
+      &.placeholder {
+        min-height: 80px;
+        background: $tr;
+        border: 4px dashed darken($color, 50%);
+        left: 50%;
+        top: 50%;
+        width: 600px!important;
+        right: auto;
+        bottom: auto;
+        transform: translate(-50%, -50%)!important;
+        transform-origin: center!important;
+
+        &::after {
+          content: attr(data-placeholder);
+          color: darken($color, 50%);
+          font-size: 20px;
+          white-space: nowrap;
+          font-family: $font-family;
+          position: absolute;
+          left: 50%;
+          top: 50%;
+          transform: translate(-50%, -50%);
+          z-index: -1;
+        }
+      }
     }
   }
 

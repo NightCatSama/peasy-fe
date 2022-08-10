@@ -30,6 +30,17 @@ export const useUserStore = defineStore('user', {
         avatar: data.avatar || '',
       }
     },
+    async updateAvatar(img: string) {
+      if (!this.isLogin) return
+
+      await logtoMeApi.patch<any>('', {
+        avatar: img
+      })
+      this.userInfo = {
+        ...this.userInfo!,
+        avatar: img,
+      }
+    },
     setUserInfo(accessToken: string, userInfo: IUserInfo) {
       this.accessToken = accessToken
       this.userInfo = userInfo

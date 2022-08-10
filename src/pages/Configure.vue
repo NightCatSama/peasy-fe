@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide, onMounted, nextTick, watch, reactive } from 'vue'
+import { provide, onMounted, nextTick, watch, reactive, onBeforeUnmount } from 'vue'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 
@@ -29,7 +29,7 @@ const { setDeviceByParent } = displayStore
 const { device, displayMode } = storeToRefs(displayStore)
 
 const historyStore = useHistoryStore()
-const { canUndoHistory, canRedoHistory } = storeToRefs(historyStore)
+const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
 const { saveHistory, undoHistory, redoHistory } = historyStore
 
 const handleDownload = async () => {
@@ -50,7 +50,6 @@ onMounted(async () => {
     if (
       !inAction &&
       [
-        'getPageData',
         'insertNode',
         'swapNode',
         'addSection',
@@ -73,7 +72,7 @@ onMounted(async () => {
     }
 
     onError((error: any) => {
-      AlertError(error?.body?.message || '未知错误')
+      AlertError(error?.body?.message || error?.message || error?.msg || '未知错误')
     })
   })
   // 记录数据记录
@@ -81,10 +80,21 @@ onMounted(async () => {
     saveHistory(allPageData.value)
   })
 
+  window.addEventListener('beforeunload', preventUnload);
+
   // 初始化加载页面数据
   getAssetsData()
   getPageData()
 })
+
+onBeforeUnmount(() => window.removeEventListener('beforeunload', preventUnload))
+
+const preventUnload = (event: BeforeUnloadEvent) => {
+  if (!isSave.value) {
+    event.preventDefault()
+    event.returnValue = ''
+  }
+}
 
 // 快捷键 - 重做
 useKeyPress(ShortcutKey.undo, (e) => {
