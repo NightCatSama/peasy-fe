@@ -39,6 +39,7 @@ const uploadImage = async (e: InputEvent) => {
       handleChange(url as string)
     }
   }
+  ;(e.target as HTMLInputElement).value = ''
 }
 </script>
 

@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue';
+import { useUserStore } from './stores/user';
 import { logtoMeApi, persistToken } from './utils/mande';
 
 let isReady = $ref(false)
@@ -9,7 +10,8 @@ onBeforeMount(async () => {
   const { userInfo } = await persistToken()
   isReady = true
 
-  console.log(await logtoMeApi.get(''))
+  // 再获取用户信息
+  useUserStore().fetchUserInfo()
 })
 </script>
 

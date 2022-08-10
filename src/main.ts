@@ -16,7 +16,7 @@ import { router } from './router';
 const config: LogtoConfig = {
   endpoint: import.meta.env.VITE_LOGTO_HOST,
   appId: import.meta.env.VITE_LOGTO_APPID,
-  resources: ['http://localhost:3030'],
+  resources: [import.meta.env.VITE_LOGTO_RESOURCE]
 };
 
 const app = createApp(App)

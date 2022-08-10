@@ -18,13 +18,16 @@ import { useHistoryStore } from '@/stores/history'
 import { usePageStore } from '@/stores/page'
 import { useUserStore } from '@/stores/user'
 import Switch from './widgets/Switch.vue'
+import { useRouter } from 'vue-router'
 
 const { signIn, signOut, isAuthenticated } = useLogto();
-const onClickSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
-const onClickSignOut = () => signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
+const handleSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
+const handleSignOut = () => signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
+const router = useRouter()
+const gotoMePage = () => router.push('/me')
 
 const userStore = useUserStore()
-const { userName } = storeToRefs(userStore)
+const { userName, avatar } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
 const { setting, colorVars } = storeToRefs(pageStore)
@@ -249,16 +252,16 @@ emitter.on('saveColorVars', (color: string) => {
         v-tooltip="'重做'"
         @click="() => updateAllPageNode(redoHistory())"
       ></Icon>
-      <Btn @click="$emit('download')" text="Download"></Btn>
-      <Dropdown>
-        <Avatar :size="36" />
+      <Btn class="download-btn" @click="$emit('download')" text="Download"></Btn>
+      <Dropdown type="default">
+        <Avatar :image="avatar" :size="36" can-operator />
         <template #content>
           <div v-if="isAuthenticated">
-            <div class="user-name">{{ userName }}</div>
-            <div @click="onClickSignOut">退出登录</div>
+            <div class="user-name" @click="gotoMePage">{{ userName }}</div>
+            <div @click="handleSignOut">退出登录</div>
           </div>
           <div v-else>
-            <button @click="onClickSignIn">登录</button>
+            <Btn type="inner" @click="handleSignIn">登录</Btn>
           </div>
         </template>
       </Dropdown>
@@ -401,8 +404,8 @@ emitter.on('saveColorVars', (color: string) => {
     }
   }
 
-  .avatar {
-    margin-left: 20px;
+  .download-btn {
+    margin-right: 20px;
   }
 }
 

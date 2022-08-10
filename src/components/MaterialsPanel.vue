@@ -11,6 +11,7 @@ import { DisplayMode, useDisplayStore } from '@/stores/display'
 import { PageNode, IMaterialItem } from '@/config'
 import Tabs from './widgets/Tabs.vue'
 import { Alert } from '@/utils/alert'
+import { useUserStore } from '@/stores/user'
 
 const pageStore = usePageStore()
 const { pageData, materialData } = storeToRefs(pageStore)
@@ -22,6 +23,9 @@ const { setDragNode, setIsCancelDrag } = dragStore
 const displayStore = useDisplayStore()
 const { displayMode } = storeToRefs(displayStore)
 const { setDisplayMode } = displayStore
+
+const userStore = useUserStore()
+const { isAdmin } = storeToRefs(userStore)
 
 let preDisplayMode = $ref<DisplayMode>('edit')
 
@@ -50,8 +54,7 @@ const handleDragStart = (event: DragEvent, data: PageNode) => {
 }
 
 const handleDelete = (item: IMaterialItem) => {
-  deleteMaterial(item.id!)
-  Alert('删除成功')
+  deleteMaterial(item.id!).then(() => Alert('删除成功'))
 }
 
 const currentNodeList = $computed(() => (materialData.value as any)[currentType]);
@@ -99,7 +102,7 @@ const tabData = $computed(() => ([
             <Element
               :cover="item.cover"
               :name="item.name"
-              :can-delete="true"
+              :can-delete="isAdmin || !!item.uid"
               @click="handleAddSection(item.node)"
               @delete="handleDelete(item)"
             ></Element>

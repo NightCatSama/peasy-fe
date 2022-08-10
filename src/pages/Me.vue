@@ -3,6 +3,7 @@ import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia';
 import { useLogto } from '@logto/vue';
 import Btn from '@/components/widgets/Btn.vue';
+import Avatar from '@/components/widgets/Avatar.vue';
 
 const userStore = useUserStore()
 const { userInfo } = storeToRefs(userStore)
@@ -21,6 +22,7 @@ const handleSignOut = () => signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
     </div>
     <div v-else>
       <div class="user-name">{{ userInfo?.username }}</div>
+      <Avatar :image="userInfo?.avatar"></Avatar>
       <Btn @click="handleSignOut">退出登录</Btn>
     </div>
   </div>

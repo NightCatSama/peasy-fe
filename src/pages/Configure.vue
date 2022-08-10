@@ -17,6 +17,7 @@ import { useKeyPress } from 'ahooks-vue'
 import { ShortcutKey } from '@/constants/shortcut'
 import { useFont } from '@/components/libs/hooks/font'
 import { persistToken } from '@/utils/mande'
+import { AlertError } from '@/utils/alert'
 
 const pageStore = usePageStore()
 const { pageData, activeSection, allPageData, colorVars, font } = storeToRefs(pageStore)
@@ -45,7 +46,7 @@ onMounted(async () => {
 
   /** 记录编辑记录 */
   let inAction = false
-  pageStore.$onAction(({ name, store, args, after }) => {
+  pageStore.$onAction(({ name, store, args, after, onError }) => {
     if (
       !inAction &&
       [
@@ -70,6 +71,10 @@ onMounted(async () => {
         saveHistory(store.allPageData)
       })
     }
+
+    onError((error: any) => {
+      AlertError(error?.body?.message || '未知错误')
+    })
   })
   // 记录数据记录
   emitter.on('saveHistory', () => {
