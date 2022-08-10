@@ -91,24 +91,20 @@ watch(isModule, (val: boolean) => {
 
 const handleSave = async () => {
   if (!node) return
-  try {
-    await fetchSaveNode({
-      name,
-      enName,
-      node: {
-        ...node,
-        isModule: isModule.value,
-        moduleConfig: isModule.value && editor ? editor.get() : [],
-      },
-      category,
-      categoryEn,
-      cover,
-    })
-    Alert('Save Success')
-    modal?.hide()
-  } catch (e: any) {
-    AlertError(e?.message || 'Save Error')
-  }
+  await fetchSaveNode({
+    name,
+    enName,
+    node: {
+      ...node,
+      isModule: isModule.value,
+      moduleConfig: isModule.value && editor ? editor.get() : [],
+    },
+    category,
+    categoryEn,
+    cover,
+  })
+  Alert('Save Success')
+  modal?.hide()
 }
 </script>
 

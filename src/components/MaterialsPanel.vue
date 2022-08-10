@@ -58,36 +58,32 @@ const handleDelete = (item: IMaterialItem) => {
 }
 
 const currentNodeList = $computed(() => (materialData.value as any)[currentType]);
-const tabData = $computed(() => ([
-  {
-    key: 'section',
-    value: 'Section',
-    active: currentType === 'section',
-    onClick: (val: boolean) => val && (currentType = 'section')
-  },
-  {
-    key: 'component',
-    value: 'Component',
-    active: currentType === 'component',
-    onClick: (val: boolean) => val && (currentType = 'component')
-  }
-]))
+const currentCategory = $computed(() => {
+  let map: { [category: string]: IMaterialItem[] } = {}
+  currentNodeList.forEach((item: IMaterialItem) => {
+    const category = item.category || '未分组'
+    if (!map[category]) map[category] = []
+    map[category].push(item)
+  })
+  return map
+})
 </script>
 
 <template>
   <div class="materials-panel">
     <Tabs
       class="materials-panel-tabs"
-      :data="tabData"
+      :data="{ section: 'Section', component: 'Component' }"
+      v-model="currentType"
       type="float"
     ></Tabs>
-    <!-- <section v-for="(list, key) in materialData" v-show="key !== 'template'"> -->
-      <!-- <div class="title">{{ currentType.toLocaleUpperCase() }}</div> -->
+    <section v-for="(list, category) in currentCategory" v-show="Array.isArray(list) && list.length > 0">
+      <div class="title">{{ category }}</div>
       <draggable
         ref="draggableRef"
         class="element-list"
         tag="div"
-        :model-value="currentNodeList"
+        :model-value="(list as IMaterialItem[])"
         :sort="false"
         :item-key="'id'"
         :group="{ name: currentType, pull: 'clone', put: false }"
@@ -109,7 +105,7 @@ const tabData = $computed(() => ([
           </div>
         </template>
       </draggable>
-    <!-- </section> -->
+    </section>
   </div>
 </template>
 
@@ -128,10 +124,11 @@ const tabData = $computed(() => ([
   }
 
   .title {
-    margin-bottom: 15px;
-    font-size: 18px;
+    margin-top: 20px;
+    font-size: 20px;
     font-weight: bold;
-    color: $yellow;
+    padding: 0px 8px;
+    color: $color;
   }
 
   .element-list {
@@ -146,13 +143,10 @@ const tabData = $computed(() => ([
     height: 120px;
     padding: 8px;
     font-size: 12px;
+    color: darken($color, 20%);
     display: flex;
     justify-content: center;
     align-items: center;
-
-    &:nth-child(2n) {
-      padding-right: 0;
-    }
 
     > .element {
       width: 100%;
