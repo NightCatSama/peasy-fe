@@ -15,7 +15,6 @@ import { useDragStore } from '@/stores/drag'
 import { disabledMoveable } from '@/utils/moveable'
 import Btn from './widgets/Btn.vue'
 import { ShortcutKey } from '@/constants/shortcut'
-import Logo from './Logo.vue'
 
 const pageStore = usePageStore()
 const {
@@ -210,7 +209,6 @@ const handleLeaveTrash = (e: DragEvent) => {
 <template>
   <div :class="['edit-section', `edit-section-${displayMode}`]" v-tap="hideMaterialsPanel">
     <div ref="wrapperRef" class="edit-wrapper">
-      <Logo :size="320" />
       <draggable
         ref="contentRef"
         :model-value="pageData || []"
