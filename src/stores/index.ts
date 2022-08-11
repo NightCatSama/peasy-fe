@@ -1,0 +1,50 @@
+import { createPinia } from 'pinia'
+
+const pinia = createPinia()
+
+/** 存储未保存的历史状态 */
+export const saveStoragePageState = (id: string) => {
+  try {
+    const pageStore = pinia.state.value['page']
+    sessionStorage.setItem('__page_store_state_id__', id)
+    sessionStorage.setItem('__page_store_state__', JSON.stringify({
+      allPageData: pageStore.allPageData,
+      project: pageStore.project,
+      colorVars: pageStore.colorVars,
+      font: pageStore.font,
+      setting: pageStore.setting,
+    }))
+  } catch (e: any) {
+    console.error('Cache Error', e)
+  }
+}
+
+/** 使用未保存的历史状态 */
+export const getStoragePageState = <T extends any>(id: string, state: T): T => {
+  let initState = null as any
+  try {
+    const stateId = sessionStorage.getItem('__page_store_state_id__') || ''
+    if (stateId === id && sessionStorage.getItem('__page_store_state__')) {
+      initState = JSON.parse(sessionStorage.getItem('__page_store_state__')!)
+    }
+    if (initState) return Object.assign(state, initState)
+  } catch (e: any) {
+    console.error('Cache Error', e)
+  }
+  return state
+}
+
+/** 是否有未保存的历史状态 */
+export const haveStoragePageState = (id: string) => {
+  return !!sessionStorage.getItem('__page_store_state_id__')
+}
+
+/** 清除未保存的历史状态 */
+export const clearStoragePageState = () => {
+  sessionStorage.removeItem('__page_store_state_id__')
+  sessionStorage.removeItem('__page_store_state__')
+}
+
+export {
+  pinia
+}

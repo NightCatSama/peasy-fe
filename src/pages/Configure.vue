@@ -19,19 +19,21 @@ import { useFont } from '@/components/libs/hooks/font'
 import { persistToken } from '@/utils/mande'
 import { Alert, AlertError } from '@/utils/alert'
 import { useRoute, useRouter } from 'vue-router'
+import { saveStoragePageState, haveStoragePageState, clearStoragePageState, getStoragePageState } from '@/stores'
+import { Modal } from '@/components/modal'
 
 const route = useRoute()
 const router = useRouter()
 const id = $computed(() => route.params?.id as string || '')
 
 const pageStore = usePageStore()
-const { pageData, activeSection, allPageData, colorVars, font } = storeToRefs(pageStore)
+const { setting, activeSection, allPageData, colorVars, font } = storeToRefs(pageStore)
 const { setActiveSection, setActiveNode, updateAllPageNode, getAssetsData, getProjectData, download, saveProjectData } =
   pageStore
 
 const displayStore = useDisplayStore()
-const { setDeviceByParent } = displayStore
-const { device, displayMode } = storeToRefs(displayStore)
+const { setDeviceByParent, setDevice } = displayStore
+const { deviceType, displayMode } = storeToRefs(displayStore)
 
 const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
@@ -113,7 +115,23 @@ onMounted(async () => {
   // 初始化加载页面数据
   getAssetsData()
 
-  id && getProjectData(id)
+  if (id) {
+    await getProjectData(id)
+    if (haveStoragePageState(id)) {
+      if (await Modal.confirm('你有未保存的数据，是否应用？')) {
+        pageStore.$state = getStoragePageState(id, pageStore.$state)
+        setIsSave(false)
+      }
+      clearStoragePageState()
+    }
+    nextTick(() => emitter.emit('location', true))
+  } else {
+    setTimeout(() => emitter.emit('location', true))
+  }
+  if (setting.value.client === 'mobile') {
+    deviceType.value = 'mobile'
+    setDevice(0)
+  }
 })
 
 onBeforeUnmount(() => window.removeEventListener('beforeunload', preventUnload))
@@ -122,6 +140,7 @@ const preventUnload = (event: BeforeUnloadEvent) => {
   if (!isSave.value) {
     event.preventDefault()
     event.returnValue = ''
+    saveStoragePageState(id)
   }
 }
 

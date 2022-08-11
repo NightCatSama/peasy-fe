@@ -17,7 +17,9 @@ export const ShortcutKey = {
   copy: 'meta.shift.c',
   /** 粘贴 */
   paste: 'meta.shift.v',
-  /** 保存 */
+  /** 保存项目 */
+  saveProject: 'meta.s',
+  /** 保存组件 */
   save: 'meta.shift.s',
   /** 全部折叠 */
   collapseAll: (e: KeyboardEvent) => e.metaKey && e.shiftKey && e.key === '.', // 'meta.shift.dot'

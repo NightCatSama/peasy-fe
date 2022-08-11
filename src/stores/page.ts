@@ -10,51 +10,15 @@ import { downloadApi, materialApi, projectApi } from '@/utils/mande'
 import { SaveProjectDto } from '@@/dto/data.dto'
 import { Project } from '@@/entities/project.entity'
 import { IResponse } from '@@/types/response'
+import { getStoragePageState } from '.'
+import { Alert } from '@/utils/alert'
 
 type MaterialData = {
   [key in PageNode['type']]: IMaterialItem[]
 }
 
-/** 模拟后端返回的页面数据 */
-const MockPageData: IPage = {
-  /** 页面数据 */
-  pageData: [getMockBlock('section')],
-  /** 颜色变量 */
-  colorVars: [
-    { name: '$primary', color: '#00a8ff' },
-    { name: '$error', color: 'red' },
-  ],
-  /** 全局设置 */
-  setting: {
-    client: 'both',
-    /** 页面标题 */
-    title: 'Your Page Title',
-    /** 页面图标 */
-    favicon: '',
-    /** meta 标签展示，用于 SEO 优化 */
-    description: '',
-  },
-  /** 全局的字体设置 */
-  font: {
-    fontFamily: `'ZCOOL XiaoWei', PingFang SC, sans-serif`,
-    /** 自定义字体 */
-    customFontFace: [
-      'https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap',
-      // {
-      //   fontFamily: 'Lobster',
-      //   url: 'https://fonts.gstatic.com/s/lobster/v28/neILzCirqoswsqX9zo-mM4MwWJXNqA.woff2',
-      //   fontStyle: 'normal',
-      //   fontWeight: 'normal',
-      // }
-    ],
-    /** 全局的字体大小 */
-    fontSize: 14,
-    mediaFontSize: {},
-  },
-}
-
 export const usePageStore = defineStore('page', {
-  state: () => ({
+  state: () => getStoragePageState('', {
     project: { name: 'Project', cover: '' } as IProject,
     /** 所有页面数据 */
     allPageData: [] as PageNode<any>[],
@@ -74,9 +38,27 @@ export const usePageStore = defineStore('page', {
     colorVars: [
       { name: '$primary', color: '#00a8ff' },
     ] as IColorVarItem[],
-    /** 全局字体配置 */
-    font: MockPageData.font as IFontSetting,
-    setting: MockPageData.setting as IPageSetting,
+    /** 全局设置 */
+    setting: {
+      client: 'both',
+      /** 页面标题 */
+      title: 'Your Page Title',
+      /** 页面图标 */
+      favicon: '',
+      /** meta 标签展示，用于 SEO 优化 */
+      description: '',
+    } as IPageSetting,
+    /** 全局的字体设置 */
+    font: {
+      fontFamily: `'ZCOOL XiaoWei', PingFang SC, sans-serif`,
+      /** 自定义字体 */
+      customFontFace: [
+        'https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap',
+      ],
+      /** 全局的字体大小 */
+      fontSize: 14,
+      mediaFontSize: {},
+    } as IFontSetting,
   }),
   getters: {
     /** 当前激活节点对应的配置数据 */
@@ -161,6 +143,8 @@ export const usePageStore = defineStore('page', {
       this.project.cover = data.cover
       this.allPageData = pageData.pageData
       this.colorVars = pageData.colorVars
+      this.font = pageData.font
+      this.setting = pageData.setting
     },
     async saveProjectData(id: string, params: { name: string; cover: string }) {
       const body: SaveProjectDto = {
@@ -183,6 +167,14 @@ export const usePageStore = defineStore('page', {
     async getAssetsData() {
       const res = await materialApi.get<any>('', {})
       this.materialData = res.data
+      if (this.materialData.section.length === 0) {
+        this.materialData.section.push({
+          name: 'Empty Section',
+          category: 'Basic',
+          type: 'section',
+          node: getMockBlock('section'),
+        })
+      }
     },
     /** 下载页面 */
     async download() {
@@ -341,6 +333,7 @@ export const usePageStore = defineStore('page', {
       if (!this.activeNode) return
       this.activeNode.isModule = false
       delete this.activeNode.moduleConfig
+      Alert('此过程不可逆，点击撤销可还原。')
     },
     /** 更新所有页面数据 */
     updateAllPageNode(pageNode: PageNode[]) {

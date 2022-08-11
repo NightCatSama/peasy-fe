@@ -120,6 +120,13 @@ const handleClick = (e: MouseEvent) => {
       height: 36px;
       font-weight: bold;
     }
+
+    &.size-sm {
+      padding: 0 16px;
+      border-radius: 8px;
+      font-size: 14px;
+      height: 26px;
+    }
   }
 
   &-type-inner {

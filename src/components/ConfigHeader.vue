@@ -41,6 +41,8 @@ const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory } = storeToRefs(historyStore)
 const { saveHistory, undoHistory, redoHistory } = historyStore
 
+const emit = defineEmits(['save', 'download'])
+
 const name = $ref('index')
 let showColorVarDropdown = $ref(false)
 
@@ -109,6 +111,10 @@ useKeyPress(ShortcutKey.SwitchDisplayMode, (e) => {
 useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
   e.preventDefault()
   emitter.emit('switchMaterialsPanel')
+})
+useKeyPress(ShortcutKey.saveProject, (e) => {
+  e.preventDefault()
+  emit('save')
 })
 
 emitter.on('saveColorVars', (color: string) => {

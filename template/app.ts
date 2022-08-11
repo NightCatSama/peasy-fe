@@ -7,7 +7,6 @@ const getTemplate = (pageNode: PageNode[]) => {
   pageNode.forEach((item) => {
     template += getHtml(item);
   });
-  // console.log('template', template);
   return template
 }
 

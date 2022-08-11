@@ -12,15 +12,27 @@ interface IModalProps {
   width?: string
   modelValue?: boolean
   title?: string
+  closeOnClickMask?: boolean
+  uniqId?: string
+  showClose?: boolean
   onHide?: () => boolean | void
 }
 
-const { modelValue, title, width, onHide } = defineProps<IModalProps>()
+const {
+  modelValue,
+  title,
+  width,
+  closeOnClickMask,
+  showClose = true,
+  onHide
+} = defineProps<IModalProps>()
 const onUpdate = useAttrs()['onUpdate:modelValue'] as any
+
+console.log(useAttrs())
 
 const handleClose = () => {
   if (onHide?.() === true) return
-  onUpdate(false)
+  onUpdate?.(false)
 }
 
 defineExpose({
@@ -31,13 +43,14 @@ defineExpose({
 <template>
   <Teleport to="body">
     <Transition name="modal-fade">
-      <div :class="['modal-wrapper']" v-show="modelValue">
-        <div class="modal-mask" @click="handleClose"></div>
+      <div :class="['modal-wrapper']" v-show="modelValue" :id="uniqId">
+        <div class="modal-mask" @click="() => closeOnClickMask && handleClose()"></div>
         <div :class="['modal-content']" :style="{ width: width ? `${width}`: '' }" v-bind="$attrs">
           <div class="modal-content-header">
             <div class="modal-content-header-title" v-if="title">{{ title }}</div>
           </div>
           <Icon
+            v-if="showClose"
             name="close"
             type="btn"
             :size="20"

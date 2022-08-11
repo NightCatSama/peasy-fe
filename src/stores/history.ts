@@ -2,6 +2,7 @@ import { cloneDeep } from 'lodash'
 import { defineStore } from 'pinia'
 
 import { PageNode } from '@/config'
+import { clearStoragePageState } from '.'
 
 /** 最长保留记录长度 */
 const maxHistoryLen = 10
@@ -53,6 +54,7 @@ export const useHistoryStore = defineStore('history', {
     },
     setIsSave(isSave: boolean) {
       this.isSave = isSave
+      clearStoragePageState()
     }
   },
 })

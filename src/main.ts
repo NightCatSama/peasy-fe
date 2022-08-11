@@ -1,4 +1,3 @@
-import { createPinia } from 'pinia'
 import { createApp } from 'vue'
 import { VTooltip, VClosePopper } from 'floating-vue'
 import { createLogto, LogtoConfig } from '@logto/vue';
@@ -12,6 +11,7 @@ import Toast from 'vue-toastification'
 import 'floating-vue/dist/style.css'
 import 'vue-toastification/dist/index.css'
 import { router } from './router';
+import { pinia } from './stores';
 
 const config: LogtoConfig = {
   endpoint: import.meta.env.VITE_LOGTO_HOST,
@@ -24,7 +24,7 @@ const app = createApp(App)
 app.use(router)
 app.use(createLogto, config);
 
-app.use(createPinia())
+app.use(pinia)
 app.use(GlobalDirective)
 app.use(Toast, {
   position: 'bottom-right',
