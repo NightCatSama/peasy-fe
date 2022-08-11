@@ -253,3 +253,9 @@ interface IPageSetting {
   /** 网站支持的客户端 */
   client: 'desktop' | 'mobile' | 'both'
 }
+
+/** 项目数据 */
+interface IProject {
+  name: string
+  cover: string
+}

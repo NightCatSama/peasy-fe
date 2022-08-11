@@ -8,7 +8,7 @@
     "moduleResolution": "node",
     "paths": {
       "@/*": ["./src/*"],
-      "@@/*": ["./src/peasy-be/*"],
+      "@@/*": ["./peasy-be/src/*"],
     }
   },
   "include": ["vite.config.ts"]

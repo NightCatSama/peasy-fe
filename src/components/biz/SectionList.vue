@@ -146,6 +146,7 @@ const dragEvents = $computed(() => ({
       text-shadow: none;
       font-weight: bold;
       box-shadow: $float-shadow;
+      font-size: 18px;
       transform: scale(1.05);
     }
   }

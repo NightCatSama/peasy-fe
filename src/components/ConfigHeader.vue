@@ -30,7 +30,7 @@ const userStore = useUserStore()
 const { userName, avatar } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
-const { setting, colorVars } = storeToRefs(pageStore)
+const { setting, colorVars, allPageData } = storeToRefs(pageStore)
 const { updateAllPageNode, setMediaFontSize } = pageStore
 
 const displayStore = useDisplayStore()
@@ -252,7 +252,8 @@ emitter.on('saveColorVars', (color: string) => {
         v-tooltip="'重做'"
         @click="() => updateAllPageNode(redoHistory())"
       ></Icon>
-      <Btn class="download-btn" @click="$emit('download')" text="Download"></Btn>
+      <Btn class="save-btn" @click="$emit('save')" :disabled="allPageData.length === 0" icon="save" type="icon" color="second"></Btn>
+      <Btn class="download-btn" @click="$emit('download')" :disabled="allPageData.length === 0" text="Download"></Btn>
       <Dropdown type="default">
         <Avatar :image="avatar" :size="36" can-operator />
         <template #content>
@@ -300,6 +301,7 @@ emitter.on('saveColorVars', (color: string) => {
 
   .right {
     display: flex;
+    align-items: center;
     flex-shrink: 0;
 
     .redo-icon,
@@ -405,7 +407,11 @@ emitter.on('saveColorVars', (color: string) => {
   }
 
   .download-btn {
-    margin-right: 20px;
+    margin-right: 12px;
+  }
+
+  .save-btn {
+    margin-right: 12px;
   }
 }
 

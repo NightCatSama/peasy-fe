@@ -26,7 +26,7 @@ import { useUserStore } from '@/stores/user'
 
 const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
-const { fetchSaveNode } = pageStore
+const { fetchSaveMaterial } = pageStore
 
 const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
@@ -91,7 +91,7 @@ watch(isModule, (val: boolean) => {
 
 const handleSave = async () => {
   if (!node) return
-  await fetchSaveNode({
+  await fetchSaveMaterial({
     name,
     enName,
     node: {
@@ -131,6 +131,7 @@ const handleSave = async () => {
           v-model="categoryEn"
         ></InputItem>
         <SwitchItem
+          v-if="isAdmin"
           label="Module"
           v-model="isModule"
         ></SwitchItem>
@@ -144,7 +145,7 @@ const handleSave = async () => {
         <div class="cover" :style="{ backgroundImage: `url(${cover})` }"></div>
       </ImageItem>
     </div>
-    <div class="module-setting-wrapper" v-show="isModule && node">
+    <div class="module-setting-wrapper" v-show="isAdmin && isModule && node">
       <div class="module-input"></div>
       <div class="node-tree" v-if="node">
         <TreeNode :node="node" :preview="true"></TreeNode>

@@ -6,7 +6,10 @@ import { formatNodeByUniqueName } from '@/utils/node'
 import { useConfig, useGroupConfig, isMobileGroupConfig, useMobileConfig, useGroupConfigByNode } from '@/utils/config'
 import { nextTick } from 'vue'
 import { cloneDeep, merge } from 'lodash'
-import { downloadApi, materialApi, saveApi } from '@/utils/mande'
+import { downloadApi, materialApi, projectApi } from '@/utils/mande'
+import { SaveProjectDto } from '@@/dto/data.dto'
+import { Project } from '@@/entities/project.entity'
+import { IResponse } from '@@/types/response'
 
 type MaterialData = {
   [key in PageNode['type']]: IMaterialItem[]
@@ -52,6 +55,7 @@ const MockPageData: IPage = {
 
 export const usePageStore = defineStore('page', {
   state: () => ({
+    project: { name: 'Project', cover: '' } as IProject,
     /** 所有页面数据 */
     allPageData: [] as PageNode<any>[],
     /** 当前激活的节点 */
@@ -149,35 +153,38 @@ export const usePageStore = defineStore('page', {
     activeNodeHide: (state) => state.activeNode ? useGroupConfig(state.activeNode, 'common').hide || false : false,
   },
   actions: {
-    async getPageData() {
-      // const { data } = await api.post<any>({})
-      // this.allPageData = MockPageData.pageData
-      // this.colorVars = MockPageData.colorVars
+    /** 获取项目数据 */
+    async getProjectData(id: string) {
+      const { data } = await projectApi.get<IResponse<Project>>('' + id)
+      const pageData = data.page
+      this.project.name = data.name
+      this.project.cover = data.cover
+      this.allPageData = pageData.pageData
+      this.colorVars = pageData.colorVars
     },
+    async saveProjectData(id: string, params: { name: string; cover: string }) {
+      const body: SaveProjectDto = {
+        name: params.name,
+        cover: params.cover,
+        page: {
+          pageData: this.allPageData,
+          /** 颜色变量 */
+          colorVars: this.colorVars,
+          /** 页面配置 */
+          setting: this.setting,
+          /** 字体配置 */
+          font: this.font,
+        }
+      }
+      const { data } = await projectApi.patch<IResponse<Project>>(id, body)
+      return data
+    },
+    /** 加载物料资源 */
     async getAssetsData() {
-      // const { data } = await api.post<any>({})
-      // const data = {
-      //   section: [
-      //     getMockBlock('section', 'Section-1'),
-      //     getMockBlock('section', 'Section-2'),
-      //     getMockBlock('section', 'Section-3'),
-      //   ],
-      //   component: [getMockText(), getMockBlock(), getMockImage(), getMockIcon()],
-      //   template: [],
-      // }
-      // this.materialData = data
       const res = await materialApi.get<any>('', {})
       this.materialData = res.data
     },
-    async deleteMaterial(id: number) {
-      await materialApi.delete('' + id)
-      Object.values(this.materialData).forEach((list) => {
-        const index = list.findIndex((item) => item.id === id)
-        if (index > -1) {
-          list.splice(index, 1)
-        }
-      })
-    },
+    /** 下载页面 */
     async download() {
       const data = this.allPageData
       const res = await downloadApi.post<any>({
@@ -190,7 +197,8 @@ export const usePageStore = defineStore('page', {
       })
       return res
     },
-    async fetchSaveNode(params: { name: string; enName?: string; node: PageNode; category: string; categoryEn: string; cover: string }) {
+    /** 保存物料数据 */
+    async fetchSaveMaterial(params: { name: string; enName?: string; node: PageNode; category: string; categoryEn: string; cover: string }) {
       const data = {
         name: params.name,
         enName: params.enName,
@@ -200,10 +208,20 @@ export const usePageStore = defineStore('page', {
         categoryEn: params.categoryEn,
         cover: params.cover,
       }
-      const res = await saveApi.post<any>(data)
-      res.data.node = JSON.parse(res.data.node)
+      const res = await materialApi.patch<any>(data)
+      res.data.node = res.data.node
       this.materialData[data.type].push(res.data)
       return res
+    },
+    /** 删除单个物料数据 */
+    async deleteMaterial(id: number) {
+      await materialApi.delete('' + id)
+      Object.values(this.materialData).forEach((list) => {
+        const index = list.findIndex((item) => item.id === id)
+        if (index > -1) {
+          list.splice(index, 1)
+        }
+      })
     },
     /** 插入 Component 组件 */
     insertNode(dragNode: PageNode, parentNode: PageNode, index: number, isLinkProp = false) {

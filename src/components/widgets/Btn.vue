@@ -1,11 +1,12 @@
 <script setup lang="ts">
+import { useAttrs } from 'vue';
 import Icon from './Icon.vue'
 
 interface IBtnProps {
   text?: string
   size?: 'md' | 'sm'
-  type?: 'text' | 'btn' | 'inner'
-  color?: 'primary' | 'default'
+  type?: 'text' | 'btn' | 'inner' | 'icon'
+  color?: 'primary' | 'default' | 'second'
   icon?: InstanceType<typeof Icon>['name']
   disabled?: boolean
   isBlock?: boolean
@@ -19,6 +20,13 @@ const {
   disabled,
   isBlock,
 } = defineProps<IBtnProps>()
+
+const handleClick = (e: MouseEvent) => {
+  if (disabled) {
+    e.stopImmediatePropagation()
+    return
+  }
+}
 </script>
 
 <template>
@@ -31,8 +39,9 @@ const {
       { disabled, 'btn-block': isBlock },
     ]"
     role="button"
+    @click="handleClick"
   >
-    <Icon v-if="icon" class="btn-icon" :name="icon" :size="12"></Icon>
+    <Icon v-if="icon" class="btn-icon" :name="icon" :size="14"></Icon>
     <div class="text">
       <slot>{{ text }}</slot>
     </div>
@@ -140,6 +149,49 @@ const {
       font-weight: bold;
       text-align: center;
       width: 100%;
+    }
+  }
+
+  &-type-icon {
+    &.primary {
+      color: $color;
+      background: $theme-gradient;
+
+      &:not(.disabled):hover {
+        opacity: 0.8;
+      }
+    }
+    &.second {
+      color: $color;
+      background: $purple-gradient;
+
+      &:not(.disabled):hover {
+        opacity: 0.8;
+      }
+    }
+
+    &.default {
+      color: $color;
+      background: $panel;
+
+      &:not(.disabled):hover {
+        opacity: 0.8;
+      }
+    }
+
+    &.size-md {
+      border-radius: 50%;
+      font-size: 16px;
+      width: 28px;
+      height: 28px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .btn-icon {
+      margin: 0;
     }
   }
 }

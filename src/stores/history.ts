@@ -51,8 +51,8 @@ export const useHistoryStore = defineStore('history', {
       this.isSave = false
       return cloneDeep(this.history[this.currentIndex])
     },
-    setIsSave() {
-      this.isSave = true
+    setIsSave(isSave: boolean) {
+      this.isSave = isSave
     }
   },
 })

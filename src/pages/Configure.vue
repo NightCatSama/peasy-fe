@@ -17,11 +17,16 @@ import { useKeyPress } from 'ahooks-vue'
 import { ShortcutKey } from '@/constants/shortcut'
 import { useFont } from '@/components/libs/hooks/font'
 import { persistToken } from '@/utils/mande'
-import { AlertError } from '@/utils/alert'
+import { Alert, AlertError } from '@/utils/alert'
+import { useRoute, useRouter } from 'vue-router'
+
+const route = useRoute()
+const router = useRouter()
+const id = $computed(() => route.params?.id as string || '')
 
 const pageStore = usePageStore()
 const { pageData, activeSection, allPageData, colorVars, font } = storeToRefs(pageStore)
-const { setActiveSection, setActiveNode, updateAllPageNode, getAssetsData, getPageData, download } =
+const { setActiveSection, setActiveNode, updateAllPageNode, getAssetsData, getProjectData, download, saveProjectData } =
   pageStore
 
 const displayStore = useDisplayStore()
@@ -30,11 +35,34 @@ const { device, displayMode } = storeToRefs(displayStore)
 
 const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
-const { saveHistory, undoHistory, redoHistory } = historyStore
+const { saveHistory, undoHistory, redoHistory, setIsSave } = historyStore
 
+/** 下载当前页面 */
 const handleDownload = async () => {
   const res = await download()
   downloadHtml(res.data)
+}
+
+/** 保存项目 */
+const handleSaveProject = async () => {
+  if (allPageData.value.length === 0) {
+    return
+  }
+  // TODO: 后续需要弹窗设置项目名与封面图
+  const data = await saveProjectData(id, {
+    name: 'Project',
+    cover: '',
+  })
+  Alert('保存成功')
+  if (!id) {
+    router.replace({
+      name: 'editPage',
+      params: {
+        id: data.id,
+      }
+    })
+  }
+  setIsSave(true)
 }
 
 let showLeftPanel = $ref(false)
@@ -84,7 +112,8 @@ onMounted(async () => {
 
   // 初始化加载页面数据
   getAssetsData()
-  getPageData()
+
+  id && getProjectData(id)
 })
 
 onBeforeUnmount(() => window.removeEventListener('beforeunload', preventUnload))
@@ -185,7 +214,7 @@ watch(
       @change-materials-panel="(val) => (showLeftPanel = val)"
     ></Sidebar>
     <div class="container">
-      <ConfigHeader @download="handleDownload"></ConfigHeader>
+      <ConfigHeader @download="handleDownload" @save="handleSaveProject"></ConfigHeader>
       <!-- 页面主体内容 -->
       <div class="content">
         <!-- 左侧模板/组件选择区域 -->
