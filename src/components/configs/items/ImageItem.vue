@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { upload } from '@/utils/oss'
+import { upload, uploadByEvent } from '@/utils/oss'
 import InputItem from './InputItem.vue'
 import Icon from '@/components/widgets/Icon.vue'
 import { emitter } from '@/utils/event'
@@ -26,20 +26,7 @@ const handleChange = (img: string) => {
 }
 
 const uploadImage = async (e: InputEvent) => {
-  const files = (e.target as HTMLInputElement).files
-  if (files?.[0]) {
-    if (files[0].size <= 10 * 1024) {
-      var reader = new FileReader()
-      reader.readAsDataURL(files[0])
-      reader.onload = function (e) {
-        handleChange(reader.result as string)
-      }
-    } else {
-      const url = await upload(files[0])
-      handleChange(url as string)
-    }
-  }
-  ;(e.target as HTMLInputElement).value = ''
+  uploadByEvent(e, handleChange)
 }
 </script>
 

@@ -28,8 +28,6 @@ const {
 } = defineProps<IModalProps>()
 const onUpdate = useAttrs()['onUpdate:modelValue'] as any
 
-console.log(useAttrs())
-
 const handleClose = () => {
   if (onHide?.() === true) return
   onUpdate?.(false)

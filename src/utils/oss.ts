@@ -16,3 +16,20 @@ export const upload = async (file: File) => {
     alert(e)
   }
 }
+
+export const uploadByEvent = async (e: InputEvent, cb: (img: string) => void) => {
+  const files = (e.target as HTMLInputElement).files
+  if (files?.[0]) {
+    if (files[0].size <= 10 * 1024) {
+      var reader = new FileReader()
+      reader.readAsDataURL(files[0])
+      reader.onload = function (e) {
+        cb(reader.result as string)
+      }
+    } else {
+      const url = await upload(files[0])
+      cb(url as string)
+    }
+  }
+  ;(e.target as HTMLInputElement).value = ''
+}

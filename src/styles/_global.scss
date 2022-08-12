@@ -1,5 +1,6 @@
 // beautiful scrollbar
 $black: #000;
+$grey: #999;
 $white: #fff;
 $tr: transparent;
 $blue: #3da8f5;
@@ -14,6 +15,7 @@ $orange: #f47920;
 $roseate: #f05b72;
 
 $black-gradient: linear-gradient(lighten($black, 7%), $black);
+$grey-gradient: linear-gradient(lighten($grey, 7%), $grey);
 $white-gradient: linear-gradient(lighten($white, 7%), $white);
 $blue-gradient: linear-gradient(lighten($blue, 7%), $blue);
 $red-gradient: linear-gradient(lighten($red, 12%), $red);

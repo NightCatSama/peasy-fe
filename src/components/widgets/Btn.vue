@@ -104,9 +104,22 @@ const handleClick = (e: MouseEvent) => {
   }
 
   &-type-btn {
+    box-shadow: $bulge-shadow;
+    &:hover {
+      box-shadow: none;
+    }
     &.primary {
       color: $color;
       background: $theme-gradient;
+
+      &:not(.disabled):hover {
+        opacity: 0.8;
+      }
+    }
+
+    &.default {
+      color: $panel;
+      background: $grey-gradient;
 
       &:not(.disabled):hover {
         opacity: 0.8;

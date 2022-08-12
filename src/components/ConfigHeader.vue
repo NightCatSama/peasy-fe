@@ -131,6 +131,9 @@ emitter.on('saveColorVars', (color: string) => {
     <div class="left">
       <div class="name">{{ name }}</div>
       <div class="ext">.html</div>
+      <Btn class="project-setting-btn" type="text" color="default" @click="$emit('project-setting')">
+        <Icon name="project-setting" :size="16"></Icon>
+      </Btn>
     </div>
     <div class="center">
       <Dropdown
@@ -302,6 +305,14 @@ emitter.on('saveColorVars', (color: string) => {
       font-size: 14px;
       margin-left: 3px;
       color: darken($color, 10%);
+    }
+
+    .project-setting-btn {
+      position: relative;
+      top: 2px;
+      padding: 0;
+      margin-left: 4px;
+      color: $color;
     }
   }
 

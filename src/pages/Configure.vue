@@ -21,13 +21,14 @@ import { Alert, AlertError } from '@/utils/alert'
 import { useRoute, useRouter } from 'vue-router'
 import { saveStoragePageState, haveStoragePageState, clearStoragePageState, getStoragePageState } from '@/stores'
 import { Modal } from '@/components/modal'
+import ProjectModal from '@/components/modal/ProjectModal.vue'
 
 const route = useRoute()
 const router = useRouter()
 const id = $computed(() => route.params?.id as string || '')
 
 const pageStore = usePageStore()
-const { setting, activeSection, allPageData, colorVars, font } = storeToRefs(pageStore)
+const { setting, activeSection, allPageData, colorVars, font, project } = storeToRefs(pageStore)
 const { setActiveSection, setActiveNode, updateAllPageNode, getAssetsData, getProjectData, download, saveProjectData } =
   pageStore
 
@@ -38,6 +39,8 @@ const { deviceType, displayMode } = storeToRefs(displayStore)
 const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
 const { saveHistory, undoHistory, redoHistory, setIsSave } = historyStore
+
+let showProjectModal = $ref(false)
 
 /** 下载当前页面 */
 const handleDownload = async () => {
@@ -51,14 +54,16 @@ const handleSaveProject = async () => {
     return
   }
   // TODO: 后续需要弹窗设置项目名与封面图
-  const data = await saveProjectData(id, {
-    name: 'Project',
-    cover: '',
-  })
+  if (!project.value.name) {
+    showProjectModal = true
+    return
+  }
+  const data = await saveProjectData(id, project.value)
+  showProjectModal = false
   Alert('保存成功')
   if (!id) {
     router.replace({
-      name: 'editPage',
+      name: 'edit',
       params: {
         id: data.id,
       }
@@ -233,7 +238,11 @@ watch(
       @change-materials-panel="(val) => (showLeftPanel = val)"
     ></Sidebar>
     <div class="container">
-      <ConfigHeader @download="handleDownload" @save="handleSaveProject"></ConfigHeader>
+      <ConfigHeader
+        @download="handleDownload"
+        @save="handleSaveProject"
+        @project-setting="showProjectModal = true"
+      ></ConfigHeader>
       <!-- 页面主体内容 -->
       <div class="content">
         <!-- 左侧模板/组件选择区域 -->
@@ -246,6 +255,7 @@ watch(
         <ConfigSection></ConfigSection>
       </div>
     </div>
+    <ProjectModal v-model="showProjectModal" @save="handleSaveProject"></ProjectModal>
   </div>
 </template>
 

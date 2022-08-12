@@ -66,6 +66,7 @@ import LinkBrokenIcon from '@/assets/link-broken.svg'
 import LinkIcon from '@/assets/link.svg'
 import SaveIcon from '@/assets/save.svg'
 import TabletIcon from '@/assets/tablet.svg'
+import ProjectSetting from '@/assets/project-setting.svg'
 
 interface IIconProps {
   name: string
@@ -143,6 +144,7 @@ const iconMap = {
   link: LinkIcon,
   save: SaveIcon,
   tablet: TabletIcon,
+  'project-setting': ProjectSetting,
 } as any
 
 const { name, size = 26, type = 'circle', active, color } = defineProps<IIconProps>()

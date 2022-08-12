@@ -19,7 +19,7 @@ type MaterialData = {
 
 export const usePageStore = defineStore('page', {
   state: () => getStoragePageState('', {
-    project: { name: 'Project', cover: '' } as IProject,
+    project: { name: '', cover: '' } as IProject,
     /** 所有页面数据 */
     allPageData: [] as PageNode<any>[],
     /** 当前激活的节点 */
@@ -146,7 +146,7 @@ export const usePageStore = defineStore('page', {
       this.font = pageData.font
       this.setting = pageData.setting
     },
-    async saveProjectData(id: string, params: { name: string; cover: string }) {
+    async saveProjectData(id: string, params: IProject) {
       const body: SaveProjectDto = {
         name: params.name,
         cover: params.cover,
