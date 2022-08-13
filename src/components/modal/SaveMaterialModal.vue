@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  inheritAttrs: true
+  inheritAttrs: true,
 }
 </script>
 
@@ -43,7 +43,7 @@ const { isAdmin } = storeToRefs(userStore)
 let editItem: IMaterialItem | null = $ref(null)
 
 const isTemplate = $computed<boolean>(() => material?.type === 'template')
-const node = $computed<PageNode | null>(() => isTemplate ? null : editItem?.node as PageNode)
+const node = $computed<PageNode | null>(() => (isTemplate ? null : (editItem?.node as PageNode)))
 const isModule = $computed<boolean>({
   get() {
     return (!isTemplate && node?.isModule) || false
@@ -51,7 +51,7 @@ const isModule = $computed<boolean>({
   set(val: boolean) {
     if (val) nextTick(() => initJSONEditor())
     editItem.node.isModule = val
-  }
+  },
 })
 
 const initJSONEditor = () => {
@@ -64,35 +64,44 @@ const initJSONEditor = () => {
       mainMenuBar: false,
       navigationBar: false,
       statusBar: false,
-    });
+    })
   }
-  editor.set(node.moduleConfig || [{
-    title: 'Title',
-    icon: 'basic',
-    data: [
-      {
-        type: 'text',
-        label: 'Label',
-        props: {},
-        sourceValue: 'children[0].config.props.basic.text',
-        targetValue: 'children[0].config.props.basic.text',
-      }
-    ]
-  }] as IModuleConfigGroup[])
+  editor.set(
+    node.moduleConfig ||
+      ([
+        {
+          title: 'Title',
+          icon: 'basic',
+          data: [
+            {
+              type: 'text',
+              label: 'Label',
+              props: {},
+              sourceValue: 'children[0].config.props.basic.text',
+              targetValue: 'children[0].config.props.basic.text',
+            },
+          ],
+        },
+      ] as IModuleConfigGroup[])
+  )
 }
 
-watch(() => [material, propsRef.modelValue], async () => {
-  if (material && propsRef.modelValue) {
-    editItem = cloneDeep(material)
-    nextTick(() => initJSONEditor())
-    if (autoCreateCover) {
-      const elem = document.querySelector(`[data-name="${editItem.name}"]`) as HTMLElement
-      editItem.cover = elem ? await createMaterialSnapshot(elem) : ''
+watch(
+  () => [material, propsRef.modelValue],
+  async () => {
+    if (material && propsRef.modelValue) {
+      editItem = cloneDeep(material)
+      nextTick(() => initJSONEditor())
+      if (autoCreateCover) {
+        const elem = document.querySelector(`[data-name="${editItem.name}"]`) as HTMLElement
+        editItem.cover = elem ? await createMaterialSnapshot(elem) : ''
+      }
+    } else {
+      editItem = null
     }
-  } else {
-    editItem = null
-  }
-}, { immediate: true })
+  },
+  { immediate: true }
+)
 
 let editor = $ref<JSONEditor | null>(null)
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
@@ -104,11 +113,13 @@ const handleSave = async () => {
   }
   const data = await fetchSaveMaterial({
     ...editItem,
-    node: isTemplate ? null : {
-      ...node,
-      isModule: node?.isModule || false,
-      moduleConfig: node?.isModule && editor ? editor.get() : [],
-    } as PageNode,
+    node: isTemplate
+      ? null
+      : ({
+          ...node,
+          isModule: node?.isModule || false,
+          moduleConfig: node?.isModule && editor ? editor.get() : [],
+        } as PageNode),
   })
   onSave?.(data)
   Alert('保存成功')
@@ -116,47 +127,34 @@ const handleSave = async () => {
 }
 
 const titleMap = {
-  'template': 'Template',
-  'component': 'Component',
-  'section': 'Section',
+  template: 'Template',
+  component: 'Component',
+  section: 'Section',
 }
 </script>
 
 <template>
-  <Modal ref="modal" class="save-modal" :title="`Save ${titleMap[material.type]}`" :width="'70vw'" close-on-click-mask v-bind="$attrs">
+  <Modal
+    ref="modal"
+    class="save-modal"
+    :title="`Save ${titleMap[material.type]}`"
+    :width="'70vw'"
+    close-on-click-mask
+    v-bind="$attrs"
+  >
     <div class="info-wrapper" v-if="editItem">
       <div class="info">
-        <InputItem
-          label="Name"
-          v-model="editItem.name"
-        ></InputItem>
-        <InputItem
-          v-if="isAdmin"
-          label="Name(En)"
-          v-model="editItem.enName"
-        ></InputItem>
-        <InputItem
-          label="Category"
-          v-if="!isTemplate"
-          v-model="editItem.category"
-        ></InputItem>
+        <InputItem label="Name" v-model="editItem.name"></InputItem>
+        <InputItem v-if="isAdmin" label="Name(En)" v-model="editItem.enName"></InputItem>
+        <InputItem label="Category" v-if="!isTemplate" v-model="editItem.category"></InputItem>
         <InputItem
           v-if="isAdmin && !isTemplate"
           label="Category(En)"
           v-model="editItem.categoryEn"
         ></InputItem>
-        <SwitchItem
-          v-if="isAdmin && !isTemplate"
-          label="Module"
-          v-model="isModule"
-        ></SwitchItem>
+        <SwitchItem v-if="isAdmin && !isTemplate" label="Module" v-model="isModule"></SwitchItem>
       </div>
-      <ImageItem
-        hide-label
-        v-model="editItem.cover"
-        wrapper-class="cover-wrapper"
-        :rows="5"
-      >
+      <ImageItem hide-label v-model="editItem.cover" wrapper-class="cover-wrapper" :rows="5">
         <div class="cover" :style="{ backgroundImage: `url(${editItem.cover})` }"></div>
       </ImageItem>
     </div>
@@ -244,7 +242,9 @@ const titleMap = {
       height: 100%;
       overflow: hidden;
       border-radius: $inner-radius 0 0 $inner-radius;
-      .jsoneditor, .jsoneditor-outer, .jsoneditor-text {
+      .jsoneditor,
+      .jsoneditor-outer,
+      .jsoneditor-text {
         width: 100%;
         height: 100%;
       }

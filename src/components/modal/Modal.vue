@@ -1,12 +1,12 @@
 <script lang="ts">
 export default {
-  inheritAttrs: false
+  inheritAttrs: false,
 }
 </script>
 
 <script setup lang="ts">
-import { useAttrs } from 'vue';
-import Icon from '../widgets/Icon.vue';
+import { useAttrs } from 'vue'
+import Icon from '../widgets/Icon.vue'
 
 interface IModalProps {
   width?: string
@@ -24,7 +24,7 @@ const {
   width,
   closeOnClickMask,
   showClose = true,
-  onHide
+  onHide,
 } = defineProps<IModalProps>()
 const onUpdate = useAttrs()['onUpdate:modelValue'] as any
 
@@ -34,7 +34,7 @@ const handleClose = () => {
 }
 
 defineExpose({
-  hide: handleClose
+  hide: handleClose,
 })
 </script>
 
@@ -43,7 +43,7 @@ defineExpose({
     <Transition name="modal-fade">
       <div :class="['modal-wrapper']" v-show="modelValue" :id="uniqId">
         <div class="modal-mask" @click="() => closeOnClickMask && handleClose()"></div>
-        <div :class="['modal-content']" :style="{ width: width ? `${width}`: '' }" v-bind="$attrs">
+        <div :class="['modal-content']" :style="{ width: width ? `${width}` : '' }" v-bind="$attrs">
           <div class="modal-content-header">
             <div class="modal-content-header-title" v-if="title">{{ title }}</div>
           </div>

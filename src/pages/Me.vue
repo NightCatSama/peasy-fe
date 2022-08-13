@@ -1,22 +1,22 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
-import { storeToRefs } from 'pinia';
-import { useLogto } from '@logto/vue';
-import Btn from '@/components/widgets/Btn.vue';
-import Icon from '@/components/widgets/Icon.vue';
-import Avatar from '@/components/widgets/Avatar.vue';
-import ImageItem from '@/components/configs/items/ImageItem.vue';
-import { materialApi, projectApi } from '@/utils/mande';
-import { onMounted, reactive } from 'vue';
-import { IMaterialItem, IPage } from '@/config';
-import { Project } from '@@/entities/project.entity';
+import { storeToRefs } from 'pinia'
+import { useLogto } from '@logto/vue'
+import Btn from '@/components/widgets/Btn.vue'
+import Icon from '@/components/widgets/Icon.vue'
+import Avatar from '@/components/widgets/Avatar.vue'
+import ImageItem from '@/components/configs/items/ImageItem.vue'
+import { materialApi, projectApi } from '@/utils/mande'
+import { onMounted, reactive } from 'vue'
+import { IMaterialItem, IPage } from '@/config'
+import { Project } from '@@/entities/project.entity'
 import { IResponse } from '@@/types/response'
-import { useRouter } from 'vue-router';
-import { Modal } from '@/components/modal';
-import ProjectModal from '@/components/modal/ProjectModal.vue';
-import { Alert } from '@/utils/alert';
-import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue';
-import { SaveProjectDto } from '@@/dto/data.dto';
+import { useRouter } from 'vue-router'
+import { Modal } from '@/components/modal'
+import ProjectModal from '@/components/modal/ProjectModal.vue'
+import { Alert } from '@/utils/alert'
+import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
+import { SaveProjectDto } from '@@/dto/data.dto'
 
 const router = useRouter()
 
@@ -24,7 +24,7 @@ const userStore = useUserStore()
 const { userName, avatar } = storeToRefs(userStore)
 const { updateAvatar } = userStore
 
-const { signOut, signIn, isAuthenticated } = useLogto();
+const { signOut, signIn, isAuthenticated } = useLogto()
 const handleSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
 const handleSignOut = () => signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
 
@@ -41,16 +41,18 @@ let showMap = reactive<{
   [key: string]: Project[] | IMaterialItem[]
 }>({})
 let titleMap = {
-  'project': 'Project',
-  'template': 'Template',
-  'component': 'Component',
-  'section': 'Section',
+  project: 'Project',
+  template: 'Template',
+  component: 'Component',
+  section: 'Section',
 }
 
 onMounted(async () => {
   const { data } = await projectApi.get<IResponse<Project[]>>('')
   showMap['project'] = data
-  const res = await materialApi.get<IResponse<{ [type: string]: IMaterialItem[] }>>('', { query: { includeTemplate: true }})
+  const res = await materialApi.get<IResponse<{ [type: string]: IMaterialItem[] }>>('', {
+    query: { includeTemplate: true },
+  })
   ;['template', 'section', 'component'].forEach((key) => {
     if (res.data[key]?.length > 0) {
       showMap[key] = res.data[key]
@@ -60,7 +62,7 @@ onMounted(async () => {
   })
 })
 
-let projectList = $computed<Project[]>(() => showMap['project'] as Project[] || [])
+let projectList = $computed<Project[]>(() => (showMap['project'] as Project[]) || [])
 
 const handleGotoProject = (project?: Project) => {
   if (!project) {
@@ -71,8 +73,8 @@ const handleGotoProject = (project?: Project) => {
     router.push({
       name: 'edit',
       params: {
-        id: project.id
-      }
+        id: project.id,
+      },
     })
   }
 }
@@ -80,7 +82,7 @@ const handleGotoProject = (project?: Project) => {
 const handleDeleteProject = async (project: Project) => {
   if (await Modal.confirm(`确认删除 ${project.name} 吗`)) {
     await projectApi.delete(project.id)
-    showMap['project'] = projectList.filter(p => p.id !== project.id)
+    showMap['project'] = projectList.filter((p) => p.id !== project.id)
     Alert('删除成功')
   }
 }
@@ -114,7 +116,7 @@ const handleMaterialImageClick = async (material: IMaterialItem) => {
       const { data } = await projectApi.patch<IResponse<Project>>('', {
         name: material.name,
         cover: material.cover,
-        page: material.page
+        page: material.page,
       } as SaveProjectDto)
       handleGotoProject(data)
     }
@@ -139,21 +141,21 @@ const setCurMaterialByProject = (project: Project) => {
     category: '',
     categoryEn: '',
     cover: project.cover || '',
-    page: project.page
+    page: project.page,
   }
 }
 
 const updateMaterial = (material: IMaterialItem) => {
   // 有 id 则为更新
   if (curMaterial.id) {
-    showMap[curMaterial.type] = showMap[curMaterial.type].map(m => {
+    showMap[curMaterial.type] = showMap[curMaterial.type].map((m) => {
       if (m.id === curMaterial.id) {
         return material
       }
       return m
     })
   } else {
-    (showMap[curMaterial.type] as IMaterialItem[]).push(material)
+    ;(showMap[curMaterial.type] as IMaterialItem[]).push(material)
   }
 }
 
@@ -161,7 +163,9 @@ const updateMaterial = (material: IMaterialItem) => {
 const handleDeleteMaterial = async (material: IMaterialItem) => {
   if (await Modal.confirm(`确认删除 ${material.name} 吗`)) {
     await materialApi.delete(material.id)
-    showMap[material.type] = (showMap[material.type] as IMaterialItem[]).filter(p => p.id !== material.id)
+    showMap[material.type] = (showMap[material.type] as IMaterialItem[]).filter(
+      (p) => p.id !== material.id
+    )
     Alert('删除成功')
   }
 }
@@ -183,23 +187,23 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
       <div class="data-title">{{ titleMap[key] }}</div>
       <div class="data-list">
         <div class="data-item" v-if="key === 'project'">
-          <div
-            class="data-image create"
-            @click="handleGotoProject()"
-          >
+          <div class="data-image create" @click="handleGotoProject()">
             <div class="data-image-placeholder">
               <Icon name="add" :size="24" />
               <span>New Project</span>
             </div>
           </div>
-          <div class="data-info">
-          </div>
+          <div class="data-info"></div>
         </div>
         <div class="data-item" v-for="(item, index) in list" :key="item.name + index">
           <div
             class="data-image"
             :style="{ backgroundImage: item.cover ? `url(${item.cover})` : void 0 }"
-            @click="key === 'project' ? handleGotoProject(item as Project) : handleMaterialImageClick(item as IMaterialItem)"
+            @click="
+              key === 'project'
+                ? handleGotoProject(item as Project)
+                : handleMaterialImageClick(item as IMaterialItem)
+            "
           >
             <div v-if="!item.cover" class="data-image-placeholder">
               <Icon name="empty" :size="32" />
@@ -209,13 +213,43 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
           <div class="data-info">
             <div class="data-info-name">{{ item.name }}</div>
             <template v-if="key === 'project'">
-              <Icon type="circle" class="data-info-btn" name="save" :size="9" @click="handleSaveToTemplate(item as Project)"></Icon>
-              <Icon type="circle" class="data-info-btn" name="advanced" :size="11" @click="handleOpenProjectModal(item as Project)"></Icon>
-              <Icon type="circle" class="data-info-btn danger" name="delete" :size="10" @click="handleDeleteProject(item as Project)"></Icon>
+              <Icon
+                type="circle"
+                class="data-info-btn"
+                name="save"
+                :size="9"
+                @click="handleSaveToTemplate(item as Project)"
+              ></Icon>
+              <Icon
+                type="circle"
+                class="data-info-btn"
+                name="advanced"
+                :size="11"
+                @click="handleOpenProjectModal(item as Project)"
+              ></Icon>
+              <Icon
+                type="circle"
+                class="data-info-btn danger"
+                name="delete"
+                :size="10"
+                @click="handleDeleteProject(item as Project)"
+              ></Icon>
             </template>
             <template v-else>
-              <Icon type="circle" class="data-info-btn" name="advanced" :size="11" @click="handleMaterialSetting(item as IMaterialItem)"></Icon>
-              <Icon type="circle" class="data-info-btn danger" name="delete" :size="10" @click="handleDeleteMaterial(item as IMaterialItem)"></Icon>
+              <Icon
+                type="circle"
+                class="data-info-btn"
+                name="advanced"
+                :size="11"
+                @click="handleMaterialSetting(item as IMaterialItem)"
+              ></Icon>
+              <Icon
+                type="circle"
+                class="data-info-btn danger"
+                name="delete"
+                :size="10"
+                @click="handleDeleteMaterial(item as IMaterialItem)"
+              ></Icon>
             </template>
           </div>
         </div>
@@ -239,7 +273,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
 
 <style lang="scss" scoped>
 .me-page {
-  background: #E9E9E9;
+  background: #e9e9e9;
   min-height: 100vh;
   font-family: $font-family;
   .user-info {
@@ -294,7 +328,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
         color: $grey;
         background-color: $white;
         cursor: pointer;
-        transition: all .3s;
+        transition: all 0.3s;
 
         &.create {
           border: 2px dashed $grey;
@@ -304,12 +338,12 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
             color: $theme;
             border-color: $tr;
             background-color: $white;
-            box-shadow: 0 0 10px 0px rgba(0, 0, 0, .1);
+            box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
           }
         }
 
         &:not(.create):hover {
-          box-shadow: 0 0 10px 0px rgba(0, 0, 0, .1);
+          box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
         }
 
         &-placeholder {
@@ -356,7 +390,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
           cursor: pointer;
           opacity: 0;
           display: none;
-          transition: all .3s;
+          transition: all 0.3s;
           &:hover {
             background: $panel;
           }

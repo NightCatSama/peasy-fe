@@ -1,7 +1,7 @@
 <script setup lang="ts">
-import { onBeforeMount } from 'vue';
-import { useUserStore } from './stores/user';
-import { logtoMeApi, persistToken } from './utils/mande';
+import { onBeforeMount } from 'vue'
+import { useUserStore } from './stores/user'
+import { logtoMeApi, persistToken } from './utils/mande'
 
 let isReady = $ref(false)
 

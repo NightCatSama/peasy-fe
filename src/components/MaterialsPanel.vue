@@ -60,7 +60,7 @@ const handleDelete = (item: IMaterialItem) => {
   deleteMaterial(item.id!).then(() => Alert('删除成功'))
 }
 
-const currentNodeList = $computed(() => (materialData.value as any)[currentType]);
+const currentNodeList = $computed(() => (materialData.value as any)[currentType])
 const currentCategory = $computed(() => {
   let map: { [category: string]: IMaterialItem[] } = {}
   currentNodeList.forEach((item: IMaterialItem) => {
@@ -80,7 +80,10 @@ const currentCategory = $computed(() => {
       v-model="currentType"
       type="float"
     ></Tabs>
-    <section v-for="(list, category) in currentCategory" v-show="Array.isArray(list) && list.length > 0">
+    <section
+      v-for="(list, category) in currentCategory"
+      v-show="Array.isArray(list) && list.length > 0"
+    >
       <div class="title">{{ category }}</div>
       <draggable
         ref="draggableRef"

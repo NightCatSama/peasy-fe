@@ -1,4 +1,4 @@
-import { getColorVarStylesheet } from "./stylesheet"
+import { getColorVarStylesheet } from './stylesheet'
 
 export const variableColorSymbol = '$'
 

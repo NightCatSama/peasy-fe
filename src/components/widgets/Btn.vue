@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { useAttrs } from 'vue';
+import { useAttrs } from 'vue'
 import Icon from './Icon.vue'
 
 interface IBtnProps {

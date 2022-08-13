@@ -12,7 +12,7 @@ export function clearToken() {
 
 export async function persistToken() {
   const { getAccessToken, getIdTokenClaims } = useLogto()
-  const token = await getAccessToken?.(import.meta.env.VITE_LOGTO_RESOURCE) || ''
+  const token = (await getAccessToken?.(import.meta.env.VITE_LOGTO_RESOURCE)) || ''
   const userInfo = await getIdTokenClaims()
   if (token) setToken(token)
   if (token && userInfo) {
@@ -25,7 +25,7 @@ export async function persistToken() {
   }
   return {
     token,
-    userInfo
+    userInfo,
   }
 }
 

@@ -19,19 +19,31 @@ import { useFont } from '@/components/libs/hooks/font'
 import { persistToken } from '@/utils/mande'
 import { Alert, AlertError } from '@/utils/alert'
 import { useRoute, useRouter } from 'vue-router'
-import { saveStoragePageState, haveStoragePageState, clearStoragePageState, getStoragePageState } from '@/stores'
+import {
+  saveStoragePageState,
+  haveStoragePageState,
+  clearStoragePageState,
+  getStoragePageState,
+} from '@/stores'
 import { Modal } from '@/components/modal'
 import ProjectModal from '@/components/modal/ProjectModal.vue'
 import { destroyMoveable } from '@/utils/moveable'
 
 const route = useRoute()
 const router = useRouter()
-const id = $computed(() => route.params?.id as string || '')
+const id = $computed(() => (route.params?.id as string) || '')
 
 const pageStore = usePageStore()
 const { setting, activeSection, allPageData, colorVars, font, project } = storeToRefs(pageStore)
-const { setActiveSection, setActiveNode, updateAllPageNode, getAssetsData, getProjectData, download, saveProjectData } =
-  pageStore
+const {
+  setActiveSection,
+  setActiveNode,
+  updateAllPageNode,
+  getAssetsData,
+  getProjectData,
+  download,
+  saveProjectData,
+} = pageStore
 
 const displayStore = useDisplayStore()
 const { setDeviceByParent, setDevice } = displayStore
@@ -67,7 +79,7 @@ const handleSaveProject = async (editProject?: IProject) => {
       name: 'edit',
       params: {
         id: data.id,
-      }
+      },
     })
   }
   setIsSave(true)
@@ -118,7 +130,7 @@ onMounted(async () => {
     saveHistory(allPageData.value)
   })
 
-  window.addEventListener('beforeunload', preventUnload);
+  window.addEventListener('beforeunload', preventUnload)
 
   // 初始化加载页面数据
   getAssetsData()
@@ -261,7 +273,12 @@ watch(
         <ConfigSection></ConfigSection>
       </div>
     </div>
-    <ProjectModal v-if="project" v-model="showProjectModal" :project="project" @save="handleSaveProject"></ProjectModal>
+    <ProjectModal
+      v-if="project"
+      v-model="showProjectModal"
+      :project="project"
+      @save="handleSaveProject"
+    ></ProjectModal>
   </div>
 </template>
 
@@ -304,5 +321,4 @@ watch(
 }
 </style>
 
-<style lang="scss">
-</style>
+<style lang="scss"></style>

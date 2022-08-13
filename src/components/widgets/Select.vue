@@ -46,7 +46,13 @@ const handleChange = (val: string) => {
 </script>
 
 <template>
-  <Dropdown type="pure" :placement="placement" :disabled="disabled" :container="container" :distance="distance">
+  <Dropdown
+    type="pure"
+    :placement="placement"
+    :disabled="disabled"
+    :container="container"
+    :distance="distance"
+  >
     <div :class="['select', `select-display-${display}`, { disabled }]">
       <slot name="value" :value="showValue">
         <div class="select-value">

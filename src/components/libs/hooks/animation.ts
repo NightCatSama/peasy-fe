@@ -42,10 +42,7 @@ export const useIntersectionObserver = (
  * 3. 绑定对应的事件去更新 animationMap 中的 disabled 值
  * 4. 返回 animationMap 用于组件中获取
  */
-export const useAnimation = (
-  propsRef: IProps,
-  el: Ref<HTMLDivElement | null>,
-) => {
+export const useAnimation = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
   const animation = $computed(() => propsRef.animation)
   const position = $computed(() => propsRef.position)
   let dynamicAnimationStyles = $ref<HTMLStyleElement | null>(null)

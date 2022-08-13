@@ -34,7 +34,7 @@ export const useUserStore = defineStore('user', {
       if (!this.isLogin) return
 
       await logtoMeApi.patch<any>('', {
-        avatar: img
+        avatar: img,
       })
       this.userInfo = {
         ...this.userInfo!,
@@ -44,6 +44,6 @@ export const useUserStore = defineStore('user', {
     setUserInfo(accessToken: string, userInfo: IUserInfo) {
       this.accessToken = accessToken
       this.userInfo = userInfo
-    }
+    },
   },
 })

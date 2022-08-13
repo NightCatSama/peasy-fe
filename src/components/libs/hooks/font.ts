@@ -1,4 +1,4 @@
-import { getFontStylesheet } from "./stylesheet"
+import { getFontStylesheet } from './stylesheet'
 
 let dynamicAnimationStyles = null as HTMLStyleElement | null
 export const useFont = (font: IFontSetting, wrapper = 'html') => {

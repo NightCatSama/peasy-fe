@@ -1,12 +1,20 @@
-
-import { createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
+import {
+  createRouter,
+  createWebHistory,
+  NavigationGuardNext,
+  RouteLocationNormalized,
+} from 'vue-router'
 
 import Configure from '@/pages/Configure.vue'
 import Redirect from '@/pages/Redirect.vue'
 import Me from '@/pages/Me.vue'
 import NotFound from '@/pages/NotFound.vue'
 
-const needReloadPage = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+const needReloadPage = (
+  to: RouteLocationNormalized,
+  from: RouteLocationNormalized,
+  next: NavigationGuardNext
+) => {
   if (from.name && !(from.name === 'create' && to.name === 'edit')) {
     location.href = import.meta.env.VITE_URL_BASE + to.fullPath.slice(1)
   } else {
@@ -22,6 +30,6 @@ export const router = createRouter({
     { path: '/edit/:id', component: Configure, name: 'edit', beforeEnter: needReloadPage },
     { path: '/me', component: Me, name: 'user' },
     { path: '/redirect', component: Redirect, name: 'redirect' },
-    { path: '/:pathMatch(.*)', component: NotFound, name: 'not-found' }
+    { path: '/:pathMatch(.*)', component: NotFound, name: 'not-found' },
   ],
 })

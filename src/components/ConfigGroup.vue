@@ -55,7 +55,9 @@ const bindProps = $computed(() =>
     : { [groupType]: useGroupConfig(activeNode.value, groupType) }
 )
 
-const iconName = $computed(() => (bindProps as any)?.icon || groupIconMap[groupType] || defaultGroupIcon)
+const iconName = $computed(
+  () => (bindProps as any)?.icon || groupIconMap[groupType] || defaultGroupIcon
+)
 </script>
 
 <template>

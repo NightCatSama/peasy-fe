@@ -18,9 +18,18 @@ import { keyEvent } from 'ahooks-vue/dist/src/useKeyPress/constants'
 import { IMaterialItem } from '@/config'
 
 const pageStore = usePageStore()
-const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, setting } = storeToRefs(pageStore)
-const { unlinkActiveNodeProp, switchActiveNodeConfigMode, getAllTags, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode, setActiveNodeHide } =
-  pageStore
+const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, setting } =
+  storeToRefs(pageStore)
+const {
+  unlinkActiveNodeProp,
+  switchActiveNodeConfigMode,
+  getAllTags,
+  setActiveNode,
+  deleteActiveNode,
+  copyActiveNode,
+  separateActiveNode,
+  setActiveNodeHide,
+} = pageStore
 
 const displayStore = useDisplayStore()
 const { minimize, deviceType } = storeToRefs(displayStore)
@@ -55,10 +64,8 @@ const handleActiveNodeChange = async (event: Event) => {
 }
 
 /** 是否不需要取消链接选项 */
-const disabledUnlinkDropdown = $computed(() =>
-  !activeNode.value ||
-  !activeNode.value.children ||
-  activeNode.value.children.length === 0
+const disabledUnlinkDropdown = $computed(
+  () => !activeNode.value || !activeNode.value.children || activeNode.value.children.length === 0
 )
 
 /** 取消组件配置关联 */
@@ -137,7 +144,7 @@ const setCurMaterial = () => {
     category: '',
     categoryEn: '',
     cover: activeNode.value.cover || '',
-    node: activeNode.value
+    node: activeNode.value,
   }
 }
 </script>
@@ -212,12 +219,14 @@ const setCurMaterial = () => {
               :distance="0"
               :skidding="-5"
             >
-              <div class="op-icon-btn link-btn" @click="() => disabledUnlinkDropdown ? handleUnlink(false) : null">
-                <Icon
-                  :name="activeNode.propLink ? 'link-broken' : 'link'"
-                  :size="14"
-                ></Icon>
-                  Unlink with<span class="link-text" @click.stop="handleFocusLinkNode">{{ activeNode.propLink }}</span>
+              <div
+                class="op-icon-btn link-btn"
+                @click="() => (disabledUnlinkDropdown ? handleUnlink(false) : null)"
+              >
+                <Icon :name="activeNode.propLink ? 'link-broken' : 'link'" :size="14"></Icon>
+                Unlink with<span class="link-text" @click.stop="handleFocusLinkNode">{{
+                  activeNode.propLink
+                }}</span>
               </div>
               <template #content>
                 <div class="select-option" @click="() => handleUnlink(false)">Self-Unlink</div>

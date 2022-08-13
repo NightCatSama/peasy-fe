@@ -14,11 +14,14 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
   })
   onBeforeMount(() => stop?.())
 
-  watch(() => event, () => {
-    stop?.()
-    if (!el.value) return
-    stop = eventHandler(event, el.value)
-  })
+  watch(
+    () => event,
+    () => {
+      stop?.()
+      if (!el.value) return
+      stop = eventHandler(event, el.value)
+    }
+  )
 
   const eventHandler = (event: IEvent, el: HTMLDivElement): (() => void) | null => {
     if (!event) return null

@@ -6,15 +6,10 @@ interface ILogoProps {
 }
 
 const { size } = defineProps<ILogoProps>()
-
 </script>
 
 <template>
-  <img
-    :src="LogoImage"
-    :class="['logo']"
-    :style="{ width: `${size}px`, height: `${size}px` }"
-  >
+  <img :src="LogoImage" :class="['logo']" :style="{ width: `${size}px`, height: `${size}px` }" />
 </template>
 
 <style lang="scss">

@@ -1,9 +1,22 @@
 import { defineStore } from 'pinia'
 import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mock'
-import { PageNode, ComponentPropsGroup, ComponentName, GroupType, IPage, IMaterialItem } from '@/config'
+import {
+  PageNode,
+  ComponentPropsGroup,
+  ComponentName,
+  GroupType,
+  IPage,
+  IMaterialItem,
+} from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
-import { useConfig, useGroupConfig, isMobileGroupConfig, useMobileConfig, useGroupConfigByNode } from '@/utils/config'
+import {
+  useConfig,
+  useGroupConfig,
+  isMobileGroupConfig,
+  useMobileConfig,
+  useGroupConfigByNode,
+} from '@/utils/config'
 import { nextTick } from 'vue'
 import { cloneDeep, merge } from 'lodash'
 import { downloadApi, materialApi, projectApi } from '@/utils/mande'
@@ -18,48 +31,45 @@ type MaterialData = {
 }
 
 export const usePageStore = defineStore('page', {
-  state: () => getStoragePageState('', {
-    project: { name: '', cover: '' } as IProject,
-    /** 所有页面数据 */
-    allPageData: [] as PageNode<any>[],
-    /** 当前激活的节点 */
-    activeNode: null as PageNode | null,
-    /** 当前激活的节点到最顶层的节点链 */
-    activeParentChain: [] as PageNode[],
-    /** 物料数据 */
-    materialData: {
-      section: [],
-      component: [],
-      template: [],
-    } as MaterialData,
-    /** 当前展示的 Section，null 为全部 */
-    activeSection: null as PageNode | null,
-    /** 颜色变量 */
-    colorVars: [
-      { name: '$primary', color: '#00a8ff' },
-    ] as IColorVarItem[],
-    /** 全局设置 */
-    setting: {
-      client: 'both',
-      /** 页面标题 */
-      title: 'Your Page Title',
-      /** 页面图标 */
-      favicon: '',
-      /** meta 标签展示，用于 SEO 优化 */
-      description: '',
-    } as IPageSetting,
-    /** 全局的字体设置 */
-    font: {
-      fontFamily: `'ZCOOL XiaoWei', PingFang SC, sans-serif`,
-      /** 自定义字体 */
-      customFontFace: [
-        'https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap',
-      ],
-      /** 全局的字体大小 */
-      fontSize: 14,
-      mediaFontSize: {},
-    } as IFontSetting,
-  }),
+  state: () =>
+    getStoragePageState('', {
+      project: { name: '', cover: '' } as IProject,
+      /** 所有页面数据 */
+      allPageData: [] as PageNode<any>[],
+      /** 当前激活的节点 */
+      activeNode: null as PageNode | null,
+      /** 当前激活的节点到最顶层的节点链 */
+      activeParentChain: [] as PageNode[],
+      /** 物料数据 */
+      materialData: {
+        section: [],
+        component: [],
+        template: [],
+      } as MaterialData,
+      /** 当前展示的 Section，null 为全部 */
+      activeSection: null as PageNode | null,
+      /** 颜色变量 */
+      colorVars: [{ name: '$primary', color: '#00a8ff' }] as IColorVarItem[],
+      /** 全局设置 */
+      setting: {
+        client: 'both',
+        /** 页面标题 */
+        title: 'Your Page Title',
+        /** 页面图标 */
+        favicon: '',
+        /** meta 标签展示，用于 SEO 优化 */
+        description: '',
+      } as IPageSetting,
+      /** 全局的字体设置 */
+      font: {
+        fontFamily: `'ZCOOL XiaoWei', PingFang SC, sans-serif`,
+        /** 自定义字体 */
+        customFontFace: ['https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap'],
+        /** 全局的字体大小 */
+        fontSize: 14,
+        mediaFontSize: {},
+      } as IFontSetting,
+    }),
   getters: {
     /** 当前激活节点对应的配置数据 */
     activeNodeGroups: (state) =>
@@ -132,7 +142,8 @@ export const usePageStore = defineStore('page', {
         return children
       },
     activeParentNode: (state) => state.activeParentChain?.[0] || null,
-    activeNodeHide: (state) => state.activeNode ? useGroupConfig(state.activeNode, 'common').hide || false : false,
+    activeNodeHide: (state) =>
+      state.activeNode ? useGroupConfig(state.activeNode, 'common').hide || false : false,
   },
   actions: {
     /** 获取项目数据 */
@@ -158,7 +169,7 @@ export const usePageStore = defineStore('page', {
           setting: this.setting,
           /** 字体配置 */
           font: this.font,
-        }
+        },
       }
       const { data } = await projectApi.patch<IResponse<Project>>(id, body)
       this.project.name = data.name
@@ -186,7 +197,7 @@ export const usePageStore = defineStore('page', {
           pageData: this.allPageData,
           colorVars: this.colorVars,
           font: this.font,
-          setting: this.setting
+          setting: this.setting,
         } as IPage,
       })
       return res
@@ -360,7 +371,8 @@ export const usePageStore = defineStore('page', {
     switchActiveNodeConfigMode(groupType: GroupType) {
       if (!this.activeNode) return
       const currentOpen = isMobileGroupConfig(this.activeNode, groupType)
-      const isLink = !!this.activeNode.propLink && groupType && !useGroupConfigByNode(this.activeNode, groupType)
+      const isLink =
+        !!this.activeNode.propLink && groupType && !useGroupConfigByNode(this.activeNode, groupType)
       let config = isLink ? useConfig(this.activeNode) : this.activeNode.config
       if (!currentOpen) {
         if (!config.mobile) config.mobile = {} as any
@@ -410,6 +422,6 @@ export const usePageStore = defineStore('page', {
       if (fontSize > 0) {
         this.font.mediaFontSize[width] = fontSize
       }
-    }
+    },
   },
 })

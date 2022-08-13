@@ -76,7 +76,6 @@ export const covertSize = (
       return s
   }
 }
-
 ;(window as any).covertSize = covertSize
 
 /** 转换格式时，保持原有数值不变 */

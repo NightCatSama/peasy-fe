@@ -29,14 +29,21 @@ const { setting, colorVars, allPageData } = storeToRefs(pageStore)
 const { updateAllPageNode, setMediaFontSize } = pageStore
 
 const displayStore = useDisplayStore()
-const { device, displayMode, deviceType, curWidthFootSize, curFootSize, curPresetDeviceList: deviceList } = storeToRefs(displayStore)
+const {
+  device,
+  displayMode,
+  deviceType,
+  curWidthFootSize,
+  curFootSize,
+  curPresetDeviceList: deviceList,
+} = storeToRefs(displayStore)
 const { setDevice, setDisplayMode } = displayStore
 
 const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
 const { saveHistory, undoHistory, redoHistory } = historyStore
 
-const { signIn, signOut, isAuthenticated } = useLogto();
+const { signIn, signOut, isAuthenticated } = useLogto()
 const handleSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
 const handleSignOut = async () => {
   if (await Modal.confirm('退出登录后你的数据可能会丢失', { title: '确定退出登录吗' })) {
@@ -45,18 +52,22 @@ const handleSignOut = async () => {
 }
 const router = useRouter()
 const route = useRoute()
-const gotoMePage = async() => {
+const gotoMePage = async () => {
   if (
     isSave.value ||
-    await Modal.confirm('你的数据仍未保存，确定跳转吗', route.name === 'create' ? {} : {
-      extraLink: '保存',
-      onExtraLinkClick: () => emitter.emit('saveProject')
-    })
+    (await Modal.confirm(
+      '你的数据仍未保存，确定跳转吗',
+      route.name === 'create'
+        ? {}
+        : {
+            extraLink: '保存',
+            onExtraLinkClick: () => emitter.emit('saveProject'),
+          }
+    ))
   ) {
     router.push('/me')
   }
 }
-
 
 const emit = defineEmits(['save', 'download', 'project-setting'])
 
@@ -149,7 +160,12 @@ emitter.on('saveColorVars', (color: string) => {
     <div class="left">
       <div class="name">{{ name }}</div>
       <div class="ext">.html</div>
-      <Btn class="project-setting-btn" type="text" color="default" @click="$emit('project-setting')">
+      <Btn
+        class="project-setting-btn"
+        type="text"
+        color="default"
+        @click="$emit('project-setting')"
+      >
         <Icon name="project-setting" :size="16"></Icon>
       </Btn>
     </div>
@@ -215,7 +231,9 @@ emitter.on('saveColorVars', (color: string) => {
               </div>
             </div>
             <div class="title">
-              <span>Zoom <span class="title-extra">{{ zoomText }}</span></span>
+              <span
+                >Zoom <span class="title-extra">{{ zoomText }}</span></span
+              >
             </div>
             <Slider
               width="200px"
@@ -279,22 +297,48 @@ emitter.on('saveColorVars', (color: string) => {
         v-tooltip="'重做'"
         @click="() => updateAllPageNode(redoHistory())"
       ></Icon>
-      <Btn class="save-btn" @click="$emit('save')" :disabled="allPageData.length === 0" icon="save" type="icon" color="second"></Btn>
-      <Btn class="download-btn" @click="$emit('download')" :disabled="allPageData.length === 0" text="Download"></Btn>
+      <Btn
+        class="save-btn"
+        @click="$emit('save')"
+        :disabled="allPageData.length === 0"
+        icon="save"
+        type="icon"
+        color="second"
+      ></Btn>
+      <Btn
+        class="download-btn"
+        @click="$emit('download')"
+        :disabled="allPageData.length === 0"
+        text="Download"
+      ></Btn>
       <Dropdown type="pure-dropdown" popper-class="user-dropdown">
         <Avatar :image="avatar" :size="36" can-operator />
         <template #content="{ hide }">
           <div class="user-content">
             <template v-if="isAuthenticated">
               <div class="user-name">{{ userName }}</div>
-              <div class="item" @click="() => {
-                gotoMePage();
-                hide();
-              }">Profile</div>
-              <div class="item danger" @click="() => {
-                handleSignOut();
-                hide();
-              }">Sign Out</div>
+              <div
+                class="item"
+                @click="
+                  () => {
+                    gotoMePage()
+                    hide()
+                  }
+                "
+              >
+                Profile
+              </div>
+              <div
+                class="item danger"
+                @click="
+                  () => {
+                    handleSignOut()
+                    hide()
+                  }
+                "
+              >
+                Sign Out
+              </div>
             </template>
             <template v-else>
               <div class="item primary" @click="handleSignIn">Sign In</div>
@@ -468,7 +512,7 @@ emitter.on('saveColorVars', (color: string) => {
     font-weight: bold;
     display: flex;
     align-items: center;
-     justify-content: space-between;
+    justify-content: space-between;
 
     &.media-title {
       display: flex;
@@ -549,7 +593,7 @@ emitter.on('saveColorVars', (color: string) => {
       border-radius: $inner-radius;
       cursor: pointer;
       user-select: none;
-      transition: all .2s;
+      transition: all 0.2s;
 
       &:hover {
         background: $panel-light;

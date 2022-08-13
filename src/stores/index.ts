@@ -7,13 +7,16 @@ export const saveStoragePageState = (id: string) => {
   try {
     const pageStore = pinia.state.value['page']
     sessionStorage.setItem('__page_store_state_id__', id)
-    sessionStorage.setItem('__page_store_state__', JSON.stringify({
-      allPageData: pageStore.allPageData,
-      project: pageStore.project,
-      colorVars: pageStore.colorVars,
-      font: pageStore.font,
-      setting: pageStore.setting,
-    }))
+    sessionStorage.setItem(
+      '__page_store_state__',
+      JSON.stringify({
+        allPageData: pageStore.allPageData,
+        project: pageStore.project,
+        colorVars: pageStore.colorVars,
+        font: pageStore.font,
+        setting: pageStore.setting,
+      })
+    )
   } catch (e: any) {
     console.error('Cache Error', e)
   }
@@ -45,6 +48,4 @@ export const clearStoragePageState = () => {
   sessionStorage.removeItem('__page_store_state__')
 }
 
-export {
-  pinia
-}
+export { pinia }

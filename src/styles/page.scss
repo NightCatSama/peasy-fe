@@ -18,7 +18,7 @@
         z-index: 1;
         outline: 1px dashed rgba($theme, 35%);
         pointer-events: none;
-        transition: outline .15s;
+        transition: outline 0.15s;
       }
 
       &:not(.active):not(.inModule):hover::before {

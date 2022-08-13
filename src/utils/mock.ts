@@ -27,7 +27,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
         common: getDefaultCommon(),
         size: getDefaultSize(type),
         layout: getDefaultLayout({
-          direction: 'column'
+          direction: 'column',
         }),
         spacing: getDefaultSpacing(),
         border: getDefaultBorder(),
@@ -53,7 +53,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
         event: getDefaultEvent(),
         effect: getDefaultEffect(),
         animation: getDefaultAnimation(),
-      }
+      },
     },
     children:
       type === 'component'
@@ -87,14 +87,20 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                       label: '颜色',
                       props: {},
                       sourceValue: 'children[1].config.props.font.color',
-                      targetValue: ['children[1].config.props.font.color', 'children[0].config.props.basic.color'],
+                      targetValue: [
+                        'children[1].config.props.font.color',
+                        'children[0].config.props.basic.color',
+                      ],
                     },
                     {
                       type: ModuleConfigType.FontSize,
                       label: '文字大小',
                       props: {},
                       sourceValue: 'children[1].config.props.font.fontSize',
-                      targetValue: ['children[1].config.props.font.fontSize', 'children[0].config.props.basic.size'],
+                      targetValue: [
+                        'children[1].config.props.font.fontSize',
+                        'children[0].config.props.basic.size',
+                      ],
                     },
                     {
                       type: ModuleConfigType.Opacity,
@@ -132,8 +138,8 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                       sourceValue: 'config.props.background.backgroundSize',
                       targetValue: 'config.props.background.backgroundSize',
                     },
-                  ]
-                }
+                  ],
+                },
                 // {
                 //   /** 配置名称 */
                 //   title: 'Icon',
@@ -277,7 +283,7 @@ export const getMockImage = (src?: string): PageNode<'Image'> => {
         effect: getDefaultEffect(),
         animation: getDefaultAnimation(),
       },
-    }
+    },
   }
 }
 

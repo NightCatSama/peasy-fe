@@ -188,11 +188,7 @@ let showTimingCode = $ref(false)
             v-model="item.timingFunction"
             @dblclick="showTimingCode = !showTimingCode"
           ></SelectItem>
-          <InputItem
-            label="Timing Code"
-            v-if="showTimingCode"
-            v-model="item.timingFunction"
-          >
+          <InputItem label="Timing Code" v-if="showTimingCode" v-model="item.timingFunction">
           </InputItem>
           <hr class="divider" data-text="Action" />
           <template v-for="obj in actionMap" :key="obj.name">

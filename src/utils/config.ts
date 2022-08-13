@@ -1,12 +1,18 @@
-import { ComponentName, ComponentPropsGroup, GroupType, IPropConfig, PageNode, PropsTypes } from "@/config";
-import { useDisplayStore } from "@/stores/display";
-import { usePageStore } from "@/stores/page"
-import { merge } from "lodash";
+import {
+  ComponentName,
+  ComponentPropsGroup,
+  GroupType,
+  IPropConfig,
+  PageNode,
+  PropsTypes,
+} from '@/config'
+import { useDisplayStore } from '@/stores/display'
+import { usePageStore } from '@/stores/page'
+import { merge } from 'lodash'
 
 /** 当前是否为移动端特化样式处理中 */
 export const useMobileConfig = () =>
-  usePageStore().setting.client === 'both' &&
-  useDisplayStore().deviceType === 'mobile'
+  usePageStore().setting.client === 'both' && useDisplayStore().deviceType === 'mobile'
 
 /** 获得原始组件 */
 export const useSourceNode = <T extends ComponentName = any>(node: PageNode<T>): PageNode<T> => {
@@ -20,7 +26,9 @@ export const useConfig = <T extends ComponentName = any>(node: PageNode<T>): IPr
 }
 
 /** 获得组件在对应设备场景下的全量配置 */
-export const useConfigProps = <T extends ComponentName = any>(node: PageNode<T> | null): PropsTypes<T> => {
+export const useConfigProps = <T extends ComponentName = any>(
+  node: PageNode<T> | null
+): PropsTypes<T> => {
   if (!node) return { common: { hide: false } } as unknown as PropsTypes<T>
   const groupTypeList = ComponentPropsGroup[node.component]
   let obj: PropsTypes<T> = {} as any
@@ -28,7 +36,7 @@ export const useConfigProps = <T extends ComponentName = any>(node: PageNode<T> 
     const groupType = groupTypeList[i]
     const group = useGroupConfig(node, groupType)
     if (group) {
-      (obj as any)[groupType] = group
+      ;(obj as any)[groupType] = group
     }
   }
   return obj
@@ -45,10 +53,7 @@ export const useGroupConfig = (node: PageNode | null, groupType: GroupType) => {
 /** 从节点中去获取单个配置组 */
 export const useGroupConfigByNode = (node: PageNode | null, groupType: GroupType) => {
   if (!node) return null
-  if (
-    useMobileConfig() &&
-    node.config?.mobile?.[groupType]
-  ) {
+  if (useMobileConfig() && node.config?.mobile?.[groupType]) {
     return node.config?.mobile?.[groupType]
   }
   if (node.config?.props?.[groupType]) {
@@ -67,10 +72,7 @@ export const isMobileGroupConfig = (node: PageNode | null, groupType?: GroupType
   }
   // 否则拿链接组件的样式来判断
   const config = useConfig(node)
-  if (
-    useMobileConfig() &&
-    config?.mobile?.[groupType]
-  ) {
+  if (useMobileConfig() && config?.mobile?.[groupType]) {
     return true
   }
   return false

@@ -10,8 +10,8 @@ import {
 } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
 import { onUpdated, reactive, useAttrs } from 'vue'
-import { get, set } from 'lodash';
-import { useConfig } from '@/utils/config';
+import { get, set } from 'lodash'
+import { useConfig } from '@/utils/config'
 
 interface ICustomGroupProps extends IModuleConfigGroup {
   node: PageNode

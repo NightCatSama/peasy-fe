@@ -55,6 +55,6 @@ export const useHistoryStore = defineStore('history', {
     setIsSave(isSave: boolean) {
       this.isSave = isSave
       clearStoragePageState()
-    }
+    },
   },
 })

@@ -66,7 +66,7 @@ export type GroupType =
 
 /** 配置对应约束类型 */
 export interface GroupPropType<T extends ComponentName = any> {
-  common: ICommonType,
+  common: ICommonType
   basic: {
     Text: ITextBasicType
     Image: IImageBasicType

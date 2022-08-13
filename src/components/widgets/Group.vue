@@ -50,7 +50,10 @@ onBeforeUnmount(() => {
 
 const iconName = $computed(() => icon || groupIconMap[groupName!] || defaultGroupIcon)
 
-const isLink = $computed(() => !!activeNode.value?.propLink && groupName && !useGroupConfigByNode(activeNode.value, groupName))
+const isLink = $computed(
+  () =>
+    !!activeNode.value?.propLink && groupName && !useGroupConfigByNode(activeNode.value, groupName)
+)
 
 const handleUnlinkPropGroup = () => {
   unlinkActiveNodePropGroup(groupName!)

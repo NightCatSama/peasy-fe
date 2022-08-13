@@ -119,7 +119,16 @@ interface IContainer {
   overflow: 'visible' | 'hidden' | 'scroll' | 'auto'
   boxShadow: string
   opacity: number
-  cursor: 'inherit' | 'auto' | 'default' | 'pointer' | 'move' | 'text' | 'wait' | 'help' | 'not-allowed'
+  cursor:
+    | 'inherit'
+    | 'auto'
+    | 'default'
+    | 'pointer'
+    | 'move'
+    | 'text'
+    | 'wait'
+    | 'help'
+    | 'not-allowed'
 }
 
 /** 事件处理 */

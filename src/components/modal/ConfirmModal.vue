@@ -1,13 +1,13 @@
 <script lang="ts">
 export default {
-  inheritAttrs: true
+  inheritAttrs: true,
 }
 </script>
 
 <script setup lang="ts">
 import Modal from './Modal.vue'
-import Btn from '../widgets/Btn.vue';
-import Icon from '../widgets/Icon.vue';
+import Btn from '../widgets/Btn.vue'
+import Icon from '../widgets/Icon.vue'
 
 interface IConfirmModal {
   title?: string
@@ -33,8 +33,7 @@ const {
 
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
 
-defineExpose({
-})
+defineExpose({})
 </script>
 
 <template>
@@ -49,14 +48,31 @@ defineExpose({
           {{ extraLink }}
         </Btn>
       </div>
-      <Btn class="cancel-btn" type="btn" size="sm" color="default" @click="() => {
-        onCancel?.()
-        modal?.hide()
-      }">{{ cancelText }}</Btn>
-      <Btn class="ok-btn" type="btn" size="sm" @click="() => {
-        onOk?.()
-        modal?.hide()
-      }">{{ okText }}</Btn>
+      <Btn
+        class="cancel-btn"
+        type="btn"
+        size="sm"
+        color="default"
+        @click="
+          () => {
+            onCancel?.()
+            modal?.hide()
+          }
+        "
+        >{{ cancelText }}</Btn
+      >
+      <Btn
+        class="ok-btn"
+        type="btn"
+        size="sm"
+        @click="
+          () => {
+            onOk?.()
+            modal?.hide()
+          }
+        "
+        >{{ okText }}</Btn
+      >
     </div>
   </Modal>
 </template>

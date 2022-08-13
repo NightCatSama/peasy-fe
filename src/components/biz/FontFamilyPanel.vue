@@ -64,7 +64,9 @@ const deleteFontFace = (index: number) => {
         @update:model-value="(val: string) => font.customFontFace[index] = val"
       ></InputItem>
     </GroupItem>
-    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddFontFace">Add FontFace</Btn>
+    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddFontFace"
+      >Add FontFace</Btn
+    >
   </div>
 </template>
 
@@ -105,7 +107,8 @@ const deleteFontFace = (index: number) => {
     }
   }
 
-  .font-family-item, .font-size-item {
+  .font-family-item,
+  .font-size-item {
     margin-bottom: 12px;
   }
 

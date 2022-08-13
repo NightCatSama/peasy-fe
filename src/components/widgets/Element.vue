@@ -1,13 +1,12 @@
 <script setup lang="ts">
 import LibComponent from '../LibComponent.vue'
-import Icon from './Icon.vue';
+import Icon from './Icon.vue'
 interface IElementProps {
   cover?: string
   name: string
   canDelete?: boolean
 }
-const { cover = '', name, canDelete } =
-  defineProps<IElementProps>()
+const { cover = '', name, canDelete } = defineProps<IElementProps>()
 </script>
 
 <template>
@@ -50,7 +49,7 @@ const { cover = '', name, canDelete } =
     background-repeat: no-repeat;
     background-size: contain;
     background-position: center center;
-    background-color: #FFF;
+    background-color: #fff;
     transition: all 0.3s;
     cursor: pointer;
 

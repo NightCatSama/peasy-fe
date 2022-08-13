@@ -1,6 +1,6 @@
 <script lang="ts">
 export default {
-  inheritAttrs: true
+  inheritAttrs: true,
 }
 </script>
 
@@ -24,17 +24,20 @@ const propsRef = reactive(useAttrs())
 const emit = defineEmits(['save'])
 let editProject: IProject | null = $ref({
   name: '',
-  cover: ''
+  cover: '',
 })
 
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
 
-watch(() => [project, propsRef.modelValue], () => {
-  if (propsRef.modelValue) {
-    editProject.name = project.name
-    editProject.cover = project.cover
+watch(
+  () => [project, propsRef.modelValue],
+  () => {
+    if (propsRef.modelValue) {
+      editProject.name = project.name
+      editProject.cover = project.cover
+    }
   }
-})
+)
 
 const handleSave = () => {
   if (!editProject.name) {
@@ -65,19 +68,18 @@ const handleCreateCover = async () => {
     v-bind="$attrs"
   >
     <div class="info-wrapper">
-      <InputItem
-        label="Name"
-        v-model="editProject.name"
-      ></InputItem>
-      <ImageItem
-        label="Cover"
-        v-model="editProject.cover"
-        :rows="5"
-      >
-      </ImageItem>
+      <InputItem label="Name" v-model="editProject.name"></InputItem>
+      <ImageItem label="Cover" v-model="editProject.cover" :rows="5"> </ImageItem>
     </div>
     <div class="btn-wrapper">
-      <Btn v-if="!hideCreateCover" class="create-cover-btn" type="text" size="sm" @click="handleCreateCover">Auto Create Cover</Btn>
+      <Btn
+        v-if="!hideCreateCover"
+        class="create-cover-btn"
+        type="text"
+        size="sm"
+        @click="handleCreateCover"
+        >Auto Create Cover</Btn
+      >
       <Btn class="save-btn" type="inner" text="Save" @click="handleSave"></Btn>
     </div>
   </Modal>
@@ -120,7 +122,9 @@ const handleCreateCover = async () => {
       height: 100%;
       overflow: hidden;
       border-radius: $inner-radius 0 0 $inner-radius;
-      .jsoneditor, .jsoneditor-outer, .jsoneditor-text {
+      .jsoneditor,
+      .jsoneditor-outer,
+      .jsoneditor-text {
         width: 100%;
         height: 100%;
       }

@@ -305,11 +305,11 @@ const handleLeaveTrash = (e: DragEvent) => {
         border: 4px dashed darken($color, 50%);
         left: 50%;
         top: 50%;
-        width: 600px!important;
+        width: 600px !important;
         right: auto;
         bottom: auto;
-        transform: translate(-50%, -50%)!important;
-        transform-origin: center!important;
+        transform: translate(-50%, -50%) !important;
+        transform-origin: center !important;
 
         &::after {
           content: attr(data-placeholder);

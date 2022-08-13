@@ -5,13 +5,14 @@ import { getColor } from './color'
 // import { covertSize as covertSizeUseStore } from '@/utils/sizeHelper'
 
 // NOTE: vite 的 tree-shaking 不知道为啥不起左右，改用 window 调用去解决
-export const covertSize = (s: string, options?: { isSection?: boolean; type?: 'width' | 'height' }) => {
+export const covertSize = (
+  s: string,
+  options?: { isSection?: boolean; type?: 'width' | 'height' }
+) => {
   return import.meta.env.VITE_IS_TEMPLATE === 'true'
-    ? (
-      s.slice(-1) === '%' && options?.isSection
-        ? `${s.slice(0, -1)}${options?.type === 'height' ? 'vh' : 'vw'}`
-        : s
-    )
+    ? s.slice(-1) === '%' && options?.isSection
+      ? `${s.slice(0, -1)}${options?.type === 'height' ? 'vh' : 'vw'}`
+      : s
     : (window as any)?.covertSize?.(s, options)
 }
 

@@ -68,10 +68,8 @@ const handleInputChange = (e: Event) => {
 }
 
 const showValue = $computed(() => getColor(modelValue))
-const showSaveBtn = $computed(() =>
-  !hideVariable &&
-  colorType.value === 'variable' &&
-  modelValue[0] !== variableColorSymbol
+const showSaveBtn = $computed(
+  () => !hideVariable && colorType.value === 'variable' && modelValue[0] !== variableColorSymbol
 )
 const handleSaveColorVar = () => {
   emitter.emit('saveColorVars', modelValue)
@@ -111,7 +109,9 @@ const handleSaveColorVar = () => {
                 "
                 @update:model-value="(val) => (colorType = val)"
               ></Select>
-              <div v-show="showSaveBtn" class="save-btn" @click="handleSaveColorVar">Save Variable</div>
+              <div v-show="showSaveBtn" class="save-btn" @click="handleSaveColorVar">
+                Save Variable
+              </div>
             </div>
             <div v-if="!hideVariable && colorType === 'variable'" class="color-wrapper">
               <div
@@ -239,7 +239,7 @@ const handleSaveColorVar = () => {
   font-size: 12px;
   color: $pink;
   cursor: pointer;
-  transform: scale(.9);
+  transform: scale(0.9);
   transform-origin: right center;
 }
 .color-wrapper {

@@ -77,11 +77,13 @@ export const useDisplayStore = defineStore('display', {
       const curWidthFootSize = usePageStore().font.mediaFontSize?.[state.device.width]
       if (curWidthFootSize) return curWidthFootSize
       let fontSize = usePageStore().font.fontSize
-      Object.entries(usePageStore().font.mediaFontSize).sort((a, b) => +a[0] - +b[0]).forEach(([width, size]) => {
-        if (state.device.width >= +width) {
-          fontSize = size
-        }
-      })
+      Object.entries(usePageStore().font.mediaFontSize)
+        .sort((a, b) => +a[0] - +b[0])
+        .forEach(([width, size]) => {
+          if (state.device.width >= +width) {
+            fontSize = size
+          }
+        })
       return fontSize
     },
     lockDrag(state) {

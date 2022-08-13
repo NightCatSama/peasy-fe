@@ -1,8 +1,8 @@
-import { createVNode, render } from "vue";
+import { createVNode, render } from 'vue'
 import ConfirmModal from './ConfirmModal.vue'
 
 export class Modal {
-  static id = 0;
+  static id = 0
   static confirm(msg: string, options?: any) {
     return new Promise((res) => {
       const id = '__modal__' + Modal.id++
@@ -14,7 +14,7 @@ export class Modal {
         ...options,
         modelValue: true,
         uniqId: id,
-        'onUpdate:modelValue': () => destroy()
+        'onUpdate:modelValue': () => destroy(),
       }) as any
 
       render(vnode, document.body)

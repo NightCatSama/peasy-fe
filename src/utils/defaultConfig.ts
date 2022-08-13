@@ -9,7 +9,7 @@ import {
 export const getDefaultCommon = (initConfig?: Partial<ICommonType>): ICommonType =>
   Object.assign(
     {
-      hide: false
+      hide: false,
     },
     initConfig
   )
