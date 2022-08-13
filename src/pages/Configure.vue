@@ -22,6 +22,7 @@ import { useRoute, useRouter } from 'vue-router'
 import { saveStoragePageState, haveStoragePageState, clearStoragePageState, getStoragePageState } from '@/stores'
 import { Modal } from '@/components/modal'
 import ProjectModal from '@/components/modal/ProjectModal.vue'
+import { destroyMoveable } from '@/utils/moveable'
 
 const route = useRoute()
 const router = useRouter()
@@ -49,16 +50,16 @@ const handleDownload = async () => {
 }
 
 /** 保存项目 */
-const handleSaveProject = async () => {
+const handleSaveProject = async (editProject?: IProject) => {
+  const saveProject = editProject || project.value
   if (allPageData.value.length === 0) {
     return
   }
-  // TODO: 后续需要弹窗设置项目名与封面图
-  if (!project.value.name) {
+  if (!saveProject.name) {
     showProjectModal = true
     return
   }
-  const data = await saveProjectData(id, project.value)
+  const data = await saveProjectData(id, saveProject)
   showProjectModal = false
   Alert('保存成功')
   if (!id) {
@@ -71,6 +72,8 @@ const handleSaveProject = async () => {
   }
   setIsSave(true)
 }
+
+emitter.on('saveProject', handleSaveProject)
 
 let showLeftPanel = $ref(false)
 
@@ -123,7 +126,7 @@ onMounted(async () => {
   if (id) {
     await getProjectData(id)
     if (haveStoragePageState(id)) {
-      if (await Modal.confirm('你有未保存的数据，是否应用？')) {
+      if (await Modal.confirm('你有上次编辑仍未保存的数据，是否恢复？')) {
         pageStore.$state = getStoragePageState(id, pageStore.$state)
         setIsSave(false)
       }
@@ -139,7 +142,10 @@ onMounted(async () => {
   }
 })
 
-onBeforeUnmount(() => window.removeEventListener('beforeunload', preventUnload))
+onBeforeUnmount(() => {
+  window.removeEventListener('beforeunload', preventUnload)
+  destroyMoveable()
+})
 
 const preventUnload = (event: BeforeUnloadEvent) => {
   if (!isSave.value) {
@@ -255,7 +261,7 @@ watch(
         <ConfigSection></ConfigSection>
       </div>
     </div>
-    <ProjectModal v-model="showProjectModal" @save="handleSaveProject"></ProjectModal>
+    <ProjectModal v-if="project" v-model="showProjectModal" :project="project" @save="handleSaveProject"></ProjectModal>
   </div>
 </template>
 
@@ -299,7 +305,4 @@ watch(
 </style>
 
 <style lang="scss">
-body {
-  overflow: hidden;
-}
 </style>

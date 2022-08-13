@@ -18,13 +18,8 @@ import { useHistoryStore } from '@/stores/history'
 import { usePageStore } from '@/stores/page'
 import { useUserStore } from '@/stores/user'
 import Switch from './widgets/Switch.vue'
-import { useRouter } from 'vue-router'
-
-const { signIn, signOut, isAuthenticated } = useLogto();
-const handleSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
-const handleSignOut = () => signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
-const router = useRouter()
-const gotoMePage = () => router.push('/me')
+import { useRouter, useRoute } from 'vue-router'
+import { Modal } from './modal'
 
 const userStore = useUserStore()
 const { userName, avatar } = storeToRefs(userStore)
@@ -38,10 +33,32 @@ const { device, displayMode, deviceType, curWidthFootSize, curFootSize, curPrese
 const { setDevice, setDisplayMode } = displayStore
 
 const historyStore = useHistoryStore()
-const { canUndoHistory, canRedoHistory } = storeToRefs(historyStore)
+const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
 const { saveHistory, undoHistory, redoHistory } = historyStore
 
-const emit = defineEmits(['save', 'download'])
+const { signIn, signOut, isAuthenticated } = useLogto();
+const handleSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
+const handleSignOut = async () => {
+  if (await Modal.confirm('退出登录后你的数据可能会丢失', { title: '确定退出登录吗' })) {
+    signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
+  }
+}
+const router = useRouter()
+const route = useRoute()
+const gotoMePage = async() => {
+  if (
+    isSave.value ||
+    await Modal.confirm('你的数据仍未保存，确定跳转吗', route.name === 'create' ? {} : {
+      extraLink: '保存',
+      onExtraLinkClick: () => emitter.emit('saveProject')
+    })
+  ) {
+    router.push('/me')
+  }
+}
+
+
+const emit = defineEmits(['save', 'download', 'project-setting'])
 
 const name = $ref('index')
 let showColorVarDropdown = $ref(false)
@@ -113,6 +130,7 @@ useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
   emitter.emit('switchMaterialsPanel')
 })
 useKeyPress(ShortcutKey.saveProject, (e) => {
+  if (e.shiftKey) return
   e.preventDefault()
   emit('save')
 })
@@ -263,15 +281,24 @@ emitter.on('saveColorVars', (color: string) => {
       ></Icon>
       <Btn class="save-btn" @click="$emit('save')" :disabled="allPageData.length === 0" icon="save" type="icon" color="second"></Btn>
       <Btn class="download-btn" @click="$emit('download')" :disabled="allPageData.length === 0" text="Download"></Btn>
-      <Dropdown type="default">
+      <Dropdown type="pure-dropdown" popper-class="user-dropdown">
         <Avatar :image="avatar" :size="36" can-operator />
-        <template #content>
-          <div v-if="isAuthenticated">
-            <div class="user-name" @click="gotoMePage">{{ userName }}</div>
-            <Btn type="inner" @click="handleSignOut">退出登录</Btn>
-          </div>
-          <div v-else>
-            <Btn type="inner" @click="handleSignIn">登录</Btn>
+        <template #content="{ hide }">
+          <div class="user-content">
+            <template v-if="isAuthenticated">
+              <div class="user-name">{{ userName }}</div>
+              <div class="item" @click="() => {
+                gotoMePage();
+                hide();
+              }">Profile</div>
+              <div class="item danger" @click="() => {
+                handleSignOut();
+                hide();
+              }">Sign Out</div>
+            </template>
+            <template v-else>
+              <div class="item primary" @click="handleSignIn">Sign In</div>
+            </template>
           </div>
         </template>
       </Dropdown>
@@ -497,6 +524,43 @@ emitter.on('saveColorVars', (color: string) => {
 
       .device-text {
         margin-top: 2px;
+      }
+    }
+  }
+}
+</style>
+
+<style lang="scss">
+.user-dropdown {
+  .user-content {
+    width: 160px;
+    font-size: 14px;
+    padding: 4px 0;
+    .user-name {
+      padding: 8px 12px 12px;
+      font-size: 16px;
+      margin-bottom: 4px;
+      border-bottom: 1px solid $border;
+      color: $theme;
+    }
+    .item {
+      padding: 6px 12px;
+      margin: 0 4px;
+      border-radius: $inner-radius;
+      cursor: pointer;
+      user-select: none;
+      transition: all .2s;
+
+      &:hover {
+        background: $panel-light;
+      }
+
+      &.danger {
+        color: $red;
+        &:hover {
+          background: $red;
+          color: $color;
+        }
       }
     }
   }

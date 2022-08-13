@@ -6,7 +6,7 @@ interface IElementProps {
   name: string
   canDelete?: boolean
 }
-const { cover = 'https://avatars.githubusercontent.com/u/13888962?v=4', name, canDelete } =
+const { cover = '', name, canDelete } =
   defineProps<IElementProps>()
 </script>
 
@@ -23,7 +23,12 @@ const { cover = 'https://avatars.githubusercontent.com/u/13888962?v=4', name, ca
         @click.stop="$emit('delete')"
       ></Icon>
     </div>
-    <div class="image" :style="{ backgroundImage: `url(${cover})` }"></div>
+    <div class="image" :style="{ backgroundImage: `url(${cover})` }">
+      <div v-if="!cover" class="image-placeholder">
+        <Icon name="empty" :size="24" />
+        <span>No Cover</span>
+      </div>
+    </div>
   </div>
 </template>
 
@@ -48,6 +53,20 @@ const { cover = 'https://avatars.githubusercontent.com/u/13888962?v=4', name, ca
     background-color: #FFF;
     transition: all 0.3s;
     cursor: pointer;
+
+    &-placeholder {
+      width: 100%;
+      height: 100%;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      font-size: 12px;
+
+      .icon {
+        margin-bottom: 2px;
+      }
+    }
   }
 
   .name {

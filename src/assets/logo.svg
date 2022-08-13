@@ -1,0 +1,28 @@
+<svg width="865" height="866" viewBox="0 0 865 866" fill="none" xmlns="http://www.w3.org/2000/svg">
+<g filter="url(#filter0_d_37_13)">
+<rect x="30" y="40" width="785" height="785" rx="146" fill="url(#paint0_linear_37_13)"/>
+<path d="M215 825.545V363C215 256.961 300.961 171 407 171H436.165C487.514 171 524.639 177.509 557.239 196.045C590.051 214.369 613.472 235.724 629.239 267.045C645.006 298.366 652.739 339.537 652.739 378.102C652.739 416.668 646.006 453.011 630.239 484.545C614.685 516.08 595.327 539.928 562.727 558.678C530.128 577.215 488.366 586.483 437.443 586.483H278.92V516.17H434.886C470.043 516.17 498.274 510.098 519.581 497.953C540.888 485.808 556.335 469.402 565.923 448.734C575.724 427.854 580.625 404.31 580.625 378.102C580.625 351.895 573.702 330.793 563.901 310.125C554.312 289.457 538.759 273.264 517.239 261.545C495.719 249.614 469.19 241.312 433.608 241.312C356.649 241.312 294.261 303.7 294.261 380.659V825.545H215Z" fill="white"/>
+<path fill-rule="evenodd" clip-rule="evenodd" d="M294.3 586.483H437.005C487.928 586.483 529.689 577.214 562.289 558.678C594.888 539.928 614.246 516.08 629.8 484.545C641.488 461.17 648.211 435.152 650.908 407.545H577.951C575.619 422.266 571.464 435.996 565.485 448.734C555.897 469.402 540.449 485.808 519.142 497.953C497.836 510.098 469.604 516.17 434.448 516.17H294.3V586.483Z" fill="url(#paint1_linear_37_13)"/>
+</g>
+<defs>
+<filter id="filter0_d_37_13" x="0" y="0" width="865" height="865.545" filterUnits="userSpaceOnUse" color-interpolation-filters="sRGB">
+<feFlood flood-opacity="0" result="BackgroundImageFix"/>
+<feColorMatrix in="SourceAlpha" type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0" result="hardAlpha"/>
+<feOffset dx="10"/>
+<feGaussianBlur stdDeviation="20"/>
+<feComposite in2="hardAlpha" operator="out"/>
+<feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"/>
+<feBlend mode="normal" in2="BackgroundImageFix" result="effect1_dropShadow_37_13"/>
+<feBlend mode="normal" in="SourceGraphic" in2="effect1_dropShadow_37_13" result="shape"/>
+</filter>
+<linearGradient id="paint0_linear_37_13" x1="422.5" y1="40" x2="422.5" y2="825" gradientUnits="userSpaceOnUse">
+<stop stop-color="#2C40F5"/>
+<stop offset="1" stop-color="#41F4FF"/>
+</linearGradient>
+<linearGradient id="paint1_linear_37_13" x1="294.3" y1="554.045" x2="712.8" y2="554.045" gradientUnits="userSpaceOnUse">
+<stop stop-color="#82D9F4"/>
+<stop offset="0.104167" stop-color="#D0F4FF" stop-opacity="0.901042"/>
+<stop offset="1" stop-color="white" stop-opacity="0"/>
+</linearGradient>
+</defs>
+</svg>

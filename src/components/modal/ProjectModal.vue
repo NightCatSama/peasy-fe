@@ -5,67 +5,79 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { DefaultColor, IModuleConfigGroup, PageNode } from '@/config'
-import { usePageStore } from '@/stores/page'
-import { storeToRefs } from 'pinia'
-import SelectItem from '../configs/items/SelectItem.vue'
-import Icon from '../widgets/Icon.vue'
 import InputItem from '../configs/items/InputItem.vue'
 import Btn from '../widgets/Btn.vue'
-import SwitchItem from '../configs/items/SwitchItem.vue'
 import Modal from './Modal.vue'
 import { createMaterialSnapshot } from '@/utils/snapshot'
-import { useAttrs, ref, watch } from 'vue'
-import { useSourceNode } from '@/utils/config'
-import Input from '../widgets/Input.vue'
-import TreeNode from '../biz/TreeNode.vue'
-import JSONEditor from 'jsoneditor'
 import ImageItem from '../configs/items/ImageItem.vue'
-import { Alert, AlertError } from '@/utils/alert'
-import { useUserStore } from '@/stores/user'
+import { Alert, AlertError, AlertLoading } from '@/utils/alert'
+import { reactive, useAttrs, watch } from 'vue'
 
-const pageStore = usePageStore()
-const { activeNode, project } = storeToRefs(pageStore)
-const { fetchSaveMaterial } = pageStore
+interface IProjectModalProps {
+  project: IProject
+  hideCreateCover?: boolean
+}
 
-const userStore = useUserStore()
-const { isAdmin } = storeToRefs(userStore)
+const { project, hideCreateCover } = defineProps<IProjectModalProps>()
+const propsRef = reactive(useAttrs())
 
-const node = $computed(() => activeNode.value ? useSourceNode(activeNode.value) : null)
 const emit = defineEmits(['save'])
+let editProject: IProject | null = $ref({
+  name: '',
+  cover: ''
+})
 
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
 
+watch(() => [project, propsRef.modelValue], () => {
+  if (propsRef.modelValue) {
+    editProject.name = project.name
+    editProject.cover = project.cover
+  }
+})
+
 const handleSave = () => {
-  if (!project.value.name) {
+  if (!editProject.name) {
     AlertError('Project Name not empty')
     return
   }
-  emit('save')
+  emit('save', editProject)
 }
 
 const handleCreateCover = async () => {
-  const elem = document.querySelector(`.edit-content`) as HTMLElement
-  project.value.cover = elem ? await createMaterialSnapshot(elem) : ''
+  const dismiss = AlertLoading('自动生成缩略图中')
+  try {
+    const elem = document.querySelector(`.edit-content`) as HTMLElement
+    editProject.cover = elem ? await createMaterialSnapshot(elem) : ''
+  } finally {
+    dismiss()
+  }
 }
 </script>
 
 <template>
-  <Modal ref="modal" class="project-modal" :title="`Save Project`" :width="'360px'" v-bind="$attrs">
+  <Modal
+    ref="modal"
+    class="project-modal"
+    :title="`Save Project`"
+    :width="'360px'"
+    close-on-click-mask
+    v-bind="$attrs"
+  >
     <div class="info-wrapper">
       <InputItem
         label="Name"
-        v-model="project.name"
+        v-model="editProject.name"
       ></InputItem>
       <ImageItem
         label="Cover"
-        v-model="project.cover"
+        v-model="editProject.cover"
         :rows="5"
       >
       </ImageItem>
     </div>
     <div class="btn-wrapper">
-      <Btn class="create-cover-btn" type="text" size="sm" @click="handleCreateCover">Auto Create Cover</Btn>
+      <Btn v-if="!hideCreateCover" class="create-cover-btn" type="text" size="sm" @click="handleCreateCover">Auto Create Cover</Btn>
       <Btn class="save-btn" type="inner" text="Save" @click="handleSave"></Btn>
     </div>
   </Modal>

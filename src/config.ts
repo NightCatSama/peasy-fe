@@ -1,3 +1,5 @@
+import { DataType } from "@@/entities/data.entity";
+
 /** 组件对应支持的配置分组 */
 export const ComponentPropsGroup = {
   Block: [
@@ -195,19 +197,28 @@ export interface IModuleConfigItem {
   targetValue?: string | string[]
 }
 
+/** 物料数据 */
 export interface IMaterialItem {
-  name: string;
-  node: PageNode
-  nodeType?: string;
-  type: string;
-  category?: string;
-  categoryEn?: string;
-  cover?: string;
-  enName?: string;
+  /** 物料名称 */
+  name: string
+  enName?: string
+  /** 组件数据，type 为 component/section 时存在 */
+  node?: PageNode
+  /** 页面数据，type 为 template 时存在 */
+  page?: IPage
+  /** 数据类别，以使用场景区分 */
+  dataType?: DataType
+  /** 类型，有 component/section/template */
+  type: PageNodeType
+  /** 分组 */
+  category?: string
+  categoryEn?: string
+  /** 缩略图 */
+  cover?: string
   id?: number
-  uid?: number;
-  createDate?: string;
-  updateDate?: string;
+  uid?: string
+  createDate?: Date
+  updateDate?: Date
 }
 
 /** 判断是否某个基础类型 */

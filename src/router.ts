@@ -1,19 +1,27 @@
 
-import { createRouter, createWebHistory } from 'vue-router'
+import { createRouter, createWebHistory, NavigationGuardNext, RouteLocationNormalized } from 'vue-router'
 
 import Configure from '@/pages/Configure.vue'
 import Redirect from '@/pages/Redirect.vue'
 import Me from '@/pages/Me.vue'
+import NotFound from '@/pages/NotFound.vue'
 
-const routes = [
-  { path: '/', redirect: '/edit' },
-  { path: '/edit', component: Configure, name: 'create' },
-  { path: '/edit/:id', component: Configure, name: 'edit' },
-  { path: '/me', component: Me, name: 'user' },
-  { path: '/redirect', component: Redirect, name: 'redirect' },
-]
+const needReloadPage = (to: RouteLocationNormalized, from: RouteLocationNormalized, next: NavigationGuardNext) => {
+  if (from.name && !(from.name === 'create' && to.name === 'edit')) {
+    location.href = import.meta.env.VITE_URL_BASE + to.fullPath.slice(1)
+  } else {
+    next()
+  }
+}
 
 export const router = createRouter({
-  history: createWebHistory('/no-code/'),
-  routes,
+  history: createWebHistory(import.meta.env.VITE_URL_BASE),
+  routes: [
+    { path: '/', redirect: '/edit', name: 'home' },
+    { path: '/edit', component: Configure, name: 'create', beforeEnter: needReloadPage },
+    { path: '/edit/:id', component: Configure, name: 'edit', beforeEnter: needReloadPage },
+    { path: '/me', component: Me, name: 'user' },
+    { path: '/redirect', component: Redirect, name: 'redirect' },
+    { path: '/:pathMatch(.*)', component: NotFound, name: 'not-found' }
+  ],
 })

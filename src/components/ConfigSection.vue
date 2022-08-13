@@ -13,7 +13,9 @@ import { Alert, AlertError } from '@/utils/alert'
 import { emitter } from '@/utils/event'
 import Dropdown from './widgets/Dropdown.vue'
 import { useConfig } from '@/utils/config'
-import SaveModal from './modal/SaveModal.vue'
+import SaveMaterialModal from './modal/SaveMaterialModal.vue'
+import { keyEvent } from 'ahooks-vue/dist/src/useKeyPress/constants'
+import { IMaterialItem } from '@/config'
 
 const pageStore = usePageStore()
 const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, setting } = storeToRefs(pageStore)
@@ -30,8 +32,8 @@ useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
 })
 
 let showLayer = $ref(false)
-let showSaveModal = $ref(false)
-let saveModelRef = $ref<InstanceType<typeof SaveModal> | null>(null)
+let showSaveMaterialModal = $ref(false)
+let curMaterial = $ref<IMaterialItem | null>(null)
 
 const handleActiveNodeChange = async (event: Event) => {
   const elem = event.target as HTMLDivElement
@@ -104,8 +106,8 @@ const iconList: {
     name: 'save',
     tip: 'Save',
     click: () => {
-      showSaveModal = true
-      saveModelRef && saveModelRef.init()
+      setCurMaterial()
+      showSaveMaterialModal = true
     },
   },
   {
@@ -120,11 +122,24 @@ const iconList: {
   },
 ])
 
-useKeyPress(ShortcutKey.save, () => {
+useKeyPress(ShortcutKey.save, (e: KeyboardEvent) => {
   if (!activeNode.value) return
-  showSaveModal = true
-  saveModelRef && saveModelRef.init()
+  setCurMaterial()
+  showSaveMaterialModal = true
 })
+
+const setCurMaterial = () => {
+  if (!activeNode.value) return
+  curMaterial = {
+    name: activeNode.value.name,
+    enName: '',
+    type: activeNode.value.type,
+    category: '',
+    categoryEn: '',
+    cover: activeNode.value.cover || '',
+    node: activeNode.value
+  }
+}
 </script>
 
 <template>
@@ -242,7 +257,12 @@ useKeyPress(ShortcutKey.save, () => {
         </div>
       </div>
     </div>
-    <SaveModal ref="saveModelRef" v-model="showSaveModal"></SaveModal>
+    <SaveMaterialModal
+      v-if="curMaterial"
+      auto-create-cover
+      :material="curMaterial"
+      v-model="showSaveMaterialModal"
+    ></SaveMaterialModal>
   </div>
 </template>
 

@@ -1,6 +1,12 @@
-import { createApp, ref, computed } from 'vue'
+import type { createApp as VueCreateApp } from 'vue'
 import type { IPage, PageNode } from '../src/config'
 import { Text, Block, Image, Icon } from '@/components/libs'
+
+const createApp = (window as any)?.Vue?.createApp as typeof VueCreateApp
+
+if (!createApp) {
+  throw new Error('vue is not installed')
+}
 
 const getTemplate = (pageNode: PageNode[]) => {
   let template = ''

@@ -10,7 +10,7 @@ import { useDragStore } from '@/stores/drag'
 import { DisplayMode, useDisplayStore } from '@/stores/display'
 import { PageNode, IMaterialItem } from '@/config'
 import Tabs from './widgets/Tabs.vue'
-import { Alert } from '@/utils/alert'
+import { Alert, AlertError } from '@/utils/alert'
 import { useUserStore } from '@/stores/user'
 
 const pageStore = usePageStore()
@@ -47,6 +47,9 @@ const handleDragend = () => {
 const handleDragStart = (event: DragEvent, data: PageNode) => {
   const imgElem = (event.target as HTMLDivElement).querySelector('.image') as HTMLDivElement
   event.dataTransfer!.setDragImage(imgElem, 0, 0)
+  if (data.type === 'component' && pageData.value.length === 0) {
+    AlertError('使用 Component 前需要先添加 Section')
+  }
   setDragNode(data)
   preDisplayMode = displayMode.value
   setDisplayMode('drag')
@@ -138,7 +141,7 @@ const currentCategory = $computed(() => {
   }
 
   .element-item {
-    margin-bottom: 15px;
+    margin-bottom: 10px;
     width: 50%;
     height: 120px;
     padding: 8px;

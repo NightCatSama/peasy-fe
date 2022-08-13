@@ -1,4 +1,5 @@
 <script setup lang="ts">
+import LogoIcon from '@/assets/logo.svg'
 import AddIcon from '@/assets/add.svg'
 import FocusIcon from '@/assets/focus.svg'
 import DeviceSmIcon from '@/assets/device-sm.svg'
@@ -66,7 +67,8 @@ import LinkBrokenIcon from '@/assets/link-broken.svg'
 import LinkIcon from '@/assets/link.svg'
 import SaveIcon from '@/assets/save.svg'
 import TabletIcon from '@/assets/tablet.svg'
-import ProjectSetting from '@/assets/project-setting.svg'
+import ProjectSettingIcon from '@/assets/project-setting.svg'
+import EmptyIcon from '@/assets/empty.svg'
 
 interface IIconProps {
   name: string
@@ -77,6 +79,7 @@ interface IIconProps {
 }
 
 const iconMap = {
+  logo: LogoIcon,
   add: AddIcon,
   focus: FocusIcon,
   'device-sm': DeviceSmIcon,
@@ -144,7 +147,8 @@ const iconMap = {
   link: LinkIcon,
   save: SaveIcon,
   tablet: TabletIcon,
-  'project-setting': ProjectSetting,
+  'project-setting': ProjectSettingIcon,
+  empty: EmptyIcon,
 } as any
 
 const { name, size = 26, type = 'circle', active, color } = defineProps<IIconProps>()

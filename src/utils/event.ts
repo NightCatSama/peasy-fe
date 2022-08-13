@@ -7,6 +7,7 @@ type Events = {
   saveHistory?: any
   collapseGroup?: any
   saveColorVars: string
+  saveProject?: any
 }
 
 export const emitter = mitt<Events>()

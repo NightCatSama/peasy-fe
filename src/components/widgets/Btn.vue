@@ -104,10 +104,6 @@ const handleClick = (e: MouseEvent) => {
   }
 
   &-type-btn {
-    box-shadow: $bulge-shadow;
-    &:hover {
-      box-shadow: none;
-    }
     &.primary {
       color: $color;
       background: $theme-gradient;
@@ -136,9 +132,9 @@ const handleClick = (e: MouseEvent) => {
 
     &.size-sm {
       padding: 0 16px;
-      border-radius: 8px;
-      font-size: 14px;
-      height: 26px;
+      border-radius: $inner-radius;
+      font-size: 13px;
+      height: 28px;
     }
   }
 

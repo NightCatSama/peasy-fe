@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { DefaultColor, IModuleConfigGroup, PageNode } from '@/config'
+import { DefaultColor, IMaterialItem, IModuleConfigGroup, PageNode, PageNodeType } from '@/config'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import SelectItem from '../configs/items/SelectItem.vue'
@@ -15,7 +15,7 @@ import Btn from '../widgets/Btn.vue'
 import SwitchItem from '../configs/items/SwitchItem.vue'
 import Modal from './Modal.vue'
 import { createMaterialSnapshot } from '@/utils/snapshot'
-import { useAttrs, ref, watch } from 'vue'
+import { useAttrs, ref, watch, reactive, nextTick } from 'vue'
 import { useSourceNode } from '@/utils/config'
 import Input from '../widgets/Input.vue'
 import TreeNode from '../biz/TreeNode.vue'
@@ -23,28 +23,39 @@ import JSONEditor from 'jsoneditor'
 import ImageItem from '../configs/items/ImageItem.vue'
 import { Alert, AlertError } from '@/utils/alert'
 import { useUserStore } from '@/stores/user'
+import { cloneDeep } from 'lodash'
+
+interface SaveMaterialModalProps {
+  material?: IMaterialItem
+  autoCreateCover?: boolean
+  onSave?: (material: IMaterialItem) => void
+}
+
+const { material, autoCreateCover, onSave } = defineProps<SaveMaterialModalProps>()
+const propsRef = reactive(useAttrs())
 
 const pageStore = usePageStore()
-const { activeNode } = storeToRefs(pageStore)
 const { fetchSaveMaterial } = pageStore
 
 const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
 
-const node = $computed(() => activeNode.value ? useSourceNode(activeNode.value) : null)
+let editItem: IMaterialItem | null = $ref(null)
 
-let name = $ref('')
-let enName = $ref('')
-let isModule = ref(false)
-let category = $ref('')
-let categoryEn = $ref('')
-let cover = $ref('')
-let editor = $ref<JSONEditor | null>(null)
-
-let modal = $ref<InstanceType<typeof Modal> | null>(null)
+const isTemplate = $computed<boolean>(() => material?.type === 'template')
+const node = $computed<PageNode | null>(() => isTemplate ? null : editItem?.node as PageNode)
+const isModule = $computed<boolean>({
+  get() {
+    return (!isTemplate && node?.isModule) || false
+  },
+  set(val: boolean) {
+    if (val) nextTick(() => initJSONEditor())
+    editItem.node.isModule = val
+  }
+})
 
 const initJSONEditor = () => {
-  if (!node) return
+  if (!editItem || !node) return
   const elem = document.querySelector('.module-input') as HTMLDivElement
   if (!elem) return
   if (!editor) {
@@ -70,84 +81,88 @@ const initJSONEditor = () => {
   }] as IModuleConfigGroup[])
 }
 
-defineExpose({
-  init: async () => {
-    if (!node) return
-    name = node.name
-    enName = ''
-    isModule.value = node.isModule || false
-    category = ''
-    categoryEn = ''
-    cover = ''
-    const elem = document.querySelector(`[data-name="${name}"]`) as HTMLElement
-    cover = elem ? await createMaterialSnapshot(elem) : ''
-    isModule && initJSONEditor()
+watch(() => [material, propsRef.modelValue], async () => {
+  if (material && propsRef.modelValue) {
+    editItem = cloneDeep(material)
+    nextTick(() => initJSONEditor())
+    if (autoCreateCover) {
+      const elem = document.querySelector(`[data-name="${editItem.name}"]`) as HTMLElement
+      editItem.cover = elem ? await createMaterialSnapshot(elem) : ''
+    }
+  } else {
+    editItem = null
   }
-})
+}, { immediate: true })
 
-watch(isModule, (val: boolean) => {
-  if (val) initJSONEditor()
-})
+let editor = $ref<JSONEditor | null>(null)
+let modal = $ref<InstanceType<typeof Modal> | null>(null)
 
 const handleSave = async () => {
-  if (!node) return
-  await fetchSaveMaterial({
-    name,
-    enName,
-    node: {
+  if (!editItem.name) {
+    AlertError('Name is required')
+    return
+  }
+  const data = await fetchSaveMaterial({
+    ...editItem,
+    node: isTemplate ? null : {
       ...node,
-      isModule: isModule.value,
-      moduleConfig: isModule.value && editor ? editor.get() : [],
-    },
-    category,
-    categoryEn,
-    cover,
+      isModule: node?.isModule || false,
+      moduleConfig: node?.isModule && editor ? editor.get() : [],
+    } as PageNode,
   })
-  Alert('Save Success')
+  onSave?.(data)
+  Alert('保存成功')
   modal?.hide()
+}
+
+const titleMap = {
+  'template': 'Template',
+  'component': 'Component',
+  'section': 'Section',
 }
 </script>
 
 <template>
-  <Modal ref="modal" class="save-modal" :title="`Save ${node?.type || ''}`" :width="'70vw'" v-bind="$attrs">
-    <div class="info-wrapper">
+  <Modal ref="modal" class="save-modal" :title="`Save ${titleMap[material.type]}`" :width="'70vw'" close-on-click-mask v-bind="$attrs">
+    <div class="info-wrapper" v-if="editItem">
       <div class="info">
         <InputItem
           label="Name"
-          v-model="name"
+          v-model="editItem.name"
         ></InputItem>
         <InputItem
           v-if="isAdmin"
           label="Name(En)"
-          v-model="enName"
+          v-model="editItem.enName"
         ></InputItem>
         <InputItem
           label="Category"
-          v-model="category"
+          v-if="!isTemplate"
+          v-model="editItem.category"
         ></InputItem>
         <InputItem
-          v-if="isAdmin"
+          v-if="isAdmin && !isTemplate"
           label="Category(En)"
-          v-model="categoryEn"
+          v-model="editItem.categoryEn"
         ></InputItem>
         <SwitchItem
-          v-if="isAdmin"
+          v-if="isAdmin && !isTemplate"
           label="Module"
           v-model="isModule"
         ></SwitchItem>
       </div>
       <ImageItem
         hide-label
-        v-model="cover"
+        v-model="editItem.cover"
         wrapper-class="cover-wrapper"
         :rows="5"
       >
-        <div class="cover" :style="{ backgroundImage: `url(${cover})` }"></div>
+        <div class="cover" :style="{ backgroundImage: `url(${editItem.cover})` }"></div>
       </ImageItem>
     </div>
-    <div class="module-setting-wrapper" v-show="isAdmin && isModule && node">
+    <div class="module-setting-wrapper" v-if="isAdmin && isModule && node">
       <div class="module-input"></div>
-      <div class="node-tree" v-if="node">
+      <div class="node-tree">
         <TreeNode :node="node" :preview="true"></TreeNode>
       </div>
     </div>

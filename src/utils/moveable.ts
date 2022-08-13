@@ -359,3 +359,10 @@ export const getElementOffsetByWrapper = (elem: HTMLElement, wrapperElement: HTM
     left: rect.left - editSectionRect.left,
   }
 }
+
+/** 销毁 Moveable */
+export const destroyMoveable = () => {
+  disabledMoveable()
+  moveable?.destroy()
+  moveable = null
+}

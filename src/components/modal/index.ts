@@ -22,6 +22,7 @@ export class Modal {
       const destroy = () => {
         const elem = document.getElementById(id)
         document.body.removeChild(elem!)
+        render(null, document.body)
         vnode = null
       }
     })

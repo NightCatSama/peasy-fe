@@ -3,14 +3,20 @@ import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia';
 import { useLogto } from '@logto/vue';
 import Btn from '@/components/widgets/Btn.vue';
+import Icon from '@/components/widgets/Icon.vue';
 import Avatar from '@/components/widgets/Avatar.vue';
 import ImageItem from '@/components/configs/items/ImageItem.vue';
-import { projectApi } from '@/utils/mande';
+import { materialApi, projectApi } from '@/utils/mande';
 import { onMounted, reactive } from 'vue';
-import { IPage } from '@/config';
+import { IMaterialItem, IPage } from '@/config';
 import { Project } from '@@/entities/project.entity';
 import { IResponse } from '@@/types/response'
 import { useRouter } from 'vue-router';
+import { Modal } from '@/components/modal';
+import ProjectModal from '@/components/modal/ProjectModal.vue';
+import { Alert } from '@/utils/alert';
+import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue';
+import { SaveProjectDto } from '@@/dto/data.dto';
 
 const router = useRouter()
 
@@ -26,20 +32,138 @@ const handleUpdateAvatar = (img: string) => {
   updateAvatar(img)
 }
 
-let projectMap: Project[] = $ref([])
+let showProjectModal = $ref(false)
+let showSaveMaterialModal = $ref(false)
+let curMaterial = $ref<IMaterialItem | null>(null)
+let curEditProject = $ref<Project | null>(null)
+
+let showMap = reactive<{
+  [key: string]: Project[] | IMaterialItem[]
+}>({})
+let titleMap = {
+  'project': 'Project',
+  'template': 'Template',
+  'component': 'Component',
+  'section': 'Section',
+}
 
 onMounted(async () => {
   const { data } = await projectApi.get<IResponse<Project[]>>('')
-  projectMap = data
-})
-
-const handleGotoProject = (project: Project) => {
-  router.push({
-    name: 'edit',
-    params: {
-      id: project.id
+  showMap['project'] = data
+  const res = await materialApi.get<IResponse<{ [type: string]: IMaterialItem[] }>>('', { query: { includeTemplate: true }})
+  ;['template', 'section', 'component'].forEach((key) => {
+    if (res.data[key]?.length > 0) {
+      showMap[key] = res.data[key]
+    } else {
+      showMap[key] = []
     }
   })
+})
+
+let projectList = $computed<Project[]>(() => showMap['project'] as Project[] || [])
+
+const handleGotoProject = (project?: Project) => {
+  if (!project) {
+    router.push({
+      name: 'create',
+    })
+  } else {
+    router.push({
+      name: 'edit',
+      params: {
+        id: project.id
+      }
+    })
+  }
+}
+
+const handleDeleteProject = async (project: Project) => {
+  if (await Modal.confirm(`确认删除 ${project.name} 吗`)) {
+    await projectApi.delete(project.id)
+    showMap['project'] = projectList.filter(p => p.id !== project.id)
+    Alert('删除成功')
+  }
+}
+
+const handleOpenProjectModal = (project: Project) => {
+  showProjectModal = true
+  curEditProject = project
+}
+
+const handleSaveProject = async (project: IProject) => {
+  await projectApi.patch<IResponse<Project>>(curEditProject.id, {
+    name: project.name,
+    cover: project.cover,
+  })
+  curEditProject.name = project.name
+  curEditProject.cover = project.cover
+  showProjectModal = false
+  curEditProject = null
+  Alert('保存成功')
+}
+
+const handleSaveToTemplate = async (project: Project) => {
+  setCurMaterialByProject(project)
+  showSaveMaterialModal = true
+}
+
+/** 处理物流展示图片的点击事件 */
+const handleMaterialImageClick = async (material: IMaterialItem) => {
+  if (material.type === 'template') {
+    if (await Modal.confirm('是否使用该模板创建新项目')) {
+      const { data } = await projectApi.patch<IResponse<Project>>('', {
+        name: material.name,
+        cover: material.cover,
+        page: material.page
+      } as SaveProjectDto)
+      handleGotoProject(data)
+    }
+  } else {
+    curMaterial = material
+    showSaveMaterialModal = true
+  }
+}
+
+/** 打开物料编辑弹窗 */
+const handleMaterialSetting = async (material: IMaterialItem) => {
+  curMaterial = material
+  showSaveMaterialModal = true
+}
+
+/** 设置物流数据 */
+const setCurMaterialByProject = (project: Project) => {
+  curMaterial = {
+    name: project.name,
+    enName: '',
+    type: 'template',
+    category: '',
+    categoryEn: '',
+    cover: project.cover || '',
+    page: project.page
+  }
+}
+
+const updateMaterial = (material: IMaterialItem) => {
+  // 有 id 则为更新
+  if (curMaterial.id) {
+    showMap[curMaterial.type] = showMap[curMaterial.type].map(m => {
+      if (m.id === curMaterial.id) {
+        return material
+      }
+      return m
+    })
+  } else {
+    (showMap[curMaterial.type] as IMaterialItem[]).push(material)
+  }
+}
+
+/** 删除物料 */
+const handleDeleteMaterial = async (material: IMaterialItem) => {
+  if (await Modal.confirm(`确认删除 ${material.name} 吗`)) {
+    await materialApi.delete(material.id)
+    showMap[material.type] = (showMap[material.type] as IMaterialItem[]).filter(p => p.id !== material.id)
+    Alert('删除成功')
+  }
 }
 </script>
 
@@ -55,23 +179,67 @@ const handleGotoProject = (project: Project) => {
         <Btn class="sign-btn" type="btn" color="default" @click="handleSignOut">退出登录</Btn>
       </template>
     </div>
-    <div class="data-wrapper">
-      <div class="data-title">Project</div>
-      <div class="data-item" v-for="item in projectMap">
-        <div
-          class="data-image"
-          :style="{ backgroundImage: item.cover ? `url(${item.cover})` : void 0 }"
-          @click="handleGotoProject(item)"
-        ></div>
-        <div class="data-name">{{ item.name }}</div>
+    <div class="data-wrapper" v-for="(list, key) in showMap" v-show="list.length" :key="key">
+      <div class="data-title">{{ titleMap[key] }}</div>
+      <div class="data-list">
+        <div class="data-item" v-if="key === 'project'">
+          <div
+            class="data-image create"
+            @click="handleGotoProject()"
+          >
+            <div class="data-image-placeholder">
+              <Icon name="add" :size="24" />
+              <span>New Project</span>
+            </div>
+          </div>
+          <div class="data-info">
+          </div>
+        </div>
+        <div class="data-item" v-for="(item, index) in list" :key="item.name + index">
+          <div
+            class="data-image"
+            :style="{ backgroundImage: item.cover ? `url(${item.cover})` : void 0 }"
+            @click="key === 'project' ? handleGotoProject(item as Project) : handleMaterialImageClick(item as IMaterialItem)"
+          >
+            <div v-if="!item.cover" class="data-image-placeholder">
+              <Icon name="empty" :size="32" />
+              <span>No Cover</span>
+            </div>
+          </div>
+          <div class="data-info">
+            <div class="data-info-name">{{ item.name }}</div>
+            <template v-if="key === 'project'">
+              <Icon type="circle" class="data-info-btn" name="save" :size="9" @click="handleSaveToTemplate(item as Project)"></Icon>
+              <Icon type="circle" class="data-info-btn" name="advanced" :size="11" @click="handleOpenProjectModal(item as Project)"></Icon>
+              <Icon type="circle" class="data-info-btn danger" name="delete" :size="10" @click="handleDeleteProject(item as Project)"></Icon>
+            </template>
+            <template v-else>
+              <Icon type="circle" class="data-info-btn" name="advanced" :size="11" @click="handleMaterialSetting(item as IMaterialItem)"></Icon>
+              <Icon type="circle" class="data-info-btn danger" name="delete" :size="10" @click="handleDeleteMaterial(item as IMaterialItem)"></Icon>
+            </template>
+          </div>
+        </div>
       </div>
     </div>
+    <ProjectModal
+      v-model="showProjectModal"
+      :project="curEditProject"
+      hide-create-cover
+      @save="handleSaveProject"
+    ></ProjectModal>
+    <SaveMaterialModal
+      v-if="curMaterial"
+      ref="saveModelRef"
+      :material="curMaterial"
+      v-model="showSaveMaterialModal"
+      :on-save="updateMaterial"
+    ></SaveMaterialModal>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .me-page {
-  background: $panel-light-gradient;
+  background: #E9E9E9;
   min-height: 100vh;
   font-family: $font-family;
   .user-info {
@@ -93,35 +261,122 @@ const handleGotoProject = (project: Project) => {
   }
 
   .data-wrapper {
-    padding: 20px 28px;
+    padding: 20px 60px 0px;
+    &:first-child {
+      padding-top: 20px;
+    }
+    &:last-child {
+      padding-bottom: 40px;
+    }
     .data-title {
       margin-top: 20px;
       font-size: 30px;
-      color: $white;
+      color: $panel;
       font-weight: bold;
     }
-
+    .data-list {
+      display: flex;
+      flex-wrap: wrap;
+    }
     .data-item {
-      width: 160px;
+      width: 130px;
       display: inline-flex;
       flex-direction: column;
       margin: 12px 24px 12px 0;
 
       .data-image {
         width: 100%;
-        height: 180px;
-        background-size: cover;
+        height: 160px;
+        background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
-        border-radius: $inner-radius;
-        background-color: $color;
+        border-radius: $normal-radius;
+        color: $grey;
+        background-color: $white;
         cursor: pointer;
+        transition: all .3s;
+
+        &.create {
+          border: 2px dashed $grey;
+          background-color: $tr;
+
+          &:hover {
+            color: $theme;
+            border-color: $tr;
+            background-color: $white;
+            box-shadow: 0 0 10px 0px rgba(0, 0, 0, .1);
+          }
+        }
+
+        &:not(.create):hover {
+          box-shadow: 0 0 10px 0px rgba(0, 0, 0, .1);
+        }
+
+        &-placeholder {
+          width: 100%;
+          height: 100%;
+          display: flex;
+          flex-direction: column;
+          justify-content: center;
+          align-items: center;
+          font-size: 14px;
+
+          .icon {
+            margin-bottom: 8px;
+          }
+        }
       }
 
-      .data-name {
-        color: $color;
-        font-size: 18px;
-        padding: 10px 4px;
+      .data-info {
+        display: flex;
+        align-items: center;
+        padding: 6px 0px 6px 4px;
+        height: 32px;
+        &-name {
+          color: $panel-light;
+          font-size: 14px;
+          flex: 1;
+          overflow: hidden;
+          text-overflow: ellipsis;
+        }
+        &-btn {
+          position: relative;
+          top: -1px;
+          left: 2px;
+          width: 16px;
+          height: 16px;
+          padding: 0;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-left: 2px;
+          color: $white;
+          background: $panel-light;
+          border-radius: $inner-radius;
+          cursor: pointer;
+          opacity: 0;
+          display: none;
+          transition: all .3s;
+          &:hover {
+            background: $panel;
+          }
+          &.danger {
+            &:hover {
+              background: $red;
+            }
+            // color: $red;
+            // background: $red;
+          }
+        }
+      }
+      &:hover {
+        .data-info-name {
+          color: $panel;
+        }
+        .data-info-btn {
+          opacity: 1;
+          display: flex;
+        }
       }
     }
   }

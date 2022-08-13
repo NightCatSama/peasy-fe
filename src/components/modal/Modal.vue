@@ -96,7 +96,7 @@ defineExpose({
     color: $color;
 
     &-header {
-      padding-bottom: 24px;
+      padding-bottom: 20px;
 
       &:empty {
         display: none;

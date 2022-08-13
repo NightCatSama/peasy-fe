@@ -161,6 +161,8 @@ export const usePageStore = defineStore('page', {
         }
       }
       const { data } = await projectApi.patch<IResponse<Project>>(id, body)
+      this.project.name = data.name
+      this.project.cover = data.cover
       return data
     },
     /** 加载物料资源 */
@@ -190,25 +192,15 @@ export const usePageStore = defineStore('page', {
       return res
     },
     /** 保存物料数据 */
-    async fetchSaveMaterial(params: { name: string; enName?: string; node: PageNode; category: string; categoryEn: string; cover: string }) {
-      const data = {
-        name: params.name,
-        enName: params.enName,
-        type: params.node.type,
-        node: params.node,
-        category: params.category,
-        categoryEn: params.categoryEn,
-        cover: params.cover,
-      }
-      const res = await materialApi.patch<any>(data)
-      res.data.node = res.data.node
-      this.materialData[data.type].push(res.data)
-      return res
+    async fetchSaveMaterial(params: IMaterialItem) {
+      const res = await materialApi.patch<IResponse<IMaterialItem>>(params)
+      this.materialData?.[params.type]?.push(res.data)
+      return res.data
     },
     /** 删除单个物料数据 */
     async deleteMaterial(id: number) {
       await materialApi.delete('' + id)
-      Object.values(this.materialData).forEach((list) => {
+      Object.values(this.materialData).forEach((list: IMaterialItem[]) => {
         const index = list.findIndex((item) => item.id === id)
         if (index > -1) {
           list.splice(index, 1)

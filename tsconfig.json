@@ -4,7 +4,7 @@
     "useDefineForClassFields": true,
     "module": "esnext",
     "moduleResolution": "node",
-    "strict": true,
+    "strict": false,
     "jsx": "preserve",
     "sourceMap": true,
     "resolveJsonModule": true,
@@ -12,9 +12,12 @@
     "esModuleInterop": true,
     "lib": ["esnext", "dom"],
     "skipLibCheck": true,
+    "experimentalDecorators": true,
+    "strictPropertyInitialization": false,
     "paths": {
       "@/*": ["./src/*"],
       "@@/*": ["./peasy-be/src/*"],
+      "types/*": ["./peasy-be/types/*"],
     }
   },
   "include": ["src/**/*.ts", "src/**/*.d.ts", "src/**/*.tsx", "src/**/*.vue"],

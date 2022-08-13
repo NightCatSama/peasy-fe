@@ -5,7 +5,7 @@ import svgLoader from 'vite-svg-loader'
 
 // https://vitejs.dev/config/
 export default defineConfig({
-  base: '/no-code/',
+  base: process.env.VITE_URL_BASE,
   plugins: [vue({
     reactivityTransform: true
   }), svgLoader({

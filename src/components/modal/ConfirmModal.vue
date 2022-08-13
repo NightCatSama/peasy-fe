@@ -10,8 +10,10 @@ import Btn from '../widgets/Btn.vue';
 import Icon from '../widgets/Icon.vue';
 
 interface IConfirmModal {
-  title: string
+  title?: string
   msg: string
+  extraLink?: string
+  onExtraLinkClick?: () => void
   okText?: string
   cancelText?: string
   onOk?: () => void
@@ -21,7 +23,9 @@ interface IConfirmModal {
 const {
   title,
   msg,
-  okText = '确定',
+  extraLink = '',
+  onExtraLinkClick,
+  okText = '确认',
   cancelText = '取消',
   onOk,
   onCancel,
@@ -36,10 +40,15 @@ defineExpose({
 <template>
   <Modal ref="modal" class="confirm-modal" :title="title" v-bind="$attrs">
     <div class="modal-msg">
-      <Icon class="tip-icon" color="theme" :name="'warning'" :size="16"></Icon>
+      <!-- <Icon class="tip-icon" color="theme" :name="'warning'" :size="16"></Icon> -->
       <div>{{ msg }}</div>
     </div>
     <div class="btn-group">
+      <div class="extra-link-wrapper" v-if="extraLink">
+        <Btn type="text" size="sm" class="extra-link" @click="onExtraLinkClick">
+          {{ extraLink }}
+        </Btn>
+      </div>
       <Btn class="cancel-btn" type="btn" size="sm" color="default" @click="() => {
         onCancel?.()
         modal?.hide()
@@ -54,11 +63,11 @@ defineExpose({
 
 <style lang="scss">
 .confirm-modal {
-  max-width: 500px;
+  width: 350px;
   .modal-msg {
     display: flex;
-    font-size: 16px;
-    padding: 10px 8px 8px;
+    font-size: 14px;
+    padding: 0 0 8px 0;
 
     .tip-icon {
       margin-right: 10px;
@@ -67,20 +76,17 @@ defineExpose({
   .btn-group {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
     margin-top: 20px;
 
+    .extra-link-wrapper {
+      margin-left: -4px;
+      flex: 1;
+    }
     .cancel-btn {
-      font-size: 14px;
       margin-right: 10px;
-      color: darken($color, 20%);
-
-      &:hover {
-        color: $color;
-      }
     }
     .ok-btn {
-      font-size: 14px;
-      // color: $theme;
     }
   }
 }

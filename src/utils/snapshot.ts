@@ -4,6 +4,7 @@ import html2canvas from 'html2canvas'
 export const createMaterialSnapshot = (el: HTMLElement, options?: any) => {
   return html2canvas(el, {
     scale: 1,
+    useCORS: true,
     ignoreElements: (elem: any) => {
       if (elem.classList.contains('moveable-control-box')) {
         return true

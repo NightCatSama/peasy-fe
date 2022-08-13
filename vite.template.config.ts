@@ -55,6 +55,7 @@ export default defineConfig({
       external: ['vue'],
       output: {
         name: 'template.html',
+        format: 'umd',
         globals: {
           vue: 'Vue',
         },
