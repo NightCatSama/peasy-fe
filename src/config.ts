@@ -1,4 +1,8 @@
-import { DataType } from "@@/entities/data.entity";
+/** 数据列表 */
+export const enum DataType {
+  Page = 'page',
+  Resume = 'resume',
+}
 
 /** 组件对应支持的配置分组 */
 export const ComponentPropsGroup = {
@@ -86,19 +90,15 @@ export interface GroupPropType<T extends ComponentName = any> {
 export type ComponentPropsGroupType = typeof ComponentPropsGroup
 export type ComponentName = keyof ComponentPropsGroupType
 
-type IsAny<T> = 0 extends (1 & T) ? true : false;
+type IsAny<T> = 0 extends 1 & T ? true : false
 
 /** 将配置分组名和约束类型相对应 */
-export type PropsTypes<T extends ComponentName = any> =
-  IsAny<T> extends false
-    ? Pick<
-      GroupPropType<T>,
-      ComponentPropsGroupType[T][number]
-    >
-    : Partial<{
+export type PropsTypes<T extends ComponentName = any> = IsAny<T> extends false
+  ? Pick<GroupPropType<T>, ComponentPropsGroupType[T][number]>
+  : Partial<{
       [key in GroupType]: GroupPropType[key]
-    }>
-    & Pick<GroupPropType<'Block'>, 'common' | 'effect' | 'event' | 'border' | 'spacing'>
+    }> &
+      Pick<GroupPropType<'Block'>, 'common' | 'effect' | 'event' | 'border' | 'spacing'>
 
 export interface IPropConfig<T extends ComponentName = any> {
   /** 配置参数 */
