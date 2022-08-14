@@ -321,9 +321,11 @@ export const usePageStore = defineStore('page', {
         if (this.activeNode === this.activeSection) {
           this.activeSection = null
         }
+        this.removeNode(this.activeNode)
         this.removeSection(this.activeNode)
       } else {
         const index = this.activeParentNode?.children?.indexOf(this.activeNode)!
+        this.removeNode(this.activeNode)
         this.activeParentNode?.children?.splice(index, 1)
         // 若仍存在同层节点，则自动切换过去
         if (this.activeParentNode?.children?.length) {
@@ -333,6 +335,18 @@ export const usePageStore = defineStore('page', {
       }
       this.activeNode = null
       this.activeParentChain = []
+    },
+    /** 移除一个组件 */
+    removeNode(node: PageNode) {
+      const children = [node].concat(this.getAllChildNode(node))
+      // 当移除的组件有其他组件链接，则移除链接关系
+      Object.values(this.nameMap).forEach((obj) => {
+        const deleteNode = children.find((c) => c.name === obj.propLink)
+        if (deleteNode) {
+          obj.propLink = ''
+          obj.config = merge({}, cloneDeep(deleteNode.config), obj.config)
+        }
+      })
     },
     /** 复制当前激活节点 */
     copyActiveNode() {

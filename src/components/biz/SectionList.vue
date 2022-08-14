@@ -155,6 +155,11 @@ const dragEvents = $computed(() => ({
       transform: scale(1.05);
     }
   }
+  &:deep(.section-item-ghost) {
+    > * {
+      display: none;
+    }
+  }
 }
 
 .fade-enter-from,

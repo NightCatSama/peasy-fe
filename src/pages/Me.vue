@@ -187,7 +187,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
         <Btn class="sign-btn" type="btn" color="default" @click="handleSignOut">退出登录</Btn>
       </template>
     </div>
-    <div :class="['data-wrapper', `data-wrapper-${key}`]" v-for="(list, key) in showMap" v-show="list.length" :key="key">
+    <div :class="['data-wrapper', `data-wrapper-${key}`]" v-for="(list, key) in showMap" :key="key">
       <div class="data-title">{{ titleMap[key] }}</div>
       <div class="data-list">
         <div class="data-item" v-if="key === 'project'">
