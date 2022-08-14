@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getMockBlock, getMockIcon, getMockImage, getMockText } from '@/utils/mock'
+import { getMockBlock } from '@/utils/mock'
 import {
   PageNode,
   ComponentPropsGroup,
@@ -209,6 +209,7 @@ export const usePageStore = defineStore('page', {
     },
     /** 保存物料数据 */
     async fetchSaveMaterial(params: IMaterialItem) {
+      const material = this.covertMaterialNode(params)
       const res = await materialApi.patch<IResponse<IMaterialItem>>(params)
       const list = this.materialData?.[params.type]
       if (this.materialData?.[params.type]) {
@@ -340,7 +341,7 @@ export const usePageStore = defineStore('page', {
     removeNode(node: PageNode) {
       const children = [node].concat(this.getAllChildNode(node))
       // 当移除的组件有其他组件链接，则移除链接关系
-      Object.values(this.nameMap).forEach((obj) => {
+      Object.values(this.nameMap).forEach((obj: PageNode) => {
         const deleteNode = children.find((c) => c.name === obj.propLink)
         if (deleteNode) {
           obj.propLink = ''
@@ -460,5 +461,24 @@ export const usePageStore = defineStore('page', {
         this.font.mediaFontSize[width] = fontSize
       }
     },
+    covertMaterialNode(material: IMaterialItem) {
+      if (material.type === 'template') return material
+      const node = cloneDeep(material.node) as PageNode
+      const nodeList = [node, ...this.getAllChildNode(node)]
+      const nodeNameMap = {}
+      const allNameMap = this.nameMap
+      nodeList.forEach(n => nodeNameMap[n.name] = n)
+      nodeList.forEach(n => {
+        // 如果非链接组件，或链接组件在物料中，则不需要处理
+        if (!n.propLink || nodeNameMap[n.propLink]) return
+        // 否则需要解除链接，并将链接组件的配置合并到当前组件中
+        if (allNameMap[n.propLink]) {
+          n.config = merge({}, allNameMap[n.propLink].config, n.config)
+          n.propLink = ''
+        }
+      })
+      material.node = node
+      return material
+    }
   },
 })

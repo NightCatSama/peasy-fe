@@ -16,6 +16,7 @@ import { useConfig } from '@/utils/config'
 import SaveMaterialModal from './modal/SaveMaterialModal.vue'
 import { keyEvent } from 'ahooks-vue/dist/src/useKeyPress/constants'
 import { IMaterialItem } from '@/config'
+import { $t } from '@/constants/i18n'
 
 const pageStore = usePageStore()
 const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, setting } =
@@ -46,12 +47,12 @@ const handleActiveNodeChange = async (event: Event) => {
   const newName = elem.innerText || ''
   if (newName === activeNode.value.name) return
   if (!isValidName(newName) || !newName) {
-    AlertError('名字不合法')
+    AlertError($t('nameValidTip'))
     elem.innerText = activeNode.value.name
     return
   }
   if (nameMap.value[newName]) {
-    AlertError('名字已存在')
+    AlertError($t('nameExistTip'))
     elem.innerText = activeNode.value.name
     return
   }
@@ -82,31 +83,31 @@ const iconList: {
   {
     noMini: true,
     name: 'layers',
-    tip: 'Layers',
+    tip: $t('layers'),
     click: () => (showLayer = true),
   },
   {
     hide: !activeNode.value?.isModule,
     name: 'separate',
-    tip: 'Ungroup',
+    tip: $t('ungroup'),
     click: separateActiveNode,
   },
   {
     hide: !!activeNodeHide.value,
     name: 'eye-slash',
-    tip: 'Hidden',
+    tip: $t('hidden'),
     click: () => setActiveNodeHide(true),
   },
   {
     hide: !activeNodeHide.value,
     name: 'eye',
-    tip: 'Visible',
+    tip: $t('visible'),
     click: () => setActiveNodeHide(false),
   },
   {
     // hide: !activeNode.value?.isModule,
     name: 'save',
-    tip: 'Save',
+    tip: $t('save'),
     click: () => {
       setCurMaterial()
       showSaveMaterialModal = true
@@ -114,12 +115,12 @@ const iconList: {
   },
   {
     name: 'copy',
-    tip: 'Copy',
+    tip: $t('copy'),
     click: copyActiveNode,
   },
   {
     name: 'delete',
-    tip: 'Delete',
+    tip: $t('delete'),
     click: deleteActiveNode,
   },
 ])
@@ -231,13 +232,13 @@ const setCurMaterial = () => {
                 @click="() => (disabledUnlinkDropdown ? handleUnlink(false) : null)"
               >
                 <Icon :name="activeNode.propLink ? 'link-broken' : 'link'" :size="14"></Icon>
-                Unlink with<span class="link-text" @click.stop="handleFocusLinkNode">{{
+                {{ $t('unlink') }}<span class="link-text" @click.stop="handleFocusLinkNode">{{
                   activeNode.propLink
                 }}</span>
               </div>
               <template #content>
-                <div class="select-option" @click="() => handleUnlink(false)">Self-Unlink</div>
-                <div class="select-option" @click="() => handleUnlink(true)">Includes Children</div>
+                <div class="select-option" @click="() => handleUnlink(false)">{{ $t('unlinkSelf') }}</div>
+                <div class="select-option" @click="() => handleUnlink(true)">{{ $t('unlinkAll') }}</div>
               </template>
             </Dropdown>
           </div>
@@ -258,7 +259,7 @@ const setCurMaterial = () => {
       </div>
       <div class="layers" v-else>
         <div class="header">
-          <div class="title">Layers</div>
+          <div class="title">{{ $t('layers') }}</div>
           <Icon
             v-if="activeNode"
             class="op-icon separate-icon"
@@ -276,7 +277,7 @@ const setCurMaterial = () => {
     <SaveMaterialModal
       v-if="curMaterial"
       auto-create-cover
-      :action-text="'保存为'"
+      :action-text="$t('saveOf')"
       :material="curMaterial"
       v-model="showSaveMaterialModal"
     ></SaveMaterialModal>

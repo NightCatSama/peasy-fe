@@ -37,25 +37,25 @@ const handleClientChange = (client: IPageSetting['client']) => {
       label="Support Device"
       container=".sidebar-dropdown"
       wrapper-class="select-item"
-      :options="{ desktop: 'Desktop', mobile: 'Mobile', both: 'Desktop & Mobile' }"
+      :options="{ desktop: $t('desktop'), mobile: $t('mobile'), both: $t('bothClient') }"
       :model-value="setting.client"
       @update:model-value="handleClientChange"
     ></SelectItem>
     <InputItem
       label="Title"
-      placeholder="网站标题"
+      :placeholder="$t('pageTitle')"
       wrapper-class="title-item"
       v-model="setting.title"
     ></InputItem>
     <InputItem
       label="Desc"
-      placeholder="网站简短描述，用于搜索引擎优化"
+      :placeholder="$t('pageDescription')"
       wrapper-class="title-item"
       v-model="setting.description"
     ></InputItem>
     <ImageItem
-      label="Favicon"
-      wrapper-class="favicon-item"
+      :label="$t('pageFavicon')"
+      wrapper-class="image-item"
       accept="image/x-icon,image/png"
       v-model="setting.favicon"
     >

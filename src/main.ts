@@ -11,6 +11,7 @@ import 'floating-vue/dist/style.css'
 import 'vue-toastification/dist/index.css'
 import { router } from './router'
 import { pinia } from './stores'
+import { $t } from './constants/i18n'
 
 const config: LogtoConfig = {
   endpoint: import.meta.env.VITE_LOGTO_HOST,
@@ -46,5 +47,7 @@ app.component('Text', Text)
 app.component('Block', Block)
 app.component('Image', Image)
 app.component('Icon', Icon)
+
+app.config.globalProperties.$t = $t
 
 app.mount('#app')

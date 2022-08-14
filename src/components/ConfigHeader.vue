@@ -20,6 +20,7 @@ import { useUserStore } from '@/stores/user'
 import Switch from './widgets/Switch.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Modal } from './modal'
+import { $t } from '@/constants/i18n'
 
 const userStore = useUserStore()
 const { userName, avatar } = storeToRefs(userStore)
@@ -46,7 +47,7 @@ const { saveHistory, undoHistory, redoHistory } = historyStore
 const { signIn, signOut, isAuthenticated } = useLogto()
 const handleSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
 const handleSignOut = async () => {
-  if (await Modal.confirm('退出登录后你的数据可能会丢失', { title: '确定退出登录吗' })) {
+  if (await Modal.confirm($t('signOutTip'), { title: $t('signOutTipTitle') })) {
     signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
   }
 }
@@ -56,11 +57,11 @@ const gotoMePage = async () => {
   if (
     isSave.value ||
     (await Modal.confirm(
-      '你的数据仍未保存，确定跳转吗',
+      $t('routerDataTip'),
       route.name === 'create'
         ? {}
         : {
-            extraLink: '保存',
+            extraLink: $t('save'),
             onExtraLinkClick: () => emitter.emit('saveProject'),
           }
     ))
@@ -75,7 +76,7 @@ const name = $ref('index')
 let showColorVarDropdown = $ref(false)
 
 const text = $computed(
-  () => `${device.value.width || 'width'} x ${device.value.height || 'height'}`
+  () => `${device.value.width || $t('headerWidth')} x ${device.value.height || $t('headerHeight')}`
 )
 
 const zoomText = $computed(() => `${Math.round(device.value.zoom * 100)}%`)
@@ -100,15 +101,15 @@ const handleDeviceChange = () => {
 
 const modeMap = {
   edit: {
-    title: 'Edit',
+    title: $t('editMode'),
     icon: 'edit',
   },
   drag: {
-    title: 'Drag',
+    title: $t('dragMode'),
     icon: 'drag',
   },
   preview: {
-    title: 'Preview',
+    title: $t('previewMode'),
     icon: 'preview',
   },
 }
@@ -164,6 +165,7 @@ emitter.on('saveColorVars', (color: string) => {
         class="project-setting-btn"
         type="text"
         color="default"
+        v-tooltip="$t('projectSetting')"
         @click="$emit('project-setting')"
       >
         <Icon name="project-setting" :size="16"></Icon>
@@ -194,7 +196,7 @@ emitter.on('saveColorVars', (color: string) => {
           <div class="device-wrapper">
             <div class="title">
               <span>
-                Simulator
+                {{ $t('simulator') }}
                 <span class="title-extra" v-if="hoverIndex > -1">
                   {{ deviceList[hoverIndex][0] + ' × ' + deviceList[hoverIndex][1] }}
                 </span>
@@ -207,7 +209,7 @@ emitter.on('saveColorVars', (color: string) => {
                 class="switch-device-btn"
                 @click="handleDeviceChange"
               >
-                {{ deviceType === 'desktop' ? 'Mobile' : 'Desktop' }}
+                {{ deviceType === 'desktop' ? $t('mobile') : $t('desktop') }}
               </Btn>
             </div>
             <div class="device-list">
@@ -232,7 +234,7 @@ emitter.on('saveColorVars', (color: string) => {
             </div>
             <div class="title">
               <span
-                >Zoom <span class="title-extra">{{ zoomText }}</span></span
+                >{{ $t('zoom') }} <span class="title-extra">{{ zoomText }}</span></span
               >
             </div>
             <Slider
@@ -245,7 +247,7 @@ emitter.on('saveColorVars', (color: string) => {
             ></Slider>
             <div class="title media-title">
               <span>
-                Media Font Size
+                {{ $t('mediaFontSize') }}
                 <span class="title-extra">{{ curFootSize }}px</span>
               </span>
               <Switch
@@ -286,7 +288,7 @@ emitter.on('saveColorVars', (color: string) => {
         name="redo"
         :size="16"
         type="btn"
-        v-tooltip="'撤销'"
+        v-tooltip="$t('redo')"
         @click="() => updateAllPageNode(undoHistory())"
       ></Icon>
       <Icon
@@ -294,7 +296,7 @@ emitter.on('saveColorVars', (color: string) => {
         name="redo"
         :size="16"
         type="btn"
-        v-tooltip="'重做'"
+        v-tooltip="$t('redo')"
         @click="() => updateAllPageNode(redoHistory())"
       ></Icon>
       <Btn
@@ -304,6 +306,7 @@ emitter.on('saveColorVars', (color: string) => {
         icon="save"
         type="icon"
         color="second"
+        v-tooltip="$t('save')"
       ></Btn>
       <Btn
         class="download-btn"
@@ -326,7 +329,7 @@ emitter.on('saveColorVars', (color: string) => {
                   }
                 "
               >
-                Profile
+                {{ $t('profile') }}
               </div>
               <div
                 class="item danger"
@@ -337,11 +340,11 @@ emitter.on('saveColorVars', (color: string) => {
                   }
                 "
               >
-                Sign Out
+                {{ $t('signOut') }}
               </div>
             </template>
             <template v-else>
-              <div class="item primary" @click="handleSignIn">Sign In</div>
+              <div class="item primary" @click="handleSignIn">{{ $t('signIn') }}</div>
             </template>
           </div>
         </template>

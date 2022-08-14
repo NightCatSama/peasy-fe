@@ -84,6 +84,7 @@ const dragEvents = $computed(() => ({
       <div
         :class="['section-item', { active: item === activeSection }]"
         :key="item.name"
+        v-tooltip="{ content: item.name, placement: 'right', distance: 10 }"
         @click="handleSectionItemClick(item)"
       >
         {{ index + 1 }}

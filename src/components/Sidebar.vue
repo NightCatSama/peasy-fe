@@ -24,7 +24,9 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
     </div>
     <div class="operator-panel">
       <div class="top">
-        <div class="operator-item add-item">
+        <div
+          class="operator-item add-item"
+        >
           <Icon
             :size="26"
             name="add"
@@ -35,7 +37,11 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
         <SectionList />
       </div>
       <div class="bottom">
-        <div class="operator-item" @click="$emit('update:keyboard', !keyboard)">
+        <div
+          class="operator-item"
+          v-tooltip="{ content: $t('shortcut'), placement: 'right', distance: 10 }"
+          @click="$emit('update:keyboard', !keyboard)"
+        >
           <Icon :size="26" name="keyboard" :active="keyboard" />
         </div>
         <Dropdown
@@ -44,6 +50,7 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
           :skidding="40"
           :distance="16"
           type="pure"
+          v-tooltip="{ content: $t('fontSetting'), placement: 'right', distance: 10 }"
         >
           <template #default="{ shown }">
             <div class="operator-item">
@@ -60,6 +67,7 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
           :skidding="10"
           :distance="16"
           type="pure"
+          v-tooltip="{ content: $t('pageGlobalSetting'), placement: 'right', distance: 10 }"
         >
           <template #default="{ shown }">
             <div class="operator-item last">

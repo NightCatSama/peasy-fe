@@ -8,6 +8,7 @@ import { usePageStore } from '@/stores/page'
 import SliderItem from './items/SliderItem.vue'
 import ColorItem from './items/ColorItem.vue'
 import Tip from '../widgets/Tip.vue'
+import { $t } from '@/constants/i18n'
 
 interface IBasicGroupProps {
   node: PageNode
@@ -37,7 +38,7 @@ const configs: ShowItem[] = $computed(() => {
           label: 'Text',
           type: 'textarea',
           modelValue: basic.text,
-          placeholder: 'Text nodes will be automatically removed when empty.',
+          placeholder: $t('textEmptyTip'),
           realTime: true,
           onBlur: () => {
             if (!basic.text) {
@@ -57,7 +58,7 @@ const configs: ShowItem[] = $computed(() => {
       {
         component: ImageItem,
         props: {
-          label: 'Image Src',
+          label: $t('imgSrc'),
           modelValue: basic.src,
         },
         setValue: (val: string) => {
@@ -68,14 +69,14 @@ const configs: ShowItem[] = $computed(() => {
         hide: !basic.src,
         component: SelectItem,
         props: {
-          label: 'Object Fit',
+          label: $t('objectFit'),
           modelValue: basic.objectFit,
           options: {
-            contain: 'Contain',
-            cover: 'Cover',
-            fill: 'Fill',
-            none: 'None',
-            scaleDown: 'Scale Down',
+            contain: $t('objectFitContain'),
+            cover: $t('objectFitCover'),
+            fill: $t('objectFitFill'),
+            none: $t('objectFitNone'),
+            scaleDown: $t('objectFitScaleDown'),
           },
         },
         setValue: (val: IImageBasicType['objectFit']) => {
@@ -92,15 +93,14 @@ const configs: ShowItem[] = $computed(() => {
         component: Tip,
         props: {
           type: 'warning',
-          message:
-            '默认使用第三方 CDN 加载图标，不保证稳定性。图标使用的是 FontAwesome，更多图标查阅：<a href="https://fontawesome.com/v4/icons/" target="_blank">https://fontawesome.com/v4/icons/</a>',
+          message: $t('iconTip'),
           style: { marginBottom: '12px' },
         },
       },
       {
         component: InputItem,
         props: {
-          label: 'Name',
+          label: $t('iconName'),
           type: 'text',
           modelValue: basic.name,
           placeholder: 'Font Awesome name',
@@ -112,7 +112,7 @@ const configs: ShowItem[] = $computed(() => {
       {
         component: InputItem,
         props: {
-          label: 'Size',
+          label: $t('iconSize'),
           type: 'number',
           modelValue: basic.size,
           suffix: ['px', 'rem', 'vw'],
@@ -124,7 +124,7 @@ const configs: ShowItem[] = $computed(() => {
       {
         component: ColorItem,
         props: {
-          label: 'Color',
+          label: $t('iconColor'),
           modelValue: basic.color,
         },
         setValue: (val: string) => {
@@ -135,7 +135,7 @@ const configs: ShowItem[] = $computed(() => {
         isAdvanced: true,
         component: InputItem,
         props: {
-          label: 'Prefix Class',
+          label: $t('prefixClass'),
           type: 'text',
           modelValue: basic.prefixClass,
         },
@@ -147,7 +147,7 @@ const configs: ShowItem[] = $computed(() => {
         isAdvanced: true,
         component: InputItem,
         props: {
-          label: 'Extra Class',
+          label: $t('extraClass'),
           type: 'text',
           modelValue: basic.extraClass,
           placeholder: "like 'fa-spin'",
@@ -160,7 +160,7 @@ const configs: ShowItem[] = $computed(() => {
         isAdvanced: true,
         component: InputItem,
         props: {
-          label: 'CSS Link',
+          label: $t('cssLink'),
           type: 'text',
           modelValue: basic.styleLink,
         },

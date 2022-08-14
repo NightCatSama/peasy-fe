@@ -92,7 +92,7 @@ watch(
           class="tree-node-info-op-icon separate-icon"
           name="separate"
           :size="10"
-          v-tooltip="'Ungroup'"
+          v-tooltip="$t('ungroup')"
           @click="
             () => {
               separateActiveNode()
@@ -105,6 +105,7 @@ watch(
           class="tree-node-info-op-icon eye-slash-icon"
           name="eye-slash"
           :size="13"
+          v-tooltip="$t('hidden')"
           @click="setActiveNodeHide(true)"
         ></Icon>
         <Icon
@@ -112,20 +113,21 @@ watch(
           class="tree-node-info-op-icon eye-icon"
           name="eye"
           :size="13"
+          v-tooltip="$t('visible')"
           @click="setActiveNodeHide(false)"
         ></Icon>
         <Icon
           class="tree-node-info-op-icon copy-icon"
           name="copy"
           :size="10"
-          v-tooltip="'Copy'"
+          v-tooltip="$t('copy')"
           @click.stop="copyActiveNode"
         ></Icon>
         <Icon
           class="tree-node-info-op-icon delete-icon"
           name="delete"
           :size="10"
-          v-tooltip="'Delete'"
+          v-tooltip="$t('delete')"
           @click.stop="deleteActiveNode"
         ></Icon>
       </template>

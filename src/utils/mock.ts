@@ -140,92 +140,17 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                     },
                   ],
                 },
-                // {
-                //   /** 配置名称 */
-                //   title: 'Icon',
-                //   /** 图标 */
-                //   icon: 'check',
-                //   defaultCollapsed: true,
-                //   /** 分组数据 */
-                //   data: [
-                //     {
-                //       type: ModuleConfigType.FontSize,
-                //       label: '图标大小',
-                //       props: {},
-                //       getValue: (node: PageNode) => {
-                //         return node?.children?.[0]?.props?.basic?.size
-                //       },
-                //       setValue: (value: string, node: PageNode) => {
-                //         if (node?.children?.[0]?.props?.basic?.size !== void 0) {
-                //           node.children[0].props.basic.size = value
-                //         }
-                //       },
-                //     },
-                //     {
-                //       type: ModuleConfigType.Color,
-                //       label: '图标颜色',
-                //       props: {},
-                //       getValue: (node: PageNode) => {
-                //         return node?.children?.[0]?.props?.basic?.color
-                //       },
-                //       setValue: (value: string, node: PageNode) => {
-                //         if (node?.children?.[0]?.props?.basic?.color !== void 0) {
-                //           node.children[0].props.basic.color = value
-                //         }
-                //       },
-                //     },
-                //   ],
-                // },
-                // {
-                //   /** 配置名称 */
-                //   title: 'Image',
-                //   /** 图标 */
-                //   icon: 'background',
-                //   /** 是否折叠 */
-                //   defaultCollapsed: true,
-                //   /** 分组数据 */
-                //   data: [
-                //     {
-                //       type: ModuleConfigType.Tip,
-                //       label: '',
-                //       props: {
-                //         type: 'warning',
-                //         message: '可以直接输入图片地址，或点击 Upload 上传图片。',
-                //       },
-                //     },
-                //     {
-                //       type: ModuleConfigType.Image,
-                //       label: '图片',
-                //       props: {},
-                //       getValue: (node: PageNode) => {
-                //         return node?.children?.[2]?.props?.basic?.src
-                //       },
-                //       setValue: (value: string, node: PageNode) => {
-                //         if (node?.children?.[2]?.props?.basic?.src !== void 0) {
-                //           node.children[2].props.basic.src = value
-                //         }
-                //       },
-                //     },
-                //   ],
-                // },
               ],
               config: {
                 props: {
                   common: getDefaultCommon(),
-                  size: getDefaultSize('component', { width: '80%', height: 'auto' }),
+                  size: getDefaultSize(),
                   layout: getDefaultLayout(),
                   spacing: getDefaultSpacing(),
                   border: getDefaultBorder(),
                   container: getDefaultContainer(),
-                  background: getDefaultBackground({
-                    backgroundType: 'image',
-                    backgroundImage: 'https://avatars.githubusercontent.com/u/13888962?v=4',
-                  }),
-                  position: getDefaultPosition({
-                    // position: 'absolute',
-                    // left: 'auto',
-                    // top: 'auto'
-                  }),
+                  background: getDefaultBackground(),
+                  position: getDefaultPosition(),
                   event: getDefaultEvent(),
                   effect: getDefaultEffect(),
                   animation: getDefaultAnimation(),
@@ -247,8 +172,8 @@ export const getMockText = (): PageNode<'Text'> => {
       props: {
         common: getDefaultCommon(),
         basic: getDefaultBasic('Text'),
-        font: getDefaultFont({ fontSize: '3rem', color: '$primary' }),
-        spacing: getDefaultSpacing({ margin: [50, 50, 50, 50] }),
+        font: getDefaultFont({ fontSize: '2rem', color: '$primary' }),
+        spacing: getDefaultSpacing(),
         border: getDefaultBorder(),
         background: getDefaultBackground(),
         container: getDefaultContainer(),
@@ -272,8 +197,8 @@ export const getMockImage = (src?: string): PageNode<'Image'> => {
         common: getDefaultCommon(),
         basic: getDefaultBasic('Image'),
         size: getDefaultSize('component', {
-          minHeight: '100px',
-          minWidth: '100px',
+          minHeight: '50px',
+          minWidth: '50px',
         }),
         spacing: getDefaultSpacing(),
         border: getDefaultBorder(),
@@ -296,7 +221,7 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
     config: {
       props: {
         common: getDefaultCommon(),
-        basic: getDefaultBasic('Icon', { name: name || 'apple', color: '$primary' }),
+        basic: getDefaultBasic('Icon', { name: 'home', color: '$primary' }),
         spacing: getDefaultSpacing(),
         border: getDefaultBorder(),
         event: getDefaultEvent(),

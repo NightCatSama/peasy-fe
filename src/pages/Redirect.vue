@@ -8,5 +8,5 @@ const { isLoading } = useHandleSignInCallback(() => {
 
 <template>
   <!-- 当登录认证尚未完成时 -->
-  <p v-if="isLoading">正在重定向...</p>
+  <p v-if="isLoading">{{ $t('redirectLoading') }}</p>
 </template>

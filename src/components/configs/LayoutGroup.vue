@@ -5,6 +5,7 @@ import { useLayoutStyle } from '@/components/libs/hooks/style'
 import SelectItem from './items/SelectItem.vue'
 import { PageNode } from '@/config'
 import TabsItem from './items/TabsItem.vue'
+import { $t } from '@/constants/i18n'
 
 interface ILayoutGroupProps {
   node: PageNode
@@ -13,19 +14,19 @@ interface ILayoutGroupProps {
 const { layout, node } = defineProps<ILayoutGroupProps>()
 
 const justifyMap: { [key in ILayout['justify']]: string } = {
-  start: 'Start',
-  center: 'Center',
-  end: 'End',
-  'space-around': 'Space Around',
-  'space-between': 'Space Between',
-  'space-evenly': 'Space Evenly',
+  start: $t('justifyStart'),
+  center: $t('justifyCenter'),
+  end: $t('justifyEnd'),
+  'space-around': $t('justifySpaceAround'),
+  'space-between': $t('justifySpaceBetween'),
+  'space-evenly': $t('justifySpaceEvenly'),
 }
 const alignMap: { [key in ILayout['align']]: string } = {
-  start: 'Start',
-  center: 'Center',
-  end: 'End',
-  stretch: 'Stretch',
-  baseline: 'Baseline',
+  start: $t('alignStart'),
+  center: $t('alignCenter'),
+  end: $t('alignEnd'),
+  stretch: $t('alignStretch'),
+  baseline: $t('alignBaseline'),
 }
 
 const previewStyle = $computed(() => useLayoutStyle(layout))
@@ -39,13 +40,13 @@ const previewStyle = $computed(() => useLayoutStyle(layout))
       <div class="align-preview-item">3</div>
     </div>
     <TabsItem
-      :label="'Direction'"
-      :data="{ row: 'Row', column: 'Column' }"
+      :label="$t('direction')"
+      :data="{ row: $t('row'), column: $t('column') }"
       v-model="layout.direction"
     >
     </TabsItem>
-    <SelectItem label="Main-Axis Align" v-model="layout.justify" :options="justifyMap"></SelectItem>
-    <SelectItem label="Cross-Axis Align" v-model="layout.align" :options="alignMap"></SelectItem>
+    <SelectItem :label="$t('mainAxisAlign')" v-model="layout.justify" :options="justifyMap"></SelectItem>
+    <SelectItem :label="$t('crossAxisAlign')" v-model="layout.align" :options="alignMap"></SelectItem>
   </Group>
 </template>
 

@@ -2,6 +2,10 @@ import { defaults, mande, MandeInstance } from 'mande'
 import { useLogto } from '@logto/vue'
 import { useUserStore } from '@/stores/user'
 
+export function setLang(lang: 'zh' | 'en') {
+  defaults.headers['x-language'] = lang
+}
+
 export function setToken(token: string) {
   defaults.headers.Authorization = 'Bearer ' + token
 }

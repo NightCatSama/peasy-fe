@@ -32,17 +32,17 @@ const handleAddColor = () => {
       class="color-var-item"
       @delete="deleteColor(index)"
     >
-      <InputItem label="Name" prefix="$" v-model="item.name"></InputItem>
+      <InputItem :label="$t('colorVariableName')" prefix="$" v-model="item.name"></InputItem>
       <ColorItem
         :model-value="item.color"
-        :label="'Color'"
+        :label="$t('colorVariableColor')"
         hide-variable
         @update:model-value="(color) => (item.color = color)"
       >
       </ColorItem>
     </GroupItem>
     <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddColor"
-      >Add Color</Btn
+      >{{ $t('addColor') }}</Btn
     >
   </div>
 </template>

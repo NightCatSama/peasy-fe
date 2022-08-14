@@ -6,6 +6,7 @@ import { emitter } from '@/utils/event'
 import { AlertError } from '@/utils/alert'
 import { watch } from 'vue'
 import { imgErrorFallback } from '@/config'
+import { $t } from '@/constants/i18n'
 
 interface IImageItemProps {
   label?: string
@@ -42,7 +43,7 @@ const uploadImage = async (e: InputEvent) => {
 }
 
 const handleCoverError = () => {
-  AlertError('图片加载失败！')
+  AlertError($t('imageLoadError'))
   coverUrl = imgErrorFallback
 }
 </script>
@@ -62,7 +63,7 @@ const handleCoverError = () => {
       <div class="upload-wrapper">
         <Icon v-if="modelValue" class="preview-btn" name="preview" type="circle" color="primary" :size="13" @click="showCover = !showCover" />
         <div class="upload-btn">
-          Upload
+          {{ $t('upload') }}
           <input type="file" class="upload-btn-input" :accept="accept" @change="uploadImage" />
         </div>
         <Icon

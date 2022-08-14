@@ -15,6 +15,7 @@ import { useUserStore } from '@/stores/user'
 import { Modal } from './modal'
 import { materialApi } from '@/utils/mande'
 import SaveMaterialModal from './modal/SaveMaterialModal.vue'
+import { $t } from '@/constants/i18n'
 
 const pageStore = usePageStore()
 const { pageData, materialData } = storeToRefs(pageStore)
@@ -53,7 +54,7 @@ const handleDragStart = (event: DragEvent, data: PageNode) => {
   const imgElem = (event.target as HTMLDivElement).querySelector('.image') as HTMLDivElement
   event.dataTransfer!.setDragImage(imgElem, 0, 0)
   if (data.type === 'component' && pageData.value.length === 0) {
-    AlertError('使用 Component 前需要先添加 Section')
+    Alert($t('noSectionTip'))
   }
   setDragNode(data)
   preDisplayMode = displayMode.value
@@ -62,9 +63,9 @@ const handleDragStart = (event: DragEvent, data: PageNode) => {
 }
 
 const handleDelete = async (item: IMaterialItem) => {
-  if (await Modal.confirm(`确认删除 ${item.name} 吗`)) {
+  if (await Modal.confirm($t('deleteConfirm', item.name))) {
     await deleteMaterial(item.id)
-    Alert('删除成功')
+    Alert($t('deleteSuccess'))
   }
 }
 
@@ -72,7 +73,7 @@ const currentNodeList = $computed(() => (materialData.value as any)[currentType]
 const currentCategory = $computed(() => {
   let map: { [category: string]: IMaterialItem[] } = {}
   currentNodeList.forEach((item: IMaterialItem) => {
-    const category = item.category || '未分组'
+    const category = item.category || $t('notGroup')
     if (!map[category]) map[category] = []
     map[category].push(item)
   })
@@ -84,7 +85,7 @@ const currentCategory = $computed(() => {
   <div class="materials-panel">
     <Tabs
       class="materials-panel-tabs"
-      :data="{ section: 'Section', component: 'Component' }"
+      :data="{ section: $t('section'), component: $t('component') }"
       v-model="currentType"
       type="float"
     ></Tabs>
@@ -126,7 +127,7 @@ const currentCategory = $computed(() => {
     </section>
     <SaveMaterialModal
       v-if="curMaterial"
-      :action-text="'编辑'"
+      :action-text="$t('edit')"
       :material="curMaterial"
       v-model="showSaveMaterialModal"
     ></SaveMaterialModal>

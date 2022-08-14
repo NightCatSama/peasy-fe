@@ -29,7 +29,7 @@ const deleteFontFace = (index: number) => {
   <div :class="['font-family-panel']">
     <SliderItem
       wrapper-class="font-size-item"
-      label="Root Font Size"
+      :label="$t('rootFontSize')"
       v-model="font.fontSize"
       :min="10"
       :max="100"
@@ -37,7 +37,7 @@ const deleteFontFace = (index: number) => {
     </SliderItem>
     <InputItem
       wrapper-class="font-family-item"
-      label="Font Family"
+      :label="$t('fontFamily')"
       type="textarea"
       v-model="font.fontFamily"
     ></InputItem>
@@ -48,14 +48,14 @@ const deleteFontFace = (index: number) => {
       @delete="deleteFontFace(index)"
     >
       <template v-if="typeof item === 'object'">
-        <InputItem label="Font Name" v-model="item.fontFamily"></InputItem>
-        <InputItem label="Url" v-model="item.url"></InputItem>
-        <InputItem label="Font Style" v-model="item.fontStyle"></InputItem>
-        <InputItem label="Font Weight" v-model="item.fontWeight"></InputItem>
+        <InputItem :label="$t('fontFaceName')" v-model="item.fontFamily"></InputItem>
+        <InputItem :label="$t('fontFaceSrc')" v-model="item.url"></InputItem>
+        <InputItem :label="$t('fontFaceStyle')" v-model="item.fontStyle"></InputItem>
+        <InputItem :label="$t('fontFaceWeight')" v-model="item.fontWeight"></InputItem>
       </template>
       <InputItem
         v-else
-        label="Link"
+        :label="$t('fontFaceLink')"
         type="textarea"
         :rows="2"
         :placeholder="'https://'"
@@ -65,7 +65,7 @@ const deleteFontFace = (index: number) => {
       ></InputItem>
     </GroupItem>
     <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddFontFace"
-      >Add FontFace</Btn
+      >{{ $t('addFontFace') }}</Btn
     >
   </div>
 </template>
@@ -82,6 +82,10 @@ const deleteFontFace = (index: number) => {
   padding: 12px 12px;
   display: flex;
   flex-direction: column;
+
+  .label {
+    font-size: 14px;
+  }
 
   .item.column > .label {
     font-size: 14px;

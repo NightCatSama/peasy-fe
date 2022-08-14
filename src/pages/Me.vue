@@ -18,6 +18,7 @@ import { Alert } from '@/utils/alert'
 import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
 import { SaveProjectDto } from '@@/dto/data.dto'
 import { usePageStore } from '@/stores/page'
+import { $t } from '@/constants/i18n'
 
 const router = useRouter()
 
@@ -45,10 +46,10 @@ let showMap = reactive<{
   [key: string]: Project[] | IMaterialItem[]
 }>({})
 let titleMap = {
-  project: 'Project',
-  template: 'Template',
-  component: 'Component',
-  section: 'Section',
+  project: $t('project'),
+  template: $t('template'),
+  component: $t('component'),
+  section: $t('section'),
 }
 
 onMounted(async () => {
@@ -84,10 +85,10 @@ const handleGotoProject = (project?: Project) => {
 }
 
 const handleDeleteProject = async (project: Project) => {
-  if (await Modal.confirm(`确认删除 ${project.name} 吗`)) {
+  if (await Modal.confirm($t('deleteConfirm', project.name))) {
     await projectApi.delete(project.id)
     showMap['project'] = projectList.filter((p) => p.id !== project.id)
-    Alert('删除成功')
+    Alert($t('deleteSuccess'))
   }
 }
 
@@ -105,7 +106,7 @@ const handleSaveProject = async (project: IProject) => {
   curEditProject.cover = project.cover
   showProjectModal = false
   curEditProject = null
-  Alert('保存成功')
+  Alert($t('saveSuccess'))
 }
 
 const handleSaveToTemplate = async (project: Project) => {
@@ -116,7 +117,7 @@ const handleSaveToTemplate = async (project: Project) => {
 /** 处理物流展示图片的点击事件 */
 const handleMaterialImageClick = async (material: IMaterialItem) => {
   if (material.type === 'template') {
-    if (await Modal.confirm('是否使用该模板创建新项目')) {
+    if (await Modal.confirm($t('createTemplateTip'))) {
       const { data } = await projectApi.patch<IResponse<Project>>('', {
         name: material.name,
         cover: material.cover,
@@ -165,12 +166,12 @@ const updateMaterial = (material: IMaterialItem) => {
 
 /** 删除物料 */
 const handleDeleteMaterial = async (material: IMaterialItem) => {
-  if (await Modal.confirm(`确认删除 ${material.name} 吗`)) {
+  if (await Modal.confirm($t('deleteConfirm', material.name))) {
     await deleteMaterial(material.id)
     showMap[material.type] = (showMap[material.type] as IMaterialItem[]).filter(
       (p) => p.id !== material.id
     )
-    Alert('删除成功')
+    Alert($t('deleteSuccess'))
   }
 }
 </script>
@@ -180,21 +181,26 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     <div class="user-info">
       <Avatar :image="avatar" :size="120" can-upload :on-upload="handleUpdateAvatar"></Avatar>
       <div v-if="!isAuthenticated">
-        <Btn class="sign-btn" type="btn" color="primary" @click="handleSignIn">登录</Btn>
+        <Btn class="sign-btn" type="btn" color="primary" @click="handleSignIn">{{ $t('signIn') }}</Btn>
       </div>
       <template v-else>
         <div class="user-name">{{ userName }}</div>
-        <Btn class="sign-btn" type="btn" color="default" @click="handleSignOut">退出登录</Btn>
+        <Btn class="sign-btn" type="btn" color="default" @click="handleSignOut">{{ $t('signOut') }}</Btn>
       </template>
     </div>
-    <div :class="['data-wrapper', `data-wrapper-${key}`]" v-for="(list, key) in showMap" :key="key">
+    <div
+      :class="['data-wrapper', `data-wrapper-${key}`]"
+      v-for="(list, key) in showMap"
+      v-show="key === 'project' || list.length > 0"
+      :key="key"
+    >
       <div class="data-title">{{ titleMap[key] }}</div>
       <div class="data-list">
         <div class="data-item" v-if="key === 'project'">
           <div class="data-image create" @click="handleGotoProject()">
             <div class="data-image-placeholder">
               <Icon name="add" :size="24" />
-              <span>New Project</span>
+              <span>{{ $t('newProject') }}</span>
             </div>
           </div>
           <div class="data-info"></div>
@@ -211,7 +217,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
           >
             <div v-if="!item.cover" class="data-image-placeholder">
               <Icon name="empty" :size="32" />
-              <span>No Cover</span>
+              <span>{{ $t('notCover') }}</span>
             </div>
           </div>
           <div class="data-info">
@@ -267,7 +273,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     ></ProjectModal>
     <SaveMaterialModal
       v-if="curMaterial"
-      :action-text="curMaterial.id ? '编辑' : '保存为'"
+      :action-text="curMaterial.id ? $t('edit') : $t('saveOf')"
       :material="curMaterial"
       v-model="showSaveMaterialModal"
       :on-save="updateMaterial"

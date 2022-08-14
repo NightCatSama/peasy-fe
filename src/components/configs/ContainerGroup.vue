@@ -21,8 +21,6 @@ const presetShadow = $computed(() => [
   '0 6px 6px rgba(10,16,20,.15), 0 0 52px rgba(10,16,20,.12)',
   '0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.2)',
 ])
-
-const curShadowIndex = $computed(() => presetShadow.indexOf(container.boxShadow))
 </script>
 
 <template>
@@ -34,39 +32,39 @@ const curShadowIndex = $computed(() => presetShadow.indexOf(container.boxShadow)
   >
     <template #default="{ showAdvanced }">
       <SliderItem
-        label="Opacity"
+        :label="$t('opacity')"
         v-model="container.opacity"
         :min="0"
         :max="1"
         :interval="0.01"
       ></SliderItem>
       <SelectItem
-        label="Overflow"
-        :options="{ visible: 'Visible', hidden: 'Hidden', scroll: 'Scroll', auto: 'Auto' }"
+        :label="$t('overflow')"
+        :options="{ visible: $t('visible'), hidden: $t('hidden'), scroll: $t('scroll'), auto: $t('auto') }"
         v-model="container.overflow"
       ></SelectItem>
       <SelectItem
-        label="Cursor"
+        :label="$t('cursor')"
         :options="{
-          auto: 'Auto',
-          default: 'Default',
-          pointer: 'Pointer',
-          move: 'Move',
-          text: 'Text',
-          wait: 'Wait',
-          help: 'Help',
-          'not-allowed': 'Not Allowed',
+          auto: $t('auto'),
+          default: $t('default'),
+          pointer: $t('pointer'),
+          move: $t('move'),
+          text: $t('text'),
+          wait: $t('wait'),
+          help: $t('help'),
+          'not-allowed': $t('notAllowed'),
         }"
         v-model="container.cursor"
       ></SelectItem>
-      <PreviewItem label="Shadow" v-model="container.boxShadow" :options="presetShadow">
+      <PreviewItem :label="$t('shadow')" v-model="container.boxShadow" :options="presetShadow">
         <template #default="{ item: shadow, active }">
           <div :class="['inner', { active }]" :style="{ boxShadow: shadow }"></div>
         </template>
       </PreviewItem>
       <InputItem
         v-if="showAdvanced"
-        label="Custom Shadow"
+        :label="$t('customShadow')"
         v-model="container.boxShadow"
       ></InputItem>
     </template>

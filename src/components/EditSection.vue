@@ -236,7 +236,7 @@ const handleLeaveTrash = (e: DragEvent) => {
         :disabled="displayMode !== 'drag' || (dragNode && dragNodeType !== 'section')"
         :class="['edit-content', { placeholder: noPageData }]"
         :component-data="{
-          'data-placeholder': '点击左侧「+」号，点击或拖拽 Section 组件添加内容',
+          'data-placeholder': $t('noDataPlaceholder'),
         }"
         :ghost-class="dragNode && dragType === 'clone' ? 'ghost-clone-section' : 'ghost-move'"
         :style="editContentStyle"
@@ -259,7 +259,7 @@ const handleLeaveTrash = (e: DragEvent) => {
     <div class="node-operation" v-if="activeNode">
       <Btn
         class="prev-btn"
-        text="Prev Node"
+        :text="$t('prevNode')"
         type="text"
         color="default"
         size="sm"
@@ -269,7 +269,7 @@ const handleLeaveTrash = (e: DragEvent) => {
       ></Btn>
       <Btn
         class="next-btn"
-        text="Next Node"
+        :text="$t('nextNode')"
         type="text"
         color="default"
         size="sm"
@@ -278,7 +278,7 @@ const handleLeaveTrash = (e: DragEvent) => {
         @click="setActiveNodeToRound(1)"
       ></Btn>
       <Btn
-        text="Parent Node"
+        :text="$t('parentNode')"
         type="text"
         color="default"
         size="sm"
@@ -288,7 +288,7 @@ const handleLeaveTrash = (e: DragEvent) => {
       ></Btn>
       <Btn
         class="children-btn"
-        text="Children Node"
+        :text="$t('childrenNode')"
         type="text"
         color="default"
         size="sm"

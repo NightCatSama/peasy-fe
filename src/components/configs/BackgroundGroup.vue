@@ -45,14 +45,6 @@ const deleteColor = (index: number) => {
   if (background.backgroundGradient.length <= 2) return
   background.backgroundGradient.splice(index, 1)
 }
-
-const uploadImage = async (e: InputEvent) => {
-  const files = (e.target as HTMLInputElement).files
-  if (files?.[0]) {
-    const url = await upload(files[0])
-    background.backgroundImage = url as string
-  }
-}
 </script>
 
 <template>
@@ -64,12 +56,12 @@ const uploadImage = async (e: InputEvent) => {
   >
     <SelectItem
       :model-value="background.backgroundType"
-      :label="'Background'"
+      :label="$t('background')"
       :options="{
-        none: 'None',
-        color: 'Color',
-        image: 'Image',
-        gradient: 'Gradient',
+        none: $t('backgroundTypeNone'),
+        color: $t('backgroundTypeColor'),
+        image: $t('backgroundTypeImage'),
+        gradient: $t('backgroundTypeGradient'),
       }"
       @update:model-value="updateBackgroundType"
     ></SelectItem>
@@ -78,24 +70,28 @@ const uploadImage = async (e: InputEvent) => {
     <ColorItem
       v-if="background.backgroundType === 'color'"
       :model-value="background.backgroundColor"
-      :label="'Background Color'"
+      :label="$t('backgroundColor')"
       @update:model-value="(color) => (background.backgroundColor = color)"
     ></ColorItem>
 
     <!-- 背景图设置 -->
     <template v-if="background.backgroundType === 'image'">
       <ImageItem
-        :label="'Image Link'"
+        :label="$t('backgroundLink')"
         :model-value="background.backgroundImage"
         @update:model-value="(image) => (background.backgroundImage = image)"
       ></ImageItem>
       <TabsItem
-        label="Background Size"
-        :data="{ cover: 'Cover', contain: 'Contain', auto: 'Auto' }"
+        :label="$t('backgroundSize')"
+        :data="{
+          cover: $t('backgroundSizeCover'),
+          contain: $t('backgroundSizeContain'),
+          auto: $t('backgroundSizeAuto'),
+        }"
         v-model="background.backgroundSize"
       ></TabsItem>
       <div class="item">
-        <div class="label">Background Position</div>
+        <div class="label">{{ $t('backgroundPosition') }}</div>
         <PositionTable
           v-model="background.backgroundPosition"
           :options="[
@@ -112,17 +108,17 @@ const uploadImage = async (e: InputEvent) => {
         ></PositionTable>
       </div>
       <SelectItem
-        label="Background Repeat"
+        :label="$t('backgroundRepeat')"
         :options="{
-          repeat: 'Repeat',
-          'repeat-x': 'Repeat-X',
-          'repeat-y': 'Repeat-Y',
-          'no-repeat': 'None',
+          repeat: $t('backgroundRepeatRepeat'),
+          'repeat-x': $t('backgroundRepeatRepeatX'),
+          'repeat-y': $t('backgroundRepeatRepeatY'),
+          'no-repeat': $t('backgroundRepeatNoRepeat'),
         }"
         v-model="background.backgroundRepeat"
       ></SelectItem>
       <SwitchItem
-        label="Fixed Background"
+        :label="$t('fixedBackground')"
         :model-value="background.backgroundAttachment === 'fixed'"
         @update:model-value="(value: boolean) => (background.backgroundAttachment = value ? 'fixed' : 'scroll')"
       ></SwitchItem>
@@ -131,7 +127,7 @@ const uploadImage = async (e: InputEvent) => {
     <!-- 背景渐变设置 -->
     <template v-if="background.backgroundType === 'gradient'">
       <SliderItem
-        label="Angle"
+        :label="$t('angle')"
         type="angle"
         v-model="background.backgroundGradientAngle"
         :min="0"
@@ -176,7 +172,7 @@ const uploadImage = async (e: InputEvent) => {
       <ColorItem
         v-for="(color, index) in background.backgroundGradient"
         :model-value="color.color"
-        :label="`Color ${index + 1}`"
+        :label="$t('colorIndex', index + 1)"
         @update:model-value="(color) => (background.backgroundGradient[index].color = color)"
       >
         <Icon
@@ -188,7 +184,7 @@ const uploadImage = async (e: InputEvent) => {
         ></Icon>
       </ColorItem>
       <div class="item">
-        <div class="full-btn add-color-btn" @click="handleAddColor">Add Color</div>
+        <div class="full-btn add-color-btn" @click="handleAddColor">{{ $t('addColor') }}</div>
       </div>
     </template>
   </Group>

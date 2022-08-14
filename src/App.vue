@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
+import { $t } from './constants/i18n';
 import { pinia } from './stores';
 import { useUserStore } from './stores/user'
 import { AlertError } from './utils/alert';
@@ -19,7 +20,7 @@ onBeforeMount(async () => {
 pinia.use(({ store }) => {
   store.$onAction(({ onError }) => {
     onError((error: any) => {
-      AlertError(error?.body?.message || error?.message || error?.msg || '未知错误')
+      AlertError(error?.body?.message || error?.message || error?.msg || $t('unknownError'))
     })
   })
 })

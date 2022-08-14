@@ -22,35 +22,35 @@ const { node, event } = defineProps<IEventGroupProps>()
   <Group group-name="event" class="event-group" :default-collapsed="false" :can-advanced="true">
     <template #default="{ showAdvanced }">
       <SelectItem
-        label="Trigger Type"
-        :options="{ tap: 'Tap', mousedown: 'Mouse Down', touchstart: 'Touch Start' }"
+        :label="$t('eventTriggerType')"
+        :options="{ tap: $t('eventTap'), mousedown: $t('eventMouseDown'), touchstart: $t('eventTouchStart') }"
         v-model="event.type"
       ></SelectItem>
-      <TabsItem :data="{ link: 'Link', func: 'Function' }" v-model="event.action"></TabsItem>
+      <TabsItem :data="{ link: $t('link'), func: $t('function') }" v-model="event.action"></TabsItem>
       <template v-if="event.action === 'link'">
         <InputItem
-          label="Link"
+          :label="$t('link')"
           type="textarea"
           :rows="2"
-          :placeholder="'Enter a link here'"
+          :placeholder="$t('linkPlaceholder')"
           :model-value="event.link || ''"
           @update:model-value="(value: string) => event.link = value"
         ></InputItem>
       </template>
       <template v-if="event.action === 'func'">
         <InputItem
-          label="Function"
+          :label="$t('function')"
           type="textarea"
-          placeholder="Can use `event` to get the event"
+          :placeholder="$t('functionPlaceholder')"
           :model-value="event.execFunction || ''"
           @update:model-value="(value: string) => event.execFunction = value"
         ></InputItem>
       </template>
       <template v-if="showAdvanced">
-        <SwitchItem label="Stop Propagation" v-model="event.stopPropagation"></SwitchItem>
+        <SwitchItem :label="$t('stopPropagation')" v-model="event.stopPropagation"></SwitchItem>
         <SwitchItem
           v-if="event.action === 'link'"
-          label="Open New Tab"
+          :label="$t('openNewTab')"
           v-model="event.openNewTab"
         ></SwitchItem>
       </template>

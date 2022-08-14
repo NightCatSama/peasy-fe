@@ -1,3 +1,4 @@
+import { $t } from '@/constants/i18n'
 import OSS from 'ali-oss'
 import { v4 as uuidv4 } from 'uuid'
 import { AlertError } from './alert'
@@ -32,7 +33,7 @@ export const uploadByBase64 = async (base64: string) => {
     return upload(blob)
   } catch (e) {
     console.error(e)
-    AlertError('图片上传失败')
+    $t('imageError')
   }
 }
 

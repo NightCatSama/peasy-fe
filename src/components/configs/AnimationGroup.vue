@@ -9,6 +9,7 @@ import Tip from '../widgets/Tip.vue'
 import Btn from '../widgets/Btn.vue'
 import CollapseItem from './items/CollapseItem.vue'
 import InputItem from './items/InputItem.vue'
+import { $t } from '@/constants/i18n'
 
 interface IAnimationGroupProps {
   node: PageNode
@@ -35,44 +36,44 @@ const animationNameList = [
   'rotate-y',
 ]
 const animationNameMap: any = {
-  fade: 'Fade',
-  'slide-up': 'Slide Up',
-  'slide-down': 'Slide Down',
-  'slide-left': 'Slide Left',
-  'slide-right': 'Slide Right',
-  'zoom-in': 'Zoom In',
-  'zoom-out': 'Zoom Out',
-  'rotate-x': 'Rotate X',
-  'rotate-y': 'Rotate Y',
+  fade: $t('fade'),
+  'slide-up': $t('slideUp'),
+  'slide-down': $t('slideDown'),
+  'slide-left': $t('slideLeft'),
+  'slide-right': $t('slideRight'),
+  'zoom-in': $t('zoomIn'),
+  'zoom-out': $t('zoomOut'),
+  'rotate-x': $t('rotateX'),
+  'rotate-y': $t('rotateY'),
 }
 
 const animationTriggerMap = {
-  hover: 'Hover',
-  click: 'Click',
-  scrollIntoView: 'Scroll Into View',
-  always: 'Always',
+  hover: $t('animationTriggerHover'),
+  click: $t('animationTriggerClick'),
+  scrollIntoView: $t('animationTriggerScrollIntoView'),
+  always: $t('animationTriggerAlways'),
 }
 
 const timingFunction = {
-  ease: 'Ease',
-  'ease-in': 'Ease In',
-  'ease-out': 'Ease Out',
-  'ease-in-out': 'Ease In Out',
-  linear: 'Linear',
+  ease: $t('ease'),
+  'ease-in': $t('easeIn'),
+  'ease-out': $t('easeOut'),
+  'ease-in-out': $t('easeInOut'),
+  linear: $t('linear'),
 }
 
 const fillModeMap = {
-  forwards: 'Forwards',
-  backwards: 'Backwards',
-  both: 'Both',
-  none: 'None',
+  forwards: $t('animationFillModeForwards'),
+  backwards: $t('animationFillModeBackwards'),
+  both: $t('animationFillModeBoth'),
+  none: $t('animationFillModeNone'),
 }
 
 const directionMap = {
-  normal: 'Normal',
-  reverse: 'Reverse',
-  alternate: 'Alternate',
-  'alternate-reverse': 'Alternate Reverse',
+  normal: $t('animationDirectionNormal'),
+  reverse: $t('animationDirectionReverse'),
+  alternate: $t('animationDirectionAlternate'),
+  'alternate-reverse': $t('animationDirectionAlternateReverse'),
 }
 
 const handleChangeAnimationName = (name: IAnimationItem['name'], index: number) => {
@@ -101,7 +102,7 @@ let showCodeInput = $ref(false)
     :default-collapsed="false"
   >
     <div class="item">
-      <Tip type="warning" message="只可在 Preview 模式下能预览动画效果" :block="true"></Tip>
+      <Tip type="warning" :message="$t('animationTip')" :block="true"></Tip>
     </div>
     <CollapseItem
       v-for="(item, index) in animation.animationList"
@@ -115,14 +116,14 @@ let showCodeInput = $ref(false)
     >
       <template #default>
         <SelectItem
-          label="Trigger Type"
+          :label="$t('eventTriggerType')"
           :options="animationTriggerMap"
           :model-value="item.trigger"
           @update:model-value="(val) => handleChangeAnimationTrigger(val, index)"
           @dblclick="showAdvancedSettings = !showAdvancedSettings"
         ></SelectItem>
         <PreviewItem
-          label="Animation"
+          :label="$t('animation')"
           :options="animationNameList"
           :model-value="item.name"
           :hide-advanced="true"
@@ -143,7 +144,7 @@ let showCodeInput = $ref(false)
         <template v-if="item.settings">
           <SliderItem
             v-if="item.settings.fade"
-            label="Opacity"
+            :label="$t('opacity')"
             :min="0"
             :max="1"
             :interval="0.01"
@@ -151,14 +152,14 @@ let showCodeInput = $ref(false)
           ></SliderItem>
           <template v-if="item.settings.slide">
             <SliderItem
-              label="Offset(%)"
+              :label="$t('animationOffset')"
               :min="0"
               :max="100"
               :interval="1"
               v-model="item.settings.slide.offset"
             ></SliderItem>
             <SliderItem
-              label="Opacity"
+              :label="$t('opacity')"
               :min="0"
               :max="1"
               :interval="0.01"
@@ -167,14 +168,14 @@ let showCodeInput = $ref(false)
           </template>
           <template v-if="item.settings.zoom">
             <SliderItem
-              label="Zoom"
+              :label="$t('zoom')"
               :min="0"
               :max="1"
               :interval="0.01"
               v-model="item.settings.zoom.zoom"
             ></SliderItem>
             <SliderItem
-              label="Opacity"
+              :label="$t('opacity')"
               :min="0"
               :max="1"
               :interval="0.01"
@@ -183,14 +184,14 @@ let showCodeInput = $ref(false)
           </template>
           <template v-if="item.settings.rotate">
             <SliderItem
-              label="Zoom"
+              :label="$t('zoom')"
               :min="0"
               :max="360"
               :interval="10"
               v-model="item.settings.rotate.angle"
             ></SliderItem>
             <SliderItem
-              label="Opacity"
+              :label="$t('opacity')"
               :min="0"
               :max="1"
               :interval="0.01"
@@ -199,14 +200,14 @@ let showCodeInput = $ref(false)
           </template>
         </template>
         <SliderItem
-          label="Duration"
+          :label="$t('duration')"
           :min="0"
           :max="5"
           :interval="0.05"
           v-model="item.duration"
         ></SliderItem>
         <SliderItem
-          label="Delay"
+          :label="$t('delay')"
           :min="0"
           :max="5"
           :interval="0.05"
@@ -214,19 +215,19 @@ let showCodeInput = $ref(false)
         ></SliderItem>
         <template v-if="showAdvancedSettings">
           <SelectItem
-            label="Timing"
+            :label="$t('timing')"
             :options="timingFunction"
             v-model="item.timingFunction"
             @dblclick="showCodeInput = !showCodeInput"
           ></SelectItem>
           <InputItem
             v-if="showCodeInput"
-            label="Timing Code"
+            :label="$t('timingCode')"
             v-model="item.timingFunction"
           ></InputItem>
-          <SelectItem label="Fill Mode" :options="fillModeMap" v-model="item.fillMode"></SelectItem>
+          <SelectItem :label="$t('fillMode')" :options="fillModeMap" v-model="item.fillMode"></SelectItem>
           <SelectItem
-            label="Direction"
+            :label="$t('direction')"
             :options="directionMap"
             v-model="item.direction"
           ></SelectItem>
@@ -234,7 +235,7 @@ let showCodeInput = $ref(false)
       </template>
     </CollapseItem>
     <div class="item">
-      <Btn type="text" :is-block="true" icon="plus" @click="handleAddAnimation">Add Animation</Btn>
+      <Btn type="text" :is-block="true" icon="plus" @click="handleAddAnimation">{{ $t('addAnimation') }}</Btn>
     </div>
   </Group>
 </template>

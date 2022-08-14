@@ -1,4 +1,5 @@
 import { GroupType } from '@/config'
+import { $t } from './i18n'
 
 export const groupIconMap = {
   layout: 'layout',
@@ -17,19 +18,19 @@ export const groupIconMap = {
 
 export const groupTitleMap: { [key in GroupType]: string } = {
   common: '',
-  layout: 'Layout',
-  size: 'Size',
-  spacing: 'Spacing',
-  border: 'Border',
-  font: 'Font',
-  background: 'Background',
-  container: 'Container',
-  basic: 'Basic',
-  position: 'Position',
-  event: 'Event',
-  animation: 'Animation',
-  effect: 'Effect',
-  custom: 'Custom',
+  layout: $t('layout'),
+  size: $t('size'),
+  spacing: $t('spacing'),
+  border: $t('border'),
+  font: $t('font'),
+  background: $t('background'),
+  container: $t('container'),
+  basic: $t('basic'),
+  position: $t('position'),
+  event: $t('event'),
+  animation: $t('animation'),
+  effect: $t('effect'),
+  custom: $t('custom'),
 }
 
 export const defaultGroupIcon = 'basic'

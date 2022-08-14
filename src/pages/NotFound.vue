@@ -13,8 +13,8 @@ const handleGotoHome = () => {
 
 <template>
   <div class="not-found-page">
-    <div class="text">Page Not Found</div>
-    <Btn @click="handleGotoHome">Back to Home</Btn>
+    <div class="text">{{ $t('pageNotFound') }}</div>
+    <Btn @click="handleGotoHome">{{ $t('backToHome') }}</Btn>
   </div>
 </template>
 

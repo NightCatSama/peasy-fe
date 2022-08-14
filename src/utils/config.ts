@@ -8,7 +8,6 @@ import {
 } from '@/config'
 import { useDisplayStore } from '@/stores/display'
 import { usePageStore } from '@/stores/page'
-import { merge } from 'lodash'
 
 /** 当前是否为移动端特化样式处理中 */
 export const useMobileConfig = () =>

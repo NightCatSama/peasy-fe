@@ -3,6 +3,7 @@ import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
 import { PageNode } from '@/config'
 import { updateDirection } from '@/utils/moveable'
+import { $t } from '@/constants/i18n';
 
 interface ISizeGroupProps {
   node: PageNode
@@ -15,7 +16,7 @@ const isSection = $computed(() => node.type === 'section')
 const list: any = $computed(() => [
   {
     hide: isSection,
-    name: 'Width',
+    name: $t('width'),
     type: 'number',
     value: size.width,
     setValue: (val: string) => {
@@ -25,7 +26,7 @@ const list: any = $computed(() => [
     suffix: ['px', '%', 'rem', 'vw', 'auto', 'stretch'],
   },
   {
-    name: 'Height',
+    name: $t('height'),
     type: 'number',
     value: size.height,
     setValue: (val: string) => {
@@ -36,7 +37,7 @@ const list: any = $computed(() => [
   },
   {
     hide: isSection,
-    name: 'Min Width',
+    name: $t('minWidth'),
     type: 'number',
     value: size.minWidth,
     setValue: (val: string) => (size.minWidth = val),
@@ -44,7 +45,7 @@ const list: any = $computed(() => [
     isAdvanced: true,
   },
   {
-    name: 'Min Height',
+    name: $t('minHeight'),
     type: 'number',
     value: size.minHeight,
     setValue: (val: string) => (size.minHeight = val),
@@ -53,7 +54,7 @@ const list: any = $computed(() => [
   },
   {
     hide: isSection,
-    name: 'Max Width',
+    name: $t('maxWidth'),
     type: 'number',
     value: size.maxWidth,
     setValue: (val: string) => (size.maxWidth = val),
@@ -61,7 +62,7 @@ const list: any = $computed(() => [
     isAdvanced: true,
   },
   {
-    name: 'Max Height',
+    name: $t('maxHeight'),
     type: 'number',
     value: size.maxHeight,
     setValue: (val: string) => (size.maxHeight = val),

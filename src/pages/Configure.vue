@@ -29,6 +29,7 @@ import {
 import { Modal } from '@/components/modal'
 import ProjectModal from '@/components/modal/ProjectModal.vue'
 import { destroyMoveable } from '@/utils/moveable'
+import { $t } from '@/constants/i18n'
 
 const route = useRoute()
 const router = useRouter()
@@ -75,7 +76,7 @@ const handleSaveProject = async (editProject?: IProject) => {
   }
   const data = await saveProjectData(id, saveProject)
   showProjectModal = false
-  Alert('保存成功')
+  Alert($t('saveSuccess'))
   if (!id) {
     router.replace({
       name: 'edit',
@@ -135,9 +136,13 @@ onMounted(async () => {
   getAssetsData()
 
   if (id) {
-    await getProjectData(id)
+    try {
+      await getProjectData(id)
+    } catch (e) {
+      router.replace({ name: 'create' })
+    }
     if (haveStoragePageState(id)) {
-      if (await Modal.confirm('你有上次编辑仍未保存的数据，是否恢复？')) {
+      if (await Modal.confirm($t('notSaveDataTip'))) {
         pageStore.$state = getStoragePageState(id, pageStore.$state)
         setIsSave(false)
       }

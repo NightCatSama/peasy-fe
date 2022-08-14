@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { GroupType } from '@/config'
-import { groupIconMap, defaultGroupIcon } from '@/constants/group'
+import { groupIconMap, defaultGroupIcon, groupTitleMap } from '@/constants/group'
 import { usePageStore } from '@/stores/page'
 import { useConfig, useConfigProps, useGroupConfig } from '@/utils/config'
 import { storeToRefs } from 'pinia'
@@ -58,6 +58,8 @@ const bindProps = $computed(() =>
 const iconName = $computed(
   () => (bindProps as any)?.icon || groupIconMap[groupType] || defaultGroupIcon
 )
+
+const showTitle = $computed(() => groupTitleMap[groupType])
 </script>
 
 <template>
@@ -80,7 +82,10 @@ const iconName = $computed(
       placement="left-start"
     >
       <template #default="{ shown }">
-        <div :class="['config-group-mini-item', { active: shown }]">
+        <div
+          :class="['config-group-mini-item', { active: shown }]"
+          v-tooltip="{ content: showTitle, placement: 'left', disabled: !showTitle }"
+        >
           <Icon :name="iconName" :size="16"></Icon>
         </div>
       </template>

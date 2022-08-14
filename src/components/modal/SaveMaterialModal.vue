@@ -15,9 +15,7 @@ import Btn from '../widgets/Btn.vue'
 import SwitchItem from '../configs/items/SwitchItem.vue'
 import Modal from './Modal.vue'
 import { createMaterialSnapshot } from '@/utils/snapshot'
-import { useAttrs, ref, watch, reactive, nextTick } from 'vue'
-import { useSourceNode } from '@/utils/config'
-import Input from '../widgets/Input.vue'
+import { watch, nextTick } from 'vue'
 import TreeNode from '../biz/TreeNode.vue'
 import JSONEditor from 'jsoneditor'
 import ImageItem from '../configs/items/ImageItem.vue'
@@ -25,6 +23,7 @@ import { Alert, AlertError } from '@/utils/alert'
 import { useUserStore } from '@/stores/user'
 import { cloneDeep } from 'lodash'
 import { uploadByBase64 } from '@/utils/oss'
+import { $t } from '@/constants/i18n'
 
 interface SaveMaterialModalProps {
   modelValue: boolean
@@ -34,7 +33,7 @@ interface SaveMaterialModalProps {
   onSave?: (material: IMaterialItem) => void
 }
 
-const { modelValue, material, autoCreateCover, actionText = 'Save', onSave } = defineProps<SaveMaterialModalProps>()
+const { modelValue, material, autoCreateCover, actionText = $t('save'), onSave } = defineProps<SaveMaterialModalProps>()
 
 const pageStore = usePageStore()
 const { fetchSaveMaterial } = pageStore
@@ -43,7 +42,7 @@ const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
 
 let editItem: IMaterialItem | null = $ref(null)
-let coverLoading = $ref(false)
+let coverLoading = $ref(!!autoCreateCover)
 
 const isTemplate = $computed<boolean>(() => material?.type === 'template')
 const node = $computed<PageNode | null>(() => (isTemplate ? null : (editItem?.node as PageNode)))
@@ -119,7 +118,7 @@ let modal = $ref<InstanceType<typeof Modal> | null>(null)
 
 const handleSave = async () => {
   if (!editItem.name) {
-    AlertError('Name is required')
+    AlertError($t('nameRequired'))
     return
   }
   const data = await fetchSaveMaterial({
@@ -133,14 +132,14 @@ const handleSave = async () => {
         } as PageNode),
   })
   onSave?.(data)
-  Alert('保存成功')
+  Alert($t('saveSuccess'))
   modal?.hide()
 }
 
 const titleMap = {
-  template: 'Template',
-  component: 'Component',
-  section: 'Section',
+  template: $t('template'),
+  component: $t('component'),
+  section: $t('section'),
 }
 </script>
 
@@ -156,15 +155,15 @@ const titleMap = {
   >
     <div class="info-wrapper" v-if="editItem">
       <div class="info">
-        <InputItem label="Name" v-model="editItem.name"></InputItem>
-        <InputItem v-if="isAdmin" label="Name(En)" v-model="editItem.enName"></InputItem>
-        <InputItem label="Category" v-if="!isTemplate" v-model="editItem.category"></InputItem>
+        <InputItem :label="$t('name')" v-model="editItem.name"></InputItem>
+        <InputItem v-if="isAdmin" :label="$t('nameEn')" v-model="editItem.enName"></InputItem>
+        <InputItem :label="$t('category')" v-if="!isTemplate" v-model="editItem.category"></InputItem>
         <InputItem
           v-if="isAdmin && !isTemplate"
-          label="Category(En)"
+          :label="$t('categoryEn')"
           v-model="editItem.categoryEn"
         ></InputItem>
-        <SwitchItem v-if="isAdmin && !isTemplate" label="Module" v-model="isModule"></SwitchItem>
+        <SwitchItem v-if="isAdmin && !isTemplate" :label="$t('moduleSwitch')" v-model="isModule"></SwitchItem>
       </div>
       <ImageItem hide-label v-model="editItem.cover" :loading="coverLoading" wrapper-class="image-item" :rows="5"></ImageItem>
     </div>
@@ -175,7 +174,7 @@ const titleMap = {
       </div>
     </div>
     <div class="btn-wrapper">
-      <Btn class="save-btn" type="inner" text="Save" @click="handleSave"></Btn>
+      <Btn class="save-btn" type="inner" :text="$t('save')" @click="handleSave"></Btn>
     </div>
   </Modal>
 </template>

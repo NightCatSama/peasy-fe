@@ -9,6 +9,7 @@ import Tabs from '../widgets/Tabs.vue'
 import Icon from '../widgets/Icon.vue'
 import TabsItem from './items/TabsItem.vue'
 import { emitter } from '@/utils/event'
+import { $t } from '@/constants/i18n'
 
 interface IFontGroupProps {
   node: PageNode
@@ -24,7 +25,7 @@ const curShowBorderIndex = $ref(-1)
 const showList: any = $computed(() => {
   return {
     borderWidth: {
-      name: 'Border Width',
+      name: $t('borderWidth'),
       type: 'number',
       value:
         curShowBorderIndex > -1 ? border.borderWidth[curShowBorderIndex] : border.borderWidth[0],
@@ -39,7 +40,7 @@ const showList: any = $computed(() => {
       suffix: ['px'],
     },
     borderColor: {
-      name: 'Border Color',
+      name: $t('borderColor'),
       type: 'color',
       value: Array.isArray(border.borderColor)
         ? curShowBorderIndex > -1
@@ -63,7 +64,7 @@ const showList: any = $computed(() => {
       },
     },
     borderStyle: {
-      name: 'Border Style',
+      name: $t('borderStyle'),
       type: 'select',
       value:
         curShowBorderIndex > -1 ? border.borderStyle[curShowBorderIndex] : border.borderStyle[0],
@@ -77,7 +78,7 @@ const showList: any = $computed(() => {
       options: ['solid', 'dashed', 'dotted', 'double'],
     },
     borderRadius: {
-      name: 'Corner Radius',
+      name: $t('cornerRadius'),
       type: 'number',
       value: isRefinedRadius ? 'refined' : border.borderRadius,
       setValue: (val: string) => {
@@ -128,7 +129,7 @@ const boxStyles = $computed(() => {
 
 <template>
   <Group group-name="border" class="border-group" :can-advanced="false" :default-collapsed="false">
-    <div class="spacing-block" data-text="Preview">
+    <div class="spacing-block" :data-text="$t('preview')">
       <div class="inner-block" :style="boxStyles">
         <Icon
           v-for="(dir, i) in ['top', 'right', 'bottom', 'left']"
@@ -143,8 +144,8 @@ const boxStyles = $computed(() => {
         >
           {{
             curShowBorderIndex === -1
-              ? 'All'
-              : ['Top', 'Right', 'Bottom', 'Left'][curShowBorderIndex]
+              ? $t('all')
+              : [$t('top'), $t('right'), $t('bottom'), $t('left')][curShowBorderIndex]
           }}
         </div>
       </div>

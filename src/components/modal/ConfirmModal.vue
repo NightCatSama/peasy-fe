@@ -8,6 +8,7 @@ export default {
 import Modal from './Modal.vue'
 import Btn from '../widgets/Btn.vue'
 import Icon from '../widgets/Icon.vue'
+import { $t } from '@/constants/i18n';
 
 interface IConfirmModal {
   title?: string
@@ -25,8 +26,8 @@ const {
   msg,
   extraLink = '',
   onExtraLinkClick,
-  okText = '确认',
-  cancelText = '取消',
+  okText = $t('ok'),
+  cancelText = $t('cancel'),
   onOk,
   onCancel,
 } = defineProps<IConfirmModal>()

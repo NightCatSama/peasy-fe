@@ -101,16 +101,16 @@ const handleSaveColorVar = () => {
                 :distance="-3"
                 :options="
                   hideVariable
-                    ? { recent: 'Recent Color' }
+                    ? { recent: $t('recentColor') }
                     : {
-                        variable: 'Variable',
-                        recent: 'Recent Color',
+                        variable: $t('colorVariable'),
+                        recent: $t('recentColor'),
                       }
                 "
                 @update:model-value="(val) => (colorType = val)"
               ></Select>
               <div v-show="showSaveBtn" class="save-btn" @click="handleSaveColorVar">
-                Save Variable
+                {{ $t('saveVariable') }}
               </div>
             </div>
             <div v-if="!hideVariable && colorType === 'variable'" class="color-wrapper">

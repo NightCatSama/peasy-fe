@@ -13,6 +13,7 @@ import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import CollapseItem from './items/CollapseItem.vue'
 import type { ISelectItem } from '../widgets/Select.vue'
+import { $t } from '@/constants/i18n'
 
 interface IEffectGroupProps {
   node: PageNode
@@ -98,20 +99,20 @@ const effectTargetMap: { [key: string]: ISelectItem } = $computed(() => {
 const actionMap: { name: keyof IEffectItem['styles']; label: string }[] = $computed(() => [
   {
     name: 'hover',
-    label: 'Hover',
+    label: $t('hover'),
   },
   {
     name: 'active',
-    label: 'Active',
+    label: $t('active'),
   },
 ])
 
 const timingFunction = {
-  ease: 'Ease',
-  'ease-in': 'Ease In',
-  'ease-out': 'Ease Out',
-  'ease-in-out': 'Ease In Out',
-  linear: 'Linear',
+  ease: $t('ease'),
+  'ease-in': $t('easeIn'),
+  'ease-out': $t('easeOut'),
+  'ease-in-out': $t('easeInOut'),
+  linear: $t('linear'),
 }
 
 let showTimingCode = $ref(false)
@@ -119,7 +120,7 @@ let showTimingCode = $ref(false)
 
 <template>
   <Group
-    title="Effect"
+    :title="$t('effect')"
     group-name="effect"
     class="effect-group"
     :can-advanced="false"
@@ -142,7 +143,7 @@ let showTimingCode = $ref(false)
       @collapse="() => (collapsedIndex = collapsedIndex === index ? -1 : index)"
     >
       <template #name>
-        <span v-if="!item.name">Choose a style</span>
+        <span v-if="!item.name">{{ $t('chooseAStyle') }}</span>
         <span v-else-if="item.target && item.target !== node.name">
           <span class="highlight">{{ item.target }}<br /></span>
           <span>{{ item.name }}</span>
@@ -152,7 +153,7 @@ let showTimingCode = $ref(false)
       <template #default>
         <SelectItem
           v-if="Object.keys(effectTargetMap).length > 1"
-          label="Target"
+          :label="$t('target')"
           :options="effectTargetMap"
           :model-value="item.target"
           @update:model-value="handleTargetChange($event, item)"
@@ -167,7 +168,7 @@ let showTimingCode = $ref(false)
           </template>
         </SelectItem>
         <SelectItem
-          label="Style"
+          :label="$t('style')"
           :options="getEffectLabel(item.target, item.targetType)"
           :model-value="item.name"
           @update:model-value="handleNameChange($event, item)"
@@ -175,7 +176,7 @@ let showTimingCode = $ref(false)
         <template v-if="item.name">
           <SliderItem
             v-if="item.target == node.name"
-            label="Duration"
+            :label="$t('duration')"
             :min="0"
             :max="5"
             :interval="0.05"
@@ -183,14 +184,14 @@ let showTimingCode = $ref(false)
           ></SliderItem>
           <SelectItem
             v-if="item.target == node.name"
-            label="Timing"
+            :label="$t('timing')"
             :options="timingFunction"
             v-model="item.timingFunction"
             @dblclick="showTimingCode = !showTimingCode"
           ></SelectItem>
-          <InputItem label="Timing Code" v-if="showTimingCode" v-model="item.timingFunction">
+          <InputItem :label="$t('timingCode')" v-if="showTimingCode" v-model="item.timingFunction">
           </InputItem>
-          <hr class="divider" data-text="Action" />
+          <hr class="divider" :data-text="$t('action')" />
           <template v-for="obj in actionMap" :key="obj.name">
             <component
               v-if="item.styles[obj.name] !== void 0"
@@ -217,7 +218,7 @@ let showTimingCode = $ref(false)
       </template>
     </CollapseItem>
     <div class="item">
-      <Btn type="text" :is-block="true" icon="plus" @click="handleAddEffect">Add Effect</Btn>
+      <Btn type="text" :is-block="true" icon="plus" @click="handleAddEffect">{{ $t('addEffect') }}</Btn>
     </div>
   </Group>
 </template>

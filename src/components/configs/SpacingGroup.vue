@@ -52,9 +52,9 @@ const allPadding = $computed({
     :can-advanced="false"
     :default-collapsed="false"
   >
-    <div class="spacing-block" data-text="Margin">
+    <div class="spacing-block" :data-text="$t('margin')">
       <div class="margin-sign"></div>
-      <div class="inner-block" data-text="Padding">
+      <div class="inner-block" :data-text="$t('padding')">
         <div class="padding-sign"></div>
         <input
           v-for="(val, i) in spacing.padding"

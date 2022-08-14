@@ -12,6 +12,7 @@ import { createMaterialSnapshot } from '@/utils/snapshot'
 import ImageItem from '../configs/items/ImageItem.vue'
 import { Alert, AlertError, AlertLoading } from '@/utils/alert'
 import { reactive, useAttrs, watch } from 'vue'
+import { $t } from '@/constants/i18n'
 
 interface IProjectModalProps {
   project: IProject
@@ -41,7 +42,7 @@ watch(
 
 const handleSave = () => {
   if (!editProject.name) {
-    AlertError('Project Name not empty')
+    AlertError($t('projectNameRequired'))
     return
   }
   emit('save', editProject)
@@ -63,25 +64,27 @@ const handleCreateCover = async () => {
   <Modal
     ref="modal"
     class="project-modal"
-    :title="`Save Project`"
+    :title="$t('projectSetting')"
     :width="'360px'"
     close-on-click-mask
     v-bind="$attrs"
   >
     <div class="info-wrapper">
-      <InputItem label="Name" v-model="editProject.name"></InputItem>
-      <ImageItem label="Cover" :loading="coverLoading" v-model="editProject.cover" :rows="5"> </ImageItem>
+      <InputItem :label="$t('name')" v-model="editProject.name"></InputItem>
+      <ImageItem :label="$t('cover')" :loading="coverLoading" v-model="editProject.cover" :rows="5"> </ImageItem>
     </div>
     <div class="btn-wrapper">
-      <Btn
-        v-if="!hideCreateCover"
-        class="create-cover-btn"
-        type="text"
-        size="sm"
-        @click="handleCreateCover"
-        >Auto Create Cover</Btn
-      >
-      <Btn class="save-btn" type="inner" text="Save" @click="handleSave"></Btn>
+      <div class="btn-wrapper-left">
+        <Btn
+          v-if="!hideCreateCover"
+          class="create-cover-btn"
+          type="text"
+          size="sm"
+          @click="handleCreateCover"
+          >Auto Create Cover</Btn
+        >
+      </div>
+      <Btn class="save-btn" type="inner" :text="$t('save')" @click="handleSave"></Btn>
     </div>
   </Modal>
 </template>
@@ -102,6 +105,7 @@ const handleCreateCover = async () => {
     }
     .label {
       flex: none;
+      width: 60px;
       margin-right: 12px;
       font-size: 14px;
     }
@@ -151,8 +155,14 @@ const handleCreateCover = async () => {
     display: flex;
     justify-content: flex-end;
 
-    .create-cover-btn {
+    &-left {
       flex: 1;
+      display: flex;
+    }
+
+    .create-cover-btn {
+      margin-left: -4px;
+      flex: none;
     }
 
     .save-btn {

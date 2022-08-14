@@ -12,6 +12,7 @@ import Tip from '../widgets/Tip.vue'
 import Icon from '../widgets/Icon.vue'
 import { useDisplayStore } from '@/stores/display'
 import { useConfigProps } from '@/utils/config'
+import { $t } from '@/constants/i18n'
 
 interface IPositionGroupProps {
   node: PageNode
@@ -26,9 +27,9 @@ const { setLockDragSetPosition } = displayStore
 const { lockDragSetPosition } = storeToRefs(displayStore)
 
 const positionMap: { [key in IPosition['position']]?: string } = {
-  static: 'Static',
-  absolute: 'Absolute',
-  fixed: 'Fixed',
+  static: $t('static'),
+  absolute: $t('absolute'),
+  fixed: $t('fixed'),
 }
 
 const positionValue = $computed(() => {
@@ -81,7 +82,7 @@ const handleLockChange = () => {
 <template>
   <Group group-name="position" class="position-group" :default-collapsed="false">
     <TabsItem
-      :label="'Direction'"
+      :label="$t('direction')"
       :data="positionMap"
       :model-value="position.position"
       @update:model-value="handlePositionChange"
@@ -90,7 +91,7 @@ const handleLockChange = () => {
     <Tip
       v-if="position.position === 'fixed'"
       type="warning"
-      message="使用 Fixed 时请确保你的元素置于最顶层容器中"
+      :message="$t('fixedTip')"
     ></Tip>
     <div class="item position-item" v-if="position.position !== 'static'">
       <PositionTable
@@ -117,9 +118,9 @@ const handleLockChange = () => {
         "
       ></PositionTable>
       <div class="input-wrap">
-        <div v-if="values.center" class="position-center">Always Center</div>
+        <div v-if="values.center" class="position-center">{{ $t('alwaysCenter') }}</div>
         <div class="position-input" v-if="values.left">
-          <span class="position-input-label">Left</span>
+          <span class="position-input-label">{{ $t('left') }}</span>
           <Input
             type="number"
             :suffix="['px', '%']"
@@ -128,7 +129,7 @@ const handleLockChange = () => {
           ></Input>
         </div>
         <div class="position-input" v-if="values.right">
-          <span class="position-input-label">Right</span>
+          <span class="position-input-label">{{ $t('right') }}</span>
           <Input
             type="number"
             :suffix="['px', '%']"
@@ -137,7 +138,7 @@ const handleLockChange = () => {
           ></Input>
         </div>
         <div class="position-input" v-if="values.top">
-          <span class="position-input-label">Top</span>
+          <span class="position-input-label">{{ $t('top') }}</span>
           <Input
             type="number"
             :suffix="['px', '%']"
@@ -146,7 +147,7 @@ const handleLockChange = () => {
           ></Input>
         </div>
         <div class="position-input" v-if="values.bottom">
-          <span class="position-input-label">Bottom</span>
+          <span class="position-input-label">{{ $t('bottom') }}</span>
           <Input
             type="number"
             :suffix="['px', '%']"
@@ -162,7 +163,7 @@ const handleLockChange = () => {
         @click="handleLockChange"
       ></Icon>
     </div>
-    <SliderItem label="Z Index" v-model="position.zIndex" :min="0" :max="999"></SliderItem>
+    <SliderItem :label="$t('zIndex')" v-model="position.zIndex" :min="0" :max="999"></SliderItem>
   </Group>
 </template>
 

@@ -1,9 +1,7 @@
 <script setup lang="ts">
 import { watch } from 'vue';
-import LibComponent from '../LibComponent.vue'
 import Icon from './Icon.vue'
 import { imgErrorFallback } from '@/config'
-import { AlertError } from '@/utils/alert';
 
 interface IElementProps {
   cover?: string
@@ -51,7 +49,7 @@ const handleCoverError = () => {
       >
       <div v-else class="image-placeholder">
         <Icon name="empty" :size="24" />
-        <span>No Cover</span>
+        <span>{{ $t('notCover') }}</span>
       </div>
     </div>
   </div>

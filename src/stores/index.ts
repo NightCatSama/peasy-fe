@@ -1,4 +1,5 @@
 import { createPinia } from 'pinia'
+import { useRoute } from 'vue-router'
 
 const pinia = createPinia()
 
@@ -25,9 +26,11 @@ export const saveStoragePageState = (id: string) => {
 /** 使用未保存的历史状态 */
 export const getStoragePageState = <T extends any>(id: string, state: T): T => {
   let initState = null as any
+  const route = useRoute()
+  const paramId = route?.params?.id || id
   try {
     const stateId = sessionStorage.getItem('__page_store_state_id__') || ''
-    if (stateId === id && sessionStorage.getItem('__page_store_state__')) {
+    if (stateId === paramId && sessionStorage.getItem('__page_store_state__')) {
       initState = JSON.parse(sessionStorage.getItem('__page_store_state__')!)
     }
     if (initState) return Object.assign(state, initState)

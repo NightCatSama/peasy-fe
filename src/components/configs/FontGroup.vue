@@ -7,17 +7,17 @@ import { usePageStore } from '@/stores/page'
 import { PageNode } from '@/config'
 import TabsItem from './items/TabsItem.vue'
 import PreviewItem from './items/PreviewItem.vue'
+import { $t } from '@/constants/i18n'
 
 interface IFontGroupProps {
   node: PageNode
   font: IFont
 }
-const { font, node } = defineProps<IFontGroupProps>()
-const { deleteActiveNode } = usePageStore()
+const { font } = defineProps<IFontGroupProps>()
 
 const fontSetting: any = $computed(() => ({
   fontSize: {
-    name: 'Font Size',
+    name: $t('fontSize'),
     type: 'number',
     value: font.fontSize,
     setValue: (val: string) => {
@@ -26,7 +26,7 @@ const fontSetting: any = $computed(() => ({
     suffix: ['px', 'rem', 'vw'],
   },
   lineHeight: {
-    name: 'Line Height',
+    name: $t('lineHeight'),
     type: 'number',
     value: font.lineHeight,
     setValue: (val: string) => (font.lineHeight = val),
@@ -127,16 +127,16 @@ const textShadowPreset = [
           :icon-map="Object.fromEntries(fontTabs.map((item) => [item.key, item.icon]))"
         ></TabsItem>
         <SelectItem
-          label="Font Weight"
+          :label="$t('fontWeight')"
           v-model="font.fontWeight"
           :options="fontWeightMap"
         ></SelectItem>
-        <PreviewItem label="Text Shadow" :options="textShadowPreset" v-model="font.textShadow">
+        <PreviewItem :label="$t('textShadow')" :options="textShadowPreset" v-model="font.textShadow">
           <template #default="{ item: shadow, active }">
             <div :class="['inner', { active }]" :style="{ textShadow: shadow }">T</div>
           </template>
         </PreviewItem>
-        <InputItem label="Font Family" placeholder="inherit" v-model="font.fontFamily" />
+        <InputItem :label="$t('fontFamily')" placeholder="inherit" v-model="font.fontFamily" />
       </template>
     </template>
   </Group>
