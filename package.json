@@ -5,7 +5,7 @@
   "author": "NightCat<nightcat@hzfe.org>",
   "scripts": {
     "start": "npm run dev",
-    "dev": "vite",
+    "dev": "vite --host",
     "build": "vue-tsc --noEmit && vite build",
     "dev:template": "vue-tsc --noEmit && VITE_IS_TEMPLATE=true vite --config vite.template.config.ts",
     "build:template": "rm -rf template-dist/ && vue-tsc --noEmit && VITE_IS_TEMPLATE=true vite build --config vite.template.config.ts && npm run template",

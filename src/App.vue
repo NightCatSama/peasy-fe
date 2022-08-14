@@ -1,6 +1,8 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
+import { pinia } from './stores';
 import { useUserStore } from './stores/user'
+import { AlertError } from './utils/alert';
 import { logtoMeApi, persistToken } from './utils/mande'
 
 let isReady = $ref(false)
@@ -12,6 +14,14 @@ onBeforeMount(async () => {
 
   // 再获取用户信息
   useUserStore().fetchUserInfo()
+})
+
+pinia.use(({ store }) => {
+  store.$onAction(({ onError }) => {
+    onError((error: any) => {
+      AlertError(error?.body?.message || error?.message || error?.msg || '未知错误')
+    })
+  })
 })
 </script>
 

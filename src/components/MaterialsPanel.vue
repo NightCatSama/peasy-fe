@@ -28,7 +28,7 @@ const { displayMode } = storeToRefs(displayStore)
 const { setDisplayMode } = displayStore
 
 const userStore = useUserStore()
-const { isAdmin } = storeToRefs(userStore)
+const { isAdmin, uid } = storeToRefs(userStore)
 
 let preDisplayMode = $ref<DisplayMode>('edit')
 
@@ -112,7 +112,7 @@ const currentCategory = $computed(() => {
             <Element
               :cover="item.cover"
               :name="item.name"
-              :can-operate="isAdmin || !!item.uid"
+              :can-operate="isAdmin || item.uid === uid"
               @click="handleAddSection(item.node)"
               @delete="handleDelete(item)"
               @edit="() => {
@@ -148,7 +148,7 @@ const currentCategory = $computed(() => {
   }
 
   .title {
-    margin-top: 12px;
+    margin-top: 20px;
     font-size: 20px;
     font-weight: bold;
     padding: 0px 8px;
@@ -162,7 +162,7 @@ const currentCategory = $computed(() => {
   }
 
   .element-item {
-    margin-bottom: 10px;
+    margin-bottom: 8px;
     width: 50%;
     height: 120px;
     padding: 8px;

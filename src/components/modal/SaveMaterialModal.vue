@@ -92,7 +92,6 @@ const initJSONEditor = () => {
 watch(
   () => [material, modelValue],
   async () => {
-    console.log(modelValue)
     if (material && modelValue) {
       editItem = cloneDeep(material)
       nextTick(() => initJSONEditor())

@@ -35,11 +35,6 @@ const displayStore = useDisplayStore()
 const { minimize, deviceType } = storeToRefs(displayStore)
 const { setMinimize } = displayStore
 
-useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
-  e.preventDefault()
-  setMinimize(!minimize.value)
-})
-
 let showLayer = $ref(false)
 let showSaveMaterialModal = $ref(false)
 let curMaterial = $ref<IMaterialItem | null>(null)
@@ -129,10 +124,22 @@ const iconList: {
   },
 ])
 
-useKeyPress(ShortcutKey.save, (e: KeyboardEvent) => {
+/** 保存为物料 */
+useKeyPress(ShortcutKey.saveMaterial, (e: KeyboardEvent) => {
   if (!activeNode.value) return
   setCurMaterial()
   showSaveMaterialModal = true
+})
+
+/** 缩小配置栏 */
+useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
+  e.preventDefault()
+  setMinimize(!minimize.value)
+})
+
+useKeyPress(ShortcutKey.copyComponent, (e) => {
+  e.preventDefault()
+  copyActiveNode()
 })
 
 const setCurMaterial = () => {

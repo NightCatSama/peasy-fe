@@ -8,6 +8,7 @@ import { downloadHtml } from '@/utils/download'
 import Sidebar from '@/components/Sidebar.vue'
 import ConfigHeader from '@/components/ConfigHeader.vue'
 import MaterialsPanel from '@/components/MaterialsPanel.vue'
+import Keyboard from '@/components/Keyboard.vue'
 import EditSection from '@/components/EditSection.vue'
 import { emitter } from '@/utils/event'
 import { useDisplayStore } from '@/stores/display'
@@ -54,6 +55,7 @@ const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
 const { saveHistory, undoHistory, redoHistory, setIsSave } = historyStore
 
 let showProjectModal = $ref(false)
+let showKeyboard = $ref(false)
 
 /** 下载当前页面 */
 const handleDownload = async () => {
@@ -100,6 +102,7 @@ onMounted(async () => {
     if (
       !inAction &&
       [
+        'getProjectData',
         'insertNode',
         'swapNode',
         'addSection',
@@ -117,13 +120,9 @@ onMounted(async () => {
       inAction = true
       after(() => {
         inAction = false
-        saveHistory(store.allPageData)
+        saveHistory(store.allPageData, name === 'getProjectData')
       })
     }
-
-    onError((error: any) => {
-      AlertError(error?.body?.message || error?.message || error?.msg || '未知错误')
-    })
   })
   // 记录数据记录
   emitter.on('saveHistory', () => {
@@ -206,6 +205,11 @@ useKeyPress(ShortcutKey.prevSection, (e) => {
   e.preventDefault()
   switchSectionByRound(-1)
 })
+// 快捷键 - 切换快捷键是否展示
+useKeyPress(ShortcutKey.switchShortcut, (e) => {
+  e.preventDefault()
+  showKeyboard = !showKeyboard
+})
 
 const switchSectionByRound = $computed(() => (change: number) => {
   const index = allPageData.value.findIndex((item) => item === activeSection.value)
@@ -253,6 +257,7 @@ watch(
     <!-- 左侧操作栏 -->
     <Sidebar
       :active-materials-panel="showLeftPanel"
+      v-model:keyboard="showKeyboard"
       @change-materials-panel="(val) => (showLeftPanel = val)"
     ></Sidebar>
     <div class="container">
@@ -271,6 +276,8 @@ watch(
         <EditSection></EditSection>
         <!-- 右侧组件参数配置区 -->
         <ConfigSection></ConfigSection>
+        <!-- 快捷键展示 -->
+        <Keyboard :show="showKeyboard"></Keyboard>
       </div>
     </div>
     <ProjectModal

@@ -6,7 +6,7 @@ export interface IUserInfo {
   username: string
   avatar: string
   roleNames: string[]
-  uId: string
+  uid: string
 }
 
 export const useUserStore = defineStore('user', {
@@ -17,6 +17,7 @@ export const useUserStore = defineStore('user', {
   getters: {
     userName: (state) => state.userInfo?.username || '',
     avatar: (state) => state.userInfo?.avatar || '',
+    uid: (state) => state.userInfo?.uid || '',
     isLogin: (state) => !!state.accessToken,
     isAdmin: (state) => state.userInfo?.roleNames?.includes('admin'),
   },

@@ -287,6 +287,12 @@ export const usePageStore = defineStore('page', {
       this.activeNode = this.activeParentNode
       this.activeParentChain.shift()
     },
+    /** 设置当前激活节点的子节点设置为激活节点 */
+    setActiveNodeChildrenToActive() {
+      if (!this.activeNode || !this.activeNode?.children?.length) return
+      this.activeParentChain.unshift(this.activeNode)
+      this.activeNode = this.activeNode.children[0]
+    },
     setActiveNodeToRound(change: number) {
       const node = this.getActiveNodeRound(change)
       if (node) {

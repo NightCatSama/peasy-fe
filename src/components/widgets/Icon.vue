@@ -71,6 +71,7 @@ import ProjectSettingIcon from '@/assets/project-setting.svg'
 import EmptyIcon from '@/assets/empty.svg'
 import ImgErrorIcon from '@/assets/img-error.svg'
 import SpinIcon from '@/assets/spin.svg'
+import KeyboardIcon from '@/assets/keyboard.svg'
 
 interface IIconProps {
   name: string
@@ -154,6 +155,7 @@ const iconMap = {
   empty: EmptyIcon,
   'img-error': ImgErrorIcon,
   spin: SpinIcon,
+  keyboard: KeyboardIcon,
 } as any
 
 const { name, size = 26, type = 'circle', loading, active, color } = defineProps<IIconProps>()

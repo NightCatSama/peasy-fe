@@ -21,6 +21,7 @@ const {
   setActiveNode,
   addSection,
   setActiveParentNodeToActive,
+  setActiveNodeChildrenToActive,
   setActiveNodeToRound,
   getActiveNodeRound,
   deleteActiveNode,
@@ -185,6 +186,24 @@ useKeyPress(ShortcutKey.delete, (e) => {
   deleteActiveNode()
 })
 
+// 快捷键 - 组件切换
+useKeyPress(ShortcutKey.nextComponent, (e) => {
+  e.preventDefault()
+  setActiveNodeToRound(1)
+})
+useKeyPress(ShortcutKey.prevComponent, (e) => {
+  e.preventDefault()
+  setActiveNodeToRound(-1)
+})
+useKeyPress(ShortcutKey.parentComponent, (e) => {
+  e.preventDefault()
+  setActiveParentNodeToActive()
+})
+useKeyPress(ShortcutKey.childrenComponent, (e) => {
+  e.preventDefault()
+  setActiveNodeChildrenToActive()
+})
+
 // draggable
 const dragEvents = $computed(() =>
   dragNode && dragNodeType.value === 'section'
@@ -266,6 +285,16 @@ const handleLeaveTrash = (e: DragEvent) => {
         icon="top-circle"
         :disabled="activeParentNode === null"
         @click="setActiveParentNodeToActive"
+      ></Btn>
+      <Btn
+        class="children-btn"
+        text="Children Node"
+        type="text"
+        color="default"
+        size="sm"
+        icon="top-circle"
+        :disabled="!activeNode.children?.length"
+        @click="setActiveNodeChildrenToActive"
       ></Btn>
     </div>
   </div>
@@ -399,6 +428,9 @@ const handleLeaveTrash = (e: DragEvent) => {
     }
     .next-btn :deep(.icon) {
       transform: rotate(45deg);
+    }
+    .children-btn :deep(.icon) {
+      transform: rotate(90deg);
     }
   }
 }

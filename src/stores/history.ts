@@ -30,7 +30,7 @@ export const useHistoryStore = defineStore('history', {
   },
   actions: {
     /** 存储历史记录 */
-    saveHistory(data: PageNode[]) {
+    saveHistory(data: PageNode[], init?: boolean) {
       const cloneNode = cloneDeep(data)
       if (this.currentIndex > 0) {
         this.history.splice(0, this.currentIndex)
@@ -38,7 +38,7 @@ export const useHistoryStore = defineStore('history', {
       }
       this.history.unshift(cloneNode)
       this.history.length = Math.min(this.history.length, maxHistoryLen)
-      this.isSave = false
+      if (!init) this.isSave = false
     },
     /** 撤回 */
     undoHistory() {

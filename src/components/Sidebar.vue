@@ -9,12 +9,12 @@ import FontFamilyPanel from './biz/FontFamilyPanel.vue'
 import Logo from './Logo.vue'
 
 interface ISidebarProps {
+  keyboard: boolean
   activeMaterialsPanel: boolean
 }
 
 const { activeMaterialsPanel } = defineProps<ISidebarProps>()
 
-const pageStore = usePageStore()
 </script>
 
 <template>
@@ -35,6 +35,9 @@ const pageStore = usePageStore()
         <SectionList />
       </div>
       <div class="bottom">
+        <div class="operator-item" @click="$emit('update:keyboard', !keyboard)">
+          <Icon :size="26" name="keyboard" :active="keyboard" />
+        </div>
         <Dropdown
           :placement="'right-end'"
           popper-class="sidebar-dropdown"
@@ -43,7 +46,7 @@ const pageStore = usePageStore()
           type="pure"
         >
           <template #default="{ shown }">
-            <div class="operator-item not-last">
+            <div class="operator-item">
               <Icon :size="26" name="font" :active="shown" />
             </div>
           </template>
@@ -59,7 +62,7 @@ const pageStore = usePageStore()
           type="pure"
         >
           <template #default="{ shown }">
-            <div class="operator-item">
+            <div class="operator-item last">
               <Icon :size="26" name="advanced" :active="shown" />
             </div>
           </template>
@@ -117,9 +120,10 @@ const pageStore = usePageStore()
     justify-content: center;
     align-items: center;
     cursor: pointer;
+    margin-bottom: 4px;
 
-    &.not-last {
-      margin-bottom: 16px;
+    &.last {
+      margin-bottom: 0;
     }
 
     &.add-item :deep(.icon) {

@@ -20,7 +20,7 @@ export async function persistToken() {
       username: userInfo.username || '',
       avatar: userInfo.avatar || '',
       roleNames: userInfo?.role_names || [],
-      uId: userInfo.sub || '',
+      uid: userInfo.sub || '',
     })
   }
   return {

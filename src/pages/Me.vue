@@ -17,12 +17,16 @@ import ProjectModal from '@/components/modal/ProjectModal.vue'
 import { Alert } from '@/utils/alert'
 import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
 import { SaveProjectDto } from '@@/dto/data.dto'
+import { usePageStore } from '@/stores/page'
 
 const router = useRouter()
 
 const userStore = useUserStore()
 const { userName, avatar } = storeToRefs(userStore)
 const { updateAvatar } = userStore
+
+const pageStore = usePageStore()
+const { deleteMaterial } = pageStore
 
 const { signOut, signIn, isAuthenticated } = useLogto()
 const handleSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
@@ -51,7 +55,7 @@ onMounted(async () => {
   const { data } = await projectApi.get<IResponse<Project[]>>('')
   showMap['project'] = data
   const res = await materialApi.get<IResponse<{ [type: string]: IMaterialItem[] }>>('', {
-    query: { includeTemplate: true },
+    query: { includeTemplate: true, onlySelf: true },
   })
   ;['template', 'section', 'component'].forEach((key) => {
     if (res.data[key]?.length > 0) {
@@ -162,7 +166,7 @@ const updateMaterial = (material: IMaterialItem) => {
 /** 删除物料 */
 const handleDeleteMaterial = async (material: IMaterialItem) => {
   if (await Modal.confirm(`确认删除 ${material.name} 吗`)) {
-    await materialApi.delete(material.id)
+    await deleteMaterial(material.id)
     showMap[material.type] = (showMap[material.type] as IMaterialItem[]).filter(
       (p) => p.id !== material.id
     )

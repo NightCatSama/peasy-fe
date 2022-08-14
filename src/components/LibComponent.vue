@@ -37,7 +37,7 @@ const $el = $computed(() => (componentRef?.value as any)?.$el as HTMLDivElement)
 
 /** 当前组件是否为激活组件 */
 const isActive = $computed(() => activeNode.value === item)
-const isHide = $computed(() => useConfigProps(item).common.hide)
+const isHide = $computed(() => useConfigProps(item)?.common?.hide)
 
 /** 设置当前组件为激活组件 */
 const setActive = () => {
