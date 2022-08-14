@@ -106,6 +106,10 @@ const dragEvents = $computed(() => ({
   overflow: auto;
   margin-top: 10px;
 
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
   &-drag {
     border-color: rgba($white, 50%);
 
@@ -124,6 +128,7 @@ const dragEvents = $computed(() => ({
   &:deep(.section-item-ghost) {
     width: 32px;
     height: 32px;
+    flex-shrink: 0;
     border-radius: $normal-radius;
     display: flex;
     justify-content: center;

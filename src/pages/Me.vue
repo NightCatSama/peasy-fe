@@ -183,7 +183,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
         <Btn class="sign-btn" type="btn" color="default" @click="handleSignOut">退出登录</Btn>
       </template>
     </div>
-    <div class="data-wrapper" v-for="(list, key) in showMap" v-show="list.length" :key="key">
+    <div :class="['data-wrapper', `data-wrapper-${key}`]" v-for="(list, key) in showMap" v-show="list.length" :key="key">
       <div class="data-title">{{ titleMap[key] }}</div>
       <div class="data-list">
         <div class="data-item" v-if="key === 'project'">
@@ -263,7 +263,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     ></ProjectModal>
     <SaveMaterialModal
       v-if="curMaterial"
-      ref="saveModelRef"
+      :action-text="curMaterial.id ? '编辑' : '保存为'"
       :material="curMaterial"
       v-model="showSaveMaterialModal"
       :on-save="updateMaterial"
@@ -302,6 +302,20 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     &:last-child {
       padding-bottom: 40px;
     }
+    &.data-wrapper-project,
+    &.data-wrapper-template {
+      .data-item {
+        width: 130px;
+        height: 185px;
+      }
+    }
+    &.data-wrapper-section,
+    &.data-wrapper-component {
+      .data-item {
+        width: 150px;
+        height: 130px;
+      }
+    }
     .data-title {
       margin-top: 20px;
       font-size: 30px;
@@ -313,14 +327,13 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
       flex-wrap: wrap;
     }
     .data-item {
-      width: 130px;
       display: inline-flex;
       flex-direction: column;
       margin: 12px 24px 12px 0;
 
       .data-image {
         width: 100%;
-        height: 160px;
+        flex: 1;
         background-size: contain;
         background-position: center;
         background-repeat: no-repeat;
@@ -370,6 +383,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
           color: $panel-light;
           font-size: 14px;
           flex: 1;
+          white-space: nowrap;
           overflow: hidden;
           text-overflow: ellipsis;
         }

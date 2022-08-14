@@ -86,7 +86,7 @@ defineExpose({
     top: 50%;
     transform: translate(-50%, -50%);
     min-width: 200px;
-    max-height: 70vh;
+    max-height: 90vh;
     overflow: auto;
     padding: 16px 20px;
     z-index: 1;

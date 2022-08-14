@@ -287,6 +287,7 @@ watch(
   display: flex;
   color: $color;
   overflow: hidden;
+  height: 100vh;
 }
 
 .container {

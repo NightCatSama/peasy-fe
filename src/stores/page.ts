@@ -205,14 +205,26 @@ export const usePageStore = defineStore('page', {
     /** 保存物料数据 */
     async fetchSaveMaterial(params: IMaterialItem) {
       const res = await materialApi.patch<IResponse<IMaterialItem>>(params)
-      this.materialData?.[params.type]?.push(res.data)
+      const list = this.materialData?.[params.type]
+      if (this.materialData?.[params.type]) {
+        if (params.id) {
+          this.materialData[params.type] = this.materialData?.[params.type].map((item) => {
+            if (item.id === params.id) {
+              return res.data
+            }
+            return item
+          })
+        } else {
+          this.materialData[params.type].push(res.data)
+        }
+      }
       return res.data
     },
     /** 删除单个物料数据 */
     async deleteMaterial(id: number) {
       await materialApi.delete('' + id)
       Object.values(this.materialData).forEach((list: IMaterialItem[]) => {
-        const index = list.findIndex((item) => item.id === id)
+        const index = list?.findIndex((item) => item.id === id)
         if (index > -1) {
           list.splice(index, 1)
         }

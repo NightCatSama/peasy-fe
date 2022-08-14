@@ -3,6 +3,9 @@ import { upload, uploadByEvent } from '@/utils/oss'
 import InputItem from './InputItem.vue'
 import Icon from '@/components/widgets/Icon.vue'
 import { emitter } from '@/utils/event'
+import { AlertError } from '@/utils/alert'
+import { watch } from 'vue'
+import { imgErrorFallback } from '@/config'
 
 interface IImageItemProps {
   label?: string
@@ -10,6 +13,7 @@ interface IImageItemProps {
   hideLabel?: boolean
   placeholder?: string
   accept?: string
+  loading?: boolean
 }
 const {
   modelValue,
@@ -17,22 +21,35 @@ const {
   hideLabel,
   placeholder = 'https://',
   accept = 'image/*',
+  loading,
 } = defineProps<IImageItemProps>()
 const emit = defineEmits(['update:model-value'])
+
+let showCover = $ref(!!modelValue)
+let coverUrl = $ref(modelValue)
 
 const handleChange = (img: string) => {
   emit('update:model-value', img)
   emitter.emit('saveHistory')
 }
 
+watch(() => modelValue, () => {
+  coverUrl = modelValue
+}, { immediate: true })
+
 const uploadImage = async (e: InputEvent) => {
   uploadByEvent(e, handleChange)
+}
+
+const handleCoverError = () => {
+  AlertError('图片加载失败！')
+  coverUrl = imgErrorFallback
 }
 </script>
 
 <template>
   <InputItem
-    class="image-item"
+    :wrapper-class="'image-item'"
     :model-value="modelValue"
     :label="label"
     :type="'textarea'"
@@ -43,6 +60,7 @@ const uploadImage = async (e: InputEvent) => {
     <template #label v-if="!hideLabel"><slot name="label"></slot></template>
     <template #suffix>
       <div class="upload-wrapper">
+        <Icon v-if="modelValue" class="preview-btn" name="preview" type="circle" color="primary" :size="13" @click="showCover = !showCover" />
         <div class="upload-btn">
           Upload
           <input type="file" class="upload-btn-input" :accept="accept" @change="uploadImage" />
@@ -58,13 +76,32 @@ const uploadImage = async (e: InputEvent) => {
           }"
         ></Icon>
       </div>
+      <div
+        v-if="showCover && coverUrl && !loading"
+        class="cover"
+        @click="showCover = false"
+      >
+        <img
+          :src="coverUrl"
+          @error="handleCoverError"
+        >
+      </div>
+      <div
+        v-if="loading"
+        class="cover"
+      >
+        <Icon name="spin" :size="32" loading></Icon>
+      </div>
     </template>
-    <template #default><slot></slot></template>
+    <template #default>
+      <slot></slot>
+    </template>
   </InputItem>
 </template>
 
 <style lang="scss" scoped>
 .image-item {
+  position: relative;
   .upload-wrapper {
     position: absolute;
     right: 4px;
@@ -76,6 +113,25 @@ const uploadImage = async (e: InputEvent) => {
     padding: 4px 4px 4px 8px;
     background: rgba($panel, 70%);
     border-radius: $inner-radius;
+
+    .preview-btn {
+      position: absolute;
+      right: 100%;
+      top: 50%;
+      transform: translate(-5px, -50%);
+      width: 24px;
+      height: 24px;
+      display: flex;
+      align-items: center;
+      background: rgba($panel, 70%);
+      cursor: pointer;
+      transition: all .3s;
+
+      &:hover {
+        color: $theme;
+        background: $panel;
+      }
+    }
 
     .upload-btn {
       position: relative;
@@ -94,10 +150,31 @@ const uploadImage = async (e: InputEvent) => {
 
     .upload-btn,
     .question-icon {
-      cursor: default;
+      cursor: pointer;
       &:hover {
         color: $theme;
       }
+    }
+  }
+  :deep(.cover) {
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    cursor: pointer;
+    background-color: $panel-dark;
+    border-radius: $normal-radius;
+    z-index: 1;
+    opacity: .95;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
     }
   }
 }

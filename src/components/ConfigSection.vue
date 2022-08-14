@@ -269,6 +269,7 @@ const setCurMaterial = () => {
     <SaveMaterialModal
       v-if="curMaterial"
       auto-create-cover
+      :action-text="'保存为'"
       :material="curMaterial"
       v-model="showSaveMaterialModal"
     ></SaveMaterialModal>

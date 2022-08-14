@@ -69,13 +69,16 @@ import SaveIcon from '@/assets/save.svg'
 import TabletIcon from '@/assets/tablet.svg'
 import ProjectSettingIcon from '@/assets/project-setting.svg'
 import EmptyIcon from '@/assets/empty.svg'
+import ImgErrorIcon from '@/assets/img-error.svg'
+import SpinIcon from '@/assets/spin.svg'
 
 interface IIconProps {
   name: string
-  type?: 'circle' | 'pure' | 'btn'
+  type?: 'circle' | 'pure' | 'btn' | 'cube'
   color?: string
   size?: number
   active?: boolean
+  loading?: boolean
 }
 
 const iconMap = {
@@ -149,9 +152,11 @@ const iconMap = {
   tablet: TabletIcon,
   'project-setting': ProjectSettingIcon,
   empty: EmptyIcon,
+  'img-error': ImgErrorIcon,
+  spin: SpinIcon,
 } as any
 
-const { name, size = 26, type = 'circle', active, color } = defineProps<IIconProps>()
+const { name, size = 26, type = 'circle', loading, active, color } = defineProps<IIconProps>()
 
 const style = $ref({
   width: size + 'px',
@@ -160,7 +165,7 @@ const style = $ref({
 </script>
 
 <template>
-  <div :class="['icon', `icon-type-${type}`, { active, [`icon-color-${color}`]: color }]">
+  <div :class="['icon', `icon-type-${type}`, { active, [`icon-color-${color}`]: color, loading }]">
     <component :is="iconMap[name]" :class="['icon-inner', { active }]" :style="style"></component>
   </div>
 </template>
@@ -189,6 +194,25 @@ const style = $ref({
     &:active {
       opacity: 0.9;
     }
+  }
+
+  &-type-cube {
+    cursor: pointer;
+    padding: 3px;
+    color: $white;
+    background: $panel-light;
+    border-radius: $inner-radius;
+
+    &:hover {
+      opacity: .8;
+    }
+    &:active {
+      opacity: 0.9;
+    }
+  }
+
+  &.loading {
+    animation: spin 3s linear infinite;
   }
 
   .icon-inner {

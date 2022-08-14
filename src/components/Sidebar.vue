@@ -76,6 +76,7 @@ const pageStore = usePageStore()
 .sidebar {
   position: relative;
   width: 64px;
+  height: 100%;
   flex-shrink: 0;
   background: $panel-sidebar;
   display: flex;
@@ -84,6 +85,7 @@ const pageStore = usePageStore()
 
   .logo-wrapper {
     height: $header-height;
+    flex-shrink: 0;
     display: flex;
     justify-content: center;
     align-items: center;
@@ -92,8 +94,9 @@ const pageStore = usePageStore()
   .operator-panel {
     display: flex;
     flex-direction: column;
-    padding: 20px 0;
-    height: 100%;
+    padding: 16px 0;
+    flex: 1;
+    overflow: hidden;
   }
 
   .top {
@@ -101,6 +104,7 @@ const pageStore = usePageStore()
     display: flex;
     flex-direction: column;
     align-items: center;
+    overflow: auto;
   }
 
   .bottom {

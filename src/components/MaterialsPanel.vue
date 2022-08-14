@@ -12,6 +12,9 @@ import { PageNode, IMaterialItem } from '@/config'
 import Tabs from './widgets/Tabs.vue'
 import { Alert, AlertError } from '@/utils/alert'
 import { useUserStore } from '@/stores/user'
+import { Modal } from './modal'
+import { materialApi } from '@/utils/mande'
+import SaveMaterialModal from './modal/SaveMaterialModal.vue'
 
 const pageStore = usePageStore()
 const { pageData, materialData } = storeToRefs(pageStore)
@@ -31,6 +34,8 @@ let preDisplayMode = $ref<DisplayMode>('edit')
 
 let currentType = $ref('section')
 let draggableRef = $ref<any>(null)
+let showSaveMaterialModal = $ref(false)
+let curMaterial = $ref<IMaterialItem | null>(null)
 
 const handleAddSection = (template: PageNode) => {
   if (template.type === 'section') {
@@ -56,8 +61,11 @@ const handleDragStart = (event: DragEvent, data: PageNode) => {
   setTimeout(() => emitter.emit('switchMaterialsPanel', false), 100)
 }
 
-const handleDelete = (item: IMaterialItem) => {
-  deleteMaterial(item.id!).then(() => Alert('删除成功'))
+const handleDelete = async (item: IMaterialItem) => {
+  if (await Modal.confirm(`确认删除 ${item.name} 吗`)) {
+    await deleteMaterial(item.id)
+    Alert('删除成功')
+  }
 }
 
 const currentNodeList = $computed(() => (materialData.value as any)[currentType])
@@ -104,14 +112,24 @@ const currentCategory = $computed(() => {
             <Element
               :cover="item.cover"
               :name="item.name"
-              :can-delete="isAdmin || !!item.uid"
+              :can-operate="isAdmin || !!item.uid"
               @click="handleAddSection(item.node)"
               @delete="handleDelete(item)"
+              @edit="() => {
+                curMaterial = item
+                showSaveMaterialModal = true
+              }"
             ></Element>
           </div>
         </template>
       </draggable>
     </section>
+    <SaveMaterialModal
+      v-if="curMaterial"
+      :action-text="'编辑'"
+      :material="curMaterial"
+      v-model="showSaveMaterialModal"
+    ></SaveMaterialModal>
   </div>
 </template>
 

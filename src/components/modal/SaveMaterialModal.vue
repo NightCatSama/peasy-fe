@@ -24,14 +24,16 @@ import ImageItem from '../configs/items/ImageItem.vue'
 import { Alert, AlertError } from '@/utils/alert'
 import { useUserStore } from '@/stores/user'
 import { cloneDeep } from 'lodash'
+import { uploadByBase64 } from '@/utils/oss'
 
 interface SaveMaterialModalProps {
   material?: IMaterialItem
   autoCreateCover?: boolean
+  actionText?: string
   onSave?: (material: IMaterialItem) => void
 }
 
-const { material, autoCreateCover, onSave } = defineProps<SaveMaterialModalProps>()
+const { material, autoCreateCover, actionText = 'Save', onSave } = defineProps<SaveMaterialModalProps>()
 const propsRef = reactive(useAttrs())
 
 const pageStore = usePageStore()
@@ -41,6 +43,7 @@ const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
 
 let editItem: IMaterialItem | null = $ref(null)
+let coverLoading = $ref(false)
 
 const isTemplate = $computed<boolean>(() => material?.type === 'template')
 const node = $computed<PageNode | null>(() => (isTemplate ? null : (editItem?.node as PageNode)))
@@ -49,7 +52,7 @@ const isModule = $computed<boolean>({
     return (!isTemplate && node?.isModule) || false
   },
   set(val: boolean) {
-    if (val) nextTick(() => initJSONEditor())
+    if (val) initJSONEditor()
     editItem.node.isModule = val
   },
 })
@@ -93,8 +96,16 @@ watch(
       editItem = cloneDeep(material)
       nextTick(() => initJSONEditor())
       if (autoCreateCover) {
+        coverLoading = true
         const elem = document.querySelector(`[data-name="${editItem.name}"]`) as HTMLElement
-        editItem.cover = elem ? await createMaterialSnapshot(elem) : ''
+        const cover = elem ? await createMaterialSnapshot(elem) : ''
+        if (cover.length >= 10000) {
+          const url = await uploadByBase64(cover)
+          editItem.cover = url
+        } else {
+          editItem.cover = cover
+        }
+        coverLoading = false
       }
     } else {
       editItem = null
@@ -137,7 +148,7 @@ const titleMap = {
   <Modal
     ref="modal"
     class="save-modal"
-    :title="`Save ${titleMap[material.type]}`"
+    :title="`${actionText} ${titleMap[material.type]}`"
     :width="'70vw'"
     close-on-click-mask
     v-bind="$attrs"
@@ -154,13 +165,11 @@ const titleMap = {
         ></InputItem>
         <SwitchItem v-if="isAdmin && !isTemplate" label="Module" v-model="isModule"></SwitchItem>
       </div>
-      <ImageItem hide-label v-model="editItem.cover" wrapper-class="cover-wrapper" :rows="5">
-        <div class="cover" :style="{ backgroundImage: `url(${editItem.cover})` }"></div>
-      </ImageItem>
+      <ImageItem hide-label v-model="editItem.cover" :loading="coverLoading" wrapper-class="image-item" :rows="5"></ImageItem>
     </div>
-    <div class="module-setting-wrapper" v-if="isAdmin && isModule && node">
+    <div class="module-setting-wrapper" v-show="isAdmin && isModule">
       <div class="module-input"></div>
-      <div class="node-tree">
+      <div class="node-tree" v-if="node">
         <TreeNode :node="node" :preview="true"></TreeNode>
       </div>
     </div>
@@ -172,35 +181,18 @@ const titleMap = {
 
 <style lang="scss">
 .save-modal {
+  max-width: 900px;
   .info-wrapper {
     display: flex;
+    min-height: 180px;
     padding-bottom: 10px;
     .info {
       flex: 1;
     }
-    .cover-wrapper {
+    .image-item {
       position: relative;
       flex: 1;
       margin-left: 24px;
-
-      &:hover .cover {
-        display: none;
-      }
-
-      .cover {
-        position: absolute;
-        left: 0;
-        top: 0;
-        width: 100%;
-        height: 100%;
-        background-repeat: no-repeat;
-        background-size: contain;
-        background-position: center center;
-        cursor: pointer;
-        background-color: $panel-dark;
-        border-radius: $normal-radius;
-        z-index: 1;
-      }
 
       .input {
         height: 100%;
@@ -231,7 +223,7 @@ const titleMap = {
 
   .module-setting-wrapper {
     display: flex;
-    height: 200px;
+    height: 300px;
     padding: 8px;
     border-radius: $normal-radius;
     border: 1px dashed rgba($color, 60%);

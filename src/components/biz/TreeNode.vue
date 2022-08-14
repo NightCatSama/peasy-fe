@@ -134,6 +134,7 @@ watch(
       <TreeNode
         v-show="preview || (canCollapse && collapse)"
         v-for="child in node.children"
+        :preview="preview"
         :key="child.name"
         :node="child"
       ></TreeNode>

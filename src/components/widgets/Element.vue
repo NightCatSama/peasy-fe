@@ -1,12 +1,25 @@
 <script setup lang="ts">
+import { watch } from 'vue';
 import LibComponent from '../LibComponent.vue'
 import Icon from './Icon.vue'
+import { imgErrorFallback } from '@/config'
+import { AlertError } from '@/utils/alert';
+
 interface IElementProps {
   cover?: string
   name: string
-  canDelete?: boolean
+  canOperate?: boolean
 }
-const { cover = '', name, canDelete } = defineProps<IElementProps>()
+const { cover = '', name, canOperate } = defineProps<IElementProps>()
+
+let coverUrl = $ref(cover)
+
+watch(() => cover, () => {
+  coverUrl = cover
+})
+const handleCoverError = () => {
+  coverUrl = imgErrorFallback
+}
 </script>
 
 <template>
@@ -14,16 +27,29 @@ const { cover = '', name, canDelete } = defineProps<IElementProps>()
     <div class="name">
       <span class="text">{{ name }}</span>
       <Icon
-        v-if="canDelete"
+        v-if="canOperate"
+        type="cube"
+        class="element-btn"
+        name="advanced"
+        :size="11"
+        @click.stop="$emit('edit')"
+      ></Icon>
+      <Icon
+        v-if="canOperate"
+        type="cube"
+        class="element-btn danger"
         name="delete"
         :size="10"
-        color="red"
-        type="btn"
         @click.stop="$emit('delete')"
       ></Icon>
     </div>
-    <div class="image" :style="{ backgroundImage: `url(${cover})` }">
-      <div v-if="!cover" class="image-placeholder">
+    <div class="image">
+      <img
+        v-if="coverUrl"
+        :src="coverUrl"
+        @error="handleCoverError"
+      >
+      <div v-else class="image-placeholder">
         <Icon name="empty" :size="24" />
         <span>No Cover</span>
       </div>
@@ -45,13 +71,21 @@ const { cover = '', name, canDelete } = defineProps<IElementProps>()
   .image {
     flex: 1;
     width: 100%;
+    height: 100%;
+    overflow: hidden;
     border-radius: $inner-radius;
-    background-repeat: no-repeat;
-    background-size: contain;
-    background-position: center center;
     background-color: #fff;
     transition: all 0.3s;
     cursor: pointer;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+
+    img {
+      max-width: 100%;
+      max-height: 100%;
+      object-fit: contain;
+    }
 
     &-placeholder {
       width: 100%;
@@ -76,11 +110,18 @@ const { cover = '', name, canDelete } = defineProps<IElementProps>()
     .text {
       flex: 1;
       font-size: 14px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
     }
 
-    :deep(.icon) {
+    .element-btn {
       display: none;
-      margin-right: -2px;
+      margin-left: 3px;
+
+      &.danger:hover {
+        background: $red;
+      }
     }
   }
   &:hover :deep(.icon) {

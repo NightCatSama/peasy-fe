@@ -47,13 +47,14 @@ const handleSave = () => {
   emit('save', editProject)
 }
 
+let coverLoading = $ref(false)
 const handleCreateCover = async () => {
-  const dismiss = AlertLoading('自动生成缩略图中')
   try {
+    coverLoading = true
     const elem = document.querySelector(`.edit-content`) as HTMLElement
     editProject.cover = elem ? await createMaterialSnapshot(elem) : ''
   } finally {
-    dismiss()
+    coverLoading = false
   }
 }
 </script>
@@ -69,7 +70,7 @@ const handleCreateCover = async () => {
   >
     <div class="info-wrapper">
       <InputItem label="Name" v-model="editProject.name"></InputItem>
-      <ImageItem label="Cover" v-model="editProject.cover" :rows="5"> </ImageItem>
+      <ImageItem label="Cover" :loading="coverLoading" v-model="editProject.cover" :rows="5"> </ImageItem>
     </div>
     <div class="btn-wrapper">
       <Btn
