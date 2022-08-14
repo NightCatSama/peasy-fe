@@ -7,6 +7,7 @@ import {
   GroupType,
   IPage,
   IMaterialItem,
+  DataType,
 } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
@@ -182,9 +183,13 @@ export const usePageStore = defineStore('page', {
       this.materialData = res.data
       if (this.materialData.section.length === 0) {
         this.materialData.section.push({
-          name: 'Empty Section',
-          category: 'Basic',
+          name: '空白章节',
+          enName: 'Empty Section',
+          category: '基础',
+          categoryEn: 'Basic',
           type: 'section',
+          cover: '',
+          dataType: DataType.Page,
           node: getMockBlock('section'),
         })
       }
@@ -221,8 +226,8 @@ export const usePageStore = defineStore('page', {
       return res.data
     },
     /** 删除单个物料数据 */
-    async deleteMaterial(id: number) {
-      await materialApi.delete('' + id)
+    async deleteMaterial(id: string) {
+      await materialApi.delete(id)
       Object.values(this.materialData).forEach((list: IMaterialItem[]) => {
         const index = list?.findIndex((item) => item.id === id)
         if (index > -1) {

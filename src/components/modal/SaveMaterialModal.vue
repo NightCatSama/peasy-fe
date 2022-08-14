@@ -27,14 +27,14 @@ import { cloneDeep } from 'lodash'
 import { uploadByBase64 } from '@/utils/oss'
 
 interface SaveMaterialModalProps {
+  modelValue: boolean
   material?: IMaterialItem
   autoCreateCover?: boolean
   actionText?: string
   onSave?: (material: IMaterialItem) => void
 }
 
-const { material, autoCreateCover, actionText = 'Save', onSave } = defineProps<SaveMaterialModalProps>()
-const propsRef = reactive(useAttrs())
+const { modelValue, material, autoCreateCover, actionText = 'Save', onSave } = defineProps<SaveMaterialModalProps>()
 
 const pageStore = usePageStore()
 const { fetchSaveMaterial } = pageStore
@@ -90,9 +90,10 @@ const initJSONEditor = () => {
 }
 
 watch(
-  () => [material, propsRef.modelValue],
+  () => [material, modelValue],
   async () => {
-    if (material && propsRef.modelValue) {
+    console.log(modelValue)
+    if (material && modelValue) {
       editItem = cloneDeep(material)
       nextTick(() => initJSONEditor())
       if (autoCreateCover) {
@@ -151,6 +152,7 @@ const titleMap = {
     :title="`${actionText} ${titleMap[material.type]}`"
     :width="'70vw'"
     close-on-click-mask
+    :model-value="modelValue"
     v-bind="$attrs"
   >
     <div class="info-wrapper" v-if="editItem">

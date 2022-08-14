@@ -215,7 +215,7 @@ export interface IMaterialItem {
   categoryEn?: string
   /** 缩略图 */
   cover?: string
-  id?: number
+  id?: string
   uid?: string
   createDate?: Date
   updateDate?: Date
