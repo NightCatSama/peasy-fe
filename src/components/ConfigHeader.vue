@@ -20,7 +20,7 @@ import { useUserStore } from '@/stores/user'
 import Switch from './widgets/Switch.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Modal } from './modal'
-import { $t } from '@/constants/i18n'
+import { $t, lang } from '@/constants/i18n'
 
 const userStore = useUserStore()
 const { userName, avatar } = storeToRefs(userStore)
@@ -67,6 +67,18 @@ const gotoMePage = async () => {
     ))
   ) {
     router.push('/me')
+  }
+}
+const switchLang = async(lang: 'zh' | 'en') => {
+  if (await Modal.confirm($t('switchLangTip'))) {
+    router.replace({
+      name: route.name,
+      params: { ...route.params },
+      query: {
+        lang
+      }
+    })
+    setTimeout(() => location.reload(), 0)
   }
 }
 
@@ -248,6 +260,14 @@ emitter.on('saveColorVars', (color: string) => {
             <div class="title media-title">
               <span>
                 {{ $t('mediaFontSize') }}
+                <Icon
+                  name="question"
+                  class="question-icon"
+                  :size="13"
+                  v-tooltip="{
+                    content: $t('mediaFontSizeTip')
+                  }"
+                ></Icon>
                 <span class="title-extra">{{ curFootSize }}px</span>
               </span>
               <Switch
@@ -312,7 +332,7 @@ emitter.on('saveColorVars', (color: string) => {
         class="download-btn"
         @click="$emit('download')"
         :disabled="allPageData.length === 0"
-        text="Download"
+        :text="$t('download')"
       ></Btn>
       <Dropdown type="pure-dropdown" popper-class="user-dropdown">
         <Avatar :image="avatar" :size="36" can-operator />
@@ -320,30 +340,16 @@ emitter.on('saveColorVars', (color: string) => {
           <div class="user-content">
             <template v-if="isAuthenticated">
               <div class="user-name">{{ userName }}</div>
-              <div
-                class="item"
-                @click="
-                  () => {
-                    gotoMePage()
-                    hide()
-                  }
-                "
-              >
-                {{ $t('profile') }}
+              <div class="item" @click=" () => { gotoMePage(); hide() }">{{ $t('profile') }}</div>
+              <div class="item" @click=" () => { switchLang(lang === 'en' ? 'zh' : 'en'); hide() }">
+                {{ lang === 'zh' ? $t('switchToEN') : $t('switchToZH') }}
               </div>
-              <div
-                class="item danger"
-                @click="
-                  () => {
-                    handleSignOut()
-                    hide()
-                  }
-                "
-              >
-                {{ $t('signOut') }}
-              </div>
+              <div class="item danger" @click=" () => { handleSignOut(); hide() }">{{ $t('signOut') }}</div>
             </template>
             <template v-else>
+              <div class="item" @click=" () => { switchLang(lang === 'en' ? 'zh' : 'en'); hide() }">
+                {{ lang === 'zh' ? $t('switchToEN') : $t('switchToZH') }}
+              </div>
               <div class="item primary" @click="handleSignIn">{{ $t('signIn') }}</div>
             </template>
           </div>
@@ -499,6 +505,7 @@ emitter.on('saveColorVars', (color: string) => {
 
   .download-btn {
     margin-right: 12px;
+    min-width: 100px;
   }
 
   .save-btn {
@@ -523,6 +530,11 @@ emitter.on('saveColorVars', (color: string) => {
 
       &:last-child {
         margin-bottom: 0;
+      }
+
+      .question-icon {
+        position: relative;
+        top: 2px;
       }
     }
 
@@ -591,7 +603,7 @@ emitter.on('saveColorVars', (color: string) => {
       color: $theme;
     }
     .item {
-      padding: 6px 12px;
+      padding: 8px 12px;
       margin: 0 4px;
       border-radius: $inner-radius;
       cursor: pointer;

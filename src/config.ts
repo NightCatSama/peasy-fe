@@ -176,6 +176,8 @@ export const enum ModuleConfigType {
 export interface IModuleConfigGroup {
   /** 配置名称 */
   title: string
+  /** 配置名称（英文） */
+  titleEn?: string
   /** 分组数据 */
   data: IModuleConfigItem[]
   /** 图标 */
@@ -189,6 +191,8 @@ export interface IModuleConfigItem {
   type: ModuleConfigType
   /** label */
   label?: string
+  /** 配置名称（英文） */
+  labelEn?: string
   /** 配置组件传参参数 */
   props?: any
   /** 获取值 */

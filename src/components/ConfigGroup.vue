@@ -19,6 +19,7 @@ import EffectGroup from './configs/EffectGroup.vue'
 import Dropdown from './widgets/Dropdown.vue'
 import Icon from './widgets/Icon.vue'
 import CustomGroup from './configs/CustomGroup.vue'
+import { lang } from '@/constants/i18n'
 
 interface IConfigGroupProps {
   groupType: GroupType
@@ -59,7 +60,11 @@ const iconName = $computed(
   () => (bindProps as any)?.icon || groupIconMap[groupType] || defaultGroupIcon
 )
 
-const showTitle = $computed(() => groupTitleMap[groupType])
+const showTitle = $computed(
+  () => (bindProps as any)?.title
+    ? lang === 'en' && (bindProps as any)?.titleEn || (bindProps as any)?.title
+    : groupTitleMap[groupType]
+)
 </script>
 
 <template>

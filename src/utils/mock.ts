@@ -68,9 +68,10 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
               moduleConfig: [
                 {
                   /** 配置名称 */
-                  title: 'Text',
+                  title: '设置',
+                  titleEn: 'Setting',
                   /** 图标 */
-                  icon: 'font',
+                  icon: 'advanced',
                   /** 是否折叠 */
                   defaultCollapsed: true,
                   /** 分组数据 */
@@ -78,6 +79,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                     {
                       type: ModuleConfigType.Text,
                       label: '文本',
+                      labelEn: 'Text',
                       props: {},
                       sourceValue: 'children[1].config.props.basic.text',
                       targetValue: 'children[1].config.props.basic.text',
@@ -85,6 +87,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                     {
                       type: ModuleConfigType.Color,
                       label: '颜色',
+                      labelEn: 'Color',
                       props: {},
                       sourceValue: 'children[1].config.props.font.color',
                       targetValue: [
@@ -95,6 +98,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                     {
                       type: ModuleConfigType.FontSize,
                       label: '文字大小',
+                      labelEn: 'Font Size',
                       props: {},
                       sourceValue: 'children[1].config.props.font.fontSize',
                       targetValue: [
@@ -105,6 +109,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                     {
                       type: ModuleConfigType.Opacity,
                       label: '透明度',
+                      labelEn: 'Opacity',
                       props: {},
                       sourceValue: 'config.props.container.opacity',
                       targetValue: 'config.props.container.opacity',
@@ -112,7 +117,8 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                   ],
                 },
                 {
-                  title: 'Image',
+                  title: '图片',
+                  titleEn: 'Image',
                   icon: 'image',
                   defaultCollapsed: false,
                   data: [
@@ -122,11 +128,13 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
                       props: {
                         type: 'warning',
                         message: '可以直接输入图片地址，或点击 Upload 上传图片。',
+                        messageEn: 'You can directly input the image address, or click Upload to upload images.',
                       },
                     },
                     {
                       type: ModuleConfigType.Image,
                       label: '背景图片',
+                      labelEn: 'Background Image',
                       props: {},
                       sourceValue: 'config.props.background.backgroundImage',
                       targetValue: 'config.props.background.backgroundImage',

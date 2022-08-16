@@ -1,23 +1,27 @@
 <script setup lang="ts">
+import { lang } from '@/constants/i18n';
 import Icon from './Icon.vue'
 
 interface ITipProps {
   type: 'warning'
   block?: boolean
   message: string
+  messageEn?: string
 }
 
-const { type, message, block } = defineProps<ITipProps>()
+const { type, message, messageEn, block } = defineProps<ITipProps>()
 
 const iconMap = {
   warning: 'warning',
 } as any
+
+const showMsg = $computed(() => lang === 'en' && messageEn || message)
 </script>
 
 <template>
   <div :class="['tip', `tip-${type}`, { block }]">
     <Icon class="tip-icon" :name="iconMap[type]" :size="14"></Icon>
-    <div class="tip-msg" v-html="message"></div>
+    <div class="tip-msg" v-html="showMsg"></div>
   </div>
 </template>
 

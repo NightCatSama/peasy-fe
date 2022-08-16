@@ -334,4 +334,8 @@ watch(
 }
 </style>
 
-<style lang="scss"></style>
+<style lang="scss">
+@import '@/styles/draggable.scss';
+@import '@/styles/page.scss';
+@import '@/styles/moveable.scss';
+</style>

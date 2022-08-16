@@ -30,6 +30,7 @@ const handleCoverError = () => {
         class="element-btn"
         name="advanced"
         :size="11"
+        v-tooltip="$t('setting')"
         @click.stop="$emit('edit')"
       ></Icon>
       <Icon
@@ -38,6 +39,7 @@ const handleCoverError = () => {
         class="element-btn danger"
         name="delete"
         :size="10"
+        v-tooltip="$t('delete')"
         @click.stop="$emit('delete')"
       ></Icon>
     </div>

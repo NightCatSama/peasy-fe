@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { onBeforeMount } from 'vue'
+import { useRoute } from 'vue-router';
 import { $t } from './constants/i18n';
 import { pinia } from './stores';
 import { useUserStore } from './stores/user'
@@ -8,10 +9,16 @@ import { logtoMeApi, persistToken } from './utils/mande'
 
 let isReady = $ref(false)
 
+const route = useRoute()
+
 onBeforeMount(async () => {
   // 先获取 token
-  const { userInfo } = await persistToken()
+  await persistToken()
   isReady = true
+
+  if (['zh', 'en'].includes(route.query?.lang as string)) {
+    localStorage.setItem('lang', route.query?.lang as 'zh' | 'en')
+  }
 
   // 再获取用户信息
   useUserStore().fetchUserInfo()
@@ -31,11 +38,8 @@ pinia.use(({ store }) => {
 </template>
 
 <style lang="scss">
-@import '@/styles/draggable.scss';
-@import '@/styles/page.scss';
 @import '@/styles/animation.scss';
 @import '@/styles/tooltip.scss';
-@import '@/styles/moveable.scss';
 
 #app {
   font-family: $font-family;

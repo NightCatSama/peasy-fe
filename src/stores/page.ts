@@ -26,6 +26,7 @@ import { Project } from '@@/entities/project.entity'
 import { IResponse } from '@@/types/response'
 import { getStoragePageState } from '.'
 import { Alert } from '@/utils/alert'
+import { $t } from '@/constants/i18n'
 
 type MaterialData = {
   [key in PageNode['type']]: IMaterialItem[]
@@ -374,7 +375,7 @@ export const usePageStore = defineStore('page', {
       if (!this.activeNode) return
       this.activeNode.isModule = false
       delete this.activeNode.moduleConfig
-      Alert('此过程不可逆，点击撤销可还原。')
+      Alert($t('ungroupTip'))
     },
     /** 更新所有页面数据 */
     updateAllPageNode(pageNode: PageNode[]) {

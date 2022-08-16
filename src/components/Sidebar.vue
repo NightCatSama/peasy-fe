@@ -7,6 +7,7 @@ import GlobalSettingPanel from './biz/GlobalSettingPanel.vue'
 import Dropdown from './widgets/Dropdown.vue'
 import FontFamilyPanel from './biz/FontFamilyPanel.vue'
 import Logo from './Logo.vue'
+import QuestionPanel from './biz/QuestionPanel.vue'
 
 interface ISidebarProps {
   keyboard: boolean
@@ -38,7 +39,7 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
       </div>
       <div class="bottom">
         <div
-          class="operator-item"
+          class="operator-item first"
           v-tooltip="{ content: $t('shortcut'), placement: 'right', distance: 10 }"
           @click="$emit('update:keyboard', !keyboard)"
         >
@@ -50,10 +51,25 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
           :skidding="40"
           :distance="16"
           type="pure"
-          v-tooltip="{ content: $t('fontSetting'), placement: 'right', distance: 10 }"
         >
           <template #default="{ shown }">
-            <div class="operator-item">
+            <div class="operator-item" v-tooltip="{ content: $t('question'), placement: 'right', distance: 10, disabled: shown }">
+              <Icon :size="22" name="question-circle" :active="shown" />
+            </div>
+          </template>
+          <template #content>
+            <QuestionPanel />
+          </template>
+        </Dropdown>
+        <Dropdown
+          :placement="'right-end'"
+          popper-class="sidebar-dropdown"
+          :skidding="40"
+          :distance="16"
+          type="pure"
+        >
+          <template #default="{ shown }">
+            <div class="operator-item" v-tooltip="{ content: $t('fontSetting'), placement: 'right', distance: 10, disabled: shown }">
               <Icon :size="26" name="font" :active="shown" />
             </div>
           </template>
@@ -67,10 +83,9 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
           :skidding="10"
           :distance="16"
           type="pure"
-          v-tooltip="{ content: $t('pageGlobalSetting'), placement: 'right', distance: 10 }"
         >
           <template #default="{ shown }">
-            <div class="operator-item last">
+            <div class="operator-item last" v-tooltip="{ content: $t('pageGlobalSetting'), placement: 'right', distance: 10, disabled: shown }">
               <Icon :size="26" name="advanced" :active="shown" />
             </div>
           </template>
@@ -128,7 +143,11 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
     justify-content: center;
     align-items: center;
     cursor: pointer;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
+
+    &.first {
+      margin-bottom: 10px;
+    }
 
     &.last {
       margin-bottom: 0;

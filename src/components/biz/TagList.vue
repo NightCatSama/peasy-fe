@@ -41,6 +41,7 @@ const filteredItems = $computed(() => {
     <vue-tags-input
       class="tag-input"
       v-model="tag"
+      :placeholder="$t('addTag')"
       :tags="tags.map((i) => ({ text: i }))"
       :autocomplete-items="filteredItems"
       @before-adding-tag="handleAddTag"

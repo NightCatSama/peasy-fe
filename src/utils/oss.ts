@@ -19,6 +19,7 @@ export const upload = async (file: File) => {
   }
 }
 
+/** 将 base64 位上传为文件 */
 export const uploadByBase64 = async (base64: string) => {
   try {
     let arr = base64.split(',')
@@ -33,10 +34,11 @@ export const uploadByBase64 = async (base64: string) => {
     return upload(blob)
   } catch (e) {
     console.error(e)
-    $t('imageError')
+    AlertError($t('imageError'))
   }
 }
 
+/** 直接处理文件上传事件 */
 export const uploadByEvent = async (e: InputEvent, cb: (img: string) => void) => {
   const files = (e.target as HTMLInputElement).files
   if (files?.[0]) {

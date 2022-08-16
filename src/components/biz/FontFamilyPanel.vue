@@ -6,6 +6,7 @@ import { storeToRefs } from 'pinia'
 import GroupItem from '../configs/items/GroupItem.vue'
 import SliderItem from '../configs/items/SliderItem.vue'
 import Btn from '../widgets/Btn.vue'
+import Icon from '../widgets/Icon.vue'
 
 const pageStore = usePageStore()
 const { font } = storeToRefs(pageStore)
@@ -34,6 +35,14 @@ const deleteFontFace = (index: number) => {
       :min="10"
       :max="100"
     >
+      <Icon
+        name="question"
+        class="question-icon"
+        :size="13"
+        v-tooltip="{
+          content: $t('mediaFontSizeTip')
+        }"
+      ></Icon>
     </SliderItem>
     <InputItem
       wrapper-class="font-family-item"
@@ -57,7 +66,7 @@ const deleteFontFace = (index: number) => {
         v-else
         :label="$t('fontFaceLink')"
         type="textarea"
-        :rows="2"
+        :rows="3"
         :placeholder="'https://'"
         :auto-focus="true"
         :model-value="item"
@@ -83,8 +92,9 @@ const deleteFontFace = (index: number) => {
   display: flex;
   flex-direction: column;
 
-  .label {
+  .item .label {
     font-size: 14px;
+    min-width: auto;
   }
 
   .item.column > .label {
@@ -101,6 +111,7 @@ const deleteFontFace = (index: number) => {
         flex: 0;
         margin: 2px 0 4px 0;
         font-size: 14px;
+        padding-left: 4px;
       }
       .input {
         flex: 1;

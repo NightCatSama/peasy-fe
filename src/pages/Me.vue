@@ -19,6 +19,7 @@ import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
 import { SaveProjectDto } from '@@/dto/data.dto'
 import { usePageStore } from '@/stores/page'
 import { $t } from '@/constants/i18n'
+import { placements } from 'floating-vue'
 
 const router = useRouter()
 
@@ -228,6 +229,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
                 class="data-info-btn"
                 name="save"
                 :size="9"
+                v-tooltip="{ content: $t('saveToTemplate'), placement: 'top', distance: 10 }"
                 @click="handleSaveToTemplate(item as Project)"
               ></Icon>
               <Icon
@@ -235,6 +237,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
                 class="data-info-btn"
                 name="advanced"
                 :size="11"
+                v-tooltip="{ content: $t('setting'), placement: 'top', distance: 10 }"
                 @click="handleOpenProjectModal(item as Project)"
               ></Icon>
               <Icon
@@ -242,6 +245,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
                 class="data-info-btn danger"
                 name="delete"
                 :size="10"
+                v-tooltip="{ content: $t('delete'), placement: 'top', distance: 10 }"
                 @click="handleDeleteProject(item as Project)"
               ></Icon>
             </template>
@@ -251,6 +255,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
                 class="data-info-btn"
                 name="advanced"
                 :size="11"
+                v-tooltip="{ content: $t('setting'), placement: 'top', distance: 10 }"
                 @click="handleMaterialSetting(item as IMaterialItem)"
               ></Icon>
               <Icon
@@ -258,6 +263,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
                 class="data-info-btn danger"
                 name="delete"
                 :size="10"
+                v-tooltip="{ content: $t('delete'), placement: 'top', distance: 10 }"
                 @click="handleDeleteMaterial(item as IMaterialItem)"
               ></Icon>
             </template>

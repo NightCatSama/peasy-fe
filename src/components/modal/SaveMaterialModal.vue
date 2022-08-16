@@ -72,12 +72,14 @@ const initJSONEditor = () => {
     node.moduleConfig ||
       ([
         {
-          title: 'Title',
+          title: '标题',
+          titleEn: 'Title',
           icon: 'basic',
           data: [
             {
               type: 'text',
-              label: 'Label',
+              label: '文本',
+              labelEn: 'Text',
               props: {},
               sourceValue: 'children[0].config.props.basic.text',
               targetValue: 'children[0].config.props.basic.text',

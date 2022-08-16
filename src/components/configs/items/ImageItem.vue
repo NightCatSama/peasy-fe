@@ -73,7 +73,7 @@ const handleCoverError = () => {
           v-tooltip="{
             showTriggers: ['click'],
             hideTriggers: ['click', 'hover'],
-            content: 'Stability not guaranteed',
+            content: $t('uploadTip'),
           }"
         ></Icon>
       </div>

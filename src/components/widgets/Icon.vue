@@ -72,6 +72,7 @@ import EmptyIcon from '@/assets/empty.svg'
 import ImgErrorIcon from '@/assets/img-error.svg'
 import SpinIcon from '@/assets/spin.svg'
 import KeyboardIcon from '@/assets/keyboard.svg'
+import QuestionCircleIcon from '@/assets/question-circle.svg'
 
 interface IIconProps {
   name: string
@@ -156,6 +157,7 @@ const iconMap = {
   'img-error': ImgErrorIcon,
   spin: SpinIcon,
   keyboard: KeyboardIcon,
+  'question-circle': QuestionCircleIcon,
 } as any
 
 const { name, size = 26, type = 'circle', loading, active, color } = defineProps<IIconProps>()
@@ -243,6 +245,12 @@ const style = $ref({
   }
   &.icon-color-purple {
     color: $purple;
+  }
+  &.icon-color-roseate {
+    color: $roseate;
+  }
+  &.icon-color-grey {
+    color: $grey;
   }
 }
 </style>

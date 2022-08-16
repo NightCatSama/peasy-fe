@@ -8,15 +8,17 @@ import { GroupType } from '@/config'
 import { useGroupConfigByNode, useMobileConfig, isMobileGroupConfig } from '@/utils/config'
 import { emitter } from '@/utils/event'
 import { usePageStore } from '@/stores/page'
+import { lang } from '@/constants/i18n'
 interface IGroupProps {
   title?: string
+  titleEn?: string
   groupName?: GroupType
   icon?: string
   minimize?: boolean
   defaultCollapsed?: boolean
   canAdvanced?: boolean
 }
-const { title, groupName, icon, defaultCollapsed = true, canAdvanced } = defineProps<IGroupProps>()
+const { title, titleEn, groupName, icon, defaultCollapsed = true, canAdvanced } = defineProps<IGroupProps>()
 
 const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
@@ -26,7 +28,11 @@ const displayStore = useDisplayStore()
 const { saveGroupStatus, getGroupStatus } = displayStore
 
 const groupStatusKey = $computed(() => title || groupName!)
-const showTitle = $computed(() => title || (groupName && groupTitleMap[groupName]))
+const showTitle = $computed(() => {
+  return title
+    ? lang === 'en' && titleEn || title
+    : (groupName && groupTitleMap[groupName])
+})
 
 const status = getGroupStatus(groupStatusKey)
 
@@ -74,16 +80,26 @@ const handleUnlinkPropGroup = () => {
           color="pink"
           :size="14"
           name="link-broken"
+          v-tooltip="$t('brokenLink')"
           @click.stop="handleUnlinkPropGroup"
         ></Icon>
-        <Icon
+        <div
+          v-if="showMobileConfig"
+          class="mobile-config-text"
+          v-tooltip="isMobileStyle ? $t('configMobileTip') : $t('configBothTip')"
+          @click.stop="handleSwitchMobileConfig"
+        >
+          {{ isMobileStyle ? $t('configMobile') : $t('configBoth') }}
+        </div>
+        <!-- <Icon
           v-if="showMobileConfig"
           type="btn"
-          :color="isMobileStyle ? 'red' : 'cyan'"
-          :size="14"
-          :name="isMobileStyle ? 'mobile-slash' : 'mobile'"
+          :color="isMobileStyle ? 'theme' : 'roseate'"
+          :size="12"
+          :name="isMobileStyle ? 'mobile' : 'mobile-slash'"
+          v-tooltip="isMobileStyle ? '当前只应用于移动端' : '不区分配置'"
           @click.stop="handleSwitchMobileConfig"
-        ></Icon>
+        ></Icon> -->
         <Icon
           v-if="!minimize"
           :class="{ rotate: collapsed }"
@@ -139,6 +155,7 @@ const handleUnlinkPropGroup = () => {
       flex-shrink: 0;
       display: flex;
       justify-content: flex-end;
+      align-items: center;
 
       :deep(.icon) {
         cursor: pointer;
@@ -149,6 +166,17 @@ const handleUnlinkPropGroup = () => {
         &.rotate {
           transform-origin: center;
           transform: rotateX(180deg);
+        }
+      }
+
+      .mobile-config-text {
+        font-size: 12px;
+        margin-right: 4px;
+        color: lighten($theme, 17%);
+        cursor: pointer;
+
+        &:hover {
+          color: $theme;
         }
       }
     }
