@@ -6,6 +6,7 @@ import SelectItem from './items/SelectItem.vue'
 import { PageNode } from '@/config'
 import TabsItem from './items/TabsItem.vue'
 import { $t } from '@/constants/i18n'
+import SwitchItem from './items/SwitchItem.vue'
 
 interface ILayoutGroupProps {
   node: PageNode
@@ -28,6 +29,14 @@ const alignMap: { [key in ILayout['align']]: string } = {
   stretch: $t('alignStretch'),
   baseline: $t('alignBaseline'),
 }
+const isWrap = $computed({
+  get() {
+    return layout.wrap === 'wrap'
+  },
+  set(val: boolean) {
+    layout.wrap = val ? 'wrap' : 'nowrap'
+  }
+})
 
 const previewStyle = $computed(() => useLayoutStyle(layout))
 </script>
@@ -47,6 +56,7 @@ const previewStyle = $computed(() => useLayoutStyle(layout))
     </TabsItem>
     <SelectItem :label="$t('mainAxisAlign')" v-model="layout.justify" :options="justifyMap"></SelectItem>
     <SelectItem :label="$t('crossAxisAlign')" v-model="layout.align" :options="alignMap"></SelectItem>
+    <SwitchItem :label="$t('wrap')" v-model="isWrap"></SwitchItem>
   </Group>
 </template>
 

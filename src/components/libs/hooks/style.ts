@@ -154,6 +154,7 @@ export const useLayoutStyle = (layout: ILayout) => {
     flexDirection: layout.direction,
     justifyContent: layout.justify,
     alignItems: layout.align,
+    flexWrap: layout.wrap,
   }
 }
 

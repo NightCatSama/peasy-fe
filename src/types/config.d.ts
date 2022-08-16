@@ -50,6 +50,7 @@ interface ILayout {
   direction: 'row' | 'column'
   justify: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
   align: 'start' | 'end' | 'center' | 'stretch' | 'baseline'
+  wrap: 'nowrap' | 'wrap' | 'wrap-reverse'
 }
 
 /** 字体样式 */
