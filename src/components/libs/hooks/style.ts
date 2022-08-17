@@ -242,7 +242,7 @@ export const useBackgroundStyle = (background: IBackground) => {
       backgroundImage: `linear-gradient(${
         background.backgroundGradientAngle
       }deg, ${background.backgroundGradient.map(
-        ({ color, percentage }) => `${color} ${percentage}%`
+        ({ color, percentage }) => `${getColor(color)} ${percentage}%`
       )})`,
     }
   }

@@ -11,6 +11,7 @@ import SliderItem from './items/SliderItem.vue'
 import Slider from '../widgets/Slider.vue'
 import PositionTable from '../widgets/PositionTable.vue'
 import ImageItem from './items/ImageItem.vue'
+import { getColor } from '@/components/libs/hooks/color'
 
 interface IBackgroundGroupProps {
   node: PageNode
@@ -145,7 +146,7 @@ const deleteColor = (index: number) => {
           :dot-options="
             background.backgroundGradient.map((item) => ({
               disabled: false,
-              style: { background: item.color },
+              style: { background: getColor(item.color) },
             }))
           "
           :process="
@@ -154,8 +155,8 @@ const deleteColor = (index: number) => {
                 dotsPos[i],
                 dotsPos[i + 1],
                 {
-                  background: `linear-gradient(90deg, ${background.backgroundGradient[i].color}, ${
-                    background.backgroundGradient[i + 1].color
+                  background: `linear-gradient(90deg, ${getColor(background.backgroundGradient[i].color)}, ${
+                    getColor(background.backgroundGradient[i + 1].color)
                   })`,
                 },
               ])

@@ -11,6 +11,12 @@ interface IElementProps {
 const { cover = '', name, canOperate } = defineProps<IElementProps>()
 
 let coverUrl = $ref(cover)
+let srcset = $computed(() => {
+  if (coverUrl && (window.devicePixelRatio >= 2)) {
+    return `${coverUrl} 2x`
+  }
+  return ''
+})
 
 watch(() => cover, () => {
   coverUrl = cover
@@ -47,6 +53,7 @@ const handleCoverError = () => {
       <img
         v-if="coverUrl"
         :src="coverUrl"
+        :srcset="srcset"
         @error="handleCoverError"
       >
       <div v-else class="image-placeholder">

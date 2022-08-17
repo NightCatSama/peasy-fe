@@ -24,7 +24,7 @@ export const getDefaultBasic = <
   let obj: any = {}
   if (isSomeBasicType(component, 'Text', obj)) {
     obj = {
-      text: 'Title Text',
+      text: 'Sample Text',
     }
   }
   if (isSomeBasicType(component, 'Image', obj)) {
@@ -36,8 +36,8 @@ export const getDefaultBasic = <
   if (isSomeBasicType(component, 'Icon', obj)) {
     obj = {
       name: 'home',
-      size: '2vw',
-      color: '#000',
+      size: '1rem',
+      color: '$primary',
       prefixClass: 'fa-',
       extraClass: '',
       styleLink: DefaultIconStyleLink,
@@ -53,10 +53,10 @@ export const getDefaultSize = (
   Object.assign(
     type === 'component'
       ? {
-          width: 'auto',
-          height: 'auto',
-          minWidth: '50px',
-          minHeight: '50px',
+          width: '10vw',
+          height: '10vw',
+          minWidth: 'auto',
+          minHeight: 'auto',
           maxHeight: 'none',
           maxWidth: 'none',
         }
@@ -85,9 +85,9 @@ export const getDefaultLayout = (initConfig?: Partial<ILayout>): ILayout =>
 export const getDefaultFont = (initConfig?: Partial<IFont>): IFont =>
   Object.assign(
     {
-      fontSize: '2vw',
+      fontSize: '1rem',
       lineHeight: '126%',
-      color: '#232323',
+      color: '$primary',
       fontWeight: 'normal',
       fontStyle: 'normal',
       textDecoration: 'none',
@@ -112,7 +112,7 @@ export const getDefaultBorder = (initConfig?: Partial<IBorder>): IBorder =>
     {
       borderWidth: new Array(4).fill('0px'),
       borderStyle: new Array(4).fill('solid'),
-      borderColor: new Array(4).fill('#000'),
+      borderColor: new Array(4).fill('$primary'),
       borderRadius: '0px',
     },
     initConfig
@@ -200,14 +200,14 @@ export const getDefaultAnimationSettings = (name: IAnimationItem['name']): IAnim
   if (name === 'fade') {
     return {
       fade: {
-        opacity: 0,
+        opacity: .5,
       },
     }
   }
   if (name.startsWith('slide')) {
     return {
       slide: {
-        offset: 30,
+        offset: 20,
         opacity: 1,
       },
     }

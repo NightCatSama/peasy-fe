@@ -1,5 +1,5 @@
 import { defineStore } from 'pinia'
-import { getMockBlock } from '@/utils/mock'
+import { getMockBlock, getMockImage, getMockText, getMockIcon } from '@/utils/mock'
 import {
   PageNode,
   ComponentPropsGroup,
@@ -182,18 +182,55 @@ export const usePageStore = defineStore('page', {
     async getAssetsData() {
       const res = await materialApi.get<any>('', {})
       this.materialData = res.data
-      if (this.materialData.section.length === 0) {
-        this.materialData.section.push({
-          name: '空白章节',
-          enName: 'Empty Section',
-          category: '基础',
-          categoryEn: 'Basic',
-          type: 'section',
-          cover: '',
-          dataType: DataType.Page,
-          node: getMockBlock('section'),
-        })
-      }
+
+      this.materialData.section.push({
+        name: '空白章节',
+        enName: 'Empty Section',
+        category: '基础',
+        categoryEn: 'Basic',
+        type: 'section',
+        cover: '',
+        dataType: DataType.Page,
+        node: getMockBlock('section'),
+      })
+
+      this.materialData.component.push({
+        name: '容器',
+        enName: 'Block',
+        category: '基础',
+        categoryEn: 'Basic',
+        type: 'component',
+        cover: '',
+        dataType: DataType.Page,
+        node: getMockBlock('component'),
+      }, {
+        name: '文本',
+        enName: 'Text',
+        category: '基础',
+        categoryEn: 'Basic',
+        type: 'component',
+        cover: '',
+        dataType: DataType.Page,
+        node: getMockText(),
+      }, {
+        name: '图片',
+        enName: 'Image',
+        category: '基础',
+        categoryEn: 'Basic',
+        type: 'component',
+        cover: '',
+        dataType: DataType.Page,
+        node: getMockImage(),
+      }, {
+        name: '图标',
+        enName: 'Icon',
+        category: '基础',
+        categoryEn: 'Basic',
+        type: 'component',
+        cover: '',
+        dataType: DataType.Page,
+        node: getMockIcon(),
+      })
     },
     /** 下载页面 */
     async download() {

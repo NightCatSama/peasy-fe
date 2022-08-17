@@ -15,7 +15,7 @@ import { useUserStore } from '@/stores/user'
 import { Modal } from './modal'
 import { materialApi } from '@/utils/mande'
 import SaveMaterialModal from './modal/SaveMaterialModal.vue'
-import { $t } from '@/constants/i18n'
+import { $t, lang } from '@/constants/i18n'
 
 const pageStore = usePageStore()
 const { pageData, materialData } = storeToRefs(pageStore)
@@ -63,17 +63,20 @@ const handleDragStart = (event: DragEvent, data: PageNode) => {
 }
 
 const handleDelete = async (item: IMaterialItem) => {
-  if (await Modal.confirm($t('deleteConfirm', item.name))) {
+  if (await Modal.confirm($t('deleteConfirm', getName(item)))) {
     await deleteMaterial(item.id)
     Alert($t('deleteSuccess'))
   }
 }
 
+const getName = (item: IMaterialItem) => lang === 'en' && item.enName || item.name
+const getCategory = (item: IMaterialItem) => lang === 'en' && item.categoryEn || item.category
+
 const currentNodeList = $computed(() => (materialData.value as any)[currentType])
 const currentCategory = $computed(() => {
   let map: { [category: string]: IMaterialItem[] } = {}
   currentNodeList.forEach((item: IMaterialItem) => {
-    const category = item.category || $t('notGroup')
+    const category = getCategory(item) || $t('notGroup')
     if (!map[category]) map[category] = []
     map[category].push(item)
   })
@@ -112,7 +115,7 @@ const currentCategory = $computed(() => {
           >
             <Element
               :cover="item.cover"
-              :name="item.name"
+              :name="getName(item)"
               :can-operate="isAdmin || item.uid === uid"
               @click="handleAddSection(item.node)"
               @delete="handleDelete(item)"

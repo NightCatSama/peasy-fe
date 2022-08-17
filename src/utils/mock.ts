@@ -26,9 +26,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
       props: {
         common: getDefaultCommon(),
         size: getDefaultSize(type),
-        layout: getDefaultLayout({
-          direction: 'column',
-        }),
+        layout: getDefaultLayout(),
         spacing: getDefaultSpacing(),
         border: getDefaultBorder(),
         container: getDefaultContainer(),
@@ -38,135 +36,118 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
         effect: getDefaultEffect(),
         animation: getDefaultAnimation(),
       },
-      mobile: {
+    },
+    children: []
+  }
+}
+
+export const getMockModuleBlock = (): PageNode<'Block'> => {
+  return {
+    type: 'component',
+    name: `Block`,
+    component: 'Block',
+    tags: [],
+    isModule: true,
+    moduleConfig: [
+      {
+        /** 配置名称 */
+        title: '设置',
+        titleEn: 'Setting',
+        /** 图标 */
+        icon: 'advanced',
+        /** 是否折叠 */
+        defaultCollapsed: true,
+        /** 分组数据 */
+        data: [
+          {
+            type: ModuleConfigType.Text,
+            label: '文本',
+            labelEn: 'Text',
+            props: {},
+            sourceValue: 'children[1].config.props.basic.text',
+            targetValue: 'children[1].config.props.basic.text',
+          },
+          {
+            type: ModuleConfigType.Color,
+            label: '颜色',
+            labelEn: 'Color',
+            props: {},
+            sourceValue: 'children[1].config.props.font.color',
+            targetValue: [
+              'children[1].config.props.font.color',
+              'children[0].config.props.basic.color',
+            ],
+          },
+          {
+            type: ModuleConfigType.FontSize,
+            label: '文字大小',
+            labelEn: 'Font Size',
+            props: {},
+            sourceValue: 'children[1].config.props.font.fontSize',
+            targetValue: [
+              'children[1].config.props.font.fontSize',
+              'children[0].config.props.basic.size',
+            ],
+          },
+          {
+            type: ModuleConfigType.Opacity,
+            label: '透明度',
+            labelEn: 'Opacity',
+            props: {},
+            sourceValue: 'config.props.container.opacity',
+            targetValue: 'config.props.container.opacity',
+          },
+        ],
+      },
+      {
+        title: '图片',
+        titleEn: 'Image',
+        icon: 'image',
+        defaultCollapsed: false,
+        data: [
+          {
+            type: ModuleConfigType.Tip,
+            label: '',
+            props: {
+              type: 'warning',
+              message: '可以直接输入图片地址，或点击 Upload 上传图片。',
+              messageEn: 'You can directly input the image address, or click Upload to upload images.',
+            },
+          },
+          {
+            type: ModuleConfigType.Image,
+            label: '背景图片',
+            labelEn: 'Background Image',
+            props: {},
+            sourceValue: 'config.props.background.backgroundImage',
+            targetValue: 'config.props.background.backgroundImage',
+          },
+          {
+            type: ModuleConfigType.BackgroundSize,
+            label: '',
+            props: {},
+            sourceValue: 'config.props.background.backgroundSize',
+            targetValue: 'config.props.background.backgroundSize',
+          },
+        ],
+      },
+    ],
+    config: {
+      props: {
         common: getDefaultCommon(),
-        size: getDefaultSize(type),
+        size: getDefaultSize(),
         layout: getDefaultLayout(),
         spacing: getDefaultSpacing(),
         border: getDefaultBorder(),
         container: getDefaultContainer(),
-        background: getDefaultBackground({
-          backgroundType: 'color',
-          backgroundColor: 'skyblue',
-        }),
+        background: getDefaultBackground(),
         position: getDefaultPosition(),
         event: getDefaultEvent(),
         effect: getDefaultEffect(),
         animation: getDefaultAnimation(),
       },
     },
-    children:
-      type === 'component'
-        ? []
-        : [
-            {
-              type: 'component',
-              name: `${type}-Block`,
-              component: 'Block',
-              tags: [],
-              isModule: true,
-              moduleConfig: [
-                {
-                  /** 配置名称 */
-                  title: '设置',
-                  titleEn: 'Setting',
-                  /** 图标 */
-                  icon: 'advanced',
-                  /** 是否折叠 */
-                  defaultCollapsed: true,
-                  /** 分组数据 */
-                  data: [
-                    {
-                      type: ModuleConfigType.Text,
-                      label: '文本',
-                      labelEn: 'Text',
-                      props: {},
-                      sourceValue: 'children[1].config.props.basic.text',
-                      targetValue: 'children[1].config.props.basic.text',
-                    },
-                    {
-                      type: ModuleConfigType.Color,
-                      label: '颜色',
-                      labelEn: 'Color',
-                      props: {},
-                      sourceValue: 'children[1].config.props.font.color',
-                      targetValue: [
-                        'children[1].config.props.font.color',
-                        'children[0].config.props.basic.color',
-                      ],
-                    },
-                    {
-                      type: ModuleConfigType.FontSize,
-                      label: '文字大小',
-                      labelEn: 'Font Size',
-                      props: {},
-                      sourceValue: 'children[1].config.props.font.fontSize',
-                      targetValue: [
-                        'children[1].config.props.font.fontSize',
-                        'children[0].config.props.basic.size',
-                      ],
-                    },
-                    {
-                      type: ModuleConfigType.Opacity,
-                      label: '透明度',
-                      labelEn: 'Opacity',
-                      props: {},
-                      sourceValue: 'config.props.container.opacity',
-                      targetValue: 'config.props.container.opacity',
-                    },
-                  ],
-                },
-                {
-                  title: '图片',
-                  titleEn: 'Image',
-                  icon: 'image',
-                  defaultCollapsed: false,
-                  data: [
-                    {
-                      type: ModuleConfigType.Tip,
-                      label: '',
-                      props: {
-                        type: 'warning',
-                        message: '可以直接输入图片地址，或点击 Upload 上传图片。',
-                        messageEn: 'You can directly input the image address, or click Upload to upload images.',
-                      },
-                    },
-                    {
-                      type: ModuleConfigType.Image,
-                      label: '背景图片',
-                      labelEn: 'Background Image',
-                      props: {},
-                      sourceValue: 'config.props.background.backgroundImage',
-                      targetValue: 'config.props.background.backgroundImage',
-                    },
-                    {
-                      type: ModuleConfigType.BackgroundSize,
-                      label: '',
-                      props: {},
-                      sourceValue: 'config.props.background.backgroundSize',
-                      targetValue: 'config.props.background.backgroundSize',
-                    },
-                  ],
-                },
-              ],
-              config: {
-                props: {
-                  common: getDefaultCommon(),
-                  size: getDefaultSize(),
-                  layout: getDefaultLayout(),
-                  spacing: getDefaultSpacing(),
-                  border: getDefaultBorder(),
-                  container: getDefaultContainer(),
-                  background: getDefaultBackground(),
-                  position: getDefaultPosition(),
-                  event: getDefaultEvent(),
-                  effect: getDefaultEffect(),
-                  animation: getDefaultAnimation(),
-                },
-              },
-              children: [getMockIcon('apple'), getMockText(), getMockImage()],
-            },
-          ],
+    children: [getMockIcon('apple'), getMockText(), getMockImage()],
   }
 }
 
@@ -180,7 +161,7 @@ export const getMockText = (): PageNode<'Text'> => {
       props: {
         common: getDefaultCommon(),
         basic: getDefaultBasic('Text'),
-        font: getDefaultFont({ fontSize: '2rem', color: '$primary' }),
+        font: getDefaultFont(),
         spacing: getDefaultSpacing(),
         border: getDefaultBorder(),
         background: getDefaultBackground(),
@@ -204,10 +185,7 @@ export const getMockImage = (src?: string): PageNode<'Image'> => {
       props: {
         common: getDefaultCommon(),
         basic: getDefaultBasic('Image'),
-        size: getDefaultSize('component', {
-          minHeight: '50px',
-          minWidth: '50px',
-        }),
+        size: getDefaultSize('component'),
         spacing: getDefaultSpacing(),
         border: getDefaultBorder(),
         container: getDefaultContainer(),
@@ -229,7 +207,7 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
     config: {
       props: {
         common: getDefaultCommon(),
-        basic: getDefaultBasic('Icon', { name: 'home', color: '$primary' }),
+        basic: getDefaultBasic('Icon'),
         spacing: getDefaultSpacing(),
         border: getDefaultBorder(),
         event: getDefaultEvent(),

@@ -81,6 +81,7 @@ const list: ITabItem[] = $computed(() => {
     min-height: 40px;
 
     .tab-item {
+      font-size: 13px;
       font-weight: bold;
       color: $panel-content;
       border-radius: $inner-radius;

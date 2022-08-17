@@ -33,7 +33,7 @@ const list: any = $computed(() => [
       size.height = val
       updateDirection(node)
     },
-    suffix: isSection ? ['px', '%', 'rem', 'auto'] : ['px', '%', 'rem', 'auto', 'stretch'],
+    suffix: isSection ? ['px', '%', 'rem', 'vw', 'auto'] : ['px', '%', 'rem', 'vw', 'auto', 'stretch'],
   },
   {
     hide: isSection,
@@ -49,7 +49,7 @@ const list: any = $computed(() => [
     type: 'number',
     value: size.minHeight,
     setValue: (val: string) => (size.minHeight = val),
-    suffix: ['px', '%', 'rem', 'auto'],
+    suffix: ['px', '%', 'rem', 'vw', 'auto'],
     isAdvanced: true,
   },
   {
@@ -66,7 +66,7 @@ const list: any = $computed(() => [
     type: 'number',
     value: size.maxHeight,
     setValue: (val: string) => (size.maxHeight = val),
-    suffix: ['px', '%', 'rem', 'none'],
+    suffix: ['px', '%', 'rem', 'vw', 'none'],
     isAdvanced: true,
   },
 ])
