@@ -16,6 +16,7 @@ import { Modal } from './modal'
 import { materialApi } from '@/utils/mande'
 import SaveMaterialModal from './modal/SaveMaterialModal.vue'
 import { $t, lang } from '@/constants/i18n'
+import { EmptyBlock, EmptyIcon, EmptyImage, EmptySection, EmptyText } from '@/utils/mock'
 
 const pageStore = usePageStore()
 const { pageData, materialData } = storeToRefs(pageStore)
@@ -72,7 +73,18 @@ const handleDelete = async (item: IMaterialItem) => {
 const getName = (item: IMaterialItem) => lang === 'en' && item.enName || item.name
 const getCategory = (item: IMaterialItem) => lang === 'en' && item.categoryEn || item.category
 
-const currentNodeList = $computed(() => (materialData.value as any)[currentType])
+const currentNodeList = $computed(() => {
+  const list = (materialData.value as any)[currentType]
+  if (isAdmin.value) {
+    if (currentType === 'section') {
+      return [...list, EmptySection]
+    }
+    if (currentType === 'component') {
+      return [...list, EmptyBlock, EmptyText, EmptyImage, EmptyIcon]
+    }
+  }
+  return list
+})
 const currentCategory = $computed(() => {
   let map: { [category: string]: IMaterialItem[] } = {}
   currentNodeList.forEach((item: IMaterialItem) => {

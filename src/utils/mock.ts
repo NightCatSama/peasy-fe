@@ -1,4 +1,4 @@
-import { ModuleConfigType, PageNode, PropsTypes } from '@/config'
+import { DataType, ModuleConfigType, PageNode, PropsTypes } from '@/config'
 import {
   getDefaultCommon,
   getDefaultAnimation,
@@ -215,4 +215,59 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
       },
     },
   }
+}
+
+export const EmptySection = {
+  name: '空白章节',
+  enName: 'Empty Section',
+  category: '基础',
+  categoryEn: 'Basic',
+  type: 'section',
+  cover: '',
+  dataType: DataType.Page,
+  node: getMockBlock('section'),
+}
+
+export const EmptyBlock = {
+  name: '容器',
+  enName: 'Block',
+  category: '基础',
+  categoryEn: 'Basic',
+  type: 'component',
+  cover: '',
+  dataType: DataType.Page,
+  node: getMockBlock('component'),
+}
+
+export const EmptyText = {
+  name: '文本',
+  enName: 'Text',
+  category: '基础',
+  categoryEn: 'Basic',
+  type: 'component',
+  cover: '',
+  dataType: DataType.Page,
+  node: getMockText(),
+}
+
+export const EmptyImage = {
+  name: '图片',
+  enName: 'Image',
+  category: '基础',
+  categoryEn: 'Basic',
+  type: 'component',
+  cover: '',
+  dataType: DataType.Page,
+  node: getMockImage(),
+}
+
+export const EmptyIcon = {
+  name: '图标',
+  enName: 'Icon',
+  category: '基础',
+  categoryEn: 'Basic',
+  type: 'component',
+  cover: '',
+  dataType: DataType.Page,
+  node: getMockIcon(),
 }
