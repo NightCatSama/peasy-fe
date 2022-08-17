@@ -46,5 +46,9 @@ export const useUserStore = defineStore('user', {
       this.accessToken = accessToken
       this.userInfo = userInfo
     },
+    clearUserInfo() {
+      this.accessToken = ''
+      this.userInfo = null
+    }
   },
 })

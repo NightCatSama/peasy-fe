@@ -2,6 +2,8 @@ import { defaults, mande, MandeInstance } from 'mande'
 import { useLogto } from '@logto/vue'
 import { useUserStore } from '@/stores/user'
 
+export const apiURL = (import.meta.env.VITE_BE_HOST || '') + (import.meta.env.VITE_BE_PREFIX || '')
+
 export function setLang(lang: 'zh' | 'en') {
   defaults.headers['x-language'] = lang
 }
@@ -33,7 +35,7 @@ export async function persistToken() {
   }
 }
 
-export const downloadApi = mande(import.meta.env.VITE_BE_HOST + '/api/data/download')
-export const materialApi = mande(import.meta.env.VITE_BE_HOST + '/api/data/material')
-export const projectApi = mande(import.meta.env.VITE_BE_HOST + '/api/data/project')
-export const logtoMeApi = mande(import.meta.env.VITE_BE_HOST + '/api/users/me')
+export const downloadApi = mande(apiURL + '/api/data/download')
+export const materialApi = mande(apiURL + '/api/data/material')
+export const projectApi = mande(apiURL + '/api/data/project')
+export const logtoMeApi = mande(apiURL + '/api/users/me')

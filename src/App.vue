@@ -10,10 +10,12 @@ import { logtoMeApi, persistToken } from './utils/mande'
 let isReady = $ref(false)
 
 const route = useRoute()
+const userStore = useUserStore()
+const { fetchUserInfo, clearUserInfo } = userStore
 
 onBeforeMount(async () => {
   // 先获取 token
-  await persistToken()
+  const { token } = await persistToken()
   isReady = true
 
   if (['zh', 'en'].includes(route.query?.lang as string)) {
@@ -21,7 +23,13 @@ onBeforeMount(async () => {
   }
 
   // 再获取用户信息
-  useUserStore().fetchUserInfo()
+  if (token) {
+    try {
+      fetchUserInfo()
+    } catch(e) {
+      clearUserInfo()
+    }
+  }
 })
 
 pinia.use(({ store }) => {

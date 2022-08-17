@@ -29,3 +29,7 @@ vi ./peasy-be/.env
 http://localhost:3002/oidc/jwks
 
 复制到 peasy-be/config/jwk.ts 中
+
+### pm2 启动 Logto
+
+pm2 start npm --name "logto" -- start
