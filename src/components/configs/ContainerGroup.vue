@@ -46,6 +46,7 @@ const presetShadow = $computed(() => [
       <SelectItem
         :label="$t('cursor')"
         :options="{
+          inherit: $t('inherit'),
           auto: $t('auto'),
           default: $t('default'),
           pointer: $t('pointer'),

@@ -96,7 +96,7 @@ const textShadowPreset = [
         :type="fontSetting.fontSize.type"
         @update:model-value="fontSetting.fontSize.setValue"
       />
-      <ColorItem label="Color" v-model="font.color"></ColorItem>
+      <ColorItem :label="$t('fontColor')" v-model="font.color"></ColorItem>
       <TabsItem
         :data="['left', 'center', 'right', 'justify']"
         v-model="font.textAlign"

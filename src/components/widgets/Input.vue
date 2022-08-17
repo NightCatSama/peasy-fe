@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { $t } from '@/constants/i18n';
 import { emitter } from '@/utils/event'
 import { covertSizeToOtherUnit, fixedPointToNumber, isUnitType } from '@/utils/sizeHelper'
 import { watchEffect, nextTick, watch, onMounted } from 'vue'
@@ -50,11 +51,11 @@ const suffixMap = {
   rem: 'rem',
   x: '×',
   vw: 'vw',
-  circle: 'Circle',
-  refined: 'Refined',
-  auto: 'Adaptive',
-  none: 'Unlimited',
-  stretch: 'Stretch',
+  circle: $t('unitCircle'),
+  refined: $t('unitRefined'),
+  auto: $t('unitAuto'),
+  none: $t('unitNone'),
+  stretch: $t('unitStretch'),
 }
 const hideInput = $computed(() => type === 'number' && !isUnitType(suffixInValue))
 

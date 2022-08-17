@@ -34,7 +34,7 @@ const handleClientChange = (client: IPageSetting['client']) => {
 <template>
   <div :class="['global-setting-panel']">
     <SelectItem
-      label="Support Device"
+      :label="$t('supportDevice')"
       container=".sidebar-dropdown"
       wrapper-class="select-item"
       :options="{ desktop: $t('desktop'), mobile: $t('mobile'), both: $t('bothClient') }"
@@ -42,13 +42,13 @@ const handleClientChange = (client: IPageSetting['client']) => {
       @update:model-value="handleClientChange"
     ></SelectItem>
     <InputItem
-      label="Title"
+      :label="$t('pageTitle')"
       :placeholder="$t('pageTitle')"
       wrapper-class="title-item"
       v-model="setting.title"
     ></InputItem>
     <InputItem
-      label="Desc"
+      :label="$t('pageDescription')"
       :placeholder="$t('pageDescription')"
       wrapper-class="title-item"
       v-model="setting.description"

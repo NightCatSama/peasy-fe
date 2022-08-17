@@ -56,7 +56,7 @@ export const usePageStore = defineStore('page', {
       setting: {
         client: 'both',
         /** 页面标题 */
-        title: 'Your Page Title',
+        title: 'Page Title',
         /** 页面图标 */
         favicon: '',
         /** meta 标签展示，用于 SEO 优化 */
@@ -64,11 +64,11 @@ export const usePageStore = defineStore('page', {
       } as IPageSetting,
       /** 全局的字体设置 */
       font: {
-        fontFamily: `'ZCOOL XiaoWei', PingFang SC, sans-serif`,
+        fontFamily: `'Lato', -apple-system, PingFang SC, "Helvetica Neue", sans-serif`,
         /** 自定义字体 */
-        customFontFace: ['https://fonts.googleapis.com/css2?family=ZCOOL+XiaoWei&display=swap'],
+        customFontFace: ['https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap'],
         /** 全局的字体大小 */
-        fontSize: 14,
+        fontSize: 20,
         mediaFontSize: {},
       } as IFontSetting,
     }),

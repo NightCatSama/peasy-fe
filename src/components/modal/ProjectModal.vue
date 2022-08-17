@@ -81,7 +81,7 @@ const handleCreateCover = async () => {
           type="text"
           size="sm"
           @click="handleCreateCover"
-          >Auto Create Cover</Btn
+          >{{ $t('autoCreateCover') }}</Btn
         >
       </div>
       <Btn class="save-btn" type="inner" :text="$t('save')" @click="handleSave"></Btn>

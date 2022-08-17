@@ -113,7 +113,7 @@ const handleUnlinkPropGroup = () => {
     <div class="content" v-collapse="minimize || collapsed">
       <slot :showAdvanced="showAdvanced"></slot>
       <div class="advanced-switch" v-if="canAdvanced" @click="showAdvanced = !showAdvanced">
-        <span>{{ !showAdvanced ? 'Advanced Options' : 'Hide Advanced Options' }}</span>
+        <span>{{ !showAdvanced ? $t('advancedOptions') : $t('hideAdvancedOptions') }}</span>
       </div>
     </div>
   </div>
