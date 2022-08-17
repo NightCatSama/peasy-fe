@@ -25,7 +25,7 @@ const needReloadPage = (
 export const router = createRouter({
   history: createWebHistory(import.meta.env.VITE_URL_BASE),
   routes: [
-    { path: '/', redirect: '/edit', name: 'home' },
+    { path: '', redirect: '/edit', name: 'home' },
     { path: '/edit', component: Configure, name: 'create', beforeEnter: needReloadPage },
     { path: '/edit/:id', component: Configure, name: 'edit', beforeEnter: needReloadPage },
     { path: '/me', component: Me, name: 'user' },
