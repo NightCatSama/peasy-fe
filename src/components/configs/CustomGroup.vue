@@ -10,7 +10,7 @@ import {
 } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
 import { onUpdated, reactive, useAttrs } from 'vue'
-import { get, set } from 'lodash'
+import { get, set } from 'lodash-es'
 import { useConfig } from '@/utils/config'
 import { lang } from '@/constants/i18n'
 

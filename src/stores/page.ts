@@ -19,7 +19,7 @@ import {
   useGroupConfigByNode,
 } from '@/utils/config'
 import { nextTick } from 'vue'
-import { cloneDeep, merge } from 'lodash'
+import { cloneDeep, merge } from 'lodash-es'
 import { downloadApi, materialApi, projectApi } from '@/utils/mande'
 import { SaveProjectDto } from '@@/dto/data.dto'
 import { Project } from '@@/entities/project.entity'

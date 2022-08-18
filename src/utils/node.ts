@@ -1,5 +1,5 @@
 import { IMaterialItem, PageNode } from '@/config'
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 
 /** 生成唯一的节点 name */
 const createUnitName = (originName: string, nameMap: { [key: string]: PageNode }): string => {

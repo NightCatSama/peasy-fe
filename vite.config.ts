@@ -2,6 +2,7 @@ import { defineConfig, loadEnv } from 'vite'
 import * as path from 'path'
 import vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
+import { visualizer } from 'rollup-plugin-visualizer'
 
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
@@ -10,7 +11,9 @@ export default defineConfig(({ mode }) => ({
     reactivityTransform: true
   }), svgLoader({
     defaultImport: 'component'
-  })],
+  }), loadEnv(mode, process.cwd(), '').VITE_ANALYZE ? visualizer({
+    emitFile: true,
+  }) : null],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),

@@ -17,13 +17,13 @@ import Modal from './Modal.vue'
 import { createMaterialSnapshot } from '@/utils/snapshot'
 import { watch, nextTick } from 'vue'
 import TreeNode from '../biz/TreeNode.vue'
-import JSONEditor from 'jsoneditor'
 import ImageItem from '../configs/items/ImageItem.vue'
 import { Alert, AlertError } from '@/utils/alert'
 import { useUserStore } from '@/stores/user'
-import { cloneDeep } from 'lodash'
+import { cloneDeep } from 'lodash-es'
 import { uploadByBase64 } from '@/utils/oss'
 import { $t } from '@/constants/i18n'
+import type JSONEditor from 'jsoneditor'
 
 interface SaveMaterialModalProps {
   modelValue: boolean
@@ -60,15 +60,17 @@ const isModule = $computed<boolean>({
   },
 })
 
-const createJSONEditor = (elem: HTMLElement) => new JSONEditor(elem, {
-  mode: 'text',
-  mainMenuBar: false,
-  navigationBar: false,
-  statusBar: false,
-})
-
-const initJSONEditor = () => {
+const initJSONEditor = async () => {
   if (!editItem || !node) return
+  // 异步加载 JSON 编辑器
+  const JSONEditor = (await import('jsoneditor')).default
+  // 初始化
+  const createJSONEditor = (elem: HTMLElement) => new JSONEditor(elem, {
+    mode: 'text',
+    mainMenuBar: false,
+    navigationBar: false,
+    statusBar: false,
+  })
   const moduleConfigElem = document.querySelector('.module-config') as HTMLDivElement
   const moduleDependenceElem = document.querySelector('.module-dependence') as HTMLDivElement
   if (!moduleConfigElem || !moduleDependenceElem) return

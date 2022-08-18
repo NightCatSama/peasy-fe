@@ -1,17 +1,21 @@
 import { $t } from '@/constants/i18n'
-import OSS from 'ali-oss'
 import { v4 as uuidv4 } from 'uuid'
 import { AlertError } from './alert'
 
-const client = new OSS({
-  region: 'oss-cn-shanghai',
-  accessKeyId: 'LTAI5tKHL8vmNGSxc3zbwxoD',
-  accessKeySecret: 'hJ5z4JyZOfeIY0d2FLPhyayeu1jiz9',
-  bucket: 'peasy',
-})
+export const getClient = async() => {
+  const OSS = (await import('ali-oss')).default
+  const client = new OSS({
+    region: 'oss-cn-shanghai',
+    accessKeyId: 'LTAI5tKHL8vmNGSxc3zbwxoD',
+    accessKeySecret: 'hJ5z4JyZOfeIY0d2FLPhyayeu1jiz9',
+    bucket: 'peasy',
+  })
+  return client
+}
 
 export const upload = async (file: File) => {
   try {
+    const client = await getClient()
     const res = await client.put(uuidv4(), file)
     return res.url
   } catch (e) {
@@ -31,7 +35,7 @@ export const uploadByBase64 = async (base64: string) => {
       u8arr[n] = bstr.charCodeAt(n)
     }
     const blob = new File([u8arr], 'image.png', { type: mime })
-    return upload(blob)
+    return await upload(blob)
   } catch (e) {
     console.error(e)
     AlertError($t('imageError'))
