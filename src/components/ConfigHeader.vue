@@ -621,6 +621,14 @@ emitter.on('saveColorVars', (color: string) => {
           color: $color;
         }
       }
+
+      &.primary {
+        color: $theme;
+        &:hover {
+          background: $theme;
+          color: $color;
+        }
+      }
     }
   }
 }

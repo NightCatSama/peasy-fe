@@ -1,9 +1,20 @@
 import html2canvas from 'html2canvas'
 
+const maxSnapshotWidth = 1200
+const maxSnapshotHeight = 800
+
 /** 生成截图 */
 export const createMaterialSnapshot = (el: HTMLElement, options?: any) => {
+  let { width, height } = el.getBoundingClientRect()
+  let scale = 1
+  if (width > height && width > maxSnapshotWidth) {
+    scale = maxSnapshotWidth / width
+  }
+  if (height > width && height > maxSnapshotHeight) {
+    scale = maxSnapshotHeight / height
+  }
   return html2canvas(el, {
-    scale: 1,
+    scale,
     useCORS: true,
     ignoreElements: (elem: any) => {
       if (elem.classList.contains('moveable-control-box')) {
@@ -20,4 +31,4 @@ export const createMaterialSnapshot = (el: HTMLElement, options?: any) => {
     return canvas.toDataURL('image/png', 1)
   })
 }
-;(window as any).createMaterialSnapshot = createMaterialSnapshot
+

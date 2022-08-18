@@ -23,7 +23,7 @@ export async function persistToken() {
   if (token) setToken(token)
   if (token && userInfo) {
     useUserStore().setUserInfo(token, {
-      username: userInfo.username || '',
+      username: userInfo.username || userInfo.name || '',
       avatar: userInfo.avatar || '',
       roleNames: userInfo?.role_names || [],
       uid: userInfo.sub || '',

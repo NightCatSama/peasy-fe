@@ -38,13 +38,6 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
         <SectionList />
       </div>
       <div class="bottom">
-        <div
-          class="operator-item first"
-          v-tooltip="{ content: $t('shortcut'), placement: 'right', distance: 10 }"
-          @click="$emit('update:keyboard', !keyboard)"
-        >
-          <Icon :size="26" name="keyboard" :active="keyboard" />
-        </div>
         <Dropdown
           :placement="'right-end'"
           popper-class="sidebar-dropdown"
@@ -61,6 +54,13 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
             <QuestionPanel />
           </template>
         </Dropdown>
+        <div
+          class="operator-item first"
+          v-tooltip="{ content: $t('shortcut'), placement: 'right', distance: 10 }"
+          @click="$emit('update:keyboard', !keyboard)"
+        >
+          <Icon :size="26" name="keyboard" :active="keyboard" />
+        </div>
         <Dropdown
           :placement="'right-end'"
           popper-class="sidebar-dropdown"
