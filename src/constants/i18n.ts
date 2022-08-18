@@ -266,7 +266,7 @@ export const i18nText = {
     fontFaceWeight: 'Weight',
     fontFaceLink: '字体资源路径',
     addFontFace: '添加字体',
-    colorVariableName: '变量名',
+    colorVariableName: '变量',
     colorVariableColor: '颜色',
     redirectLoading: '正在重定向中...',
     pageNotFound: '页面不存在',

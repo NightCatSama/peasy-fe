@@ -241,6 +241,7 @@ const setCurMaterial = () => {
           </div>
         </div>
         <TagList
+          v-if="!activeNode.isModule"
           :tags="activeNode.tags"
           :auto-complete-tags="getAllTags()"
           @change="(newTags: string[]) => activeNode!.tags = newTags"

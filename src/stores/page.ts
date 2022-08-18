@@ -227,7 +227,7 @@ export const usePageStore = defineStore('page', {
     },
     /** 插入 Component 组件 */
     insertNode(dragNode: PageNode, parentNode: PageNode, index: number, isLinkProp = false) {
-      const newNode = formatNodeByUniqueName(dragNode, this.nameMap, isLinkProp)
+      const newNode = formatNodeByUniqueName(this.handleInsertNode(dragNode), this.nameMap, isLinkProp)
       parentNode.children?.splice(index, 0, newNode)
       return newNode
     },
@@ -250,7 +250,7 @@ export const usePageStore = defineStore('page', {
     /** 添加 Section */
     addSection(node: PageNode, index?: number) {
       const insertIndex = index ?? this.allPageData.length
-      const newSection = formatNodeByUniqueName(node, this.nameMap)
+      const newSection = formatNodeByUniqueName(this.handleInsertNode(node), this.nameMap)
       this.allPageData.splice(insertIndex, 0, newSection)
       return newSection
     },
@@ -450,6 +450,7 @@ export const usePageStore = defineStore('page', {
         this.font.mediaFontSize[width] = fontSize
       }
     },
+    /** 转换物料组件，保存为物料时需要处理一下 propLink 等转换 */
     covertMaterialNode(material: IMaterialItem) {
       if (material.type === 'template') return material
       const node = cloneDeep(material.node) as PageNode
@@ -468,6 +469,24 @@ export const usePageStore = defineStore('page', {
       })
       material.node = node
       return material
+    },
+    /** 处理插入的组件 */
+    handleInsertNode(node: PageNode) {
+      // 若有依赖，则将依赖引入
+      if (node.isModule && node.moduleDependence) {
+        if (node.moduleDependence.customFontFace && !this.font.customFontFace.includes(node.moduleDependence.customFontFace)) {
+          this.font.customFontFace.push(node.moduleDependence.customFontFace)
+        }
+        if (node.moduleDependence.colorVars?.length > 0) {
+          this.colorVars.push(
+            ...node.moduleDependence.colorVars.filter(c1 =>
+              !this.colorVars.find(c2 => c1.name === c2.name)
+            )
+          )
+        }
+        delete node.moduleDependence
+      }
+      return node
     }
   },
 })

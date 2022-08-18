@@ -150,6 +150,13 @@ export interface PageNode<T extends ComponentName = any> {
   isModule?: boolean
   /** 模块设置 */
   moduleConfig?: IModuleConfigGroup[]
+  /** 模块依赖项 */
+  moduleDependence?: {
+    /** 字体依赖 */
+    customFontFace?: IFontSetting['customFontFace'][0]
+    /** 颜色变量依赖 */
+    colorVars?: IColorVarItem[]
+  }
 }
 
 /** 模块配置支持类型 */

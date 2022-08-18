@@ -44,6 +44,10 @@ const { isAdmin } = storeToRefs(userStore)
 let editItem: IMaterialItem | null = $ref(null)
 let coverLoading = $ref(!!autoCreateCover)
 
+let moduleConfigEditor = $ref<JSONEditor | null>(null)
+let moduleDependenceElemEditor = $ref<JSONEditor | null>(null)
+let modal = $ref<InstanceType<typeof Modal> | null>(null)
+
 const isTemplate = $computed<boolean>(() => material?.type === 'template')
 const node = $computed<PageNode | null>(() => (isTemplate ? null : (editItem?.node as PageNode)))
 const isModule = $computed<boolean>({
@@ -56,19 +60,23 @@ const isModule = $computed<boolean>({
   },
 })
 
+const createJSONEditor = (elem: HTMLElement) => new JSONEditor(elem, {
+  mode: 'text',
+  mainMenuBar: false,
+  navigationBar: false,
+  statusBar: false,
+})
+
 const initJSONEditor = () => {
   if (!editItem || !node) return
-  const elem = document.querySelector('.module-input') as HTMLDivElement
-  if (!elem) return
-  if (!editor) {
-    editor = new JSONEditor(elem, {
-      mode: 'text',
-      mainMenuBar: false,
-      navigationBar: false,
-      statusBar: false,
-    })
+  const moduleConfigElem = document.querySelector('.module-config') as HTMLDivElement
+  const moduleDependenceElem = document.querySelector('.module-dependence') as HTMLDivElement
+  if (!moduleConfigElem || !moduleDependenceElem) return
+  if (!moduleConfigEditor || !moduleDependenceElemEditor) {
+    moduleConfigEditor = createJSONEditor(moduleConfigElem)
+    moduleDependenceElemEditor = createJSONEditor(moduleDependenceElem)
   }
-  editor.set(
+  moduleConfigEditor.set(
     node.moduleConfig ||
       ([
         {
@@ -87,6 +95,12 @@ const initJSONEditor = () => {
           ],
         },
       ] as IModuleConfigGroup[])
+  )
+  moduleDependenceElemEditor.set(
+    node.moduleDependence || {
+      customFontFace: '',
+      colorVars: [{ name: '$love', color: 'pink' }]
+    } as PageNode['moduleDependence']
   )
 }
 
@@ -115,9 +129,6 @@ watch(
   { immediate: true }
 )
 
-let editor = $ref<JSONEditor | null>(null)
-let modal = $ref<InstanceType<typeof Modal> | null>(null)
-
 const handleSave = async () => {
   if (!editItem.name) {
     AlertError($t('nameRequired'))
@@ -130,7 +141,8 @@ const handleSave = async () => {
       : ({
           ...node,
           isModule: node?.isModule || false,
-          moduleConfig: node?.isModule && editor ? editor.get() : [],
+          moduleConfig: node?.isModule && moduleConfigEditor ? moduleConfigEditor.get() : [],
+          moduleDependence: node?.isModule && moduleDependenceElemEditor ? moduleDependenceElemEditor.get() : null,
         } as PageNode),
   })
   onSave?.(data)
@@ -170,9 +182,14 @@ const titleMap = {
       <ImageItem hide-label v-model="editItem.cover" :loading="coverLoading" wrapper-class="image-item" :rows="5"></ImageItem>
     </div>
     <div class="module-setting-wrapper" v-show="isAdmin && isModule">
-      <div class="module-input"></div>
-      <div class="node-tree" v-if="node">
-        <TreeNode :node="node" :preview="true"></TreeNode>
+      <div class="module-config-wrapper">
+        <div class="module-input module-config"></div>
+        <div class="node-tree" v-if="node">
+          <TreeNode :node="node" :preview="true"></TreeNode>
+        </div>
+      </div>
+      <div class="module-dependence-wrapper">
+        <div class="module-input module-dependence"></div>
       </div>
     </div>
     <div class="btn-wrapper">
@@ -225,11 +242,22 @@ const titleMap = {
 
   .module-setting-wrapper {
     display: flex;
+    flex-direction: column;
     height: 300px;
     padding: 8px;
     border-radius: $normal-radius;
     border: 1px dashed rgba($color, 60%);
     margin-bottom: 10px;
+
+    .module-config-wrapper {
+      flex: 1;
+      display: flex;
+    }
+
+    .module-dependence-wrapper {
+      height: 80px;
+      flex-shrink: 0;
+    }
 
     .module-input {
       flex: 1;
