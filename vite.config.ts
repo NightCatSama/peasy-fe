@@ -7,18 +7,33 @@ import { visualizer } from 'rollup-plugin-visualizer'
 // https://vitejs.dev/config/
 export default defineConfig(({ mode }) => ({
   base: loadEnv(mode, process.cwd(), '').VITE_URL_BASE,
-  plugins: [vue({
-    reactivityTransform: true
-  }), svgLoader({
-    defaultImport: 'component'
-  }), loadEnv(mode, process.cwd(), '').VITE_ANALYZE ? visualizer({
-    emitFile: true,
-  }) : null],
+  plugins: [
+    vue({
+      reactivityTransform: true
+    }),
+    svgLoader({
+      defaultImport: 'component'
+    }),
+    loadEnv(mode, process.cwd(), '').VITE_ANALYZE
+      ? visualizer({ emitFile: true })
+      : null
+  ],
   resolve: {
     alias: {
       '@': path.resolve(__dirname, 'src'),
       '@@': path.resolve(__dirname, './peasy-be/src'),
     },
+  },
+  build: {
+    rollupOptions: {
+      output: {
+        manualChunks: {
+          'moveable': ['moveable'],
+          'html2canvas': ['html2canvas'],
+          'lodash': ['lodash'],
+        }
+      }
+    }
   },
   css: {
     preprocessorOptions: {
@@ -26,5 +41,9 @@ export default defineConfig(({ mode }) => ({
         additionalData: `@import '@/styles/_global.scss';`
       },
     }
+  },
+  server: {
+    port: 3000,
+    host: 'localhost'
   }
 }))
