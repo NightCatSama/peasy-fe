@@ -26,6 +26,6 @@ const classNames = $computed(() => ['text', uName.value, ...tagClassNames.value]
 .text {
   display: inline-flex;
   word-wrap: break-word;
-  white-space: pre-wrap;
+  white-space: pre;
 }
 </style>
