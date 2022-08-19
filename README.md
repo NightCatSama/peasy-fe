@@ -22,7 +22,7 @@ vi ./peasy-be/.env
 
 下载 Postgresql
 
-将 logto/.env 放置到 logto 目录，再 npm start 启动
+将 env-notes/.env 放置到 logto 目录，再 npm start 启动
 
 访问 logto 服务的 jwk 的公钥集接口
 
