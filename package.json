@@ -1,12 +1,12 @@
 {
   "name": "peasy-fe",
   "private": true,
-  "version": "0.0.1",
+  "version": "0.0.3",
   "author": "NightCat<nightcat@hzfe.org>",
   "scripts": {
     "start": "npm run dev",
     "dev": "vite",
-    "build": "vue-tsc --noEmit && vite build",
+    "build": "vue-tsc --noEmit && npm version patch --no-git-tag-version && vite build",
     "build:analyze": "vue-tsc --noEmit && VITE_ANALYZE=true vite build",
     "dev:template": "vue-tsc --noEmit && VITE_IS_TEMPLATE=true vite --config vite.template.config.ts",
     "build:template": "rm -rf template-dist/ && vue-tsc --noEmit && VITE_IS_TEMPLATE=true vite build --config vite.template.config.ts && npm run template",
