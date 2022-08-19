@@ -289,7 +289,7 @@ emitter.on('saveColorVars', (color: string) => {
         </template>
       </Dropdown>
       <Select
-        class="mode-wrapper"
+        :class="['mode-wrapper', displayMode]"
         :options="modeMap"
         :display="'inline'"
         placement="bottom-start"
@@ -297,7 +297,7 @@ emitter.on('saveColorVars', (color: string) => {
         @update:model-value="handleModeClick"
       >
         <template #value>
-          <Icon class="icon" :name="modeMap[displayMode].icon" :size="11"></Icon>
+          <Icon class="icon" :name="modeMap[displayMode].icon" :size="displayMode === 'preview' ? 13 : 11"></Icon>
           <span>{{ modeMap[displayMode].title }}</span>
         </template>
       </Select>
@@ -434,9 +434,8 @@ emitter.on('saveColorVars', (color: string) => {
       left: 100%;
       top: 50%;
       transform: translate(12px, -50%);
-      font-size: 13px;
-      background: $panel;
-      padding: 6px 16px 6px 14px;
+      font-size: 12px;
+      padding: 6px 10px 6px 8px;
       border-radius: $normal-radius;
       white-space: nowrap;
       display: flex;
@@ -445,15 +444,28 @@ emitter.on('saveColorVars', (color: string) => {
       cursor: pointer;
       user-select: none;
       transition: all 0.3s;
+      background: $panel;
 
       &:hover {
         background: lighten($panel, 3%);
       }
 
+      &.drag {
+        background: $brown;
+        &:hover {
+          background: lighten($brown, 3%);
+        }
+      }
+      &.preview {
+        background: $purple;
+        &:hover {
+          background: lighten($purple, 3%);
+        }
+      }
+
       :deep(.icon) {
         padding: 0;
-        margin-right: 4px;
-        margin-top: -0.03em;
+        margin-right: 3px;
       }
     }
     .color-plate {

@@ -174,6 +174,7 @@ const handleUnlinkPropGroup = () => {
         margin-right: 4px;
         color: lighten($theme, 17%);
         cursor: pointer;
+        user-select: none;
 
         &:hover {
           color: $theme;
