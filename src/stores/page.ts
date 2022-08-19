@@ -342,7 +342,7 @@ export const usePageStore = defineStore('page', {
     copyActiveNode() {
       if (!this.activeNode) return
       if (this.activeNode.type === 'section') {
-        this.addSection(this.activeNode)
+        this.addSection(this.activeNode, this.allPageData.indexOf(this.activeNode) + 1)
       } else if (this.activeParentNode) {
         const index = this.activeParentNode?.children?.indexOf(this.activeNode)
         const newNode = this.insertNode(

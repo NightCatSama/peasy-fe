@@ -13,12 +13,8 @@ const pageStore = usePageStore()
 const { addSection, setActiveSection, setActiveNode, swapSection } = pageStore
 const { activeSection, isActiveAllSection, allPageData } = storeToRefs(pageStore)
 
-const displayStore = useDisplayStore()
-const { setDeviceByParent } = displayStore
-const { device, displayMode } = storeToRefs(displayStore)
-
 const dragStore = useDragStore()
-const { dragNode, dragType, dragNodeType } = storeToRefs(dragStore)
+const { dragNode, dragType, dragNodeType, isCancelDrag } = storeToRefs(dragStore)
 
 const handleSectionItemClick = (item: PageNode | null) => {
   setActiveSection(item)
@@ -39,6 +35,7 @@ const dragEvents = $computed(() => ({
     if (!dragNode.value) return
     // 交互组件位置
     if (event.pullMode === 'clone' && event.newIndex !== void 0) {
+      if (isCancelDrag.value) return
       addSection(dragNode.value, event.newIndex! - (showAllItem ? 1 : 0))
     }
   },

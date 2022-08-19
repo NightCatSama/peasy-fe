@@ -73,6 +73,7 @@ import ImgErrorIcon from '@/assets/img-error.svg'
 import SpinIcon from '@/assets/spin.svg'
 import KeyboardIcon from '@/assets/keyboard.svg'
 import QuestionCircleIcon from '@/assets/question-circle.svg'
+import VariableIcon from '@/assets/variable.svg'
 
 interface IIconProps {
   name: string
@@ -158,6 +159,7 @@ const iconMap = {
   spin: SpinIcon,
   keyboard: KeyboardIcon,
   'question-circle': QuestionCircleIcon,
+  variable: VariableIcon,
 } as any
 
 const { name, size = 26, type = 'circle', loading, active, color } = defineProps<IIconProps>()
