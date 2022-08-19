@@ -56,7 +56,9 @@ const isModule = $computed<boolean>({
     return (!isTemplate && node?.isModule) || false
   },
   set(val: boolean) {
-    if (val) initJSONEditor()
+    if (val) {
+      nextTick(() => initJSONEditor())
+    }
     editItem.node.isModule = val
   },
 })
@@ -67,7 +69,7 @@ const initJSONEditor = async () => {
   moduleDependenceElemEditor = await createJSONEditor('.module-dependence')
   if (!moduleConfigEditor || !moduleDependenceElemEditor) return
   moduleConfigEditor.set(
-    node.moduleConfig ||
+    node.moduleConfig?.length > 0 ? node.moduleConfig :
       ([
         {
           title: '标题',
@@ -114,6 +116,8 @@ watch(
       }
     } else {
       editItem = null
+      moduleConfigEditor?.destroy()
+      moduleDependenceElemEditor?.destroy()
     }
   },
   { immediate: true }
@@ -171,7 +175,7 @@ const titleMap = {
       </div>
       <ImageItem hide-label v-model="editItem.cover" :loading="coverLoading" wrapper-class="image-item" :rows="5"></ImageItem>
     </div>
-    <div class="module-setting-wrapper" v-show="isAdmin && isModule">
+    <div class="module-setting-wrapper" v-if="isAdmin && isModule">
       <div class="module-config-wrapper">
         <div class="module-input module-config"></div>
         <div class="node-tree" v-if="node">
@@ -235,6 +239,7 @@ const titleMap = {
     flex-direction: column;
     height: 300px;
     padding: 8px;
+    overflow: hidden;
     border-radius: $normal-radius;
     border: 1px dashed rgba($color, 60%);
     margin-bottom: 10px;
@@ -242,11 +247,13 @@ const titleMap = {
     .module-config-wrapper {
       flex: 1;
       display: flex;
+      overflow: hidden;
     }
 
     .module-dependence-wrapper {
       height: 80px;
       flex-shrink: 0;
+      overflow: hidden;
     }
 
     .module-input {
