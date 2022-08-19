@@ -476,13 +476,16 @@ export const usePageStore = defineStore('page', {
       if (node.isModule && node.moduleDependence) {
         if (node.moduleDependence.customFontFace && !this.font.customFontFace.includes(node.moduleDependence.customFontFace)) {
           this.font.customFontFace.push(node.moduleDependence.customFontFace)
+          Alert($t('fontFaceImportTip'))
         }
         if (node.moduleDependence.colorVars?.length > 0) {
-          this.colorVars.push(
-            ...node.moduleDependence.colorVars.filter(c1 =>
-              !this.colorVars.find(c2 => c1.name === c2.name)
-            )
+          const addColorVars = node.moduleDependence.colorVars.filter(c1 =>
+            !this.colorVars.find(c2 => c1.name === c2.name)
           )
+          if (addColorVars.length > 0) {
+            this.colorVars.push(...addColorVars)
+            Alert($t('colorVarImportTip'))
+          }
         }
         delete node.moduleDependence
       }

@@ -36,6 +36,9 @@ const handleChange = (img: string) => {
 
 watch(() => modelValue, () => {
   coverUrl = modelValue
+  if (coverUrl) {
+    showCover = true
+  }
 }, { immediate: true })
 
 const uploadImage = async (e: InputEvent) => {
