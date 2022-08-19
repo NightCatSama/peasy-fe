@@ -23,7 +23,7 @@ import { useUserStore } from '@/stores/user'
 import { cloneDeep } from 'lodash-es'
 import { uploadByBase64 } from '@/utils/oss'
 import { $t } from '@/constants/i18n'
-import type JSONEditor from 'jsoneditor'
+import JSONEditor from 'jsoneditor'
 
 interface SaveMaterialModalProps {
   modelValue: boolean
@@ -62,8 +62,6 @@ const isModule = $computed<boolean>({
 
 const initJSONEditor = async () => {
   if (!editItem || !node) return
-  // 异步加载 JSON 编辑器
-  const JSONEditor = (await import('jsoneditor')).default
   // 初始化
   const createJSONEditor = (elem: HTMLElement) => new JSONEditor(elem, {
     mode: 'text',
