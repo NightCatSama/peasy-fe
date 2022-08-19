@@ -237,6 +237,7 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
       delete elem.dataset.resizeHeight
     }
     isResizing = false
+    emitter.emit('saveHistory')
   })
 
   if (!disableMove) {
@@ -303,6 +304,7 @@ export const openDragMode = (activeElem?: HTMLDivElement) => {
         delete elem.dataset[`${key}Move`]
       }
     })
+    emitter.emit('saveHistory')
   })
 }
 

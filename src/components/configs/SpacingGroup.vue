@@ -15,7 +15,7 @@ const handleInput = (e: InputEvent) => {
   const value = elem.value
   if (value.length > 4) {
     elem.value = value.slice(0, 4)
-  } else if (!/\.|[0-9]/.test(value[value.length - 1])) {
+  } else if (!/\.|[0-9]|-/.test(value[value.length - 1])) {
     elem.value = value.slice(0, -1)
   }
 }
