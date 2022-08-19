@@ -2,6 +2,8 @@
 export default {
   inheritAttrs: false,
 }
+
+const iconLinkList = []
 </script>
 
 <script setup lang="ts">
@@ -26,10 +28,12 @@ watch(
       styleElem = null
     }
     if (props.basic.styleLink) {
+      if (iconLinkList.includes(props.basic.styleLink)) return
       styleElem = document.createElement('link')
       styleElem.rel = 'stylesheet'
       styleElem.href = props.basic.styleLink
       document.body.appendChild(styleElem)
+      iconLinkList.push(props.basic.styleLink)
     }
   },
   { immediate: true }
