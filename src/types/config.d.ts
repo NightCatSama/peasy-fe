@@ -136,11 +136,12 @@ interface IContainer {
 interface IEvent {
   /** 事件类型 */
   type: 'tap' | 'mousedown' | 'touchstart'
-  action: 'link' | 'func'
+  action: 'link' | 'func' | 'scrollTo'
   stopPropagation: boolean
   link: string
   openNewTab: boolean
   execFunction: string
+  scrollTarget: string
 }
 
 /** 动效 */

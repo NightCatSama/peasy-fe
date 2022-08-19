@@ -26,7 +26,7 @@ const { node, event } = defineProps<IEventGroupProps>()
         :options="{ tap: $t('eventTap'), mousedown: $t('eventMouseDown'), touchstart: $t('eventTouchStart') }"
         v-model="event.type"
       ></SelectItem>
-      <TabsItem :data="{ link: $t('link'), func: $t('function') }" v-model="event.action"></TabsItem>
+      <TabsItem :data="{ link: $t('link'), scrollTo: $t('scrollTo'), func: $t('function') }" v-model="event.action"></TabsItem>
       <template v-if="event.action === 'link'">
         <InputItem
           :label="$t('link')"
@@ -35,6 +35,16 @@ const { node, event } = defineProps<IEventGroupProps>()
           :placeholder="$t('linkPlaceholder')"
           :model-value="event.link || ''"
           @update:model-value="(value: string) => event.link = value"
+        ></InputItem>
+      </template>
+      <template v-if="event.action === 'scrollTo'">
+        <InputItem
+          :label="$t('scrollTo')"
+          :placeholder="$t('scrollToPlaceholder')"
+          type="textarea"
+          :rows="2"
+          :model-value="event.scrollTarget"
+          @update:model-value="(value: string) => event.scrollTarget = value"
         ></InputItem>
       </template>
       <template v-if="event.action === 'func'">

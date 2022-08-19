@@ -167,6 +167,7 @@ export const getDefaultEvent = (initConfig?: Partial<IEvent>): IEvent =>
       link: '',
       openNewTab: true,
       execFunction: '',
+      scrollTarget: ''
     },
     initConfig
   )

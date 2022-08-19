@@ -43,6 +43,21 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
         const args = '...args'
         const fn = new Function(args, `var [event] = args;${event.execFunction}`)
         fn(e)
+      } else if (event.action === 'scrollTo') {
+        if (event.scrollTarget) {
+          if (+event.scrollTarget >= 0) {
+            const wrap = editContext.isEditMode ? document.querySelector('.edit-wrapper') : document.querySelector('#app')
+            wrap.scrollTo({
+              top: +event.scrollTarget,
+              behavior: 'smooth'
+            })
+          } else {
+            const elem = document.querySelector(`[data-name="${event.scrollTarget}"]`) as HTMLElement
+            elem?.scrollIntoView({
+              behavior: 'smooth'
+            })
+          }
+        }
       }
     }
 
