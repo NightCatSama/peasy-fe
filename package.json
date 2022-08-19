@@ -6,6 +6,7 @@
   "scripts": {
     "start": "npm run dev",
     "dev": "vite",
+    "deploy": "sh scripts/deploy.sh",
     "build": "vue-tsc --noEmit && npm version patch --no-git-tag-version && vite build",
     "build:analyze": "vue-tsc --noEmit && VITE_ANALYZE=true vite build",
     "dev:template": "vue-tsc --noEmit && VITE_IS_TEMPLATE=true vite --config vite.template.config.ts",
