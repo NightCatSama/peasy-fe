@@ -30,10 +30,15 @@ import { Modal } from '@/components/modal'
 import ProjectModal from '@/components/modal/ProjectModal.vue'
 import { destroyMoveable } from '@/utils/moveable'
 import { $t } from '@/constants/i18n'
+import { useUserStore } from '@/stores/user'
+import { getJSONEditor } from '@/utils/jsoneditor'
 
 const route = useRoute()
 const router = useRouter()
 const id = $computed(() => (route.params?.id as string) || '')
+
+const userStore = useUserStore()
+const { isAdmin } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
 const { setting, activeSection, allPageData, colorVars, font, project } = storeToRefs(pageStore)
@@ -254,6 +259,12 @@ watch(
   () => font.value,
   () => useFont(font.value, '.edit-content'),
   { deep: true, immediate: true, flush: 'sync' }
+)
+
+watch (
+  () => isAdmin.value,
+  (val) => val && getJSONEditor(),
+  { immediate: true }
 )
 </script>
 
