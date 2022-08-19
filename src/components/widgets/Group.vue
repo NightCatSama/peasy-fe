@@ -85,7 +85,7 @@ const handleUnlinkPropGroup = () => {
         ></Icon>
         <div
           v-if="showMobileConfig"
-          class="mobile-config-text"
+          :class="['mobile-config-text', { mobile: isMobileStyle }]"
           v-tooltip="isMobileStyle ? $t('configMobileTip') : $t('configBothTip')"
           @click.stop="handleSwitchMobileConfig"
         >
@@ -177,6 +177,10 @@ const handleUnlinkPropGroup = () => {
 
         &:hover {
           color: $theme;
+        }
+
+        &.mobile {
+          color: $orange;
         }
       }
     }
