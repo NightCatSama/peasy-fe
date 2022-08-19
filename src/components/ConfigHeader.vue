@@ -391,7 +391,7 @@ emitter.on('saveColorVars', (color: string) => {
       position: relative;
       top: 2px;
       padding: 0;
-      margin-left: 4px;
+      margin-left: 10px;
       color: $color;
     }
   }
