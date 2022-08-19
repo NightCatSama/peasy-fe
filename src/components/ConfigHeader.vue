@@ -309,7 +309,7 @@ emitter.on('saveColorVars', (color: string) => {
         :size="16"
         type="btn"
         v-tooltip="$t('redo')"
-        @click="() => updateAllPageNode(undoHistory())"
+        @click="() => canUndoHistory && updateAllPageNode(undoHistory())"
       ></Icon>
       <Icon
         :class="['redo-icon', { disabled: !canRedoHistory }]"
@@ -317,7 +317,7 @@ emitter.on('saveColorVars', (color: string) => {
         :size="16"
         type="btn"
         v-tooltip="$t('redo')"
-        @click="() => updateAllPageNode(redoHistory())"
+        @click="() => canRedoHistory && updateAllPageNode(redoHistory())"
       ></Icon>
       <Btn
         class="save-btn"

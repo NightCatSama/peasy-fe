@@ -31,6 +31,7 @@ export default defineConfig(({ mode }) => ({
           'moveable': ['moveable'],
           'html2canvas': ['html2canvas'],
           'lodash': ['lodash'],
+          'jsoneditor': ['jsoneditor'],
         }
       }
     }

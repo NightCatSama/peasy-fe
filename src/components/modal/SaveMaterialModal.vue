@@ -22,8 +22,9 @@ import { Alert, AlertError } from '@/utils/alert'
 import { useUserStore } from '@/stores/user'
 import { cloneDeep } from 'lodash-es'
 import { uploadByBase64 } from '@/utils/oss'
+import { createJSONEditor } from '@/utils/jsoneditor'
 import { $t } from '@/constants/i18n'
-import JSONEditor from 'jsoneditor'
+import type JSONEditor from 'jsoneditor'
 
 interface SaveMaterialModalProps {
   modelValue: boolean
@@ -61,21 +62,10 @@ const isModule = $computed<boolean>({
 })
 
 const initJSONEditor = async () => {
-  if (!editItem || !node) return
-  // 初始化
-  const createJSONEditor = (elem: HTMLElement) => new JSONEditor(elem, {
-    mode: 'text',
-    mainMenuBar: false,
-    navigationBar: false,
-    statusBar: false,
-  })
-  const moduleConfigElem = document.querySelector('.module-config') as HTMLDivElement
-  const moduleDependenceElem = document.querySelector('.module-dependence') as HTMLDivElement
-  if (!moduleConfigElem || !moduleDependenceElem) return
-  if (!moduleConfigEditor || !moduleDependenceElemEditor) {
-    moduleConfigEditor = createJSONEditor(moduleConfigElem)
-    moduleDependenceElemEditor = createJSONEditor(moduleDependenceElem)
-  }
+  if (!editItem || !node || !isAdmin) return
+  moduleConfigEditor = await createJSONEditor('.module-config')
+  moduleDependenceElemEditor = await createJSONEditor('.module-dependence')
+  if (!moduleConfigEditor || !moduleDependenceElemEditor) return
   moduleConfigEditor.set(
     node.moduleConfig ||
       ([
