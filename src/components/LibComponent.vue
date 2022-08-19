@@ -29,8 +29,7 @@ const { dragNode, dragType, dropZone, dragNodeType, isCancelDrag } = storeToRefs
 const { setDropZone, setDragNode, getIsInDragNode } = dragStore
 
 const displayStore = useDisplayStore()
-const { lockDrag } = displayStore
-const { displayMode } = storeToRefs(displayStore)
+const { displayMode, lockDrag } = storeToRefs(displayStore)
 
 const componentRef = ref(null)
 const $el = $computed(() => (componentRef?.value as any)?.$el as HTMLDivElement)
@@ -178,7 +177,7 @@ watch(
 const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
   if (
     displayMode.value === 'drag' || // 拖拽模式下
-    (!lockDrag && ['absolute', 'fixed'].includes(useConfigProps(subItem).position?.position || '')) // 组件调整绝对定位位置时
+    (!lockDrag.value && ['absolute', 'fixed'].includes(useConfigProps(subItem).position?.position || '')) // 组件调整绝对定位位置时
   ) {
     e.stopPropagation()
   }
