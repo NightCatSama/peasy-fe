@@ -1,9 +1,10 @@
 {
   "name": "peasy-fe",
   "private": true,
-  "version": "0.0.14",
+  "version": "0.0.15",
   "author": "NightCat<nightcat@hzfe.org>",
   "scripts": {
+    "prebuild": "npm run cp:types",
     "start": "npm run dev",
     "dev": "vite",
     "deploy": "sh scripts/deploy.sh",
