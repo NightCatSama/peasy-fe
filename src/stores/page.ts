@@ -227,7 +227,7 @@ export const usePageStore = defineStore('page', {
     },
     /** 插入 Component 组件 */
     insertNode(dragNode: PageNode, parentNode: PageNode, index: number, isLinkProp = false) {
-      const newNode = formatNodeByUniqueName(this.handleInsertNode(dragNode), this.nameMap, isLinkProp)
+      const newNode = this.handleInsertNode(formatNodeByUniqueName(dragNode, this.nameMap, isLinkProp))
       parentNode.children?.splice(index, 0, newNode)
       return newNode
     },
@@ -250,7 +250,7 @@ export const usePageStore = defineStore('page', {
     /** 添加 Section */
     addSection(node: PageNode, index?: number) {
       const insertIndex = index ?? this.allPageData.length
-      const newSection = formatNodeByUniqueName(this.handleInsertNode(node), this.nameMap)
+      const newSection = this.handleInsertNode(formatNodeByUniqueName(node, this.nameMap))
       this.allPageData.splice(insertIndex, 0, newSection)
       return newSection
     },

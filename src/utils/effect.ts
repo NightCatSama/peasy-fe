@@ -7,6 +7,7 @@ import {
   PageNode,
 } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
+import { $t } from '@/constants/i18n'
 import { useConfigProps } from './config'
 
 export interface IEffectShowItem {
@@ -41,32 +42,32 @@ export const getEffectMapByNode = (node: PageNode, isSelf?: boolean): IEffectSho
 
 export const allEffectMap: IEffectShowItemMap = {
   color: {
-    label: 'Font Color',
+    label: $t('fontColor'),
     ...getFormPropsByType('color'),
     defaultValue: DefaultColor,
   },
   fontSize: {
-    label: 'Font Size',
+    label: $t('fontSize'),
     ...getFormPropsByType('fontSize'),
     defaultValue: '16px',
   },
   borderColor: {
-    label: 'Border Color',
+    label: $t('borderColor'),
     ...getFormPropsByType('borderColor'),
     defaultValue: DefaultColor,
   },
   backgroundColor: {
-    label: 'Background Color',
+    label: $t('backgroundColor'),
     ...getFormPropsByType('backgroundColor'),
     defaultValue: DefaultColor,
   },
   opacity: {
-    label: 'Opacity',
+    label: $t('opacity'),
     ...getFormPropsByType('opacity'),
     defaultValue: 1,
   },
   hide: {
-    label: 'Hidden',
+    label: $t('hidden'),
     ...getFormPropsByType('hide'),
     defaultValue: true,
   },
@@ -81,11 +82,11 @@ export const getEffectShowItemByGroup = (
     case 'font':
       return {
         color: Object.assign({}, allEffectMap['color'], {
-          label: 'Font Color',
+          label: $t('fontColor'),
           defaultValue: (props.font as IFont)?.color ?? DefaultColor,
         }),
         fontSize: Object.assign({}, allEffectMap['fontSize'], {
-          label: 'Font Size',
+          label: $t('fontSize'),
           defaultValue: (props.font as IFont)?.fontSize ?? '18px',
         }),
       }
@@ -121,11 +122,11 @@ export const getEffectShowItemByGroup = (
         const basic = props.basic as IIconBasicType
         return {
           fontSize: Object.assign({}, allEffectMap['fontSize'], {
-            label: 'Icon Size',
+            label: $t('iconSize'),
             defaultValue: basic?.size ?? '18px',
           }),
           color: Object.assign({}, allEffectMap['color'], {
-            label: 'Icon Color',
+            label: $t('iconColor'),
             defaultValue: basic?.color ?? DefaultColor,
           }),
         }
