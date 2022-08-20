@@ -5,11 +5,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { DefaultColor, IMaterialItem, IModuleConfigGroup, PageNode, PageNodeType } from '@/config'
+import { DefaultColor, IMaterialItem, IModuleConfigGroup, PageNode, DataStatus } from '@/config'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
-import SelectItem from '../configs/items/SelectItem.vue'
-import Icon from '../widgets/Icon.vue'
 import InputItem from '../configs/items/InputItem.vue'
 import Btn from '../widgets/Btn.vue'
 import SwitchItem from '../configs/items/SwitchItem.vue'
@@ -25,6 +23,7 @@ import { uploadByBase64 } from '@/utils/oss'
 import { createJSONEditor } from '@/utils/jsoneditor'
 import { $t } from '@/constants/i18n'
 import type JSONEditor from 'jsoneditor'
+import Switch from '../widgets/Switch.vue'
 
 interface SaveMaterialModalProps {
   modelValue: boolean
@@ -165,6 +164,10 @@ const setClipboard = async (text: string) => {
   await navigator.clipboard.write(data)
 }
 
+const handleStatusChange = (bool: boolean) => {
+  editItem.status = bool ? DataStatus.Normal : DataStatus.Hidden
+}
+
 const titleMap = {
   template: $t('template'),
   component: $t('component'),
@@ -208,6 +211,11 @@ const titleMap = {
       </div>
     </div>
     <div class="btn-wrapper">
+      <Switch
+        v-if="isAdmin && editItem"
+        :model-value="!editItem.status || editItem.status === DataStatus.Normal"
+        @update:model-value="handleStatusChange"
+      ></Switch>
       <Btn class="save-btn" type="inner" :text="$t('save')" @click="handleSave"></Btn>
     </div>
   </Modal>
@@ -309,6 +317,7 @@ const titleMap = {
   .btn-wrapper {
     display: flex;
     justify-content: flex-end;
+    align-items: center;
 
     .save-btn {
       min-height: 36px;

@@ -54,6 +54,7 @@ let titleMap = {
 }
 
 onMounted(async () => {
+  if (!isAuthenticated) return
   const { data } = await projectApi.get<IResponse<Project[]>>('')
   showMap['project'] = data
   const res = await materialApi.get<IResponse<{ [type: string]: IMaterialItem[] }>>('', {

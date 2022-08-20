@@ -208,6 +208,14 @@ export interface IModuleConfigItem {
   targetValue?: string | string[]
 }
 
+/** 数据状态 */
+export enum DataStatus {
+  /** 正常显示 */
+  Normal = 1,
+  /** 隐藏 */
+  Hidden = 2,
+}
+
 /** 物料数据 */
 export interface IMaterialItem {
   /** 物料名称 */
@@ -228,6 +236,8 @@ export interface IMaterialItem {
   cover?: string
   id?: string
   uid?: string
+  /** 数据状态 */
+  status?: DataStatus
   createDate?: Date
   updateDate?: Date
 }
