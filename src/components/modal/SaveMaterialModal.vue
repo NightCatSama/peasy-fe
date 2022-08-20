@@ -149,7 +149,7 @@ const handleTreeNodeClick = (e: Event) => {
   let list = []
   while (targetElem && !targetElem.classList.contains('node-tree')) {
     if (targetElem.classList.contains('tree-node')) {
-      list.push(
+      list.unshift(
         Array.from((targetElem.parentElement as HTMLDivElement).children).indexOf(targetElem)
       )
     }
@@ -160,6 +160,7 @@ const handleTreeNodeClick = (e: Event) => {
 }
 
 const setClipboard = async (text: string) => {
+  Alert('copy to clipboard: ' + text)
   const data = [new ClipboardItem({ 'text/plain': new Blob([text], { type: 'text/plain' }) })];
   await navigator.clipboard.write(data)
 }
