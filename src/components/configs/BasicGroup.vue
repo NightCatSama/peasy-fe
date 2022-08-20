@@ -54,7 +54,7 @@ const configs: ShowItem[] = $computed(() => {
         component: SelectItem,
         props: {
           label: $t('whiteSpace'),
-          modelValue: basic.whiteSpace,
+          modelValue: basic.whiteSpace || '',
           options: {
             normal: $t('whiteSpaceNormal'),
             nowrap: $t('whiteSpaceNowrap'),
