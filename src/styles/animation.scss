@@ -118,3 +118,29 @@
     transform: rotate(360deg);
   }
 }
+
+@keyframes rainbow {
+  0% {
+    color: $blue;
+  }
+
+  20% {
+    color: $red;
+  }
+
+  40% {
+    color: $yellow;
+  }
+
+  60% {
+    color: $purple;
+  }
+
+  80% {
+    color: $orange;
+  }
+
+  100% {
+    color: $color;
+  }
+}

@@ -2,6 +2,7 @@ import { setLang } from "@/utils/mande"
 
 export const i18nText = {
   zh: {
+    downloadLoading: "正在下载中",
     unknownError: '未知错误',
     projectSetting: '项目设置',
     download: '下载',
@@ -323,6 +324,7 @@ export const i18nText = {
 `,
   },
   en: {
+    downloadLoading: "Downloading...",
     unknownError: 'Unknown Error',
     projectSetting: 'Project Setting',
     download: 'Download',

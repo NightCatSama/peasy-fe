@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { provide, onMounted, nextTick, watch, reactive, onBeforeUnmount } from 'vue'
+import { provide, onMounted, nextTick, watch, reactive, onBeforeUnmount, inject } from 'vue'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 
@@ -63,10 +63,19 @@ const { saveHistory, undoHistory, redoHistory, setIsSave } = historyStore
 let showProjectModal = $ref(false)
 let showKeyboard = $ref(false)
 
+const { setGlobalLoading } = inject('globalLoading')
+
 /** 下载当前页面 */
 const handleDownload = async () => {
-  const res = await download()
-  downloadHtml(res.data)
+  let hide
+  const timer = setTimeout(() => hide = setGlobalLoading($t('downloadLoading')), 300)
+  try {
+    const res = await download()
+    downloadHtml(res.data)
+  } finally {
+    clearTimeout(timer)
+    hide?.()
+  }
 }
 
 /** 保存项目 */
