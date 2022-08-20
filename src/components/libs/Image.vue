@@ -5,6 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { getIsEditMode } from '@/utils/context';
 import { ref, useAttrs } from 'vue'
 import { IProps, useProps } from './hooks/common'
 
@@ -12,6 +13,8 @@ const { elem, uName, style, props, tagClassNames } = useProps(
   useAttrs() as unknown as IProps<'Image'>,
   'Image'
 )
+
+const isEditMode = getIsEditMode()
 
 const src = $computed(() => props.basic.src.trim() || '')
 
@@ -21,11 +24,14 @@ const classNames = $computed(() => [
   ...tagClassNames.value,
   { 'no-image': !props.basic.src },
 ])
+
+const componentName = $computed(() => isEditMode ? 'div' : 'img')
 </script>
 
 <template>
-  <img
+  <component
     ref="elem"
+    :is="componentName"
     :class="classNames"
     :style="style"
     :id="uName"

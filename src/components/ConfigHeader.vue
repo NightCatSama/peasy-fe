@@ -124,6 +124,10 @@ const modeMap = {
     title: $t('previewMode'),
     icon: 'preview',
   },
+  grid: {
+    title: $t('gridMode'),
+    icon: 'grid',
+  },
 }
 
 const handleModeClick = (value: any) => {
@@ -146,8 +150,8 @@ useKeyPress(ShortcutKey.switchDevice, () => {
 })
 useKeyPress(ShortcutKey.SwitchDisplayMode, (e) => {
   e.preventDefault()
-  const displayModeList = ['edit', 'drag', 'preview'] as const
-  setDisplayMode(displayModeList[(displayModeList.indexOf(displayMode.value) + 1) % 3])
+  const displayModeList = ['edit', 'drag', 'preview', 'grid'] as const
+  setDisplayMode(displayModeList[(displayModeList.indexOf(displayMode.value) + 1) % displayModeList.length])
 })
 useKeyPress(ShortcutKey.SwitchMaterialPanel, (e) => {
   e.preventDefault()
@@ -443,7 +447,7 @@ emitter.on('saveColorVars', (color: string) => {
       align-items: center;
       cursor: pointer;
       user-select: none;
-      transition: all 0.3s;
+      transition: all 0.2s;
       background: $panel;
 
       &:hover {
@@ -460,6 +464,13 @@ emitter.on('saveColorVars', (color: string) => {
         background: $purple;
         &:hover {
           background: lighten($purple, 3%);
+        }
+      }
+      &.grid {
+        color: $panel;
+        background: $color;
+        &:hover {
+          background: darken($color, 7%);
         }
       }
 

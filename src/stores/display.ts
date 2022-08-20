@@ -16,7 +16,7 @@ export interface IGroupStatus {
   advanced: boolean
 }
 
-export type DisplayMode = 'preview' | 'drag' | 'edit'
+export type DisplayMode = 'preview' | 'drag' | 'edit' | 'grid'
 
 export const useDisplayStore = defineStore('display', {
   state: () => ({

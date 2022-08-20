@@ -1,3 +1,6 @@
+/**
+ * 请勿在此引入与页面生成无关的依赖
+ */
 import { inject } from 'vue'
 import type { DisplayMode } from '@/stores/display'
 

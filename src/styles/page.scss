@@ -92,7 +92,59 @@
       // display: none !important;
     }
   }
+
+  // 预览模式
   &-preview {
+    .moveable-control-box {
+      // display: none !important;
+    }
+  }
+
+  // 网格模式
+  &-grid {
+    .lib-component {
+      position: relative;
+      // transition: font-size 0.3s;
+      animation: none !important;
+
+      .inModule {
+        pointer-events: none;
+      }
+
+      &::before {
+        content: attr(data-name);
+        left: 0;
+        top: 0;
+        width: 100%;
+        height: 100%;
+        position: absolute;
+        z-index: 1;
+        pointer-events: none;
+        display: flex;
+        padding: 8px;
+        color: $color;
+        background: $panel-light;
+        font-weight: bold;
+        font-family: $font-family;
+        border-radius: $normal-radius;
+        font-size: 16px;
+        line-height: 1;
+        outline: 4px dashed rgba($color, 65%);
+        z-index: $grid-zIndex;
+      }
+
+      &.text::before {
+        background: $roseate;
+      }
+
+      &.image::before {
+        background: $purple;
+      }
+
+      &.fa-icon::before {
+        background: $brown;
+      }
+    }
     .moveable-control-box {
       // display: none !important;
     }

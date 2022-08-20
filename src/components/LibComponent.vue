@@ -48,7 +48,7 @@ const setActive = () => {
 const openMoveable = () => {
   if (isActive && !isHide) {
     // 预览和拖拽模式下，是不展示 moveable 的
-    if (['preview', 'drag'].includes(displayMode.value)) {
+    if (['preview', 'drag', 'grid'].includes(displayMode.value)) {
       disabledMoveable()
       return
     }
