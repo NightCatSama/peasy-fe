@@ -362,7 +362,8 @@ export const usePageStore = defineStore('page', {
     separateActiveNode() {
       if (!this.activeNode) return
       this.activeNode.isModule = false
-      delete this.activeNode.moduleConfig
+      // 不移除 moduleConfig，方便编辑
+      // delete this.activeNode.moduleConfig
       Alert($t('ungroupTip'))
     },
     /** 更新所有页面数据 */
@@ -487,7 +488,8 @@ export const usePageStore = defineStore('page', {
             Alert($t('colorVarImportTip'))
           }
         }
-        delete node.moduleDependence
+        // 不移除依赖，以便于后续修复保留
+        // delete node.moduleDependence
       }
       return node
     }

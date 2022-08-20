@@ -91,7 +91,7 @@ const initJSONEditor = async () => {
   moduleDependenceElemEditor.set(
     node.moduleDependence || {
       customFontFace: '',
-      colorVars: [{ name: '$love', color: 'pink' }]
+      colorVars: [{ name: '$primary', color: '#3e7ce8' }]
     } as PageNode['moduleDependence']
   )
 }
@@ -144,6 +144,26 @@ const handleSave = async () => {
   modal?.hide()
 }
 
+const handleTreeNodeClick = (e: Event) => {
+  let targetElem = e.target as HTMLDivElement
+  let list = []
+  while (targetElem && !targetElem.classList.contains('node-tree')) {
+    if (targetElem.classList.contains('tree-node')) {
+      list.push(
+        Array.from((targetElem.parentElement as HTMLDivElement).children).indexOf(targetElem)
+      )
+    }
+    targetElem = targetElem.parentElement as HTMLDivElement
+  }
+  list.shift()
+  setClipboard(list.map(i => `children[${i}]`).join('.'))
+}
+
+const setClipboard = async (text: string) => {
+  const data = [new ClipboardItem({ 'text/plain': new Blob([text], { type: 'text/plain' }) })];
+  await navigator.clipboard.write(data)
+}
+
 const titleMap = {
   template: $t('template'),
   component: $t('component'),
@@ -178,7 +198,7 @@ const titleMap = {
     <div class="module-setting-wrapper" v-if="isAdmin && isModule">
       <div class="module-config-wrapper">
         <div class="module-input module-config"></div>
-        <div class="node-tree" v-if="node">
+        <div class="node-tree" v-if="node" @click="handleTreeNodeClick">
           <TreeNode :node="node" :preview="true"></TreeNode>
         </div>
       </div>
