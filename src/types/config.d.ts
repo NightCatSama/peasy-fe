@@ -12,6 +12,7 @@ interface ICommonType {
 /** Text 组件基础配置 */
 interface ITextBasicType {
   text: string
+  whiteSpace: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap'
 }
 
 /** Image 组件基础配置 */

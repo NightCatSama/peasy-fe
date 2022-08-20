@@ -17,6 +17,7 @@ import {
   useSizeStyle,
   useSpacingStyle,
   useStyle,
+  useTextBasicStyle,
 } from './style'
 
 export type IProps<T extends ComponentName = any> = {
@@ -37,7 +38,10 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
 
   const style = computed(() =>
     useStyle({
-      ...(componentTypeName === 'Image'
+      ...(
+        componentTypeName === 'Text'
+        ? useTextBasicStyle(propsRef.basic)
+        : componentTypeName === 'Image'
         ? useImageBasicStyle(propsRef.basic)
         : componentTypeName === 'Icon'
         ? useIconBasicStyle(propsRef.basic)

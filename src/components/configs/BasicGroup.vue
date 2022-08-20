@@ -50,6 +50,23 @@ const configs: ShowItem[] = $computed(() => {
           basic.text = val
         },
       },
+      {
+        component: SelectItem,
+        props: {
+          label: $t('whiteSpace'),
+          modelValue: basic.whiteSpace,
+          options: {
+            normal: $t('whiteSpaceNormal'),
+            nowrap: $t('whiteSpaceNowrap'),
+            pre: $t('whiteSpacePre'),
+            'pre-wrap': $t('whiteSpacePreWrap'),
+            'pre-line': $t('whiteSpacePreLine'),
+          },
+        },
+        setValue: (val: ITextBasicType['whiteSpace']) => {
+          basic.whiteSpace = val
+        },
+      },
     ]
   }
   /** Image 组件 */

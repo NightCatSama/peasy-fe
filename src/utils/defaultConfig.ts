@@ -25,6 +25,7 @@ export const getDefaultBasic = <
   if (isSomeBasicType(component, 'Text', obj)) {
     obj = {
       text: 'Sample Text',
+      whiteSpace: 'pre-line',
     }
   }
   if (isSomeBasicType(component, 'Image', obj)) {

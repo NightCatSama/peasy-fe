@@ -25,6 +25,14 @@ export const useStyle = (styles: any) => {
   return styles
 }
 
+export const useTextBasicStyle = (basic: ITextBasicType) => {
+  if (!basic) return {}
+
+  return {
+    whiteSpace: basic.whiteSpace,
+  }
+}
+
 export const useImageBasicStyle = (basic: IImageBasicType) => {
   if (!basic) return {}
 
