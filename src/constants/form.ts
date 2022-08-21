@@ -69,6 +69,7 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
       return {
         component: InputItemVue,
         props: {
+          type: 'number',
           suffix: ['px', '%', 'rem', 'vw', 'auto', 'stretch'],
         }
       }

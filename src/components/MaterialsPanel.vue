@@ -8,7 +8,7 @@ import { storeToRefs } from 'pinia'
 import Element from './widgets/Element.vue'
 import { useDragStore } from '@/stores/drag'
 import { DisplayMode, useDisplayStore } from '@/stores/display'
-import { PageNode, IMaterialItem } from '@/config'
+import { PageNode, IMaterialItem, DataStatus } from '@/config'
 import Tabs from './widgets/Tabs.vue'
 import { Alert, AlertError } from '@/utils/alert'
 import { useUserStore } from '@/stores/user'
@@ -126,7 +126,7 @@ const currentCategory = $computed(() => {
       >
         <template #item="{ element: item }">
           <div
-            class="element-item"
+            :class="['element-item', { 'status-hidden': (item as IMaterialItem).status === DataStatus.Hidden }]"
             :key="item.name"
             @dragstart="(event: DragEvent) => handleDragStart(event, item as IMaterialItem)"
           >
@@ -193,6 +193,10 @@ const currentCategory = $computed(() => {
     display: flex;
     justify-content: center;
     align-items: center;
+
+    &.status-hidden {
+      color: lighten($red, 20%);
+    }
 
     > .element {
       width: 100%;

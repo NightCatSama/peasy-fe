@@ -35,7 +35,7 @@ const covertText = (str: string) => {
 <style lang="scss">
 .question-panel {
   width: $question-panel-width;
-  max-height: 60vh;
+  max-height: 80vh;
   overflow-y: auto;
   border-radius: $normal-radius;
   z-index: $global-setting-panel-zIndex;

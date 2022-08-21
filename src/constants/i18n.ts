@@ -334,7 +334,7 @@ export const i18nText = {
 并在「字体设置」中添加到「字体」中或在文本组件中的单独设置。
 `,
     question4: '📮 意见反馈',
-    answer4: `👏🏻 欢迎发送邮件 → <a target="_blank" href="mailto:nightcat@hzfe.org">nightcat@hzfe.org</a>`,
+    answer4: `欢迎发送邮件 → <a target="_blank" href="mailto:nightcat@hzfe.org">nightcat@hzfe.org</a>`,
   },
   en: {
     downloadLoading: "Downloading...",
@@ -668,7 +668,7 @@ The easiest way is to select a font in Google Fonts and copy the font resource p
 and add it to [Font] in [Font Settings] or in a separate setting in the Text component.
 `,
     question4: '📮 Feedback',
-    answer4: `👏🏻 Welcome to send email → <a target="_blank" href="mailto:nightcat@hzfe.org">nightcat@hzfe.org</a>`,
+    answer4: `Welcome to send email → <a target="_blank" href="mailto:nightcat@hzfe.org">nightcat@hzfe.org</a>`,
   }
 }
 
