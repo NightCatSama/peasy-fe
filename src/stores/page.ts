@@ -100,6 +100,7 @@ export const usePageStore = defineStore('page', {
       dfs(state.allPageData)
       return nameMap
     },
+    /** 获取组件的 Tag 列表（包含子组件） */
     getTagsByNode:
       (state): ((node: PageNode[]) => string[]) =>
       (node: PageNode[]) => {
@@ -113,9 +114,11 @@ export const usePageStore = defineStore('page', {
         dfs(node)
         return Array.from(new Set(tagList))
       },
+    /** 获取页面的全部 Tag */
     getAllTags: function (state) {
       return () => this.getTagsByNode(state.allPageData)
     },
+    /** 当前激活组件的邻组件 */
     getActiveNodeRound: function (state) {
       return (change: number): PageNode | null => {
         if (!state.activeNode) return null
@@ -129,6 +132,7 @@ export const usePageStore = defineStore('page', {
         return nodeList![newIndex]
       }
     },
+    /** 获得传入组件的所有子组件 */
     getAllChildNode:
       (state) =>
       (node: PageNode): PageNode[] => {
@@ -143,9 +147,15 @@ export const usePageStore = defineStore('page', {
         }
         return children
       },
+    /** 当前激活组件的父组件 */
     activeParentNode: (state) => state.activeParentChain?.[0] || null,
+    /** 当前激活组件是否隐藏 */
     activeNodeHide: (state) =>
       state.activeNode ? useGroupConfig(state.activeNode, 'common').hide || false : false,
+    getMaterialByMaterialId: (state) => (materialId: string) => {
+      const { section, component, template } = state.materialData
+      return [...(section || []), ...(component || []), ...(template || [])].find((item) => item.id === materialId)
+    }
   },
   actions: {
     /** 获取项目数据 */
@@ -198,19 +208,21 @@ export const usePageStore = defineStore('page', {
     },
     /** 保存物料数据 */
     async fetchSaveMaterial(params: IMaterialItem) {
+      const originNode = params.node
       const material = this.covertMaterialNode(params)
-      const res = await materialApi.patch<IResponse<IMaterialItem>>(params)
-      const list = this.materialData?.[params.type]
-      if (this.materialData?.[params.type]) {
-        if (params.id) {
-          this.materialData[params.type] = this.materialData?.[params.type].map((item) => {
-            if (item.id === params.id) {
+      const res = await materialApi.patch<IResponse<IMaterialItem>>(material)
+      const list = this.materialData?.[material.type]
+      if (list) {
+        if (material.id) {
+          this.materialData[material.type] = list.map((item) => {
+            // 更新物料数据
+            if (item.id === material.id) {
               return res.data
             }
             return item
           })
         } else {
-          this.materialData[params.type].push(res.data)
+          this.materialData[material.type].push(res.data)
         }
       }
       return res.data
@@ -468,6 +480,9 @@ export const usePageStore = defineStore('page', {
           n.propLink = ''
         }
       })
+      if (node.materialId) {
+        node.materialId = ''
+      }
       material.node = node
       return material
     },

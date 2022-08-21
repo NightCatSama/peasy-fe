@@ -15,7 +15,7 @@ import { useUserStore } from '@/stores/user'
 import { Modal } from './modal'
 import { materialApi } from '@/utils/mande'
 import SaveMaterialModal from './modal/SaveMaterialModal.vue'
-import { $t, lang } from '@/constants/i18n'
+import { $t, getMaterialCategory, getMaterialName, lang } from '@/constants/i18n'
 import { EmptyBlock, EmptyIcon, EmptyImage, EmptySection, EmptyText } from '@/utils/mock'
 
 const pageStore = usePageStore()
@@ -39,9 +39,13 @@ let draggableRef = $ref<any>(null)
 let showSaveMaterialModal = $ref(false)
 let curMaterial = $ref<IMaterialItem | null>(null)
 
-const handleAddSection = (template: PageNode) => {
-  if (template.type === 'section') {
-    addSection(template)
+const handleAddSection = (material: IMaterialItem) => {
+  const node = material.node
+  if (node?.type === 'section') {
+    if (material.uid === uid.value) {
+      node.materialId = material.id
+    }
+    addSection(node)
   }
 }
 
@@ -51,27 +55,28 @@ const handleDragend = () => {
   setIsCancelDrag(false)
 }
 
-const handleDragStart = (event: DragEvent, data: PageNode) => {
+const handleDragStart = (event: DragEvent, material: IMaterialItem) => {
   const imgElem = (event.target as HTMLDivElement).querySelector('.image') as HTMLDivElement
+  const node = material.node
   event.dataTransfer!.setDragImage(imgElem, 0, 0)
-  if (data.type === 'component' && pageData.value.length === 0) {
+  if (node.type === 'component' && pageData.value.length === 0) {
     Alert($t('noSectionTip'))
   }
-  setDragNode(data)
+  if (material.uid === uid.value) {
+    node.materialId = material.id
+  }
+  setDragNode(node)
   preDisplayMode = displayMode.value
   setDisplayMode('drag')
   setTimeout(() => emitter.emit('switchMaterialsPanel', false), 100)
 }
 
 const handleDelete = async (item: IMaterialItem) => {
-  if (await Modal.confirm($t('deleteConfirm', getName(item)))) {
+  if (await Modal.confirm($t('deleteConfirm', getMaterialName(item)))) {
     await deleteMaterial(item.id)
     Alert($t('deleteSuccess'))
   }
 }
-
-const getName = (item: IMaterialItem) => lang === 'en' && item.enName || item.name
-const getCategory = (item: IMaterialItem) => lang === 'en' && item.categoryEn || item.category
 
 const currentNodeList = $computed(() => {
   const list = (materialData.value as any)[currentType]
@@ -88,7 +93,7 @@ const currentNodeList = $computed(() => {
 const currentCategory = $computed(() => {
   let map: { [category: string]: IMaterialItem[] } = {}
   currentNodeList.forEach((item: IMaterialItem) => {
-    const category = getCategory(item) || $t('notGroup')
+    const category = getMaterialCategory(item) || $t('notGroup')
     if (!map[category]) map[category] = []
     map[category].push(item)
   })
@@ -123,13 +128,13 @@ const currentCategory = $computed(() => {
           <div
             class="element-item"
             :key="item.name"
-            @dragstart="(event: DragEvent) => handleDragStart(event, item.node)"
+            @dragstart="(event: DragEvent) => handleDragStart(event, item as IMaterialItem)"
           >
             <Element
               :cover="item.cover"
-              :name="getName(item)"
+              :name="getMaterialName(item)"
               :can-operate="isAdmin || item.uid === uid"
-              @click="handleAddSection(item.node)"
+              @click="handleAddSection(item as IMaterialItem)"
               @delete="handleDelete(item)"
               @edit="() => {
                 curMaterial = item

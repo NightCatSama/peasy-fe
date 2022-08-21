@@ -282,6 +282,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
       v-if="curMaterial"
       :action-text="curMaterial.id ? $t('edit') : $t('saveOf')"
       :material="curMaterial"
+      hide-create-cover
       v-model="showSaveMaterialModal"
       :on-save="updateMaterial"
     ></SaveMaterialModal>

@@ -41,9 +41,9 @@ export const useDragStore = defineStore('drag', {
     },
   },
   actions: {
-    setDragNode(node: PageNode | null, dragType?: 'clone' | 'move') {
+    setDragNode(node: PageNode | null, dragType: 'clone' | 'move' = 'clone') {
       this.dragNode = node
-      this.dragType = dragType || 'clone'
+      this.dragType = dragType
       this.dropZone = null
       this.isCancelDrag = false
     },

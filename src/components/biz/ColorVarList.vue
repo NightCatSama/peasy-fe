@@ -9,7 +9,6 @@ import Btn from '../widgets/Btn.vue'
 import GroupItem from '../configs/items/GroupItem.vue'
 
 const pageStore = usePageStore()
-const { addSection, setActiveSection, setActiveNode, swapSection } = pageStore
 const { colorVars } = storeToRefs(pageStore)
 
 const deleteColor = (index: number) => {

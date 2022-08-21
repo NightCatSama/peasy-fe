@@ -157,6 +157,8 @@ export interface PageNode<T extends ComponentName = any> {
     /** 颜色变量依赖 */
     colorVars?: IColorVarItem[]
   }
+  /** 物料来源 */
+  materialId?: string
 }
 
 /** 模块配置支持类型 */

@@ -30,10 +30,11 @@ interface SaveMaterialModalProps {
   material?: IMaterialItem
   autoCreateCover?: boolean
   actionText?: string
+  hideCreateCover?: boolean
   onSave?: (material: IMaterialItem) => void
 }
 
-const { modelValue, material, autoCreateCover, actionText = $t('save'), onSave } = defineProps<SaveMaterialModalProps>()
+const { modelValue, material, autoCreateCover, actionText = $t('save'), hideCreateCover, onSave } = defineProps<SaveMaterialModalProps>()
 
 const pageStore = usePageStore()
 const { fetchSaveMaterial } = pageStore
@@ -62,6 +63,7 @@ const isModule = $computed<boolean>({
   },
 })
 
+/** 初始化 JSON 编辑器 */
 const initJSONEditor = async () => {
   if (!editItem || !node || !isAdmin) return
   moduleConfigEditor = await createJSONEditor('.module-config')
@@ -95,6 +97,24 @@ const initJSONEditor = async () => {
   )
 }
 
+/** 自动生成封面 */
+const handleCreateCover = async () => {
+  if (!node) return
+  try {
+    coverLoading = true
+    const elem = document.querySelector(`[data-name="${node.name}"]`) as HTMLElement
+    const cover = elem ? await createMaterialSnapshot(elem) : ''
+    if (cover.length >= 10000) {
+      const url = await uploadByBase64(cover)
+      editItem.cover = url
+    } else {
+      editItem.cover = cover
+    }
+  } finally {
+    coverLoading = false
+  }
+}
+
 watch(
   () => [material, modelValue],
   async () => {
@@ -102,16 +122,7 @@ watch(
       editItem = cloneDeep(material)
       nextTick(() => initJSONEditor())
       if (autoCreateCover) {
-        coverLoading = true
-        const elem = document.querySelector(`[data-name="${editItem.name}"]`) as HTMLElement
-        const cover = elem ? await createMaterialSnapshot(elem) : ''
-        if (cover.length >= 10000) {
-          const url = await uploadByBase64(cover)
-          editItem.cover = url
-        } else {
-          editItem.cover = cover
-        }
-        coverLoading = false
+        await handleCreateCover()
       }
     } else {
       editItem = null
@@ -143,6 +154,7 @@ const handleSave = async () => {
   modal?.hide()
 }
 
+/** 点击 TreeNode 时候自动把 children 路径贴到粘贴板 */
 const handleTreeNodeClick = (e: Event) => {
   let targetElem = e.target as HTMLDivElement
   let list = []
@@ -158,12 +170,14 @@ const handleTreeNodeClick = (e: Event) => {
   setClipboard(list.map(i => `children[${i}]`).join('.'))
 }
 
+/** 设置粘贴板 */
 const setClipboard = async (text: string) => {
   Alert('copy to clipboard: ' + text)
   const data = [new ClipboardItem({ 'text/plain': new Blob([text], { type: 'text/plain' }) })];
   await navigator.clipboard.write(data)
 }
 
+/** 状态变更 */
 const handleStatusChange = (bool: boolean) => {
   editItem.status = bool ? DataStatus.Normal : DataStatus.Hidden
 }
@@ -211,6 +225,16 @@ const titleMap = {
       </div>
     </div>
     <div class="btn-wrapper">
+      <div class="btn-wrapper-left">
+        <Btn
+          v-if="!hideCreateCover"
+          class="create-cover-btn"
+          type="text"
+          size="sm"
+          @click="handleCreateCover"
+          >{{ $t('autoCreateCover') }}</Btn
+        >
+      </div>
       <Switch
         v-if="isAdmin && editItem"
         :model-value="!editItem.status || editItem.status === DataStatus.Normal"
@@ -318,6 +342,11 @@ const titleMap = {
     display: flex;
     justify-content: flex-end;
     align-items: center;
+
+    &-left {
+      flex: 1;
+      display: flex;
+    }
 
     .save-btn {
       min-height: 36px;

@@ -1,3 +1,4 @@
+import type { IMaterialItem } from "@/config"
 import { setLang } from "@/utils/mande"
 
 export const i18nText = {
@@ -290,6 +291,9 @@ export const i18nText = {
     fontSetting: '字体设置',
     shortcut: '快捷键',
     material: '物料',
+    materialExistTip: '是否覆盖原有物料？',
+    materialExistTipMsg: '若确定，原有物料 {0} 将被覆盖',
+    newMaterial: '新建物料',
     uploadTip: '使用第三方图层，不保证稳定性。',
     addTag: '添加标签',
     advancedOptions: '高级设置',
@@ -618,6 +622,9 @@ export const i18nText = {
     fontSetting: 'Font Setting',
     shortcut: 'Shortcut',
     material: 'Material',
+    materialExistTip: 'Does it cover the original material?',
+    materialExistTipMsg: 'If OK, the original material {0} will be overwritten',
+    newMaterial: 'Create New Material',
     uploadTip: 'The use of third-party image hosting web site does not guarantee stability.',
     addTag: 'Add Tag',
     advancedOptions: 'Advanced Options',
@@ -677,3 +684,6 @@ export const $t = (key: keyof typeof i18nText['zh'], ...args: (string | number)[
   }
   return str
 }
+
+export const getMaterialName = (item: IMaterialItem) => lang === 'en' && item.enName || item.name
+export const getMaterialCategory = (item: IMaterialItem) => lang === 'en' && item.categoryEn || item.category

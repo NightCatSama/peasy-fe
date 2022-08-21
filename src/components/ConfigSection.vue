@@ -13,7 +13,9 @@ import { Alert, AlertError } from '@/utils/alert'
 import Dropdown from './widgets/Dropdown.vue'
 import SaveMaterialModal from './modal/SaveMaterialModal.vue'
 import { IMaterialItem } from '@/config'
-import { $t } from '@/constants/i18n'
+import { $t, getMaterialName } from '@/constants/i18n'
+import { Modal } from './modal'
+import { active } from 'sortablejs'
 
 const pageStore = usePageStore()
 const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, setting } =
@@ -27,6 +29,7 @@ const {
   copyActiveNode,
   separateActiveNode,
   setActiveNodeHide,
+  getMaterialByMaterialId,
 } = pageStore
 
 const displayStore = useDisplayStore()
@@ -36,6 +39,7 @@ const { setMinimize } = displayStore
 let showLayer = $ref(false)
 let showSaveMaterialModal = $ref(false)
 let curMaterial = $ref<IMaterialItem | null>(null)
+let saveCallback = $ref<(materialItem: IMaterialItem) => void | null>(null)
 
 const handleActiveNodeChange = async (event: Event) => {
   const elem = event.target as HTMLDivElement
@@ -106,8 +110,7 @@ const iconList: {
     name: 'save',
     tip: $t('save'),
     click: () => {
-      setCurMaterial()
-      showSaveMaterialModal = true
+      openMaterialModal()
     },
   },
   {
@@ -125,8 +128,7 @@ const iconList: {
 /** 保存为物料 */
 useKeyPress(ShortcutKey.saveMaterial, (e: KeyboardEvent) => {
   if (!activeNode.value) return
-  setCurMaterial()
-  showSaveMaterialModal = true
+  openMaterialModal()
 })
 
 /** 缩小配置栏 */
@@ -140,17 +142,43 @@ useKeyPress(ShortcutKey.copyComponent, (e) => {
   copyActiveNode()
 })
 
-const setCurMaterial = () => {
+/** 打开物料编辑弹窗 */
+const openMaterialModal = async () => {
   if (!activeNode.value) return
-  curMaterial = {
-    name: activeNode.value.name,
-    enName: '',
-    type: activeNode.value.type,
-    category: '',
-    categoryEn: '',
-    cover: activeNode.value.cover || '',
-    node: activeNode.value,
+  let material
+  let id = ''
+  // 若当前组件是由物料新建来的，则复用前物料信息，并提示是否覆盖
+  if (activeNode.value.materialId) {
+    material = getMaterialByMaterialId(activeNode.value.materialId)
+    if (material) {
+      if (await Modal.confirm(
+        $t('materialExistTipMsg', getMaterialName(material)),
+        { title: $t('materialExistTip'), cancelText: $t('newMaterial') })
+      ) {
+        id = material.id
+      }
+    } else {
+      activeNode.value.materialId = ''
+    }
   }
+  const node = activeNode.value
+  curMaterial = {
+    id,
+    name: material && material.name ? material.name : node.name,
+    enName: material && material.enName ? material.enName : '',
+    type: node.type,
+    category: material && material.category ? material.category : '',
+    categoryEn: material && material.categoryEn ? material.categoryEn : '',
+    cover: (material && material.cover ? material.cover : node.cover) || '',
+    node,
+  }
+  // 新建物料成功后，更新原编辑组件的物料来源 id
+  saveCallback = !id ? (material: IMaterialItem) => {
+    if (!node) return
+    node.materialId = material.id
+    showSaveMaterialModal = false
+  } : null
+  showSaveMaterialModal = true
 }
 </script>
 
@@ -274,9 +302,10 @@ const setCurMaterial = () => {
     </div>
     <SaveMaterialModal
       v-if="curMaterial"
-      auto-create-cover
-      :action-text="$t('saveOf')"
+      :auto-create-cover="!curMaterial.cover"
+      :action-text="curMaterial.id ? $t('edit') : $t('saveOf')"
       :material="curMaterial"
+      :on-save="saveCallback"
       v-model="showSaveMaterialModal"
     ></SaveMaterialModal>
   </div>
