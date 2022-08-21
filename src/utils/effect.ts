@@ -23,6 +23,7 @@ export type IEffectShowItemMap = {
 }
 
 export const getEffectMapByNode = (node: PageNode, isSelf?: boolean): IEffectShowItemMap | null => {
+  if (!node) return {}
   const nodeGroups = ComponentPropsGroup[node.component as ComponentName]
   let map = {}
   ;(nodeGroups || [])

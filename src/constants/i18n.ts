@@ -332,6 +332,8 @@ export const i18nText = {
 最简单的方式就是在 Google Fonts 中选择一个字体，然后将字体资源路径复制到「字体设置」中。
 并在「字体设置」中添加到「字体」中或在文本组件中的单独设置。
 `,
+    question4: '📮 意见反馈',
+    answer4: `👏🏻 欢迎发送邮件 → <a href="mailto:nightcat@hzfe.org">nightcat@hzfe.org</a>`,
   },
   en: {
     downloadLoading: "Downloading...",
@@ -663,6 +665,8 @@ You can add fonts through [Font Settings]. Currently, you can only add fonts by 
 The easiest way is to select a font in Google Fonts and copy the font resource path to [Font Settings].
 and add it to [Font] in [Font Settings] or in a separate setting in the Text component.
 `,
+    question4: '📮 Feedback',
+    answer4: `👏🏻 Welcome to send email → <a href="mailto:nightcat@hzfe.org">nightcat@hzfe.org</a>`,
   }
 }
 

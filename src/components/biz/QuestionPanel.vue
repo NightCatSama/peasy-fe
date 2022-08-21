@@ -25,6 +25,10 @@ const covertText = (str: string) => {
       <div class="question-item-question" v-html="covertText($t('question3'))"></div>
       <div class="question-item-answer" v-html="covertText($t('answer3'))"></div>
     </div>
+    <div class="question-item">
+      <div class="question-item-question" v-html="covertText($t('question4'))"></div>
+      <div class="question-item-answer" v-html="covertText($t('answer4'))"></div>
+    </div>
   </div>
 </template>
 
@@ -54,7 +58,7 @@ const covertText = (str: string) => {
     line-height: 18px;
 
     &:not(:last-child) {
-      margin-bottom: 12px;
+      margin-bottom: 18px;
     }
 
     &-question {
@@ -78,6 +82,10 @@ const covertText = (str: string) => {
 
       strong {
         color: $white;
+      }
+
+      a {
+        color: $blue;
       }
     }
   }

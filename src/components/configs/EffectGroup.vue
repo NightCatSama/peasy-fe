@@ -34,8 +34,7 @@ const handleAddEffect = () => {
 
 /** 得到当前目标下可用的过渡属性 */
 const getEffectMap = $computed(() => (target: string, targetType: string): IEffectShowItemMap => {
-  const node = nameMap[target]
-  return targetType === 'tag' ? allEffectMap : getEffectMapByNode(node, targetType === 'self') || {}
+  return targetType === 'tag' ? allEffectMap : getEffectMapByNode(nameMap[target], targetType === 'self') || {}
 })
 
 const getEffectLabel = (target: string, targetType: string) =>

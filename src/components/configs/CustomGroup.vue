@@ -18,7 +18,7 @@ interface ICustomGroupProps extends IModuleConfigGroup {
   node: PageNode
 }
 
-const { node, title, titleEn, icon, data, defaultCollapsed } = useAttrs() as unknown as ICustomGroupProps
+const { node, title, titleEn, icon, data, defaultCollapsed = false } = useAttrs() as unknown as ICustomGroupProps
 const dataRef = reactive(data)
 const getComponentData = (type: string) => getFormPropsByType(type)
 
