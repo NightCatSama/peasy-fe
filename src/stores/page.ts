@@ -488,7 +488,6 @@ export const usePageStore = defineStore('page', {
     },
     /** 处理插入的组件 */
     handleInsertNode(node: PageNode) {
-      console.log('node.moduleDependence => ', node.moduleDependence)
       // 若有依赖，则将依赖引入
       if (node.moduleDependence) {
         if (node.moduleDependence.customFontFace && !this.font.customFontFace.includes(node.moduleDependence.customFontFace)) {
@@ -508,6 +507,16 @@ export const usePageStore = defineStore('page', {
         // delete node.moduleDependence
       }
       return node
+    },
+    /** 修改组件名称，若有组件链接此组件，则需要同步修改 */
+    changeNodeName(node: PageNode, name: string) {
+      if (!node) return
+      for (let n in this.nameMap) {
+        if (n !== node.name && this.nameMap[n].propLink === node.name) {
+          this.nameMap[n].propLink = name
+        }
+      }
+      node.name = name
     }
   },
 })

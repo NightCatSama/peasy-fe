@@ -193,7 +193,7 @@ let showTimingCode = $ref(false)
           <hr class="divider" :data-text="$t('action')" />
           <template v-for="obj in actionMap" :key="obj.name">
             <component
-              v-if="item.styles[obj.name] !== void 0"
+              v-if="item.styles[obj.name] !== void 0 && getEffectMap(item.target, item.targetType)?.[item.name]"
               :label="obj.label"
               :is="getEffectMap(item.target, item.targetType)[item.name].component"
               :model-value="item.styles[obj.name]"

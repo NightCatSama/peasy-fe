@@ -30,6 +30,7 @@ const {
   separateActiveNode,
   setActiveNodeHide,
   getMaterialByMaterialId,
+  changeNodeName,
 } = pageStore
 
 const displayStore = useDisplayStore()
@@ -57,7 +58,7 @@ const handleActiveNodeChange = async (event: Event) => {
     elem.innerText = activeNode.value.name
     return
   }
-  activeNode.value.name = newName
+  changeNodeName(activeNode.value, newName)
 }
 
 /** 是否不需要取消链接选项 */
