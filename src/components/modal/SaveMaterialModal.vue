@@ -101,7 +101,7 @@ const initJSONDependence = async () => {
   moduleDependenceElemEditor.set(
     node.moduleDependence || {
       customFontFace: '',
-      colorVars: [{ name: '$primary', color: '#00a8ff' }]
+      colorVars: [{ name: '$primary', color: '#3e7ce8' }]
     } as PageNode['moduleDependence']
   )
 }

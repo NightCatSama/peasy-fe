@@ -173,7 +173,7 @@ const handleSaveColorVar = () => {
 </style>
 
 <style lang="scss">
-.color-dropdown {
+.color-dropdown.dropdown-popper {
   .v-popper__inner > div > div {
     border-radius: $inner-radius;
     box-shadow: 0 0 2px rgb(0 0 0 / 30%), 0 4px 8px rgb(0 0 0 / 30%);

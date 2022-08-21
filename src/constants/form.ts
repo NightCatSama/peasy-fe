@@ -65,6 +65,13 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
           data: { cover: 'Cover', contain: 'Contain', auto: 'Auto' },
         },
       }
+    case 'size':
+      return {
+        component: InputItemVue,
+        props: {
+          suffix: ['px', '%', 'rem', 'vw', 'auto', 'stretch'],
+        }
+      }
     default:
       return {
         component: null,

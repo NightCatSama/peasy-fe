@@ -23,7 +23,7 @@ export const useDisplayStore = defineStore('display', {
     /** 预设 */
     presetDevice: {
       desktop: [
-        [1280, 720],
+        [1366, 768],
         [1920, 1080],
         [2560, 1440],
       ],

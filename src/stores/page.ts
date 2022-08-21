@@ -51,7 +51,7 @@ export const usePageStore = defineStore('page', {
       /** 当前展示的 Section，null 为全部 */
       activeSection: null as PageNode | null,
       /** 颜色变量 */
-      colorVars: [{ name: '$primary', color: '#00a8ff' }] as IColorVarItem[],
+      colorVars: [{ name: '$primary', color: '#3e7ce8' }] as IColorVarItem[],
       /** 全局设置 */
       setting: {
         client: 'both',

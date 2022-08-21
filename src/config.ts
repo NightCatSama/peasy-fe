@@ -179,6 +179,8 @@ export const enum ModuleConfigType {
   BackgroundSize = 'backgroundSize',
   /** 提示 */
   Tip = 'tip',
+  /** 尺寸 */
+  Size = 'size',
   /** 一组数据 */
   // Group = 'group',
 }
