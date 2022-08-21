@@ -102,7 +102,7 @@ let showCodeInput = $ref(false)
     :default-collapsed="false"
   >
     <div class="item">
-      <Tip type="warning" :message="$t('animationTip')" :block="true"></Tip>
+      <Tip type="warning" :message="$t('animationTip')" block></Tip>
     </div>
     <CollapseItem
       v-for="(item, index) in animation.animationList"

@@ -5,11 +5,12 @@ import Icon from './Icon.vue'
 interface ITipProps {
   type: 'warning'
   block?: boolean
+  noRadius?: boolean
   message: string
   messageEn?: string
 }
 
-const { type, message, messageEn, block } = defineProps<ITipProps>()
+const { type, message, messageEn, block, noRadius } = defineProps<ITipProps>()
 
 const iconMap = {
   warning: 'warning',
@@ -19,7 +20,7 @@ const showMsg = $computed(() => lang === 'en' && messageEn || message)
 </script>
 
 <template>
-  <div :class="['tip', `tip-${type}`, { block }]">
+  <div :class="['tip', `tip-${type}`, { block, 'no-radius': noRadius }]">
     <Icon class="tip-icon" :name="iconMap[type]" :size="14"></Icon>
     <div class="tip-msg" v-html="showMsg"></div>
   </div>
@@ -36,6 +37,10 @@ const showMsg = $computed(() => lang === 'en' && messageEn || message)
 
   &.block {
     width: 100%;
+  }
+
+  &.no-radius {
+    border-radius: 0;
   }
 
   &-icon {

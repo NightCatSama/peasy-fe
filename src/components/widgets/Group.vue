@@ -204,7 +204,7 @@ const handleUnlinkPropGroup = () => {
       color: darken($color, 30%);
       cursor: pointer;
       user-select: none;
-      opacity: 0.4;
+      opacity: 0.6;
       transition: all 0.3s;
 
       &:hover {

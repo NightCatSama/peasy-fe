@@ -15,7 +15,7 @@ import SaveMaterialModal from './modal/SaveMaterialModal.vue'
 import { IMaterialItem } from '@/config'
 import { $t, getMaterialName } from '@/constants/i18n'
 import { Modal } from './modal'
-import { active } from 'sortablejs'
+import Tip from './widgets/Tip.vue'
 
 const pageStore = usePageStore()
 const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, setting } =
@@ -275,6 +275,13 @@ const openMaterialModal = async () => {
           @change="(newTags: string[]) => activeNode!.tags = newTags"
         ></TagList>
         <div class="content">
+          <Tip
+            v-if="activeNode.isModule"
+            type="warning"
+            :message="$t('ungroupNotify')"
+            block
+            no-radius
+          ></Tip>
           <ConfigGroup
             v-for="(groupType, index) in activeNodeGroups"
             :group-type="groupType"
