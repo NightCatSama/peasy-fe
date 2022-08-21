@@ -128,6 +128,7 @@ export const useSizeStyle = (size: ISize, direction?: string) => {
     if (direction === 'row') {
       flexStyles.flexGrow = 1
       flexStyles['flex-shrink'] = '1'
+      flexStyles['flex-basis'] = '0%'
     } else {
       flexStyles.alignSelf = 'stretch'
     }
@@ -137,6 +138,7 @@ export const useSizeStyle = (size: ISize, direction?: string) => {
     if (direction === 'column') {
       flexStyles.flexGrow = 1
       flexStyles['flex-shrink'] = '1'
+      flexStyles['flex-basis'] = '0%'
     } else {
       flexStyles.alignSelf = 'stretch'
     }
