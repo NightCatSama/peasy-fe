@@ -488,8 +488,9 @@ export const usePageStore = defineStore('page', {
     },
     /** 处理插入的组件 */
     handleInsertNode(node: PageNode) {
+      console.log('node.moduleDependence => ', node.moduleDependence)
       // 若有依赖，则将依赖引入
-      if (node.isModule && node.moduleDependence) {
+      if (node.moduleDependence) {
         if (node.moduleDependence.customFontFace && !this.font.customFontFace.includes(node.moduleDependence.customFontFace)) {
           this.font.customFontFace.push(node.moduleDependence.customFontFace)
           Alert($t('fontFaceImportTip'))

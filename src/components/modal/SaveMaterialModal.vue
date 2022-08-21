@@ -57,7 +57,10 @@ const isModule = $computed<boolean>({
   },
   set(val: boolean) {
     if (val) {
-      nextTick(() => initJSONEditor())
+      nextTick(() => {
+        initJSONEditor()
+        initJSONDependence()
+      })
     }
     editItem.node.isModule = val
   },
@@ -67,8 +70,7 @@ const isModule = $computed<boolean>({
 const initJSONEditor = async () => {
   if (!editItem || !node || !isAdmin) return
   moduleConfigEditor = await createJSONEditor('.module-config')
-  moduleDependenceElemEditor = await createJSONEditor('.module-dependence')
-  if (!moduleConfigEditor || !moduleDependenceElemEditor) return
+  if (!moduleConfigEditor) return
   moduleConfigEditor.set(
     node.moduleConfig?.length > 0 ? node.moduleConfig :
       ([
@@ -76,12 +78,13 @@ const initJSONEditor = async () => {
           title: '标题',
           titleEn: 'Title',
           icon: 'basic',
+          defaultCollapsed: true,
           data: [
             {
               type: 'text',
               label: '文本',
               labelEn: 'Text',
-              props: {},
+              props: { type: 'textarea' },
               sourceValue: 'children[0].config.props.basic.text',
               targetValue: 'children[0].config.props.basic.text',
             },
@@ -89,10 +92,16 @@ const initJSONEditor = async () => {
         },
       ] as IModuleConfigGroup[])
   )
+}
+
+const initJSONDependence = async () => {
+  if (!editItem || !node || !isAdmin) return
+  moduleDependenceElemEditor = await createJSONEditor('.module-dependence')
+  if (!moduleDependenceElemEditor) return
   moduleDependenceElemEditor.set(
     node.moduleDependence || {
       customFontFace: '',
-      colorVars: [{ name: '$primary', color: '#3e7ce8' }]
+      colorVars: [{ name: '$primary', color: '#00a8ff' }]
     } as PageNode['moduleDependence']
   )
 }
@@ -121,7 +130,10 @@ watch(
   async () => {
     if (material && modelValue) {
       editItem = cloneDeep(material)
-      nextTick(() => initJSONEditor())
+      nextTick(() => {
+        initJSONEditor()
+        initJSONDependence()
+      })
       if (autoCreateCover) {
         await handleCreateCover()
       }
@@ -147,7 +159,7 @@ const handleSave = async () => {
           ...node,
           isModule: node?.isModule || false,
           moduleConfig: node?.isModule && moduleConfigEditor ? moduleConfigEditor.get() : [],
-          moduleDependence: node?.isModule && moduleDependenceElemEditor ? moduleDependenceElemEditor.get() : null,
+          moduleDependence: moduleDependenceElemEditor ? moduleDependenceElemEditor.get() : null,
         } as PageNode),
   })
   onSave?.(data)
@@ -214,8 +226,8 @@ const titleMap = {
       </div>
       <ImageItem hide-label v-model="editItem.cover" :loading="coverLoading" wrapper-class="image-item" :rows="5"></ImageItem>
     </div>
-    <div class="module-setting-wrapper" v-if="isAdmin && isModule">
-      <div class="module-config-wrapper">
+    <div class="module-setting-wrapper" v-if="isAdmin">
+      <div class="module-config-wrapper" v-if="isModule">
         <div class="module-input module-config"></div>
         <div class="node-tree" v-if="node" @click="handleTreeNodeClick">
           <TreeNode :node="node" :preview="true"></TreeNode>
@@ -308,6 +320,10 @@ const titleMap = {
       height: 80px;
       flex-shrink: 0;
       overflow: hidden;
+
+      &:only-child {
+        height: 100%;
+      }
     }
 
     .module-input {
