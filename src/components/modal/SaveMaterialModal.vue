@@ -103,7 +103,8 @@ const handleCreateCover = async () => {
   try {
     coverLoading = true
     const elem = document.querySelector(`[data-name="${node.name}"]`) as HTMLElement
-    const cover = elem ? await createMaterialSnapshot(elem) : ''
+    if (!elem) return
+    const cover = await createMaterialSnapshot(elem)
     if (cover.length >= 10000) {
       const url = await uploadByBase64(cover)
       editItem.cover = url

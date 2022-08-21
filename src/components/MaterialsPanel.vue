@@ -149,6 +149,7 @@ const currentCategory = $computed(() => {
       v-if="curMaterial"
       :action-text="$t('edit')"
       :material="curMaterial"
+      hide-create-cover
       v-model="showSaveMaterialModal"
     ></SaveMaterialModal>
   </div>
