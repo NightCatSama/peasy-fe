@@ -161,7 +161,7 @@ export const useLayoutStyle = (layout: ILayout) => {
 
   return {
     display: 'flex',
-    flexDirection: layout.direction,
+    flexDirection: layout.direction + (layout.reverse ? '-reverse' : ''),
     justifyContent: layout.justify,
     alignItems: layout.align,
     flexWrap: layout.wrap,

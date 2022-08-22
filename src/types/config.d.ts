@@ -52,6 +52,7 @@ interface ILayout {
   justify: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
   align: 'start' | 'end' | 'center' | 'stretch' | 'baseline'
   wrap: 'nowrap' | 'wrap' | 'wrap-reverse'
+  reverse?: boolean
 }
 
 /** 字体样式 */

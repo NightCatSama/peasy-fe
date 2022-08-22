@@ -79,6 +79,7 @@ export const getDefaultLayout = (initConfig?: Partial<ILayout>): ILayout =>
       justify: 'center',
       align: 'center',
       wrap: 'nowrap',
+      reverse: false
     },
     initConfig
   )

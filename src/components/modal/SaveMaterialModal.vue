@@ -37,6 +37,7 @@ interface SaveMaterialModalProps {
 const { modelValue, material, autoCreateCover, actionText = $t('save'), hideCreateCover, onSave } = defineProps<SaveMaterialModalProps>()
 
 const pageStore = usePageStore()
+const { colorVars } = storeToRefs(pageStore)
 const { fetchSaveMaterial } = pageStore
 
 const userStore = useUserStore()
@@ -96,7 +97,7 @@ const initJSONDependence = async () => {
   moduleDependenceElemEditor.set(
     node.moduleDependence || {
       customFontFace: '',
-      colorVars: [{ name: '$primary', color: '#3e7ce8' }]
+      colorVars: colorVars.value,
     } as PageNode['moduleDependence']
   )
 }

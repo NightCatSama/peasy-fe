@@ -37,6 +37,14 @@ const isWrap = $computed({
     layout.wrap = val ? 'wrap' : 'nowrap'
   }
 })
+const isReverse = $computed({
+  get() {
+    return !!layout.reverse
+  },
+  set(val: boolean) {
+    layout.reverse = val
+  }
+})
 
 const previewStyle = $computed(() => useLayoutStyle(layout))
 </script>
@@ -57,6 +65,7 @@ const previewStyle = $computed(() => useLayoutStyle(layout))
     <SelectItem :label="$t('mainAxisAlign')" v-model="layout.justify" :options="justifyMap"></SelectItem>
     <SelectItem :label="$t('crossAxisAlign')" v-model="layout.align" :options="alignMap"></SelectItem>
     <SwitchItem :label="$t('wrap')" v-model="isWrap"></SwitchItem>
+    <SwitchItem :label="$t('reverse')" v-model="isReverse"></SwitchItem>
   </Group>
 </template>
 

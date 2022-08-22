@@ -13,7 +13,7 @@ const { elem, uName, style, props, tagClassNames } = useProps(
   'Image'
 )
 
-const src = $computed(() => props.basic.src.trim() || '')
+const src = $computed(() => props.basic?.src?.trim() || '')
 
 const classNames = $computed(() => [
   'image',
