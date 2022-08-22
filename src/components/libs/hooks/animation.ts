@@ -7,6 +7,7 @@ export type AnimationMapType = Map<
   {
     animationName: string
     disabled: boolean
+    isAnimate?: boolean
   }
 >
 
@@ -27,7 +28,7 @@ export const useIntersectionObserver = (
   const observer = new IntersectionObserver(callback, {
     root: document.body,
     rootMargin: '0px',
-    threshold: 0.0,
+    threshold: [0.0],
   })
 
   observer.observe(target)
@@ -49,7 +50,7 @@ export const useAnimation = (propsRef: IProps, el: Ref<HTMLDivElement | null>) =
   let observer = $ref<IntersectionObserver | null>(null)
   let removeListenerList: (() => void)[] = $ref([])
   let animationMap: AnimationMapType = reactive(
-    new Map<IAnimationItem, { animationName: string; disabled: boolean }>()
+    new Map<IAnimationItem, { animationName: string; disabled: boolean, isAnimate?: boolean }>()
   )
   let isBindClick = $ref(false)
   let isBindHover = $ref(false)
@@ -57,9 +58,14 @@ export const useAnimation = (propsRef: IProps, el: Ref<HTMLDivElement | null>) =
   const onBindIntersectionObserver = (el: HTMLElement) => {
     if (observer) return
     observer = useIntersectionObserver(el, (isIntersecting) => {
-      animationMap.forEach((handler, anim) => {
+      animationMap.forEach((item, anim) => {
+        if (item.isAnimate) return
+        if (isIntersecting) {
+          item.isAnimate = true
+          setTimeout(() => (item.isAnimate = false), (anim.duration + anim.delay) * 1000)
+        }
         if (anim.trigger === 'scrollIntoView') {
-          handler.disabled = !isIntersecting
+          item.disabled = !isIntersecting
         }
       })
     })
@@ -130,7 +136,7 @@ export const useAnimation = (propsRef: IProps, el: Ref<HTMLDivElement | null>) =
         const keyframeBody = getKeyframeBody(anim, position)
         const keyframe = getKeyframe(animName, keyframeBody)
         stylesheet += keyframe
-        animationMap.set(anim, { animationName: animName, disabled: anim.trigger !== 'always' })
+        animationMap.set(anim, { animationName: animName, disabled: anim.trigger !== 'always', isAnimate: false })
       })
 
       dynamicAnimationStyles.innerHTML = stylesheet
