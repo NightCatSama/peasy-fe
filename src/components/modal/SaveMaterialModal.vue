@@ -56,12 +56,7 @@ const isModule = $computed<boolean>({
     return (!isTemplate && node?.isModule) || false
   },
   set(val: boolean) {
-    if (val) {
-      nextTick(() => {
-        initJSONEditor()
-        initJSONDependence()
-      })
-    }
+    if (val) nextTick(() => initJSONEditor())
     editItem.node.isModule = val
   },
 })
