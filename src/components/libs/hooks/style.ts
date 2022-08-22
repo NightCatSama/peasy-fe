@@ -4,7 +4,7 @@ import { effectName2PropertyMap } from './effect'
 import { getColor } from './color'
 // import { covertSize as covertSizeUseStore } from '@/utils/sizeHelper'
 
-// NOTE: vite 的 tree-shaking 不知道为啥不起左右，改用 window 调用去解决
+// NOTE: vite 的 tree-shaking 不知道为啥不起作用，改用 window 调用去解决
 export const covertSize = (
   s: string,
   options?: { isSection?: boolean; type?: 'width' | 'height' }

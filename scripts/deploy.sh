@@ -8,4 +8,12 @@ git add .
 git commit -m "chore: build"
 git push origin main
 
+npm run build:template
+
+cd ./peasy-be
+
+git add .
+git commit -m "chore: build"
+git push origin main
+
 exit 1
