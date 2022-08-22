@@ -8,20 +8,28 @@ import Dropdown from './widgets/Dropdown.vue'
 import FontFamilyPanel from './biz/FontFamilyPanel.vue'
 import Logo from './Logo.vue'
 import QuestionPanel from './biz/QuestionPanel.vue'
+import { useRouter } from 'vue-router'
 
 interface ISidebarProps {
   keyboard: boolean
   activeMaterialsPanel: boolean
 }
 
+const router = useRouter()
+
 const { activeMaterialsPanel } = defineProps<ISidebarProps>()
 
+const gotoHome = () => {
+  router.push({
+    name: 'home'
+  })
+}
 </script>
 
 <template>
   <div class="sidebar">
     <div class="logo-wrapper">
-      <Logo :size="32" />
+      <Logo :size="32" @click="gotoHome" />
     </div>
     <div class="operator-panel">
       <div class="top">

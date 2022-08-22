@@ -28,7 +28,7 @@ export const useIntersectionObserver = (
   const observer = new IntersectionObserver(callback, {
     root: document.body,
     rootMargin: '0px',
-    threshold: [0.0],
+    threshold: 0.0,
   })
 
   observer.observe(target)
