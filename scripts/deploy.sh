@@ -4,13 +4,15 @@
 # It is called by the deploy stage in the .travis.yml file.
 
 npm run build
+npm run build:template
+
+cd ./peasy-be
+
 git add .
 git commit -m "chore: build"
 git push origin main
 
-npm run build:template
-
-cd ./peasy-be
+cd ../
 
 git add .
 git commit -m "chore: build"
