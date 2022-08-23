@@ -75,6 +75,7 @@ import KeyboardIcon from '@/assets/keyboard.svg'
 import QuestionCircleIcon from '@/assets/question-circle.svg'
 import VariableIcon from '@/assets/variable.svg'
 import SyncIcon from '@/assets/sync.svg'
+import StartIcon from '@/assets/start.svg'
 
 interface IIconProps {
   name: string
@@ -162,6 +163,7 @@ const iconMap = {
   'question-circle': QuestionCircleIcon,
   variable: VariableIcon,
   sync: SyncIcon,
+  start: StartIcon,
 } as any
 
 const { name, size = 26, type = 'circle', loading, active, color } = defineProps<IIconProps>()

@@ -8,6 +8,7 @@ import {
 import Configure from '@/pages/Configure.vue'
 import Redirect from '@/pages/Redirect.vue'
 import Me from '@/pages/Me.vue'
+import Template from '@/pages/Template.vue'
 import NotFound from '@/pages/NotFound.vue'
 
 const needReloadPage = (
@@ -29,6 +30,7 @@ export const router = createRouter({
     { path: '/edit', component: Configure, name: 'create', beforeEnter: needReloadPage },
     { path: '/edit/:id', component: Configure, name: 'edit', beforeEnter: needReloadPage },
     { path: '/me', component: Me, name: 'user' },
+    { path: '/template', component: Template, name: 'template' },
     { path: '/redirect', component: Redirect, name: 'redirect' },
     { path: '/:pathMatch(.*)', component: NotFound, name: 'not-found' },
   ],

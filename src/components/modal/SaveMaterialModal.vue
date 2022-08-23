@@ -248,7 +248,7 @@ const setValue = (key: 'name' | 'enName' | 'category' | 'categoryEn' | 'cover', 
         @update:model-value="(val: string) => setValue('cover', val)"
       ></ImageItem>
     </div>
-    <div class="module-setting-wrapper" v-if="isAdmin">
+    <div class="module-setting-wrapper" v-if="isAdmin && !isTemplate">
       <div class="module-config-wrapper" v-if="isModule">
         <div class="module-input module-config"></div>
         <div class="node-tree" v-if="node" @click="handleTreeNodeClick">

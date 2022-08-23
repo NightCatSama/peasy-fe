@@ -32,6 +32,7 @@ import { destroyMoveable } from '@/utils/moveable'
 import { $t } from '@/constants/i18n'
 import { useUserStore } from '@/stores/user'
 import { getJSONEditor } from '@/utils/jsoneditor'
+import { getSetLoading } from '@/utils/context'
 
 const route = useRoute()
 const router = useRouter()
@@ -50,6 +51,7 @@ const {
   getProjectData,
   download,
   saveProjectData,
+  loadTemplateData,
 } = pageStore
 
 const displayStore = useDisplayStore()
@@ -63,7 +65,7 @@ const { saveHistory, undoHistory, redoHistory, setIsSave } = historyStore
 let showProjectModal = $ref(false)
 let showKeyboard = $ref(false)
 
-const { setGlobalLoading } = inject<{ setGlobalLoading: (text: string) => () => void }>('globalLoading')!
+const setGlobalLoading = getSetLoading()
 
 /** 下载当前页面 */
 const handleDownload = async () => {
@@ -110,7 +112,6 @@ onMounted(async () => {
   emitter.on('switchMaterialsPanel', (show?: boolean) => {
     showLeftPanel = show === void 0 ? !showLeftPanel : show
   })
-
   /** 记录编辑记录 */
   let inAction = false
   pageStore.$onAction(({ name, store, args, after, onError }) => {
@@ -143,12 +144,11 @@ onMounted(async () => {
   emitter.on('saveHistory', () => {
     saveHistory(allPageData.value)
   })
-
   window.addEventListener('beforeunload', preventUnload)
-
   // 初始化加载页面数据
   getAssetsData()
 
+  const hide = setGlobalLoading?.($t('loading'))
   if (id) {
     try {
       await getProjectData(id)
@@ -164,8 +164,13 @@ onMounted(async () => {
     }
     nextTick(() => emitter.emit('location', true))
   } else {
+    if (route.query.templateId && typeof route.query.templateId === 'string') {
+      await loadTemplateData(route.query.templateId)
+      router.replace({ name: 'create' })
+    }
     setTimeout(() => emitter.emit('location', true))
   }
+  hide?.()
   if (setting.value.client === 'mobile') {
     deviceType.value = 'mobile'
     setDevice(0)

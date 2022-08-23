@@ -173,6 +173,7 @@ export const usePageStore = defineStore('page', {
       this.font = pageData.font
       this.setting = pageData.setting
     },
+    /** 保存项目数据 */
     async saveProjectData(id: string, params: IProject) {
       const body: SaveProjectDto = {
         name: params.name,
@@ -194,7 +195,9 @@ export const usePageStore = defineStore('page', {
     },
     /** 加载物料资源 */
     async getAssetsData() {
-      const res = await materialApi.get<any>('', {})
+      const res = await materialApi.get<any>('', {
+        query: { section: true, component: true, template: false },
+      })
       this.materialData = res.data
     },
     /** 下载页面 */
@@ -240,6 +243,17 @@ export const usePageStore = defineStore('page', {
           list.splice(index, 1)
         }
       })
+    },
+    /** 载入模板数据 */
+    async loadTemplateData(materialId: string) {
+      const res = await materialApi.get<IResponse<IMaterialItem>>(materialId)
+      const { page } = res.data
+      if (page) {
+        this.allPageData = page.pageData
+        this.colorVars = page.colorVars
+        this.font = page.font
+        this.setting = page.setting
+      }
     },
     /** 插入 Component 组件 */
     insertNode(dragNode: PageNode, parentNode: PageNode, index: number, isLinkProp = false) {

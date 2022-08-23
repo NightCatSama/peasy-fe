@@ -9,3 +9,5 @@ export interface EditContext {
 export const getContext = () => inject<EditContext>('editContext')
 
 export const getIsEditMode = () => !!inject<EditContext>('editContext')?.isEditMode
+
+export const getSetLoading = () => inject<{ setGlobalLoading: (text: string) => () => void }>('globalLoading')?.setGlobalLoading!

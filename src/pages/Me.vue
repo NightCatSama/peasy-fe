@@ -20,6 +20,7 @@ import { SaveProjectDto } from '@@/dto/data.dto'
 import { usePageStore } from '@/stores/page'
 import { $t } from '@/constants/i18n'
 import { placements } from 'floating-vue'
+import MaterialCard from '@/components/widgets/MaterialCard.vue'
 
 const router = useRouter()
 
@@ -58,11 +59,14 @@ let titleMap: { [key: string]: string } = {
 }
 
 onMounted(async () => {
-  if (!isAuthenticated) return
+  if (!isAuthenticated.value) {
+    showMap['project'] = []
+    return
+  }
   const { data } = await projectApi.get<IResponse<Project[]>>('')
   showMap['project'] = data
   const res = await materialApi.get<IResponse<{ [type: string]: IMaterialItem[] }>>('', {
-    query: { includeTemplate: true, onlySelf: true },
+    query: { section: true, component: true, template: true, onlySelf: true },
   })
   ;['template', 'section', 'component'].forEach((key) => {
     if (res.data[key]?.length > 0) {
@@ -78,7 +82,7 @@ let projectList = $computed<Project[]>(() => (showMap['project'] as Project[]) |
 const handleGotoProject = (project?: Project) => {
   if (!project) {
     router.push({
-      name: 'create',
+      name: 'template',
     })
   } else {
     router.push({
@@ -197,85 +201,34 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
       </template>
     </div>
     <div
-      :class="['data-wrapper', `data-wrapper-${key}`]"
-      v-for="(list, key) in showMap"
-      v-show="key === 'project' || list.length > 0"
-      :key="key"
+      :class="['data-wrapper', `data-wrapper-${type}`]"
+      v-for="(list, type) in showMap"
+      v-show="type === 'project' || list.length > 0"
+      :key="type"
     >
-      <div class="data-title">{{ titleMap[key] }}</div>
+      <div class="data-title">{{ titleMap[type] }}</div>
       <div class="data-list">
-        <div class="data-item" v-if="key === 'project'">
-          <div class="data-image create" @click="handleGotoProject()">
-            <div class="data-image-placeholder">
-              <Icon name="add" :size="24" />
-              <span>{{ $t('newProject') }}</span>
-            </div>
-          </div>
-          <div class="data-info"></div>
-        </div>
-        <div class="data-item" v-for="(item, index) in list" :key="item.name + index">
-          <div
-            class="data-image"
-            :style="{ backgroundImage: item.cover ? `url(${item.cover})` : void 0 }"
-            @click="
-              key === 'project'
-                ? handleGotoProject(item as Project)
-                : handleMaterialImageClick(item as IMaterialItem)
-            "
-          >
-            <div v-if="!item.cover" class="data-image-placeholder">
-              <Icon name="empty" :size="32" />
-              <span>{{ $t('notCover') }}</span>
-            </div>
-          </div>
-          <div class="data-info">
-            <div class="data-info-name">{{ item.name }}</div>
-            <template v-if="key === 'project'">
-              <Icon
-                type="circle"
-                class="data-info-btn"
-                name="save"
-                :size="9"
-                v-tooltip="{ content: $t('saveToTemplate'), placement: 'top', distance: 10 }"
-                @click="handleSaveToTemplate(item as Project)"
-              ></Icon>
-              <Icon
-                type="circle"
-                class="data-info-btn"
-                name="advanced"
-                :size="11"
-                v-tooltip="{ content: $t('setting'), placement: 'top', distance: 10 }"
-                @click="handleOpenProjectModal(item as Project)"
-              ></Icon>
-              <Icon
-                type="circle"
-                class="data-info-btn danger"
-                name="delete"
-                :size="10"
-                v-tooltip="{ content: $t('delete'), placement: 'top', distance: 10 }"
-                @click="handleDeleteProject(item as Project)"
-              ></Icon>
-            </template>
-            <template v-else>
-              <Icon
-                type="circle"
-                class="data-info-btn"
-                name="advanced"
-                :size="11"
-                v-tooltip="{ content: $t('setting'), placement: 'top', distance: 10 }"
-                @click="handleMaterialSetting(item as IMaterialItem)"
-              ></Icon>
-              <Icon
-                type="circle"
-                class="data-info-btn danger"
-                name="delete"
-                :size="10"
-                v-tooltip="{ content: $t('delete'), placement: 'top', distance: 10 }"
-                @click="handleDeleteMaterial(item as IMaterialItem)"
-              ></Icon>
-            </template>
-          </div>
-        </div>
+        <MaterialCard
+          v-if="type === 'project'"
+          type="project"
+          is-new
+          @on-project-click="handleGotoProject"
+        >
+        </MaterialCard>
+        <MaterialCard
+          v-for="(item, index) in list"
+          :key="item.name + index"
+          :type="type"
+          :item="item"
+          @on-project-click="handleGotoProject"
+          @on-material-click="handleMaterialImageClick"
+          @on-save-template="handleSaveToTemplate"
+          @on-setting-project="handleOpenProjectModal"
+          @on-delete-project="handleDeleteProject"
+          @on-setting-material="handleMaterialSetting"
+          @on-delete-material="handleDeleteMaterial"
+        >
+        </MaterialCard>
       </div>
     </div>
     <ProjectModal
@@ -327,20 +280,6 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     &:last-child {
       padding-bottom: 40px;
     }
-    &.data-wrapper-project,
-    &.data-wrapper-template {
-      .data-item {
-        width: 130px;
-        height: 185px;
-      }
-    }
-    &.data-wrapper-section,
-    &.data-wrapper-component {
-      .data-item {
-        width: 150px;
-        height: 130px;
-      }
-    }
     .data-title {
       margin-top: 20px;
       font-size: 30px;
@@ -350,107 +289,6 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     .data-list {
       display: flex;
       flex-wrap: wrap;
-    }
-    .data-item {
-      display: inline-flex;
-      flex-direction: column;
-      margin: 12px 24px 12px 0;
-
-      .data-image {
-        width: 100%;
-        flex: 1;
-        background-size: contain;
-        background-position: center;
-        background-repeat: no-repeat;
-        border-radius: $normal-radius;
-        color: $grey;
-        background-color: $white;
-        cursor: pointer;
-        transition: all 0.3s;
-
-        &.create {
-          border: 2px dashed $grey;
-          background-color: $tr;
-
-          &:hover {
-            color: $theme;
-            border-color: $tr;
-            background-color: $white;
-            box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
-          }
-        }
-
-        &:not(.create):hover {
-          box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
-        }
-
-        &-placeholder {
-          width: 100%;
-          height: 100%;
-          display: flex;
-          flex-direction: column;
-          justify-content: center;
-          align-items: center;
-          font-size: 14px;
-
-          .icon {
-            margin-bottom: 8px;
-          }
-        }
-      }
-
-      .data-info {
-        display: flex;
-        align-items: center;
-        padding: 6px 0px 6px 4px;
-        height: 32px;
-        &-name {
-          color: $panel-light;
-          font-size: 14px;
-          flex: 1;
-          white-space: nowrap;
-          overflow: hidden;
-          text-overflow: ellipsis;
-        }
-        &-btn {
-          position: relative;
-          top: -1px;
-          left: 2px;
-          width: 16px;
-          height: 16px;
-          padding: 0;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          margin-left: 2px;
-          color: $white;
-          background: $panel-light;
-          border-radius: $inner-radius;
-          cursor: pointer;
-          opacity: 0;
-          display: none;
-          transition: all 0.3s;
-          &:hover {
-            background: $panel;
-          }
-          &.danger {
-            &:hover {
-              background: $red;
-            }
-            // color: $red;
-            // background: $red;
-          }
-        }
-      }
-      &:hover {
-        .data-info-name {
-          color: $panel;
-        }
-        .data-info-btn {
-          opacity: 1;
-          display: flex;
-        }
-      }
     }
   }
 }
