@@ -73,6 +73,16 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
           suffix: ['px', '%', 'rem', 'vw', 'auto', 'stretch'],
         }
       }
+    case 'duration':
+    case 'delay':
+      return {
+        component: SliderItemVue,
+        props: {
+          min: 0,
+          max: 5,
+          interval: 0.05,
+        },
+      }
     default:
       return {
         component: null,
