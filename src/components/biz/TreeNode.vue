@@ -77,7 +77,7 @@ watch(
     <div class="tree-node-info" @click="() => !preview && setActiveNode(node)">
       <Icon class="tree-node-info-icon" :name="icon" :size="12"></Icon>
       <div class="tree-node-info-name">
-        <div class="tree-node-info-name-text">{{ node.name }}</div>
+        <div class="tree-node-info-name-text" :title="node.name">{{ node.name }}</div>
         <Icon
           v-if="isHide"
           class="tree-node-info-name-icon"
@@ -186,6 +186,7 @@ watch(
         color: lighten($red, 30%);
       }
       &-text {
+        white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
       }

@@ -13,6 +13,7 @@ import ImageItem from '../configs/items/ImageItem.vue'
 import { Alert, AlertError, AlertLoading } from '@/utils/alert'
 import { reactive, useAttrs, watch } from 'vue'
 import { $t } from '@/constants/i18n'
+import { uploadByBase64 } from '@/utils/oss'
 
 interface IProjectModalProps {
   project: IProject
@@ -54,7 +55,13 @@ const handleCreateCover = async () => {
   try {
     coverLoading = true
     const elem = document.querySelector(`.edit-content`) as HTMLElement
-    editProject.cover = elem ? await createMaterialSnapshot(elem) : ''
+    const cover = elem ? await createMaterialSnapshot(elem) : ''
+    if (cover.length >= 10000) {
+      const url = await uploadByBase64(cover)
+      editProject.cover = url!
+    } else {
+      editProject.cover = cover
+    }
   } finally {
     coverLoading = false
   }
