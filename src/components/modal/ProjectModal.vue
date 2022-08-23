@@ -33,7 +33,7 @@ let modal = $ref<InstanceType<typeof Modal> | null>(null)
 watch(
   () => [project, propsRef.modelValue],
   () => {
-    if (propsRef.modelValue) {
+    if (propsRef.modelValue && editProject) {
       editProject.name = project.name
       editProject.cover = project.cover
     }
@@ -41,7 +41,7 @@ watch(
 )
 
 const handleSave = () => {
-  if (!editProject.name) {
+  if (!editProject?.name) {
     AlertError($t('projectNameRequired'))
     return
   }
@@ -50,6 +50,7 @@ const handleSave = () => {
 
 let coverLoading = $ref(false)
 const handleCreateCover = async () => {
+  if (!editProject) return
   try {
     coverLoading = true
     const elem = document.querySelector(`.edit-content`) as HTMLElement
@@ -69,7 +70,7 @@ const handleCreateCover = async () => {
     close-on-click-mask
     v-bind="$attrs"
   >
-    <div class="info-wrapper">
+    <div class="info-wrapper" v-if="editProject">
       <InputItem :label="$t('name')" v-model="editProject.name"></InputItem>
       <ImageItem :label="$t('cover')" :loading="coverLoading" v-model="editProject.cover" :rows="5"> </ImageItem>
     </div>

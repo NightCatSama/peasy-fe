@@ -58,6 +58,7 @@ const handleDragend = () => {
 const handleDragStart = (event: DragEvent, material: IMaterialItem) => {
   const imgElem = (event.target as HTMLDivElement).querySelector('.image') as HTMLDivElement
   const node = material.node
+  if (!node) return
   event.dataTransfer!.setDragImage(imgElem, 0, 0)
   if (node.type === 'component' && pageData.value.length === 0) {
     Alert($t('noSectionTip'))
@@ -73,7 +74,7 @@ const handleDragStart = (event: DragEvent, material: IMaterialItem) => {
 
 const handleDelete = async (item: IMaterialItem) => {
   if (await Modal.confirm($t('deleteConfirm', getMaterialName(item)))) {
-    await deleteMaterial(item.id)
+    await deleteMaterial(item.id!)
     Alert($t('deleteSuccess'))
   }
 }

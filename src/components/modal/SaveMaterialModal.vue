@@ -31,7 +31,7 @@ interface SaveMaterialModalProps {
   autoCreateCover?: boolean
   actionText?: string
   hideCreateCover?: boolean
-  onSave?: (material: IMaterialItem) => void
+  onSave?: ((material: IMaterialItem) => void) | null
 }
 
 const { modelValue, material, autoCreateCover, actionText = $t('save'), hideCreateCover, onSave } = defineProps<SaveMaterialModalProps>()
@@ -57,6 +57,7 @@ const isModule = $computed<boolean>({
     return (!isTemplate && node?.isModule) || false
   },
   set(val: boolean) {
+    if (!editItem?.node) return
     if (val) nextTick(() => initJSONEditor())
     editItem.node.isModule = val
   },
@@ -68,7 +69,7 @@ const initJSONEditor = async () => {
   moduleConfigEditor = await createJSONEditor('.module-config')
   if (!moduleConfigEditor) return
   moduleConfigEditor.set(
-    node.moduleConfig?.length > 0 ? node.moduleConfig :
+    node.moduleConfig && node.moduleConfig?.length > 0 ? node.moduleConfig :
       ([
         {
           title: '标题',
@@ -104,7 +105,7 @@ const initJSONDependence = async () => {
 
 /** 自动生成封面 */
 const handleCreateCover = async () => {
-  if (!node) return
+  if (!node || !editItem) return
   try {
     coverLoading = true
     const elem = document.querySelector(`[data-name="${node.name}"]`) as HTMLElement
@@ -143,6 +144,7 @@ watch(
 )
 
 const handleSave = async () => {
+  if (!node || !editItem) return
   if (!editItem.name) {
     AlertError($t('nameRequired'))
     return
@@ -150,7 +152,7 @@ const handleSave = async () => {
   const data = await fetchSaveMaterial({
     ...editItem,
     node: isTemplate
-      ? null
+      ? void 0
       : ({
           ...node,
           isModule: node?.isModule || false,
@@ -188,6 +190,7 @@ const setClipboard = async (text: string) => {
 
 /** 状态变更 */
 const handleStatusChange = (bool: boolean) => {
+  if (!editItem) return
   editItem.status = bool ? DataStatus.Normal : DataStatus.Hidden
 }
 
@@ -196,13 +199,18 @@ const titleMap = {
   component: $t('component'),
   section: $t('section'),
 }
+
+const setValue = (key: 'name' | 'enName' | 'category' | 'categoryEn' | 'cover', value: string) => {
+  if (!editItem) return
+  editItem[key] = value
+}
 </script>
 
 <template>
   <Modal
     ref="modal"
     class="save-modal"
-    :title="`${actionText} ${titleMap[material.type]}`"
+    :title="`${actionText} ${titleMap[material!.type]}`"
     :width="'70vw'"
     close-on-click-mask
     :model-value="modelValue"
@@ -211,16 +219,34 @@ const titleMap = {
     <div class="info-wrapper" v-if="editItem">
       <div class="info">
         <InputItem :label="$t('name')" v-model="editItem.name"></InputItem>
-        <InputItem v-if="isAdmin" :label="$t('nameEn')" v-model="editItem.enName"></InputItem>
-        <InputItem :label="$t('category')" v-if="!isTemplate" v-model="editItem.category"></InputItem>
+        <InputItem
+          v-if="isAdmin"
+          :label="$t('nameEn')"
+          :model-value="editItem.enName || ''"
+          @update:model-value="(val: string) => setValue('enName', val)"
+        ></InputItem>
+        <InputItem
+          :label="$t('category')"
+          v-if="!isTemplate"
+          :model-value="editItem.category || ''"
+          @update:model-value="(val: string) => setValue('category', val)"
+        ></InputItem>
         <InputItem
           v-if="isAdmin && !isTemplate"
           :label="$t('categoryEn')"
-          v-model="editItem.categoryEn"
+          :model-value="editItem.categoryEn || ''"
+          @update:model-value="(val: string) => setValue('categoryEn', val)"
         ></InputItem>
         <SwitchItem v-if="isAdmin && !isTemplate" :label="$t('moduleSwitch')" v-model="isModule"></SwitchItem>
       </div>
-      <ImageItem hide-label v-model="editItem.cover" :loading="coverLoading" wrapper-class="image-item" :rows="5"></ImageItem>
+      <ImageItem
+        hide-label
+        :loading="coverLoading"
+        wrapper-class="image-item"
+        :rows="5"
+        :model-value="editItem.cover || ''"
+        @update:model-value="(val: string) => setValue('cover', val)"
+      ></ImageItem>
     </div>
     <div class="module-setting-wrapper" v-if="isAdmin">
       <div class="module-config-wrapper" v-if="isModule">

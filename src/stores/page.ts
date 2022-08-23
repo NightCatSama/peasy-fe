@@ -152,9 +152,13 @@ export const usePageStore = defineStore('page', {
     /** 当前激活组件是否隐藏 */
     activeNodeHide: (state) =>
       state.activeNode ? useGroupConfig(state.activeNode, 'common').hide || false : false,
-    getMaterialByMaterialId: (state) => (materialId: string) => {
+    getMaterialByMaterialId: (state) => (materialId: string): IMaterialItem | void => {
       const { section, component, template } = state.materialData
-      return [...(section || []), ...(component || []), ...(template || [])].find((item) => item.id === materialId)
+      return [
+        ...(section || []),
+        ...(component || []),
+        ...(template || [])
+      ].find((item) => item.id === materialId)
     }
   },
   actions: {
@@ -468,7 +472,7 @@ export const usePageStore = defineStore('page', {
       if (material.type === 'template') return material
       const node = cloneDeep(material.node) as PageNode
       const nodeList = [node, ...this.getAllChildNode(node)]
-      const nodeNameMap = {}
+      const nodeNameMap: { [name: string]: PageNode } = {}
       const allNameMap = this.nameMap
       nodeList.forEach(n => nodeNameMap[n.name] = n)
       nodeList.forEach(n => {
@@ -494,7 +498,7 @@ export const usePageStore = defineStore('page', {
           this.font.customFontFace.push(node.moduleDependence.customFontFace)
           Alert($t('fontFaceImportTip'))
         }
-        if (node.moduleDependence.colorVars?.length > 0) {
+        if (node.moduleDependence.colorVars && node.moduleDependence.colorVars?.length > 0) {
           const addColorVars = node.moduleDependence.colorVars.filter(c1 =>
             !this.colorVars.find(c2 => c1.name === c2.name)
           )
@@ -517,6 +521,18 @@ export const usePageStore = defineStore('page', {
         }
       }
       node.name = name
+    },
+    /** 同步组件 Module 配置 */
+    syncNodeModuleConfig() {
+      if (!this.activeNode) return
+      const node = this.activeNode
+      const config = node.config
+      if (!config || node.propLink || !node.materialId) return
+      const material = this.getMaterialByMaterialId(node.materialId) as IMaterialItem
+      if (material && material.node) {
+        node.isModule = material.node.isModule
+        node.moduleConfig = material.node.moduleConfig
+      }
     }
   },
 })

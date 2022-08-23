@@ -44,9 +44,10 @@ let curMaterial = $ref<IMaterialItem | null>(null)
 let curEditProject = $ref<Project | null>(null)
 
 let showMap = reactive<{
-  [key: string]: Project[] | IMaterialItem[]
+  [key: string]: (IMaterialItem | Project)[]
 }>({})
-let titleMap = {
+
+let titleMap: { [key: string]: string } = {
   project: $t('project'),
   template: $t('template'),
   component: $t('component'),
@@ -100,6 +101,7 @@ const handleOpenProjectModal = (project: Project) => {
 }
 
 const handleSaveProject = async (project: IProject) => {
+  if (!curEditProject) return
   await projectApi.patch<IResponse<Project>>(curEditProject.id, {
     name: project.name,
     cover: project.cover,
@@ -153,10 +155,11 @@ const setCurMaterialByProject = (project: Project) => {
 }
 
 const updateMaterial = (material: IMaterialItem) => {
+  if (!curMaterial) return
   // 有 id 则为更新
   if (curMaterial.id) {
     showMap[curMaterial.type] = showMap[curMaterial.type].map((m) => {
-      if (m.id === curMaterial.id) {
+      if (m.id === curMaterial!.id) {
         return material
       }
       return m
@@ -169,7 +172,7 @@ const updateMaterial = (material: IMaterialItem) => {
 /** 删除物料 */
 const handleDeleteMaterial = async (material: IMaterialItem) => {
   if (await Modal.confirm($t('deleteConfirm', material.name))) {
-    await deleteMaterial(material.id)
+    await deleteMaterial(material.id!)
     showMap[material.type] = (showMap[material.type] as IMaterialItem[]).filter(
       (p) => p.id !== material.id
     )
@@ -273,6 +276,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
       </div>
     </div>
     <ProjectModal
+      v-if="curEditProject"
       v-model="showProjectModal"
       :project="curEditProject"
       hide-create-cover

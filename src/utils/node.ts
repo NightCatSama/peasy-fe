@@ -30,7 +30,7 @@ export const formatNodeByUniqueName = (
   // 全部的节点
   let allChildNode = []
   // 名字更新列表
-  let nameUpdatedMap = {}
+  let nameUpdatedMap: { [originName: string]: string } = {}
 
   while (pendingNodeList.length) {
     const node = pendingNodeList.shift()!

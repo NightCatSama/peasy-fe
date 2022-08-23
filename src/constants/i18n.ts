@@ -15,6 +15,7 @@ export const i18nText = {
     undo: '撤销',
     redo: '重做',
     delete: '删除',
+    sync: '同步',
     copyComponent: '复制当前组件',
     saveProject: '保存项目',
     saveMaterial: '保存组件',
@@ -350,6 +351,7 @@ export const i18nText = {
     undo: 'Undo',
     redo: 'Redo',
     delete: 'Delete',
+    sync: 'Sync',
     copyComponent: 'Copy Component',
     saveProject: 'Save Project',
     saveMaterial: 'Save as Material',
@@ -679,7 +681,7 @@ export const lang: 'zh' | 'en' =
     ? 'en'
     : location.search.indexOf('lang=zh') > -1
       ? 'zh'
-      : ['en', 'zh'].includes(localStorage.getItem('lang'))
+      : ['en', 'zh'].includes(localStorage.getItem('lang')! || '')
         ? localStorage.getItem('lang') as 'zh' | 'en'
         : navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en'
 

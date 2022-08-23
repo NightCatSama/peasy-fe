@@ -3,7 +3,7 @@ export default {
   inheritAttrs: false,
 }
 
-const iconLinkList = []
+const iconLinkList: string[] = []
 </script>
 
 <script setup lang="ts">

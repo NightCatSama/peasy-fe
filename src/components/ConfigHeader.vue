@@ -72,7 +72,7 @@ const gotoMePage = async () => {
 const switchLang = async(lang: 'zh' | 'en') => {
   if (await Modal.confirm($t('switchLangTip'))) {
     router.replace({
-      name: route.name,
+      name: route.name!,
       params: { ...route.params },
       query: {
         lang

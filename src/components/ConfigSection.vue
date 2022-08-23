@@ -16,6 +16,7 @@ import { IMaterialItem } from '@/config'
 import { $t, getMaterialName } from '@/constants/i18n'
 import { Modal } from './modal'
 import Tip from './widgets/Tip.vue'
+import { useUserStore } from '@/stores/user'
 
 const pageStore = usePageStore()
 const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, setting } =
@@ -31,16 +32,20 @@ const {
   setActiveNodeHide,
   getMaterialByMaterialId,
   changeNodeName,
+  syncNodeModuleConfig,
 } = pageStore
 
 const displayStore = useDisplayStore()
 const { minimize, deviceType } = storeToRefs(displayStore)
 const { setMinimize } = displayStore
 
+const userStore = useUserStore()
+const { isAdmin } = storeToRefs(userStore)
+
 let showLayer = $ref(false)
 let showSaveMaterialModal = $ref(false)
 let curMaterial = $ref<IMaterialItem | null>(null)
-let saveCallback = $ref<(materialItem: IMaterialItem) => void | null>(null)
+let saveCallback = $ref<((materialItem: IMaterialItem) => void) | null>(null)
 
 const handleActiveNodeChange = async (event: Event) => {
   const elem = event.target as HTMLDivElement
@@ -124,6 +129,12 @@ const iconList: {
     tip: $t('delete'),
     click: deleteActiveNode,
   },
+  {
+    hide: !isAdmin.value,
+    name: 'sync',
+    tip: $t('sync'),
+    click: syncNodeModuleConfig,
+  },
 ])
 
 /** 保存为物料 */
@@ -151,7 +162,7 @@ const openMaterialModal = async () => {
   // 若当前组件是由物料新建来的，则复用前物料信息，并提示是否覆盖
   if (activeNode.value.materialId) {
     material = getMaterialByMaterialId(activeNode.value.materialId)
-    if (material) {
+    if (material && material.id) {
       if (await Modal.confirm(
         $t('materialExistTipMsg', getMaterialName(material)),
         { title: $t('materialExistTip'), cancelText: $t('newMaterial') })

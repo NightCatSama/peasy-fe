@@ -33,7 +33,7 @@ export const getStoragePageState = <T extends any>(id: string, state: T): T => {
     if (stateId === paramId && sessionStorage.getItem('__page_store_state__')) {
       initState = JSON.parse(sessionStorage.getItem('__page_store_state__')!)
     }
-    if (initState) return Object.assign(state, initState)
+    if (initState) return Object.assign(state as any, initState)
   } catch (e: any) {
     console.error('Cache Error', e)
   }

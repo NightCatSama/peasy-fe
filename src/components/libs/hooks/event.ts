@@ -46,8 +46,8 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
       } else if (event.action === 'scrollTo') {
         if (event.scrollTarget) {
           if (+event.scrollTarget >= 0) {
-            const wrap = editContext.isEditMode ? document.querySelector('.edit-wrapper') : document.querySelector('#app')
-            wrap.scrollTo({
+            const wrap = editContext?.isEditMode ? document.querySelector('.edit-wrapper') : document.querySelector('#app')
+            wrap?.scrollTo({
               top: +event.scrollTarget,
               behavior: 'smooth'
             })

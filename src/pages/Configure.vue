@@ -63,11 +63,11 @@ const { saveHistory, undoHistory, redoHistory, setIsSave } = historyStore
 let showProjectModal = $ref(false)
 let showKeyboard = $ref(false)
 
-const { setGlobalLoading } = inject('globalLoading')
+const { setGlobalLoading } = inject<{ setGlobalLoading: (text: string) => () => void }>('globalLoading')!
 
 /** 下载当前页面 */
 const handleDownload = async () => {
-  let hide
+  let hide: any
   const timer = setTimeout(() => hide = setGlobalLoading($t('downloadLoading')), 300)
   try {
     const res = await download()
