@@ -1,5 +1,5 @@
 /** 数据列表 */
-export const enum DataType {
+export enum DataType {
   Page = 'page',
   Resume = 'resume',
 }
@@ -162,7 +162,7 @@ export interface PageNode<T extends ComponentName = any> {
 }
 
 /** 模块配置支持类型 */
-export const enum ModuleConfigType {
+export enum ModuleConfigType {
   /** 按钮 */
   // Btn = 'btn',
   /** 文本 */
