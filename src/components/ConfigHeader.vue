@@ -45,7 +45,10 @@ const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
 const { saveHistory, undoHistory, redoHistory } = historyStore
 
 const { signIn, signOut, isAuthenticated } = useLogto()
-const handleSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
+const handleSignIn = () => {
+  sessionStorage.setItem('redirect', location.href)
+  signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
+}
 const handleSignOut = async () => {
   if (await Modal.confirm($t('signOutTip'), { title: $t('signOutTipTitle') })) {
     signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)

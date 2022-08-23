@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useHandleSignInCallback } from '@logto/vue'
 const { isLoading } = useHandleSignInCallback(() => {
+  const href = sessionStorage.getItem('redirect')
   // 完成时跳转至根路由
-  location.href = '/'
+  location.href = href || '/'
 })
 </script>
 

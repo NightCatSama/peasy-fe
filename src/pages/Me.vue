@@ -31,7 +31,10 @@ const pageStore = usePageStore()
 const { deleteMaterial } = pageStore
 
 const { signOut, signIn, isAuthenticated } = useLogto()
-const handleSignIn = () => signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
+const handleSignIn = () => {
+  sessionStorage.setItem('redirect', location.href)
+  signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
+}
 const handleSignOut = () => signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
 
 const handleUpdateAvatar = (img: string) => {
