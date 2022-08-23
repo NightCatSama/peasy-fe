@@ -144,8 +144,7 @@ watch(
 )
 
 const handleSave = async () => {
-  if (!node || !editItem) return
-  if (!editItem.name) {
+  if (!editItem?.name) {
     AlertError($t('nameRequired'))
     return
   }
