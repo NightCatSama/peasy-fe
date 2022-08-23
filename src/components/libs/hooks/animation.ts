@@ -59,8 +59,8 @@ export const useAnimation = (propsRef: IProps, el: Ref<HTMLDivElement | null>) =
     if (observer) return
     observer = useIntersectionObserver(el, (isIntersecting) => {
       animationMap.forEach((item, anim) => {
-        if (item.isAnimate) return
         if (isIntersecting) {
+          if (item.isAnimate) return
           item.isAnimate = true
           setTimeout(() => (item.isAnimate = false), (anim.duration + anim.delay) * 1000)
         }
