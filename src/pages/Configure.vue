@@ -154,6 +154,8 @@ onMounted(async () => {
       await getProjectData(id)
     } catch (e) {
       router.replace({ name: 'create' })
+    } finally {
+      hide?.()
     }
     if (haveStoragePageState(id)) {
       if (await Modal.confirm($t('notSaveDataTip'))) {
@@ -168,9 +170,9 @@ onMounted(async () => {
       await loadTemplateData(route.query.templateId)
       router.replace({ name: 'create' })
     }
+    hide?.()
     setTimeout(() => emitter.emit('location', true))
   }
-  hide?.()
   if (setting.value.client === 'mobile') {
     deviceType.value = 'mobile'
     setDevice(0)
