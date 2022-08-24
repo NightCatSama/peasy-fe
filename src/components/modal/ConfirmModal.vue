@@ -25,7 +25,7 @@ const {
   title,
   msg,
   extraLink = '',
-  onExtraLinkClick,
+  onExtraLinkClick = null,
   okText = $t('ok'),
   cancelText = $t('cancel'),
   onOk,
@@ -80,11 +80,12 @@ defineExpose({})
 
 <style lang="scss">
 .confirm-modal {
-  width: 350px;
+  width: 400px;
   .modal-msg {
     display: flex;
     font-size: 14px;
     padding: 0 0 8px 0;
+    white-space: pre-line;
 
     .tip-icon {
       margin-right: 10px;

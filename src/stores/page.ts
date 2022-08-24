@@ -27,10 +27,14 @@ import { IResponse } from '@@/types/response'
 import { getStoragePageState } from '.'
 import { Alert } from '@/utils/alert'
 import { $t } from '@/constants/i18n'
+import { copyToClipboard, getClipboardText } from '@/utils/clipboard'
+import { Modal } from '@/components/modal'
 
 type MaterialData = {
   [key in PageNode['type']]: IMaterialItem[]
 }
+
+let prevCutNode: PageNode | null = null
 
 export const usePageStore = defineStore('page', {
   state: () =>
@@ -371,15 +375,24 @@ export const usePageStore = defineStore('page', {
     /** 复制当前激活节点 */
     copyActiveNode() {
       if (!this.activeNode) return
-      if (this.activeNode.type === 'section') {
-        this.addSection(this.activeNode, this.allPageData.indexOf(this.activeNode) + 1)
-      } else if (this.activeParentNode) {
-        const index = this.activeParentNode?.children?.indexOf(this.activeNode)
+      const node = this.activeNode
+      const parentNode = this.activeParentNode
+      const index =
+        node.type === 'section'
+          ? this.allPageData?.indexOf(node)
+          : parentNode?.children?.indexOf(node)
+      this.copyNode(node, parentNode, index)
+    },
+    /** 复制节点 */
+    copyNode(node: PageNode, parentNode?: PageNode, index?: number, isLinkProp?: boolean) {
+      if (node.type === 'section') {
+        this.addSection(node, index !== void 0 ? index + 1 : this.allPageData.length)
+      } else if (parentNode) {
         const newNode = this.insertNode(
-          this.activeNode,
-          this.activeParentNode,
-          index !== void 0 ? index + 1 : this.activeParentNode?.children?.length!,
-          !this.activeNode.isModule
+          node,
+          parentNode,
+          index !== void 0 ? index + 1 : parentNode?.children?.length!,
+          isLinkProp ? !node.isModule : false
         )
         nextTick(() => (this.activeNode = newNode))
       }
@@ -484,7 +497,16 @@ export const usePageStore = defineStore('page', {
     /** 转换物料组件，保存为物料时需要处理一下 propLink 等转换 */
     covertMaterialNode(material: IMaterialItem) {
       if (material.type === 'template') return material
-      const node = cloneDeep(material.node) as PageNode
+      const node = this.covertNodeLinkToClear(material.node as PageNode)
+      if (node.materialId) {
+        node.materialId = ''
+      }
+      material.node = node
+      return material
+    },
+    /** 将组件 propLink 清除 */
+    covertNodeLinkToClear(originNode: PageNode): PageNode {
+      const node = cloneDeep(originNode)
       const nodeList = [node, ...this.getAllChildNode(node)]
       const nodeNameMap: { [name: string]: PageNode } = {}
       const allNameMap = this.nameMap
@@ -498,11 +520,7 @@ export const usePageStore = defineStore('page', {
           n.propLink = ''
         }
       })
-      if (node.materialId) {
-        node.materialId = ''
-      }
-      material.node = node
-      return material
+      return node
     },
     /** 处理插入的组件 */
     handleInsertNode(node: PageNode) {
@@ -546,6 +564,73 @@ export const usePageStore = defineStore('page', {
       if (material && material.node) {
         node.isModule = material.node.isModule
         node.moduleConfig = material.node.moduleConfig
+      }
+    },
+    async copyActiveNodeToClipboard(cut?: boolean) {
+      if (!this.activeNode) return
+      const node = this.covertNodeLinkToClear(this.activeNode)
+      const nodeText = JSON.stringify(node)
+      await copyToClipboard(nodeText)
+      if (cut) {
+        prevCutNode = this.activeNode
+        this.deleteActiveNode()
+      }
+    },
+    async pasteClipboardNode(pasteToInside?: boolean) {
+      if (!this.activeNode) return
+
+      let node = this.activeNode
+      let parentNode = this.activeParentNode
+      let index
+      // 粘贴到组件内部, 若当前选中组件不是容器组件，则按相邻组件粘贴处理
+      if (pasteToInside && (node.component === 'Block' && node.children)) {
+        parentNode = node
+        index = node.children?.length
+      } else {
+        index =
+          node.type === 'section'
+            ? this.allPageData?.indexOf(node)
+            : parentNode?.children?.indexOf(node)
+      }
+      try {
+        const text = await getClipboardText()
+        if (text) {
+          let pasteNode = JSON.parse(text) as PageNode
+          if (pasteNode.name && pasteNode.component) {
+            if (
+              // 不允许将普通组件当 section 插入
+              (pasteNode.type === 'component' && !parentNode) ||
+              // 不允许在 Module 中插入组件
+              parentNode?.isModule
+            ) return
+            // 若粘贴的组件已经在项目中，则提示是否要链接到原组件
+            const originNode = this.nameMap[pasteNode.name]
+            let isLink = false
+            if (
+              originNode &&
+              originNode.type === pasteNode.type &&
+              originNode.component === pasteNode.component &&
+              await Modal.confirm($t('linkTipMsg'), { title: $t('linkTip') })
+            ) {
+              pasteNode = originNode
+              isLink = true
+            } else if (
+              // 若粘贴的组件是被剪切的组件，且 name 一致，则直接移动
+              prevCutNode &&
+              !this.nameMap[prevCutNode.name] &&
+              prevCutNode.name === pasteNode.name &&
+              prevCutNode.component === pasteNode.component &&
+              prevCutNode.type === pasteNode.type
+            ) {
+              pasteNode = prevCutNode
+              isLink = true
+            }
+            this.copyNode(pasteNode, parentNode, index, isLink)
+            prevCutNode = null
+            return true
+          }
+        }
+      } catch(e) {
       }
     }
   },

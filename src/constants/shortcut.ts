@@ -57,6 +57,26 @@ export const ShortcutMap = {
     title: $t('saveProject'),
     value: isMacOS ? '⌘ + S' : 'Ctrl + S',
   },
+  cut: {
+    key: isMacOS ? 'meta.x' : 'ctrl.x',
+    title: $t('cut'),
+    value: isMacOS ? '⌘ + X' : 'Ctrl + X',
+  },
+  copyToClipboard: {
+    key: isMacOS ? 'meta.c' : 'ctrl.c',
+    title: $t('copyToClipboard'),
+    value: isMacOS ? '⌘ + C' : 'Ctrl + C',
+  },
+  paste: {
+    key: isMacOS ? 'meta.v' : 'ctrl.v',
+    title: $t('paste'),
+    value: isMacOS ? '⌘ + V' : 'Ctrl + V',
+  },
+  pasteToInside: {
+    key: isMacOS ? 'meta.shift.v' : 'ctrl.shift.v',
+    title: $t('pasteToInside'),
+    value: isMacOS ? '⌘ + Shift + V' : 'Ctrl + Shift + V',
+  },
   /** 保存组件 */
   saveMaterial: {
     key: isMacOS ? 'meta.shift.s' : 'ctrl.shift.s',

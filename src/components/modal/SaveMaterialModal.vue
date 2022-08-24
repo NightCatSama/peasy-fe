@@ -24,6 +24,7 @@ import { createJSONEditor } from '@/utils/jsoneditor'
 import { $t } from '@/constants/i18n'
 import type JSONEditor from 'jsoneditor'
 import Switch from '../widgets/Switch.vue'
+import { copyToClipboard } from '@/utils/clipboard'
 
 interface SaveMaterialModalProps {
   modelValue: boolean
@@ -182,9 +183,8 @@ const handleTreeNodeClick = (e: Event) => {
 
 /** 设置粘贴板 */
 const setClipboard = async (text: string) => {
+  await copyToClipboard(text)
   Alert('copy to clipboard: ' + text)
-  const data = [new ClipboardItem({ 'text/plain': new Blob([text], { type: 'text/plain' }) })];
-  await navigator.clipboard.write(data)
 }
 
 /** 状态变更 */

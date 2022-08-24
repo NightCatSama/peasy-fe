@@ -33,6 +33,8 @@ import { $t } from '@/constants/i18n'
 import { useUserStore } from '@/stores/user'
 import { getJSONEditor } from '@/utils/jsoneditor'
 import { getSetLoading } from '@/utils/context'
+import { copyToClipboard, getClipboardText } from '@/utils/clipboard'
+import { PageNode } from '@/config'
 
 const route = useRoute()
 const router = useRouter()
@@ -42,7 +44,7 @@ const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
-const { setting, activeSection, allPageData, colorVars, font, project } = storeToRefs(pageStore)
+const { activeNode, setting, activeSection, allPageData, colorVars, font, project } = storeToRefs(pageStore)
 const {
   setActiveSection,
   setActiveNode,
@@ -52,6 +54,8 @@ const {
   download,
   saveProjectData,
   loadTemplateData,
+  pasteClipboardNode,
+  copyActiveNodeToClipboard,
 } = pageStore
 
 const displayStore = useDisplayStore()
@@ -125,7 +129,7 @@ onMounted(async () => {
         'removeSection',
         'swapSection',
         'deleteActiveNode',
-        'copyActiveNode',
+        'copyNode',
         'separateActiveNode',
         'setActiveNodeHide',
         'switchActiveNodeConfigMode',
@@ -236,6 +240,35 @@ useKeyPress(ShortcutKey.switchShortcut, (e) => {
   e.preventDefault()
   showKeyboard = !showKeyboard
 })
+// 复制粘贴
+useKeyPress(ShortcutKey.cut, async (e) => {
+  e.preventDefault()
+  if (!activeNode.value) return
+  await copyActiveNodeToClipboard(true)
+  Alert($t('cutSuccess'))
+})
+useKeyPress(ShortcutKey.copyToClipboard, async (e) => {
+  e.preventDefault()
+  if (!activeNode.value) return
+  await copyActiveNodeToClipboard()
+  Alert($t('copySuccess'))
+})
+useKeyPress(ShortcutKey.pasteToInside, async (e) => {
+  e.preventDefault()
+  handlePasteNode(true)
+})
+useKeyPress(ShortcutKey.paste, async (e) => {
+  if (e.shiftKey) return
+  e.preventDefault()
+  handlePasteNode(false)
+})
+
+const handlePasteNode = async(pasteToInside?: boolean) => {
+  if (!activeNode.value) return
+  if (await pasteClipboardNode(pasteToInside)) {
+    Alert($t('pasteSuccess'))
+  }
+}
 
 const switchSectionByRound = $computed(() => (change: number) => {
   const index = allPageData.value.findIndex((item) => item === activeSection.value)
