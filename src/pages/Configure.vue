@@ -249,7 +249,8 @@ useKeyPress(ShortcutKey.cut, async (e) => {
 })
 useKeyPress(ShortcutKey.copyToClipboard, async (e) => {
   e.preventDefault()
-  if (!activeNode.value) return
+  const selectText = document.getSelection()?.toString()
+  if (!activeNode.value || selectText) return
   await copyActiveNodeToClipboard()
   Alert($t('copySuccess'))
 })
