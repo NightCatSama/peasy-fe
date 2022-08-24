@@ -267,6 +267,7 @@ export const useContainerStyle = (container: IContainer) => {
     overflow: container.overflow,
     boxShadow: container.boxShadow,
     cursor: container.cursor,
+    filter: container.filter,
   }
 }
 

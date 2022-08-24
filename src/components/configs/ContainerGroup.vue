@@ -12,6 +12,7 @@ interface IContainerGroupProps {
   container: IContainer
 }
 const { container, node } = defineProps<IContainerGroupProps>()
+const showFilterCode = $ref(false)
 
 const presetShadow = $computed(() => [
   '0 2px 2px 0 rgba(0,0,0,0.16), 0 0 0 1px rgba(0,0,0,0.08)',
@@ -21,6 +22,19 @@ const presetShadow = $computed(() => [
   '0 6px 6px rgba(10,16,20,.15), 0 0 52px rgba(10,16,20,.12)',
   '0 16px 24px 2px rgba(0,0,0,0.14), 0 6px 30px 5px rgba(0,0,0,0.12), 0 8px 10px -5px rgba(0,0,0,0.2)',
 ])
+
+const blur = $computed({
+  get(): number {
+    return parseFloat(container.filter?.match(/blur\((\d+)px\)/)?.[1] || '') || 0
+  },
+  set(val: number) {
+    if (val > 0) {
+      container.filter = `blur(${val}px)`
+    } else {
+      container.filter = ''
+    }
+  }
+})
 </script>
 
 <template>
@@ -58,6 +72,19 @@ const presetShadow = $computed(() => [
         }"
         v-model="container.cursor"
       ></SelectItem>
+      <SliderItem
+        :label="$t('filterBlur')"
+        v-model="blur"
+        :min="0"
+        :max="20"
+        :interval="1"
+        @dblclick="showFilterCode = !showFilterCode"
+      ></SliderItem>
+      <InputItem
+        v-if="showFilterCode"
+        :label="$t('filterCode')"
+        v-model="container.filter"
+      ></InputItem>
       <PreviewItem :label="$t('shadow')" v-model="container.boxShadow" :options="presetShadow">
         <template #default="{ item: shadow, active }">
           <div :class="['inner', { active }]" :style="{ boxShadow: shadow }"></div>

@@ -122,6 +122,7 @@ interface IContainer {
   overflow: 'visible' | 'hidden' | 'scroll' | 'auto'
   boxShadow: string
   opacity: number
+  filter: string
   cursor:
     | 'inherit'
     | 'auto'

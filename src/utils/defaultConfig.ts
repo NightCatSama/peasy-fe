@@ -143,6 +143,7 @@ export const getDefaultContainer = (initConfig?: Partial<IContainer>): IContaine
       boxShadow: '',
       opacity: 1,
       cursor: 'inherit',
+      filter: '',
     },
     initConfig
   )

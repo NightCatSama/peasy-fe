@@ -13,6 +13,7 @@ import { onUpdated, reactive, useAttrs } from 'vue'
 import { get, set } from 'lodash-es'
 import { useConfig } from '@/utils/config'
 import { lang } from '@/constants/i18n'
+import { emitter } from '@/utils/event'
 
 interface ICustomGroupProps extends IModuleConfigGroup {
   node: PageNode
@@ -36,6 +37,7 @@ const setValue = (sourceValue: string | string[], value: string) => {
       set(node, v, value)
     }
   }
+  emitter.emit('saveHistory')
 }
 
 const showTitle = $computed(() => lang === 'en' && titleEn || title)
