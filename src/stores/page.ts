@@ -381,7 +381,7 @@ export const usePageStore = defineStore('page', {
         node.type === 'section'
           ? this.allPageData?.indexOf(node)
           : parentNode?.children?.indexOf(node)
-      this.copyNode(node, parentNode, index)
+      this.copyNode(node, parentNode, index, true)
     },
     /** 复制节点 */
     copyNode(node: PageNode, parentNode?: PageNode, index?: number, isLinkProp?: boolean) {
