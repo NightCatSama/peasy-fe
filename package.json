@@ -1,7 +1,7 @@
 {
   "name": "peasy-fe",
   "private": true,
-  "version": "0.0.39",
+  "version": "0.0.40",
   "author": "NightCat<nightcat@hzfe.org>",
   "scripts": {
     "start": "npm run dev",
