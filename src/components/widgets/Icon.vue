@@ -37,6 +37,7 @@ import TopCircleIcon from '@/assets/top-circle.svg'
 import AbsoluteIcon from '@/assets/absolute.svg'
 import WarningIcon from '@/assets/warning.svg'
 import LockIcon from '@/assets/lock.svg'
+import UnlockIcon from '@/assets/unlock.svg'
 import DragIcon from '@/assets/drag.svg'
 import EditIcon from '@/assets/edit.svg'
 import PreviewIcon from '@/assets/preview.svg'
@@ -125,6 +126,7 @@ const iconMap = {
   absolute: AbsoluteIcon,
   warning: WarningIcon,
   lock: LockIcon,
+  unlock: UnlockIcon,
   drag: DragIcon,
   edit: EditIcon,
   preview: PreviewIcon,

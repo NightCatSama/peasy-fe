@@ -62,8 +62,8 @@ if (data) {
           const config = node?.config || {}
           return {
             ...linkNode?.config?.props,
-            ...(this.isMobile && linkNode?.config?.mobile ? linkNode.config.mobile : {}),
             ...config?.props,
+            ...(this.isMobile && linkNode?.config?.mobile ? linkNode.config.mobile : {}),
             ...(this.isMobile && config?.mobile ? config.mobile : {}),
           }
         }

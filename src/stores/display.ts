@@ -51,6 +51,8 @@ export const useDisplayStore = defineStore('display', {
     displayMode: 'edit' as DisplayMode,
     /** 手动锁定拖拽修改 position */
     lockDragSetPosition: false,
+    /** 锁定脚本事件触发 */
+    lockScriptTrigger: true,
     /** 是否右侧设置栏收起状态 */
     minimize: false,
     /** 当前展示的颜色类型 */
@@ -117,6 +119,9 @@ export const useDisplayStore = defineStore('display', {
     },
     setMinimize(minimize: boolean) {
       this.minimize = minimize
+    },
+    setLockScriptTrigger(lock: boolean) {
+      this.lockScriptTrigger = lock
     },
   },
 })

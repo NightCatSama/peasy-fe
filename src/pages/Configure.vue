@@ -56,7 +56,7 @@ const {
 
 const displayStore = useDisplayStore()
 const { setDeviceByParent, setDevice } = displayStore
-const { deviceType, displayMode } = storeToRefs(displayStore)
+const { deviceType, displayMode, lockScriptTrigger } = storeToRefs(displayStore)
 
 const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
@@ -253,13 +253,16 @@ const switchSectionToIndex = $computed(() => (index: number) => {
 
 // 向子组件传递当前编辑模式，在 lib/ 下的组件中使用
 // 为啥使用 provide，因为需要保持 lib/ 下的依赖干净，在纯页面生成时是不需要 store 相关数据引用的
-let context = reactive({ isEditMode: true, displayMode: displayMode.value })
+let context = reactive({ isEditMode: true, displayMode: displayMode.value, lockScriptTrigger: lockScriptTrigger.value })
 provide('editContext', context)
 
-// 更新 provide 的 displayMode
+// 更新 provide
 watch(
-  () => displayMode.value,
-  () => (context.displayMode = displayMode.value),
+  () => [displayMode.value, lockScriptTrigger.value],
+  () => {
+    context.displayMode = displayMode.value
+    context.lockScriptTrigger = lockScriptTrigger.value
+  },
   { immediate: true, flush: 'sync' }
 )
 

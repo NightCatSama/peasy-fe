@@ -162,6 +162,7 @@ onMounted(() => {
       :placeholder="placeholder"
       :rows="4"
       v-bind="$attrs"
+      @keydown.stop
       @keyup.enter="handleChange"
       @focus="handleFocus"
       @blur="handleBlur"

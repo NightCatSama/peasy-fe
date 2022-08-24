@@ -262,5 +262,5 @@ export const imgErrorFallback = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAA
 
 export const DefaultColor = '#333333'
 
-export const getUniqueName = (name: string) => `_n_${name}_`
-export const getTagClassName = (tag: string) => `_t_${tag}_`
+export const getUniqueName = (name: string) => `_name_${name}_`
+export const getTagClassName = (tag: string) => `_tag_${tag}_`

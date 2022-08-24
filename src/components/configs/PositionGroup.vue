@@ -158,7 +158,7 @@ const handleLockChange = () => {
       </div>
       <Icon
         :class="['lock-icon', { active: lockDragSetPosition }]"
-        name="lock"
+        :name="lockDragSetPosition ? 'lock' : 'unlock'"
         :size="14"
         @click="handleLockChange"
       ></Icon>

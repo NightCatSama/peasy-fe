@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { ref, useAttrs } from 'vue'
+import { useAttrs } from 'vue'
 import { useProps, IProps } from './hooks/common'
 
 const { elem, uName, style, props, tagClassNames } = useProps(

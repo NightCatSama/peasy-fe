@@ -1,3 +1,4 @@
+import { getTagClassName, getUniqueName } from '@/config'
 import { getContext } from '@/utils/context'
 import { watch, onBeforeMount, onMounted, Ref } from 'vue'
 import type { IProps } from './common'
@@ -27,7 +28,12 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
     if (!event) return null
 
     const handler = (e: Event) => {
-      if (editContext?.isEditMode && editContext?.displayMode !== 'preview') return
+      if (editContext?.isEditMode &&
+        (
+          editContext?.lockScriptTrigger ||
+          editContext?.displayMode !== 'preview'
+        )
+      ) return
       if (event.stopPropagation) {
         e.preventDefault()
       }
@@ -41,8 +47,13 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
       } else if (event.action === 'func') {
         if (!event.execFunction) return
         const args = '...args'
-        const fn = new Function(args, `var [event] = args;${event.execFunction}`)
-        fn(e)
+        const fn = new Function(args, `var [event, data, getByName, getByTag] = args;${event.execFunction}`)
+        fn(
+          e,
+          propsRef,
+          (name: string) => (document.body.querySelector('.' + getUniqueName(name)) as any)?.__node__,
+          (tagName: string) => Array.from(document.body.querySelectorAll('.' + getTagClassName(tagName)) || []).map((el) => (el as any).__node__)
+        )
       } else if (event.action === 'scrollTo') {
         if (event.scrollTarget) {
           if (+event.scrollTarget >= 0) {

@@ -1,5 +1,5 @@
 import { ComponentName, getTagClassName, getUniqueName, GroupPropType } from '@/config'
-import { watch, computed, reactive, ref } from 'vue'
+import { watch, computed, reactive, ref, onMounted, onBeforeMount } from 'vue'
 import { useAnimation } from './animation'
 import { useEffect } from './effect'
 import { useEvent } from './event'
@@ -62,6 +62,16 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
 
   const uName = computed(() => getUniqueName(propsRef.componentName))
   const tagClassNames = computed(() => propsRef.tags.map((tag) => getTagClassName(tag)))
+
+  onMounted(() => {
+    if (!elem.value) return
+    ;(elem.value as any).__node__ = props
+  })
+
+  onBeforeMount(() => {
+    if (!elem.value) return
+    delete (elem.value as any).__node__
+  })
 
   return {
     elem,

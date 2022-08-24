@@ -6,9 +6,8 @@ export default {
 
 <script setup lang="ts">
 import Input from '@/components/widgets/Input.vue'
+import Icon from '@/components/widgets/Icon.vue'
 import { emitter } from '@/utils/event'
-import { useDebounce } from 'ahooks-vue'
-import { watch } from 'vue'
 
 type IInputProps = Partial<InstanceType<typeof Input>>
 
@@ -20,10 +19,11 @@ interface ISelectItemProps extends IInputProps {
   onFocus?: IInputProps['onFocus']
   onBlur?: IInputProps['onBlur']
   wrapperClass?: string
+  tip?: string
 }
 
 const props = defineProps<ISelectItemProps>()
-const { label, modelValue, type, realTime, wrapperClass, onFocus, onBlur } = $(props)
+const { label, modelValue, type, realTime, wrapperClass, tip, onFocus, onBlur } = $(props)
 
 const emit = defineEmits(['update:model-value'])
 
@@ -53,6 +53,16 @@ const handleBlur = (e: Event) => {
   <div :class="['item', { column: type === 'textarea' }, wrapperClass]">
     <span class="label" v-if="label">
       <slot name="label" :label="label">{{ label }}</slot>
+      <Icon
+        v-if="tip"
+        name="question"
+        class="question-icon"
+        :size="13"
+        v-tooltip="{
+          content: tip
+        }"
+      ></Icon>
+      <div class="label-suffix"><slot name="label-suffix"></slot></div>
     </span>
     <Input
       class="input"
@@ -73,11 +83,24 @@ const handleBlur = (e: Event) => {
 .item {
   .label {
     flex: 1;
+    display: flex;
+    align-items: center;
+
+    &-suffix {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
   }
 
   .input {
     width: $item-width;
     flex: none;
+  }
+
+  &.column > .label {
+    width: 100%;
   }
 
   &.column > .input {
