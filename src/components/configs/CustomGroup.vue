@@ -23,10 +23,20 @@ const dataRef = reactive(data)
 const getComponentData = (type: string) => getFormPropsByType(type)
 
 const getValue = (sourceValue: string) => get(node, sourceValue)
-const setValue = (sourceValue: string | string[], value: string) =>
-  Array.isArray(sourceValue)
-    ? sourceValue.forEach((v) => set(node, v, value))
-    : set(node, sourceValue, value)
+const setValue = (sourceValue: string | string[], value: string) => {
+  const list = Array.isArray(sourceValue) ? sourceValue : [sourceValue]
+  while (list.length) {
+    const v = list.shift()!
+    if (v.includes('config.all.')) {
+      list.unshift(
+        v.replace('config.all.', 'config.props.'),
+        v.replace('config.all.', 'config.mobile.')
+      )
+    } else {
+      set(node, v, value)
+    }
+  }
+}
 
 const showTitle = $computed(() => lang === 'en' && titleEn || title)
 const getLabel = $computed(() => (item: IModuleConfigItem) => lang === 'en' && item.labelEn || item.label)
