@@ -41,9 +41,9 @@ export const formatNodeByUniqueName = (
       nameUpdatedMap[originName] = node.name
       // 链接到原组件
       if (isLinkProp) {
+        // 如果组件本身是链接组件，则继承特殊配置
+        node.config = node.propLink && node.config ? node.config : { props: {} } as any
         node.propLink = node.propLink || originName
-        // 将自身配置置空
-        node.config = { props: {} } as any
       }
       nameMap[node.name] = node
     }

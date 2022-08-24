@@ -79,7 +79,12 @@ const handleCreateCover = async () => {
   >
     <div class="info-wrapper" v-if="editProject">
       <InputItem :label="$t('name')" v-model="editProject.name"></InputItem>
-      <ImageItem :label="$t('cover')" :loading="coverLoading" v-model="editProject.cover" :rows="5"> </ImageItem>
+      <ImageItem
+        :label="$t('cover')"
+        :loading="coverLoading"
+        v-model="editProject.cover"
+        :rows="5">
+      </ImageItem>
     </div>
     <div class="btn-wrapper">
       <div class="btn-wrapper-left">
@@ -177,6 +182,9 @@ const handleCreateCover = async () => {
       min-height: 36px;
       width: 120px;
     }
+  }
+  .image-item.column .label {
+    width: 60px;
   }
 }
 </style>

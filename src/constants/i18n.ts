@@ -681,7 +681,7 @@ export const i18nText = {
     configBothTip: 'Both Desktop & Mobile',
     supportDevice: 'Support Device',
     pageTitle: 'Title',
-    pageDescription: 'Description',
+    pageDescription: 'Desc.',
     question: 'FAQ',
     question1: '💡 How to understand the page structure?',
     answer1: 'A page is made up of multiple sections stacked on top of each other, and any number of components can be added to the sections.',

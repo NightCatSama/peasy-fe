@@ -43,13 +43,13 @@ const handleClientChange = (client: IPageSetting['client']) => {
     ></SelectItem>
     <InputItem
       :label="$t('pageTitle')"
-      :placeholder="$t('pageTitle')"
+      :placeholder="$t('pageTitlePlaceholder')"
       wrapper-class="title-item"
       v-model="setting.title"
     ></InputItem>
     <InputItem
       :label="$t('pageDescription')"
-      :placeholder="$t('pageDescription')"
+      :placeholder="$t('pageDescriptionPlaceholder')"
       wrapper-class="title-item"
       v-model="setting.description"
     ></InputItem>

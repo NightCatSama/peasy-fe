@@ -610,7 +610,8 @@ export const usePageStore = defineStore('page', {
               originNode &&
               originNode.type === pasteNode.type &&
               originNode.component === pasteNode.component &&
-              await Modal.confirm($t('linkTipMsg'), { title: $t('linkTip') })
+              !originNode.isModule
+              // await Modal.confirm($t('linkTipMsg'), { title: $t('linkTip') })
             ) {
               pasteNode = originNode
               isLink = true

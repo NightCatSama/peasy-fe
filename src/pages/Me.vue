@@ -21,6 +21,7 @@ import { usePageStore } from '@/stores/page'
 import { $t } from '@/constants/i18n'
 import { placements } from 'floating-vue'
 import MaterialCard from '@/components/widgets/MaterialCard.vue'
+import { getSetLoading } from '@/utils/context'
 
 const router = useRouter()
 
@@ -63,11 +64,14 @@ onMounted(async () => {
     showMap['project'] = []
     return
   }
+  const setGlobalLoading = getSetLoading()
+  const hide = setGlobalLoading?.($t('loading'))
   const { data } = await projectApi.get<IResponse<Project[]>>('')
   showMap['project'] = data
   const res = await materialApi.get<IResponse<{ [type: string]: IMaterialItem[] }>>('', {
     query: { section: true, component: true, template: true, onlySelf: true },
   })
+  hide?.()
   ;['template', 'section', 'component'].forEach((key) => {
     if (res.data[key]?.length > 0) {
       showMap[key] = res.data[key]
@@ -251,6 +255,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
 
 <style lang="scss" scoped>
 .me-page {
+  position: relative;
   background: #e9e9e9;
   min-height: 100vh;
   font-family: $font-family;
