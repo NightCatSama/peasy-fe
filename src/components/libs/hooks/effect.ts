@@ -10,6 +10,14 @@ export const effectName2PropertyMap: { [name: string]: string } = {
   backgroundColor: 'background-color',
   opacity: 'opacity',
   hide: 'display',
+  blur: 'filter',
+}
+
+export const covertValue = (name: string, value: any) => {
+  if (name === 'blur') {
+    return `blur(${value}px)`
+  }
+  return value
 }
 
 export const selectorPriority: { [selector: string]: number } = {
@@ -51,21 +59,21 @@ export const useEffect = (propsRef: IProps<any>) => {
           }
           if (item?.targetType === 'self') {
             styles[key === 'hover' ? 'unshift' : 'push'](
-              `#${uName}:${key} { ${effectName2PropertyMap[item.name]}: ${value}!important; }`
+              `#${uName}:${key} { ${effectName2PropertyMap[item.name]}: ${covertValue(item.name, value)}!important; }`
             )
           }
           if (item?.targetType === 'name') {
             styles[key === 'hover' ? 'unshift' : 'push'](
               `.${uName}:${key} .${getUniqueName(item.target)} { ${
                 effectName2PropertyMap[item.name]
-              }: ${value}!important; }`
+              }: ${covertValue(item.name, value)}!important; }`
             )
           }
           if (item?.targetType === 'tag') {
             styles[key === 'hover' ? 'unshift' : 'push'](
               `.${uName}:${key} .${getTagClassName(item.target)} { ${
                 effectName2PropertyMap[item.name]
-              }: ${value}!important; }`
+              }: ${covertValue(item.name, value)}!important; }`
             )
           }
         })

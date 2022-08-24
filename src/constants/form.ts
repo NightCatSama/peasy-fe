@@ -83,6 +83,15 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
           interval: 0.05,
         },
       }
+    case 'blur':
+      return {
+        component: SliderItemVue,
+        props: {
+          min: 0,
+          max: 20,
+          interval: 1,
+        },
+      }
     default:
       return {
         component: null,

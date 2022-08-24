@@ -72,6 +72,11 @@ export const allEffectMap: IEffectShowItemMap = {
     ...getFormPropsByType('hide'),
     defaultValue: true,
   },
+  blur: {
+    label: $t('filterBlur'),
+    ...getFormPropsByType('blur'),
+    defaultValue: 0,
+  }
 }
 
 export const getEffectShowItemByGroup = (
@@ -115,6 +120,9 @@ export const getEffectShowItemByGroup = (
       return {
         opacity: Object.assign({}, allEffectMap['opacity'], {
           defaultValue: (props.container as IContainer)?.opacity ?? 1,
+        }),
+        blur: Object.assign({}, allEffectMap['blur'], {
+          defaultValue: 0,
         }),
       }
     }
