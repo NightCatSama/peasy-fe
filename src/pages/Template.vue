@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { IMaterialItem } from '@/config';
-import { materialApi } from '@/utils/mande';
+import { templatePreviewUrl, materialApi } from '@/utils/mande';
 import { IResponse } from '@@/types/response';
 import { onBeforeMount } from 'vue'
 import MaterialCard from '@/components/widgets/MaterialCard.vue'
@@ -52,7 +52,7 @@ const handleGotoProject = () => {
   <div class="template-page">
     <div :class="['title', { highlight: selectedId }]">
       <span>{{ selectedId ? $t('templateStart') : $t('templateTip') }}</span>
-      <Icon v-if="selectedId" name="start" :size="30" type="btn" @click="handleGotoProject"></Icon>
+      <Icon v-if="selectedId" name="start" :size="36" type="btn" @click="handleGotoProject"></Icon>
     </div>
     <div class="template-list">
       <MaterialCard
@@ -73,6 +73,12 @@ const handleGotoProject = () => {
         hide-operate
         @on-material-click="selectedId = item.id!"
       >
+        <a
+          v-if="selectedId === item.id"
+          class="preview-btn"
+          target="_blank"
+          :href="templatePreviewUrl(item.id)"
+        >{{ $t('preview') }}</a>
       </MaterialCard>
     </div>
   </div>
@@ -91,7 +97,7 @@ const handleGotoProject = () => {
 
   .title {
     font-size: 32px;
-    margin: 20px 0;
+    margin: 80px 0 40px 0;
     color: $color-dark;
     display: flex;
     align-items: center;
@@ -100,7 +106,7 @@ const handleGotoProject = () => {
       margin-left: 4px;
     }
     &.highlight :deep(.icon) {
-      color: $green;
+      color: $blue;
     }
   }
 
@@ -111,6 +117,30 @@ const handleGotoProject = () => {
     padding: 0 120px 0 144px;
     flex: 1;
     overflow: auto;
+  }
+
+  :deep(.preview-btn) {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    // width: 100%;
+    height: 32px;
+    line-height: 32px;
+    text-align: center;
+    color: $white;
+    background: rgba($green, 80%);
+    font-size: 16px;
+    cursor: pointer;
+    text-decoration: none;
+    font-family: $font-family;
+    transition: all .3s;
+    margin: 4px;
+    border-radius: $inner-radius;
+
+    &:hover {
+      background: rgba($green, 70%);
+    }
   }
 }
 </style>

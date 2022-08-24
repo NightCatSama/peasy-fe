@@ -37,6 +37,7 @@ const router = useRouter()
           <Icon name="empty" :size="32" />
           <span>{{ $t('notCover') }}</span>
         </div>
+        <slot></slot>
       </div>
       <div class="material-card-info">
         <div class="material-card-info-name">{{ item.name }}</div>
@@ -100,6 +101,7 @@ const router = useRouter()
 
 <style lang="scss" scoped>
 .material-card {
+  position: relative;
   display: inline-flex;
   flex-direction: column;
   margin: 12px 24px 12px 0;
@@ -116,6 +118,7 @@ const router = useRouter()
   }
 
   &-image {
+    position: relative;
     width: 100%;
     flex: 1;
     background-size: contain;
@@ -126,6 +129,7 @@ const router = useRouter()
     background-color: $white;
     cursor: pointer;
     transition: all 0.3s;
+    overflow: hidden;
 
     &.create {
       border: 2px dashed $grey;
