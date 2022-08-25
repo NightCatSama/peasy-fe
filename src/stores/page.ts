@@ -25,10 +25,11 @@ import { SaveProjectDto } from '@@/dto/data.dto'
 import { Project } from '@@/entities/project.entity'
 import { IResponse } from '@@/types/response'
 import { getStoragePageState } from '.'
-import { Alert } from '@/utils/alert'
+import { Alert, AlertError } from '@/utils/alert'
 import { $t } from '@/constants/i18n'
 import { copyToClipboard, getClipboardText } from '@/utils/clipboard'
 import { Modal } from '@/components/modal'
+import { isValidName } from '@/utils/validation'
 
 type MaterialData = {
   [key in PageNode['type']]: IMaterialItem[]
@@ -546,14 +547,23 @@ export const usePageStore = defineStore('page', {
       return node
     },
     /** 修改组件名称，若有组件链接此组件，则需要同步修改 */
-    changeNodeName(node: PageNode, name: string) {
-      if (!node) return
+    changeNodeName(node: PageNode, newName: string) {
+      if (!node || !newName || newName === node.name) return
+      if (!isValidName(newName) || !newName) {
+        AlertError($t('nameValidTip'))
+        return
+      }
+      if (this.nameMap[newName]) {
+        AlertError($t('nameExistTip'))
+        return
+      }
       for (let n in this.nameMap) {
         if (n !== node.name && this.nameMap[n].propLink === node.name) {
-          this.nameMap[n].propLink = name
+          this.nameMap[n].propLink = newName
         }
       }
-      node.name = name
+      node.name = newName
+      return true
     },
     /** 同步组件 Module 配置 */
     syncNodeModuleConfig() {

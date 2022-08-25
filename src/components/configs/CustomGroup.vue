@@ -24,8 +24,8 @@ const dataRef = reactive(data)
 const getComponentData = (type: string) => getFormPropsByType(type)
 
 const getValue = (sourceValue: string) => get(node, sourceValue)
-const setValue = (sourceValue: string | string[], value: string) => {
-  const list = Array.isArray(sourceValue) ? sourceValue.slice() : [sourceValue]
+const setValue = (targetValue: string | string[], value: string) => {
+  const list = Array.isArray(targetValue) ? targetValue.slice() : [targetValue]
   while (list.length) {
     const v = list.shift()!
     if (v.includes('config.all.')) {

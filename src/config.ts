@@ -44,7 +44,17 @@ export const ComponentPropsGroup = {
     'effect',
     'animation',
   ] as const,
-  Icon: ['common', 'basic', 'spacing', 'border', 'event', 'effect'] as const,
+  Icon: [
+    'common',
+    'basic',
+    'spacing',
+    'border',
+    'background',
+    'container',
+    'position',
+    'event',
+    'effect',
+  ] as const,
 } as const
 
 /** 支持的配置分组名 */

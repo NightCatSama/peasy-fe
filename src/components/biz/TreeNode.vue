@@ -21,10 +21,11 @@ const { layerStatus } = storeToRefs(displayStore)
 
 const pageStore = usePageStore()
 const { activeNode, activeParentChain } = storeToRefs(pageStore)
-const { setActiveNodeHide, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode } =
+const { setActiveNodeHide, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode, changeNodeName } =
   pageStore
 
 let collapse = ref(!!layerStatus.value.get(node))
+let isEdit = $ref(false)
 
 const isActive = $computed(() => activeNode.value === node)
 
@@ -63,6 +64,16 @@ watch(
   },
   { immediate: true, flush: 'post' }
 )
+
+const handleActiveNodeChange = async (event: Event) => {
+  isEdit = false
+  if (!activeNode.value) return
+  const elem = event.target as HTMLDivElement
+  if (activeNode.value.name === elem.innerText) return
+  elem.scrollLeft = 0
+  changeNodeName(activeNode.value, elem.innerText)
+  elem.innerText = activeNode.value.name
+}
 </script>
 
 <template>
@@ -77,7 +88,17 @@ watch(
     <div class="tree-node-info" @click="() => !preview && setActiveNode(node)">
       <Icon class="tree-node-info-icon" :name="icon" :size="12"></Icon>
       <div class="tree-node-info-name">
-        <div class="tree-node-info-name-text" :title="node.name">{{ node.name }}</div>
+        <div
+          class="tree-node-info-name-text"
+          :title="node.name"
+          :contenteditable="isEdit && !preview"
+          @dblclick="(e: Event) => {
+            isEdit = !preview;
+            ;(e.target as HTMLDivElement).focus()
+          }"
+          @keydown.enter.stop="(e: Event) => (e.target as HTMLDivElement)?.blur()"
+          @blur="handleActiveNodeChange"
+        >{{ node.name }}</div>
         <Icon
           v-if="isHide"
           class="tree-node-info-name-icon"
@@ -189,6 +210,14 @@ watch(
         white-space: nowrap;
         overflow: hidden;
         text-overflow: ellipsis;
+
+        &:not(:focus) {
+          text-overflow: ellipsis;
+        }
+
+        &:focus {
+          outline: none;
+        }
       }
     }
 

@@ -48,22 +48,11 @@ let curMaterial = $ref<IMaterialItem | null>(null)
 let saveCallback = $ref<((materialItem: IMaterialItem) => void) | null>(null)
 
 const handleActiveNodeChange = async (event: Event) => {
+  if (!activeNode.value) return
   const elem = event.target as HTMLDivElement
   elem.scrollLeft = 0
-  if (!activeNode.value) return
-  const newName = elem.innerText || ''
-  if (newName === activeNode.value.name) return
-  if (!isValidName(newName) || !newName) {
-    AlertError($t('nameValidTip'))
-    elem.innerText = activeNode.value.name
-    return
-  }
-  if (nameMap.value[newName]) {
-    AlertError($t('nameExistTip'))
-    elem.innerText = activeNode.value.name
-    return
-  }
-  changeNodeName(activeNode.value, newName)
+  changeNodeName(activeNode.value, elem.innerText)
+  elem.innerText = activeNode.value.name
 }
 
 /** 是否不需要取消链接选项 */

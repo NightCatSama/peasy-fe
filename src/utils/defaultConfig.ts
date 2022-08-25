@@ -37,7 +37,7 @@ export const getDefaultBasic = <
   if (isSomeBasicType(component, 'Icon', obj)) {
     obj = {
       name: 'home',
-      size: '1rem',
+      size: '24px',
       color: '$primary',
       prefixClass: 'fa-',
       extraClass: '',
@@ -54,8 +54,8 @@ export const getDefaultSize = (
   Object.assign(
     type === 'component'
       ? {
-          width: '10vw',
-          height: '10vw',
+          width: '100px',
+          height: '100px',
           minWidth: 'auto',
           minHeight: 'auto',
           maxHeight: 'none',
@@ -87,7 +87,7 @@ export const getDefaultLayout = (initConfig?: Partial<ILayout>): ILayout =>
 export const getDefaultFont = (initConfig?: Partial<IFont>): IFont =>
   Object.assign(
     {
-      fontSize: '1rem',
+      fontSize: '24px',
       lineHeight: '126%',
       color: '$primary',
       fontWeight: 'normal',
