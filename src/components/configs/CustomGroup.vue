@@ -10,7 +10,7 @@ import {
 } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
 import { onUpdated, reactive, useAttrs } from 'vue'
-import { get, set } from 'lodash-es'
+import { get, set, has } from 'lodash-es'
 import { useConfig } from '@/utils/config'
 import { lang } from '@/constants/i18n'
 import { emitter } from '@/utils/event'
@@ -25,7 +25,7 @@ const getComponentData = (type: string) => getFormPropsByType(type)
 
 const getValue = (sourceValue: string) => get(node, sourceValue)
 const setValue = (sourceValue: string | string[], value: string) => {
-  const list = Array.isArray(sourceValue) ? sourceValue : [sourceValue]
+  const list = Array.isArray(sourceValue) ? sourceValue.slice() : [sourceValue]
   while (list.length) {
     const v = list.shift()!
     if (v.includes('config.all.')) {
@@ -34,10 +34,9 @@ const setValue = (sourceValue: string | string[], value: string) => {
         v.replace('config.all.', 'config.mobile.')
       )
     } else {
-      set(node, v, value)
+      has(node, v) && set(node, v, value)
     }
   }
-  emitter.emit('saveHistory')
 }
 
 const showTitle = $computed(() => lang === 'en' && titleEn || title)
