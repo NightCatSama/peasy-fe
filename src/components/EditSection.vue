@@ -26,7 +26,7 @@ const {
   getActiveNodeRound,
   deleteActiveNode,
 } = pageStore
-const { pageData, activeNode, activeParentNode } = storeToRefs(pageStore)
+const { pageData, activeNode, activeParentNode, activeSectionIndex } = storeToRefs(pageStore)
 
 const displayStore = useDisplayStore()
 const { setDeviceByParent } = displayStore
@@ -210,7 +210,7 @@ const dragEvents = $computed(() =>
     ? {
         add: (event: SortableEvent) => {
           if (!dragNode.value || isCancelDrag.value) return
-          addSection(dragNode.value, event.newIndex)
+          addSection(dragNode.value, (event.newIndex || 0) + activeSectionIndex.value)
         },
       }
     : {}

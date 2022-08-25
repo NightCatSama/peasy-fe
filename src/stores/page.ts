@@ -85,6 +85,7 @@ export const usePageStore = defineStore('page', {
           : ComponentPropsGroup[state.activeNode.component as ComponentName]
         : null,
     isActiveAllSection: (state) => state.activeSection === null,
+    activeSectionIndex: (state) => state.activeSection === null ? 0 : state.allPageData.indexOf(state.activeSection),
     /** 当前预览的展示数据 */
     pageData: (state): typeof state.allPageData => {
       if (!state.activeSection) return state.allPageData
