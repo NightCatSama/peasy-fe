@@ -39,4 +39,4 @@ export const downloadApi = mande(`${apiURL}/api/data/download`)
 export const materialApi = mande(`${apiURL}/api/data/material`)
 export const projectApi = mande(`${apiURL}/api/data/project`)
 export const logtoMeApi = mande(`${apiURL}/api/users/me`)
-export const templatePreviewUrl = (templateId: string) =>  `${apiURL}/api/data/template/${templateId}`
+export const templatePreviewUrl = (templateId: string) =>  `${apiURL}/api/data/template/preview/${templateId}`

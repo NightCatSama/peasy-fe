@@ -1,15 +1,7 @@
-import type JSONEditorType from 'jsoneditor'
+import JSONEditor from 'jsoneditor'
 import type { JSONEditorOptions } from 'jsoneditor'
 
-let JSONEditor: (JSONEditorType | null) = null
-
-export const getJSONEditor = async() => {
-  if (JSONEditor) return JSONEditor
-  JSONEditor = (await import('jsoneditor') as any).default
-}
-
 export const createJSONEditor = async(querySelector: string) => {
-  await getJSONEditor()
   if (!JSONEditor) {
     console.error('jsoneditor load failed')
     return
