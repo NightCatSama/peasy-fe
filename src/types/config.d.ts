@@ -82,6 +82,8 @@ interface IPosition {
   right: string | 'auto'
   bottom: string | 'auto'
   zIndex: number
+  /** 距离容器顶部一定距离时展示，仅 fixed 有效 */
+  showByOffset?: string
 }
 
 /** 边框信息 */

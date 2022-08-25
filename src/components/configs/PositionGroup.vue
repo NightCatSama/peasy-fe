@@ -2,6 +2,7 @@
 import Group from '../widgets/Group.vue'
 import { PageNode } from '@/config'
 import TabsItem from './items/TabsItem.vue'
+import InputItem from './items/InputItem.vue'
 import PositionTable from '../widgets/PositionTable.vue'
 import Input from '../widgets/Input.vue'
 import { closeDragMode, openDragMode } from '@/utils/moveable'
@@ -52,6 +53,15 @@ const values = $computed(() => {
       position.right === 'auto' &&
       position.top === 'auto' &&
       position.bottom === 'auto',
+  }
+})
+
+const showByOffset = $computed({
+  get() {
+    return position.showByOffset || '0%'
+  },
+  set(val: string) {
+    position.showByOffset = val
   }
 })
 
@@ -164,6 +174,12 @@ const handleLockChange = () => {
       ></Icon>
     </div>
     <SliderItem :label="$t('zIndex')" v-model="position.zIndex" :min="0" :max="999"></SliderItem>
+    <InputItem
+      v-if="position.position === 'fixed'"
+      :label="$t('showByOffset')"
+      :suffix="['px', '%']"
+      v-model="showByOffset"
+    ></InputItem>
   </Group>
 </template>
 

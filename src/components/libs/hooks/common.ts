@@ -3,6 +3,7 @@ import { watch, computed, reactive, ref, onMounted, onBeforeMount } from 'vue'
 import { useAnimation } from './animation'
 import { useEffect } from './effect'
 import { useEvent } from './event'
+import { useScrollByOffset } from './position'
 import {
   useAnimationStyle,
   useBackgroundStyle,
@@ -35,6 +36,10 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
   useEvent(propsRef, elem)
   const { animationMap } = useAnimation(propsRef, elem)
   useEffect(propsRef)
+
+  if (propsRef?.position?.position === 'fixed' && propsRef?.position?.showByOffset) {
+    useScrollByOffset(propsRef.position.showByOffset, (show: boolean) => propsRef.common.hide = !show)
+  }
 
   const style = computed(() =>
     useStyle({
