@@ -28,12 +28,7 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
     if (!event) return null
 
     const handler = (e: Event) => {
-      if (editContext?.isEditMode &&
-        (
-          editContext?.lockScriptTrigger ||
-          editContext?.displayMode !== 'preview'
-        )
-      ) return
+      if (editContext?.isEditMode && editContext?.displayMode !== 'preview') return
       if (event.stopPropagation) {
         e.preventDefault()
       }
@@ -44,7 +39,7 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
         a.target = event.openNewTab ? '_blank' : '_self'
         a.click()
         a.remove()
-      } else if (event.action === 'func') {
+      } else if (event.action === 'func' && !editContext?.lockScriptTrigger) {
         if (!event.execFunction) return
         const args = '...args'
         const fn = new Function(args, `var [event, data, getByName, getByTag] = args;${event.execFunction}`)

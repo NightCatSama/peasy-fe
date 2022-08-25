@@ -54,6 +54,7 @@ export const ComponentPropsGroup = {
     'position',
     'event',
     'effect',
+    'animation',
   ] as const,
 } as const
 

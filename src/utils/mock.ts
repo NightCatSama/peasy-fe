@@ -215,6 +215,7 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
         position: getDefaultPosition(),
         event: getDefaultEvent(),
         effect: getDefaultEffect(),
+        animation: getDefaultAnimation(),
       },
     },
   }

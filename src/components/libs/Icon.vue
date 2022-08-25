@@ -49,7 +49,7 @@ const classNames = $computed(() => [
 </script>
 
 <template>
-  <div :class="['fa-icon']" v-bind="props.inheritAttrs">
+  <div ref="elem" :class="['fa-icon']" v-bind="props.inheritAttrs">
     <i :class="classNames" :style="style" :id="uName" />
   </div>
 </template>
