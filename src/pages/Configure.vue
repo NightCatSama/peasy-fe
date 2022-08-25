@@ -31,6 +31,7 @@ import ProjectModal from '@/components/modal/ProjectModal.vue'
 import { destroyMoveable } from '@/utils/moveable'
 import { $t } from '@/constants/i18n'
 import { useUserStore } from '@/stores/user'
+import { getJSONEditor } from '@/utils/jsoneditor'
 import { getSetLoading } from '@/utils/context'
 
 const route = useRoute()
@@ -312,6 +313,12 @@ watch(
   () => font.value,
   () => useFont(font.value, '.edit-content'),
   { deep: true, immediate: true, flush: 'sync' }
+)
+
+watch(
+  () => isAdmin.value,
+  (val) => val && getJSONEditor(),
+  { immediate: true }
 )
 </script>
 
