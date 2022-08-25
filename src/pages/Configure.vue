@@ -135,6 +135,9 @@ onMounted(async () => {
         'switchActiveNodeConfigMode',
         'unlinkActiveNodeProp',
         'unlinkActiveNodePropGroup',
+        'loadTemplateData',
+        'syncNodeModuleConfig',
+        'changeNodeName',
       ].includes(name)
     ) {
       inAction = true
