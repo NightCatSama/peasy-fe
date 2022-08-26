@@ -18,7 +18,7 @@ import { useKeyPress } from 'ahooks-vue'
 import { ShortcutKey } from '@/constants/shortcut'
 import { useFont } from '@/components/libs/hooks/font'
 import { persistToken } from '@/utils/mande'
-import { Alert, AlertError } from '@/utils/alert'
+import { Alert, AlertError, AlertProcess, AlertSuccess } from '@/utils/alert'
 import { useRoute, useRouter } from 'vue-router'
 import {
   saveStoragePageState,
@@ -92,9 +92,11 @@ const handleSaveProject = async (editProject?: IProject) => {
     showProjectModal = true
     return
   }
+  const alertCb = AlertProcess($t('saving'))
   const data = await saveProjectData(id, saveProject)
+  await new Promise((res) => setTimeout(() => res(true), 1000))
   showProjectModal = false
-  Alert($t('saveSuccess'))
+  alertCb($t('saveSuccess'))
   if (!id) {
     router.replace({
       name: 'edit',

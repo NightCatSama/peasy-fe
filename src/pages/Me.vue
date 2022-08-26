@@ -14,7 +14,7 @@ import { IResponse } from '@@/types/response'
 import { useRouter } from 'vue-router'
 import { Modal } from '@/components/modal'
 import ProjectModal from '@/components/modal/ProjectModal.vue'
-import { Alert } from '@/utils/alert'
+import { Alert, AlertSuccess } from '@/utils/alert'
 import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
 import { SaveProjectDto } from '@@/dto/data.dto'
 import { usePageStore } from '@/stores/page'
@@ -121,7 +121,7 @@ const handleSaveProject = async (project: IProject) => {
   curEditProject.cover = project.cover
   showProjectModal = false
   curEditProject = null
-  Alert($t('saveSuccess'))
+  AlertSuccess($t('saveSuccess'))
 }
 
 const handleSaveToTemplate = async (project: Project) => {

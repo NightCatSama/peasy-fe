@@ -16,7 +16,7 @@ import { createMaterialSnapshot } from '@/utils/snapshot'
 import { watch, nextTick } from 'vue'
 import TreeNode from '../biz/TreeNode.vue'
 import ImageItem from '../configs/items/ImageItem.vue'
-import { Alert, AlertError } from '@/utils/alert'
+import { Alert, AlertError, AlertSuccess } from '@/utils/alert'
 import { useUserStore } from '@/stores/user'
 import { cloneDeep } from 'lodash-es'
 import { uploadByBase64 } from '@/utils/oss'
@@ -161,7 +161,7 @@ const handleSave = async () => {
         } as PageNode),
   })
   onSave?.(data)
-  Alert($t('saveSuccess'))
+  AlertSuccess($t('saveSuccess'))
   modal?.hide()
 }
 
