@@ -1,6 +1,6 @@
 import { getColorVarStylesheet, getFontStylesheet } from '@/components/libs/hooks/stylesheet'
 import type { IPage, PageNode } from '@/config'
-import temp from '../../template-dist/index.html'
+import temp from '../../template-dist/index.html?raw'
 
 export const downloadByPageNode = (data: IPage) => {
   const dataScript = `<script>window.data = ${JSON.stringify(data)}</script>`
