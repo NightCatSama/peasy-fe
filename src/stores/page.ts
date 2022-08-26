@@ -30,6 +30,7 @@ import { $t } from '@/constants/i18n'
 import { copyToClipboard, getClipboardText } from '@/utils/clipboard'
 import { Modal } from '@/components/modal'
 import { isValidName } from '@/utils/validation'
+import { downloadByPageNode } from '@/utils/download'
 
 type MaterialData = {
   [key in PageNode['type']]: IMaterialItem[]
@@ -208,16 +209,22 @@ export const usePageStore = defineStore('page', {
     },
     /** 下载页面 */
     async download() {
-      const data = this.allPageData
-      const res = await downloadApi.post<any>({
-        data: {
-          pageData: this.allPageData,
-          colorVars: this.colorVars,
-          font: this.font,
-          setting: this.setting,
-        } as IPage,
-      })
-      return res
+      downloadByPageNode({
+        pageData: this.allPageData,
+        colorVars: this.colorVars,
+        font: this.font,
+        setting: this.setting,
+      } as IPage)
+      // const data = this.allPageData
+      // const res = await downloadApi.post<any>({
+      //   data: {
+      //     pageData: this.allPageData,
+      //     colorVars: this.colorVars,
+      //     font: this.font,
+      //     setting: this.setting,
+      //   } as IPage,
+      // })
+      // return res
     },
     /** 保存物料数据 */
     async fetchSaveMaterial(params: IMaterialItem) {

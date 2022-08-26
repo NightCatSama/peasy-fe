@@ -74,8 +74,9 @@ const handleDownload = async () => {
   let hide: any
   const timer = setTimeout(() => hide = setGlobalLoading($t('downloadLoading')), 300)
   try {
-    const res = await download()
-    downloadHtml(res.data)
+    download()
+    // const res = await download()
+    // downloadHtml(res.data)
   } finally {
     clearTimeout(timer)
     hide?.()

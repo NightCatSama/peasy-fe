@@ -18,3 +18,8 @@ declare module '@ckpack/vue-color' {
 declare module '@sipec/vue3-tags-input' {
   export const VueTagsInput: any
 }
+
+declare module '*.html' {
+  const text: string
+  export default text
+}

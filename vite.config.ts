@@ -4,6 +4,9 @@ import vue from '@vitejs/plugin-vue'
 import svgLoader from 'vite-svg-loader'
 import { visualizer } from 'rollup-plugin-visualizer'
 
+// @ts-ignore
+import { string } from 'rollup-plugin-string'
+
 const packageJSON = require('./package.json')
 
 const htmlPlugin = () => {
@@ -22,6 +25,9 @@ const htmlPlugin = () => {
 export default defineConfig(({ mode }) => ({
   base: loadEnv(mode, process.cwd(), '').VITE_URL_BASE,
   plugins: [
+    string({
+      include: 'template-dist/*.html',
+    }),
     vue({
       reactivityTransform: true
     }),
