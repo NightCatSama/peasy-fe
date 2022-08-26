@@ -302,7 +302,7 @@ export const usePageStore = defineStore('page', {
       this.allPageData.splice(targetIndex, 0, node)
     },
     /** 设置当前激活节点 */
-    setActiveNode(node?: PageNode | null, parent?: PageNode | null) {
+    setActiveNode(node?: PageNode | null) {
       if (this.activeNode === node) return
       this.activeNode = node || null
       this.activeParentChain.length = 0

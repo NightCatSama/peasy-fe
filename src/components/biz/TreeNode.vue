@@ -46,6 +46,7 @@ const icon = $computed(() => {
       Text: 'text',
       Block: 'block',
       Icon: 'symbol',
+      Media: 'video',
     } as any
   )[node.component]
 })

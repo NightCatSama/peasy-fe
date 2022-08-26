@@ -103,7 +103,9 @@ watchEffect(() => {
 })
 
 // 页面数据变化时，同步去更新 Moveable 的激活框
-watch([pageData], () => emitter.emit('updateMoveable'), { flush: 'post', deep: true })
+watch([pageData], () => {
+  nextTick(() => emitter.emit('updateMoveable'))
+}, { flush: 'post', deep: true })
 
 // 当首次新建 Section，去居中预览页面窗口
 watch(

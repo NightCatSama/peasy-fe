@@ -1,6 +1,6 @@
 import type { createApp as VueCreateApp } from 'vue'
 import type { IPage, PageNode } from '../src/config'
-import { Text, Block, Image, Icon } from '@/components/libs'
+import { Text, Block, Image, Icon, Media } from '@/components/libs'
 
 const createApp = (window as any)?.Vue?.createApp as typeof VueCreateApp
 
@@ -83,11 +83,12 @@ if (data) {
       Block,
       Image,
       Icon,
+      Media,
     }
   })
 } else {
   app = createApp({
-    template: '<div>Error</div>',
+    template: '<div>Data Error</div>',
   })
 }
 

@@ -21,6 +21,13 @@ interface IImageBasicType {
   objectFit: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down'
 }
 
+interface IMediaBasicType {
+  type: 'source' | 'youtube' | 'iframe'
+  src: string
+  youtubeId: string
+  autoplay: boolean
+}
+
 /** Button 组件基础配置 */
 interface IButtonBasicType {
   type: ''

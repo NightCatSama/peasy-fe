@@ -44,6 +44,14 @@ export const getDefaultBasic = <
       styleLink: DefaultIconStyleLink,
     }
   }
+  if (isSomeBasicType(component, 'Media', obj)) {
+    obj = {
+      type: 'youtube',
+      src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm',
+      youtubeId: 'dQw4w9WgXcQ',
+      autoplay: false
+    }
+  }
   return Object.assign(obj, initConfig)
 }
 

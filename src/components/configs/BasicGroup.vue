@@ -4,6 +4,7 @@ import InputItem from '@/components/configs/items/InputItem.vue'
 import { PageNode, isSomeBasicType, DefaultIconStyleLink } from '@/config'
 import ImageItem from './items/ImageItem.vue'
 import SelectItem from './items/SelectItem.vue'
+import SwitchItem from './items/SwitchItem.vue'
 import { usePageStore } from '@/stores/page'
 import SliderItem from './items/SliderItem.vue'
 import ColorItem from './items/ColorItem.vue'
@@ -35,7 +36,7 @@ const configs: ShowItem[] = $computed(() => {
       {
         component: InputItem,
         props: {
-          label: 'Text',
+          label: $t('text'),
           type: 'textarea',
           modelValue: basic.text,
           placeholder: $t('textEmptyTip'),
@@ -187,6 +188,82 @@ const configs: ShowItem[] = $computed(() => {
       },
     ]
     return fontAwesomeItems
+  }
+  /** Media 组件 */
+  if (isSomeBasicType(node.component, 'Media', basic)) {
+    return [
+      {
+        component: SelectItem,
+        props: {
+          label: $t('mediaType'),
+          modelValue: basic.type,
+          options: {
+            source: $t('source'),
+            youtube: $t('youtube'),
+            iframe: $t('iframe'),
+          },
+        },
+        setValue: (val: IMediaBasicType['type']) => {
+          basic.type = val
+        },
+      },
+      {
+        hide: basic.type !== 'source',
+        component: InputItem,
+        props: {
+          label: $t('source'),
+          type: 'textarea',
+          modelValue: basic.src,
+          placeholder: $t('sourcePlaceholder'),
+          realTime: true,
+          onBlur: () => {
+            if (!basic.src) {
+              deleteActiveNode()
+            }
+          },
+        },
+        setValue: (val: string) => {
+          basic.src = val
+        },
+      },
+      {
+        hide: basic.type !== 'youtube',
+        component: InputItem,
+        props: {
+          label: $t('youtube'),
+          modelValue: basic.youtubeId,
+          placeholder: $t('youtubePlaceholder'),
+          tip: $t('youtubeTip'),
+        },
+        setValue: (val: string) => {
+          basic.youtubeId = val
+        },
+      },
+      {
+        hide: basic.type !== 'iframe',
+        component: InputItem,
+        props: {
+          label: $t('iframe'),
+          type: 'textarea',
+          modelValue: basic.src,
+          placeholder: $t('iframePlaceholder'),
+        },
+        setValue: (val: string) => {
+          basic.src = val
+        },
+      },
+      {
+        hide: basic.type !== 'source',
+        component: SwitchItem,
+        props: {
+          label: $t('autoplay'),
+          modelValue: !!basic.autoplay,
+        },
+        setValue: (val: IMediaBasicType['autoplay']) => {
+          basic.autoplay = val
+        },
+      },
+    ]
   }
   return []
 })

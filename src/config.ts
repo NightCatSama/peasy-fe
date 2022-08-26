@@ -56,6 +56,19 @@ export const ComponentPropsGroup = {
     'effect',
     'animation',
   ] as const,
+  Media: [
+    'common',
+    'basic',
+    'size',
+    'spacing',
+    'border',
+    'background',
+    'container',
+    'position',
+    'event',
+    'effect',
+    'animation',
+  ] as const,
 } as const
 
 /** 支持的配置分组名 */
@@ -82,6 +95,7 @@ export interface GroupPropType<T extends ComponentName = any> {
     Text: ITextBasicType
     Image: IImageBasicType
     Icon: IIconBasicType
+    Media: IMediaBasicType
     [key: string]: any
   }[T]
   size: ISize

@@ -221,6 +221,33 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
   }
 }
 
+export const getMockMedia = (): PageNode<'Media'> => {
+  return {
+    type: 'component',
+    name: 'Media',
+    component: 'Media',
+    tags: ['Media'],
+    config: {
+      props: {
+        common: getDefaultCommon(),
+        basic: getDefaultBasic('Media'),
+        size: getDefaultSize('component', {
+          width: '450px',
+          height: '300px',
+        }),
+        spacing: getDefaultSpacing(),
+        border: getDefaultBorder(),
+        background: getDefaultBackground(),
+        container: getDefaultContainer(),
+        position: getDefaultPosition(),
+        event: getDefaultEvent(),
+        effect: getDefaultEffect(),
+        animation: getDefaultAnimation(),
+      },
+    },
+  }
+}
+
 export const EmptySection = {
   name: '空白章节',
   enName: 'Empty Section',
@@ -274,4 +301,15 @@ export const EmptyIcon = {
   cover: '',
   dataType: DataType.Page,
   node: getMockIcon(),
+}
+
+export const EmptyMedia = {
+  name: '媒体',
+  enName: 'Media',
+  category: '基础',
+  categoryEn: 'Basic',
+  type: 'component',
+  cover: '',
+  dataType: DataType.Page,
+  node: getMockMedia(),
 }

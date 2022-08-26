@@ -3,7 +3,7 @@ import { VTooltip, VClosePopper } from 'floating-vue'
 import { createLogto, LogtoConfig } from '@logto/vue'
 
 import App from './App.vue'
-import { Text, Block, Image, Icon } from './components/libs'
+import { Text, Block, Image, Icon, Media } from './components/libs'
 import GlobalDirective from './toolkit/global.directive'
 import Toast from 'vue-toastification'
 
@@ -47,6 +47,7 @@ app.component('Text', Text)
 app.component('Block', Block)
 app.component('Image', Image)
 app.component('Icon', Icon)
+app.component('Media', Media)
 
 app.config.globalProperties.$t = $t
 

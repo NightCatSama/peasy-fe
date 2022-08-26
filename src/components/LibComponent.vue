@@ -41,7 +41,7 @@ const isHide = $computed(() => useConfigProps(item)?.common?.hide)
 /** 设置当前组件为激活组件 */
 const setActive = () => {
   if (!$el || !$el.parentElement) return
-  setActiveNode(item, parent)
+  setActiveNode(item)
   emitter.emit('switchMaterialsPanel', false)
 }
 
