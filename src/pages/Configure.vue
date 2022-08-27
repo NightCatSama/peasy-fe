@@ -86,9 +86,6 @@ const handleDownload = async () => {
 /** 保存项目 */
 const handleSaveProject = async (editProject?: IProject) => {
   const saveProject = editProject || project.value
-  if (allPageData.value.length === 0) {
-    return
-  }
   if (!saveProject.name) {
     showProjectModal = true
     return
