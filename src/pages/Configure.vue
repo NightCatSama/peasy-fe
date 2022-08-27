@@ -67,7 +67,7 @@ const { saveHistory, undoHistory, redoHistory, setIsSave } = historyStore
 
 let showProjectModal = $ref(false)
 let showKeyboard = $ref(false)
-let showDownloadModal = $ref(true)
+let showDownloadModal = $ref(false)
 
 const setGlobalLoading = getSetLoading()
 
