@@ -93,20 +93,24 @@ const handleSaveProject = async (editProject?: IProject) => {
     showProjectModal = true
     return
   }
-  const alertCb = AlertProcess($t('saving'))
-  const data = await saveProjectData(id, saveProject)
-  await new Promise((res) => setTimeout(() => res(true), 1000))
-  showProjectModal = false
-  alertCb($t('saveSuccess'))
-  if (!id) {
-    router.replace({
-      name: 'edit',
-      params: {
-        id: data.id,
-      },
-    })
+  const [alertCb, hide] = AlertProcess($t('saving'))
+  try {
+    const data = await saveProjectData(id, saveProject)
+    alertCb($t('saveSuccess'))
+    showProjectModal = false
+    if (!id) {
+      router.replace({
+        name: 'edit',
+        params: {
+          id: data.id,
+        },
+      })
+    }
+    setIsSave(true)
+  } catch (e: any) {
+    hide()
+    throw e
   }
-  setIsSave(true)
 }
 
 emitter.on('saveProject', handleSaveProject)

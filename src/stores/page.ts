@@ -41,7 +41,7 @@ let prevCutNode: PageNode | null = null
 export const usePageStore = defineStore('page', {
   state: () =>
     getStoragePageState('', {
-      project: { name: '', cover: '' } as IProject,
+      project: { name: '', cover: '', isPublic: false, domain: '', host: '' } as IProject,
       /** 所有页面数据 */
       allPageData: [] as PageNode<any>[],
       /** 当前激活的节点 */
@@ -175,6 +175,8 @@ export const usePageStore = defineStore('page', {
       const pageData = data.page
       this.project.name = data.name
       this.project.cover = data.cover
+      this.project.isPublic = data.isPublic || false
+      this.project.domain = data.domain || ''
       this.allPageData = pageData.pageData
       this.colorVars = pageData.colorVars
       this.font = pageData.font
@@ -194,10 +196,16 @@ export const usePageStore = defineStore('page', {
           /** 字体配置 */
           font: this.font,
         },
+        isPublic: params.isPublic,
+        domain: params.domain,
+        host: params.host,
       }
       const { data } = await projectApi.patch<IResponse<Project>>(id, body)
       this.project.name = data.name
       this.project.cover = data.cover
+      this.project.isPublic = data.isPublic
+      this.project.domain = data.domain
+      this.project.host = data.host
       return data
     },
     /** 加载物料资源 */

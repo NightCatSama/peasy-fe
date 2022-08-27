@@ -1,13 +1,15 @@
 <script setup lang="ts">
 import Switch from '@/components/widgets/Switch.vue'
 import { emitter } from '@/utils/event'
+import Icon from '@/components/widgets/Icon.vue'
 
 interface ISwitchItemProps {
   label: string
   modelValue: boolean
+  tip?: string
 }
 
-const { label, modelValue } = defineProps<ISwitchItemProps>()
+const { label, modelValue, tip } = defineProps<ISwitchItemProps>()
 const emit = defineEmits(['update:model-value'])
 
 const value = $computed({
@@ -21,7 +23,19 @@ const value = $computed({
 
 <template>
   <div class="item">
-    <div class="label">{{ label }}</div>
+    <div class="label" v-if="label">
+      <slot name="label" :label="label">{{ label }}</slot>
+      <Icon
+        v-if="tip"
+        name="question"
+        class="question-icon"
+        :size="13"
+        v-tooltip="{
+          content: tip
+        }"
+      ></Icon>
+      <div class="label-suffix"><slot name="label-suffix"></slot></div>
+    </div>
     <Switch v-model="value"></Switch>
     <slot></slot>
   </div>
@@ -31,6 +45,15 @@ const value = $computed({
 .item {
   .label {
     flex: 1;
+    display: flex;
+    align-items: center;
+
+    &-suffix {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
   }
 }
 </style>

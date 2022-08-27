@@ -14,22 +14,34 @@ import { Alert, AlertError, AlertLoading } from '@/utils/alert'
 import { reactive, useAttrs, watch } from 'vue'
 import { $t } from '@/constants/i18n'
 import { uploadByBase64 } from '@/utils/oss'
+import SwitchItem from '../configs/items/SwitchItem.vue'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
+import { verifySubDomain } from '@/utils/validation'
 
 interface IProjectModalProps {
   project: IProject
   hideCreateCover?: boolean
 }
 
+const userStore = useUserStore()
+const { isVIP } = storeToRefs(userStore)
+
 const { project, hideCreateCover } = defineProps<IProjectModalProps>()
 const propsRef = reactive(useAttrs())
 
 const emit = defineEmits(['save'])
+const defaultDomain = $computed(() => isVIP.value ? 'your-domain' : '')
 let editProject: IProject | null = $ref({
   name: '',
   cover: '',
+  isPublic: false,
+  domain: defaultDomain,
+  host: '',
 })
 
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
+
 
 watch(
   () => [project, propsRef.modelValue],
@@ -37,13 +49,20 @@ watch(
     if (propsRef.modelValue && editProject) {
       editProject.name = project.name
       editProject.cover = project.cover
+      editProject.isPublic = !!project.isPublic
+      editProject.domain = project.domain || defaultDomain
+      editProject.host = project.host || ''
     }
-  }
+  },
+  { immediate: true }
 )
 
 const handleSave = () => {
   if (!editProject?.name) {
     AlertError($t('projectNameRequired'))
+    return
+  }
+  if (editProject.domain && !verifySubDomain(editProject.domain)) {
     return
   }
   emit('save', editProject)
@@ -66,6 +85,16 @@ const handleCreateCover = async () => {
     coverLoading = false
   }
 }
+
+const verifyDomain = (event: Event) => {
+  if (!editProject) return
+  const elem = event.target as HTMLDivElement
+  elem.scrollLeft = 0
+  const text = elem.innerText
+  verifySubDomain(text)
+  elem.innerText = text.replace(/[^a-zA-Z0-9-]/g, '').toLocaleLowerCase()
+  editProject.domain = elem.innerText
+}
 </script>
 
 <template>
@@ -85,6 +114,25 @@ const handleCreateCover = async () => {
         v-model="editProject.cover"
         :rows="5">
       </ImageItem>
+      <SwitchItem
+        v-model="editProject.isPublic"
+        :label="$t('isPublic')"
+        :tip="$t('isPublicTip')"
+      >
+      </SwitchItem>
+      <div class="domain-input item" v-if="editProject.isPublic">
+        <div class="label">{{ $t('domain') }}</div>
+        <div class="domain">
+          <span
+            :class="['sub-domain', { disabled: !isVIP }]"
+            :contenteditable="isVIP ? 'true' : 'false'"
+            v-tooltip="{ content: $t('domainTip'), disabled: isVIP }"
+            @keydown.enter.stop="(e: Event) => (e.target as HTMLDivElement)?.blur()"
+            @blur="verifyDomain"
+          >{{ editProject.domain || (isVIP ? '' : $t('domainRandom')) }}</span>
+          <span>.p-easy.net</span>
+        </div>
+      </div>
     </div>
     <div class="btn-wrapper">
       <div class="btn-wrapper-left">
@@ -124,6 +172,43 @@ const handleCreateCover = async () => {
     }
     .input {
       flex: 1;
+    }
+  }
+  .domain-input {
+    .label {
+      flex: 1;
+    }
+    .domain {
+      font-size: 14px;
+      color: $grey;
+      display: flex;
+      align-items: center;
+
+      .sub-domain {
+        position: relative;
+        top: 1px;
+        display: inline-flex;
+        color: $blue;
+        background: $panel-dark;
+        padding: 4px 8px;
+        font-size: 12px;
+        border-radius: $inner-radius;
+        margin-right: 4px;
+        outline: none;
+        border: none;
+        min-width: 20px;
+        text-align: right;
+
+        &:focus {
+          outline: none;
+          border: none;
+        }
+
+        &.disabled {
+          color: $panel-light;
+          cursor: not-allowed;
+        }
+      }
     }
   }
 

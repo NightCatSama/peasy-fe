@@ -7,14 +7,14 @@ import Icon from '@/components/widgets/Icon.vue'
 import Avatar from '@/components/widgets/Avatar.vue'
 import ImageItem from '@/components/configs/items/ImageItem.vue'
 import { materialApi, projectApi } from '@/utils/mande'
-import { onMounted, reactive } from 'vue'
+import { onErrorCaptured, onMounted, reactive } from 'vue'
 import { IMaterialItem, IPage } from '@/config'
 import { Project } from '@@/entities/project.entity'
 import { IResponse } from '@@/types/response'
 import { useRouter } from 'vue-router'
 import { Modal } from '@/components/modal'
 import ProjectModal from '@/components/modal/ProjectModal.vue'
-import { Alert, AlertSuccess } from '@/utils/alert'
+import { Alert, AlertError, AlertSuccess } from '@/utils/alert'
 import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
 import { SaveProjectDto } from '@@/dto/data.dto'
 import { usePageStore } from '@/stores/page'
@@ -26,7 +26,7 @@ import { getSetLoading } from '@/utils/context'
 const router = useRouter()
 
 const userStore = useUserStore()
-const { userName, avatar } = storeToRefs(userStore)
+const { userName, avatar, vipName } = storeToRefs(userStore)
 const { updateAvatar } = userStore
 
 const pageStore = usePageStore()
@@ -81,6 +81,10 @@ onMounted(async () => {
   })
 })
 
+onErrorCaptured((error: any) => {
+  AlertError(error?.body?.message || error?.message || error?.msg || $t('unknownError'))
+})
+
 let projectList = $computed<Project[]>(() => (showMap['project'] as Project[]) || [])
 
 const handleGotoProject = (project?: Project) => {
@@ -102,7 +106,7 @@ const handleDeleteProject = async (project: Project) => {
   if (await Modal.confirm($t('deleteConfirm', project.name))) {
     await projectApi.delete(project.id)
     showMap['project'] = projectList.filter((p) => p.id !== project.id)
-    Alert($t('deleteSuccess'))
+    AlertSuccess($t('deleteSuccess'))
   }
 }
 
@@ -116,9 +120,15 @@ const handleSaveProject = async (project: IProject) => {
   await projectApi.patch<IResponse<Project>>(curEditProject.id, {
     name: project.name,
     cover: project.cover,
+    isPublic: project.isPublic || false,
+    domain: project.domain || '',
+    host: project.host || ''
   })
   curEditProject.name = project.name
   curEditProject.cover = project.cover
+  curEditProject.domain = project.domain
+  curEditProject.isPublic = project.isPublic
+  curEditProject.host = project.host
   showProjectModal = false
   curEditProject = null
   AlertSuccess($t('saveSuccess'))
@@ -137,6 +147,9 @@ const handleMaterialImageClick = async (material: IMaterialItem) => {
         name: material.name,
         cover: material.cover,
         page: material.page,
+        isPublic: false,
+        domain: '',
+        host: ''
       } as SaveProjectDto)
       handleGotoProject(data)
     }
@@ -187,7 +200,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     showMap[material.type] = (showMap[material.type] as IMaterialItem[]).filter(
       (p) => p.id !== material.id
     )
-    Alert($t('deleteSuccess'))
+    AlertSuccess($t('deleteSuccess'))
   }
 }
 </script>
@@ -200,7 +213,10 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
         <Btn class="sign-btn" type="btn" color="primary" @click="handleSignIn">{{ $t('signIn') }}</Btn>
       </div>
       <template v-else>
-        <div class="user-name">{{ userName }}</div>
+        <div class="user-name">
+          <span>{{ userName }}</span>
+          <span v-if="vipName" class="tag">{{ vipName }}</span>
+        </div>
         <Btn class="sign-btn" type="btn" color="default" @click="handleSignOut">{{ $t('signOut') }}</Btn>
       </template>
     </div>
@@ -268,9 +284,22 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     background: $panel-gradient;
   }
   .user-name {
+    display: flex;
+    justify-content: center;
+    align-items: center;
     margin-top: 20px;
     font-size: 30px;
     color: $yellow;
+
+    .tag {
+      margin-left: 4px;
+      font-size: 12px;
+      border-radius: 4px;
+      color: $white;
+      background: $purple-gradient;
+      padding: 2px 4px;
+      transform: scale(.9);
+    }
   }
 
   .sign-btn {

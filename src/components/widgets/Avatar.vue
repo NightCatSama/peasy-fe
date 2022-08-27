@@ -44,6 +44,7 @@ const handleImageUpload = (e: InputEvent) => {
   background-repeat: no-repeat;
   background-size: cover;
   background-position: center center;
+  background-color: $white;
 
   &.can-operator {
     cursor: pointer;

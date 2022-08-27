@@ -281,4 +281,7 @@ interface IPageSetting {
 interface IProject {
   name: string
   cover: string
+  isPublic: boolean
+  domain: string
+  host: string
 }

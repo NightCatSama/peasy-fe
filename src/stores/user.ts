@@ -1,10 +1,12 @@
 import { PageNode } from '@/config'
 import { logtoMeApi } from '@/utils/mande'
 import { defineStore } from 'pinia'
+import { MemberRole } from '@@/types/user'
 
 export interface IUserInfo {
   username: string
   avatar: string
+  member?: MemberRole
   roleNames: string[]
   uid: string
 }
@@ -20,6 +22,19 @@ export const useUserStore = defineStore('user', {
     uid: (state) => state.userInfo?.uid || '',
     isLogin: (state) => !!state.accessToken,
     isAdmin: (state) => state.userInfo?.roleNames?.includes('admin'),
+    isVIP: (state) => state.userInfo?.roleNames?.includes('admin') || [MemberRole.Advanced, MemberRole.Professional].includes(state.userInfo?.member!),
+    vipName: (state) => {
+      if (state.userInfo?.roleNames?.includes('admin')) {
+        return 'Admin'
+      }
+      if (state.userInfo?.member === MemberRole.Advanced) {
+        return 'Adv'
+      }
+      if (state.userInfo?.member === MemberRole.Professional) {
+        return 'Pro'
+      }
+      return ''
+    }
   },
   actions: {
     async fetchUserInfo() {
@@ -29,6 +44,7 @@ export const useUserStore = defineStore('user', {
       this.userInfo = {
         ...this.userInfo!,
         avatar: data.avatar || '',
+        member: data.member || MemberRole.Member,
       }
     },
     async updateAvatar(img: string) {
