@@ -5,32 +5,23 @@ export default {
 </script>
 
 <script setup lang="ts">
-import InputItem from '../configs/items/InputItem.vue'
 import Btn from '../widgets/Btn.vue'
 import Modal from './Modal.vue'
-import { createMaterialSnapshot } from '@/utils/snapshot'
-import ImageItem from '../configs/items/ImageItem.vue'
-import { Alert, AlertError, AlertLoading } from '@/utils/alert'
-import { reactive, useAttrs, watch } from 'vue'
 import { $t } from '@/constants/i18n'
-import { uploadByBase64 } from '@/utils/oss'
-import SwitchItem from '../configs/items/SwitchItem.vue'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { Modal as ModalInstance } from '.'
-import { usePageStore } from '@/stores/page'
 
 interface IDownloadModalProps {
   project: IProject
 }
 
 const userStore = useUserStore()
-const { isVIP, isLogin } = storeToRefs(userStore)
+const { isLogin } = storeToRefs(userStore)
 
 const { project } = defineProps<IDownloadModalProps>()
-const propsRef = reactive(useAttrs())
 
-const emit = defineEmits(['save'])
+const emit = defineEmits(['download'])
 
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
 
