@@ -33,6 +33,7 @@ import { $t } from '@/constants/i18n'
 import { useUserStore } from '@/stores/user'
 import { getJSONEditor } from '@/utils/jsoneditor'
 import { getSetLoading } from '@/utils/context'
+import DownloadModal from '@/components/modal/DownloadModal.vue'
 
 const route = useRoute()
 const router = useRouter()
@@ -66,6 +67,7 @@ const { saveHistory, undoHistory, redoHistory, setIsSave } = historyStore
 
 let showProjectModal = $ref(false)
 let showKeyboard = $ref(false)
+let showDownloadModal = $ref(true)
 
 const setGlobalLoading = getSetLoading()
 
@@ -247,15 +249,15 @@ useKeyPress(ShortcutKey.switchShortcut, (e) => {
 })
 // 复制粘贴
 useKeyPress(ShortcutKey.cut, async (e) => {
-  e.preventDefault()
   if (!activeNode.value) return
+  e.preventDefault()
   await copyActiveNodeToClipboard(true)
   Alert($t('cutSuccess'))
 })
 useKeyPress(ShortcutKey.copyToClipboard, async (e) => {
-  e.preventDefault()
   const selectText = document.getSelection()?.toString()
   if (!activeNode.value || selectText) return
+  e.preventDefault()
   await copyActiveNodeToClipboard()
   Alert($t('copySuccess'))
 })
@@ -336,7 +338,7 @@ watch(
     ></Sidebar>
     <div class="container">
       <ConfigHeader
-        @download="handleDownload"
+        @download="showDownloadModal = true"
         @save="handleSaveProject"
         @project-setting="showProjectModal = true"
       ></ConfigHeader>
@@ -360,6 +362,7 @@ watch(
       :project="project"
       @save="handleSaveProject"
     ></ProjectModal>
+    <DownloadModal :project="project" v-model="showDownloadModal" @download="handleDownload"></DownloadModal>
   </div>
 </template>
 

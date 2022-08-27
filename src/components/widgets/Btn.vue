@@ -55,6 +55,7 @@ const handleClick = (e: MouseEvent) => {
   align-items: center;
   cursor: pointer;
   transition: all 0.3s;
+  user-select: none;
 
   &.disabled {
     opacity: 0.5;
