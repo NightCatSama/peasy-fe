@@ -10,6 +10,7 @@ import Icon from '../widgets/Icon.vue'
 import TabsItem from './items/TabsItem.vue'
 import { emitter } from '@/utils/event'
 import { $t } from '@/constants/i18n'
+import { getColor } from '../libs/hooks/color'
 
 interface IFontGroupProps {
   node: PageNode
@@ -115,11 +116,9 @@ const handleChange = (e: InputEvent, setValue: (val: string) => void) => {
 const boxStyles = $computed(() => {
   const getBorderRadius = (radius: string) => (radius === 'circle' ? '50%' : radius)
   return {
-    [curShowBorderIndex === -1
-      ? 'borderColor'
-      : ['borderTopColor', 'borderRightColor', 'borderBottomColor', 'borderLeftColor'][
-          curShowBorderIndex
-        ]]: curShowBorderIndex === -1 ? '#DDD' : '#3e7ce8',
+    borderWidth: border.borderWidth.join(' '),
+    borderStyle: border.borderStyle.join(' '),
+    borderColor: Array.isArray(border.borderColor) ? border.borderColor.map(getColor).join(' ') : getColor(border.borderColor),
     borderRadius: Array.isArray(border.borderRadius)
       ? border.borderRadius.map(getBorderRadius).join(' ')
       : getBorderRadius(border.borderRadius),
@@ -228,6 +227,7 @@ $gapY: 30px;
     opacity: 0.8;
     border-width: 3px;
     border-style: solid;
+    background-color: rgba($panel-light, 35%);
   }
 
   .spacing-input {
