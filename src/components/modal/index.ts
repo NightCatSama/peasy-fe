@@ -9,7 +9,7 @@ export class Modal {
       const id = '__modal__' + Modal.id++
       let vnode = createVNode(ConfirmModal, {
         msg,
-        showClose: false,
+        showClose: true,
         onOk: () => res(true),
         onCancel: () => res(false),
         ...options,

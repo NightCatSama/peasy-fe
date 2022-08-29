@@ -154,7 +154,12 @@ const openMaterialModal = async () => {
     if (material && material.id) {
       if (await Modal.confirm(
         $t('materialExistTipMsg', getMaterialName(material)),
-        { title: $t('materialExistTip'), cancelText: $t('newMaterial') })
+        {
+          title: $t('materialExistTip'),
+          cancelText: $t('newMaterial'),
+          showClose: true,
+          closeOnClickMask: true
+        })
       ) {
         id = material.id
       }
