@@ -258,7 +258,7 @@ export const usePageStore = defineStore('page', {
     /** 删除单个物料数据 */
     async deleteMaterial(id: string) {
       await materialApi.delete(id)
-      Object.values(this.materialData).forEach((list: IMaterialItem[]) => {
+      this.materialData && Object.values(this.materialData).forEach((list: IMaterialItem[]) => {
         const index = list?.findIndex((item) => item.id === id)
         if (index > -1) {
           list.splice(index, 1)

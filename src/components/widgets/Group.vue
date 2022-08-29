@@ -141,7 +141,7 @@ const handleUnlinkPropGroup = () => {
       font-weight: bold;
       color: lighten($color, 15%);
       user-select: none;
-      cursor: default;
+      cursor: pointer;
       white-space: nowrap;
       overflow: hidden;
       text-overflow: ellipsis;

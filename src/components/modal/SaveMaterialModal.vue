@@ -226,12 +226,12 @@ const setValue = (key: 'name' | 'enName' | 'category' | 'categoryEn' | 'cover', 
         ></InputItem>
         <InputItem
           :label="$t('category')"
-          v-if="!isTemplate"
+          v-if="isAdmin"
           :model-value="editItem.category || ''"
           @update:model-value="(val: string) => setValue('category', val)"
         ></InputItem>
         <InputItem
-          v-if="isAdmin && !isTemplate"
+          v-if="isAdmin"
           :label="$t('categoryEn')"
           :model-value="editItem.categoryEn || ''"
           @update:model-value="(val: string) => setValue('categoryEn', val)"

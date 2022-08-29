@@ -5,7 +5,6 @@ import { useLogto } from '@logto/vue'
 import Btn from '@/components/widgets/Btn.vue'
 import Icon from '@/components/widgets/Icon.vue'
 import Avatar from '@/components/widgets/Avatar.vue'
-import ImageItem from '@/components/configs/items/ImageItem.vue'
 import { materialApi, projectApi } from '@/utils/mande'
 import { onErrorCaptured, onMounted, reactive } from 'vue'
 import { IMaterialItem, IPage } from '@/config'
@@ -17,22 +16,17 @@ import ProjectModal from '@/components/modal/ProjectModal.vue'
 import { Alert, AlertError, AlertSuccess } from '@/utils/alert'
 import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
 import { SaveProjectDto } from '@@/dto/data.dto'
-import { usePageStore } from '@/stores/page'
 import { $t } from '@/constants/i18n'
-import { placements } from 'floating-vue'
 import MaterialCard from '@/components/widgets/MaterialCard.vue'
 import { getSetLoading } from '@/utils/context'
 
 const router = useRouter()
 
 const userStore = useUserStore()
-const { userName, avatar, vipName } = storeToRefs(userStore)
+const { userName, avatar, vipName, isLogin } = storeToRefs(userStore)
 const { updateAvatar } = userStore
 
-const pageStore = usePageStore()
-const { deleteMaterial } = pageStore
-
-const { signOut, signIn, isAuthenticated } = useLogto()
+const { signOut, signIn } = useLogto()
 const handleSignIn = () => {
   sessionStorage.setItem('redirect', location.href)
   signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
@@ -47,10 +41,16 @@ let showProjectModal = $ref(false)
 let showSaveMaterialModal = $ref(false)
 let curMaterial = $ref<IMaterialItem | null>(null)
 let curEditProject = $ref<Project | null>(null)
+let curType = $ref('project')
 
 let showMap = reactive<{
   [key: string]: (IMaterialItem | Project)[]
-}>({})
+}>({
+  project: [],
+  template: [],
+  section: [],
+  component: [],
+})
 
 let titleMap: { [key: string]: string } = {
   project: $t('project'),
@@ -60,7 +60,7 @@ let titleMap: { [key: string]: string } = {
 }
 
 onMounted(async () => {
-  if (!isAuthenticated.value) {
+  if (!isLogin.value) {
     showMap['project'] = []
     return
   }
@@ -196,49 +196,58 @@ const updateMaterial = (material: IMaterialItem) => {
 /** 删除物料 */
 const handleDeleteMaterial = async (material: IMaterialItem) => {
   if (await Modal.confirm($t('deleteConfirm', material.name))) {
-    await deleteMaterial(material.id!)
+    await materialApi.delete(material.id!)
     showMap[material.type] = (showMap[material.type] as IMaterialItem[]).filter(
       (p) => p.id !== material.id
     )
     AlertSuccess($t('deleteSuccess'))
   }
 }
+
+const setCurType = (type: string) => {
+  curType = type
+}
 </script>
 
 <template>
   <div class="me-page">
     <div class="user-info">
-      <Avatar :image="avatar" :size="120" can-upload :on-upload="handleUpdateAvatar"></Avatar>
-      <div v-if="!isAuthenticated">
-        <Btn class="sign-btn" type="btn" color="primary" @click="handleSignIn">{{ $t('signIn') }}</Btn>
+      <Avatar :image="avatar" :size="100" :can-upload="isLogin" :on-upload="handleUpdateAvatar"></Avatar>
+      <div class="user-right" v-if="!isLogin">
+        <Btn class="sign-btn" type="btn" size="sm" color="primary" @click="handleSignIn">{{ $t('signIn') }}</Btn>
       </div>
-      <template v-else>
+      <div class="user-right" v-else>
         <div class="user-name">
           <span>{{ userName }}</span>
           <span v-if="vipName" class="tag">{{ vipName }}</span>
         </div>
-        <Btn class="sign-btn" type="btn" color="default" @click="handleSignOut">{{ $t('signOut') }}</Btn>
-      </template>
+        <Btn class="sign-btn" type="btn" size="sm" color="default" @click="handleSignOut">{{ $t('signOut') }}</Btn>
+      </div>
     </div>
-    <div
-      :class="['data-wrapper', `data-wrapper-${type}`]"
-      v-for="(list, type) in showMap"
-      v-show="type === 'project' || list.length > 0"
-      :key="type"
-    >
-      <div class="data-title">{{ titleMap[type] }}</div>
+    <div :class="['data-wrapper', `data-wrapper-${curType}`]" v-if="isLogin">
+      <div class="type-tabs">
+        <div
+          :class="['type-tabs-item', { active: curType === type }]"
+          v-for="(list, type) in showMap"
+          :key="type"
+          @click="setCurType(type as string)"
+        >
+          {{ titleMap[type] }}
+          <span class="count">{{ list.length }}</span>
+        </div>
+      </div>
       <div class="data-list">
         <MaterialCard
-          v-if="type === 'project'"
+          v-if="curType === 'project'"
           type="project"
           is-new
           @on-project-click="handleGotoProject"
         >
         </MaterialCard>
         <MaterialCard
-          v-for="(item, index) in list"
+          v-for="(item, index) in showMap[curType]"
           :key="item.name + index"
-          :type="type"
+          :type="curType"
           :item="item"
           @on-project-click="handleGotoProject"
           @on-material-click="handleMaterialImageClick"
@@ -249,6 +258,9 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
           @on-delete-material="handleDeleteMaterial"
         >
         </MaterialCard>
+        <div class="empty-tip" v-if="showMap[curType].length === 0 && curType !== 'project'">
+          {{ curType === 'template' ? $t('saveTemplateTip') : $t('saveMaterialTip') }}
+        </div>
       </div>
     </div>
     <ProjectModal
@@ -272,38 +284,65 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
 <style lang="scss" scoped>
 .me-page {
   position: relative;
-  background: #e9e9e9;
+  background: #e7e7e9;
   min-height: 100vh;
   font-family: $font-family;
   .user-info {
-    height: 320px;
+    height: 240px;
     display: flex;
-    flex-direction: column;
+    // flex-direction: column;
     justify-content: center;
     align-items: center;
     background: $panel-gradient;
+  }
+  .user-right {
+    display: flex;
+    flex-direction: column;
+    margin-left: 20px;
   }
   .user-name {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-top: 20px;
     font-size: 30px;
     color: $yellow;
 
     .tag {
-      margin-left: 4px;
+      margin-left: 6px;
       font-size: 12px;
       border-radius: 4px;
       color: $white;
       background: $purple-gradient;
-      padding: 2px 4px;
+      padding: 1px 4px;
       transform: scale(.9);
     }
   }
 
-  .sign-btn {
-    margin-top: 10px;
+  .type-tabs {
+    display: flex;
+    margin-bottom: 24px;
+    padding-bottom: 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, .15);
+
+    &-item {
+      padding: 8px 12px;
+      margin-right: 30px;
+      color: $panel-light;
+      cursor: pointer;
+      user-select: none;
+
+      &.active {
+        color: $panel;
+        font-weight: bold;
+        .count {
+          color: $theme;
+        }
+      }
+
+      .count {
+        color: #9e9ea7;
+      }
+    }
   }
 
   .data-wrapper {
@@ -323,6 +362,11 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     .data-list {
       display: flex;
       flex-wrap: wrap;
+    }
+    .empty-tip {
+      margin-top: 12px;
+      font-size: 14px;
+      color: #9e9ea7;
     }
   }
 }

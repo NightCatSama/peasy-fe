@@ -327,9 +327,10 @@ emitter.on('saveColorVars', (color: string) => {
         @click="$emit('save')"
         :disabled="allPageData.length === 0"
         icon="save"
-        type="icon"
-        color="second"
-        v-tooltip="$t('save')"
+        type="btn"
+        color="purple"
+        size="xs"
+        :text="$t('save')"
       ></Btn>
       <Btn
         class="download-btn"

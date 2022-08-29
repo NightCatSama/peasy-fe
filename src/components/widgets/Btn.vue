@@ -4,9 +4,9 @@ import Icon from './Icon.vue'
 
 interface IBtnProps {
   text?: string
-  size?: 'md' | 'sm'
+  size?: 'md' | 'sm' | 'xs'
   type?: 'text' | 'btn' | 'inner' | 'icon'
-  color?: 'primary' | 'default' | 'second'
+  color?: 'primary' | 'default' | 'second' | 'purple'
   icon?: InstanceType<typeof Icon>['name']
   disabled?: boolean
   isBlock?: boolean
@@ -123,6 +123,15 @@ const handleClick = (e: MouseEvent) => {
       }
     }
 
+    &.purple {
+      color: $color;
+      background: $purple-gradient;
+
+      &:not(.disabled):hover {
+        opacity: 0.8;
+      }
+    }
+
     &.size-md {
       padding: 0 24px;
       border-radius: 18px;
@@ -136,6 +145,17 @@ const handleClick = (e: MouseEvent) => {
       border-radius: $inner-radius;
       font-size: 13px;
       height: 28px;
+    }
+
+    &.size-xs {
+      padding: 0 8px;
+      border-radius: 12px;
+      font-size: 12px;
+      height: 24px;
+      .btn-icon {
+        margin-left: -2px;
+        margin-right: 0;
+      }
     }
   }
 

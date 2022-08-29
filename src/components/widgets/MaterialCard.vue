@@ -93,6 +93,7 @@ const router = useRouter()
           <Icon name="add" :size="24" />
           <span>{{ newText }}</span>
         </div>
+        <slot></slot>
       </div>
       <div class="material-card-info"></div>
     </template>
@@ -218,6 +219,13 @@ const router = useRouter()
     .material-card-image {
       border-color: transparent;
       outline: 3px solid $green;
+
+      &.create {
+        color: $theme;
+        border-color: $tr;
+        background-color: $white;
+        box-shadow: 0 0 10px 0px rgba(0, 0, 0, 0.1);
+      }
     }
   }
 }
