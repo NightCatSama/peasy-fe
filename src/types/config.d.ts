@@ -124,6 +124,8 @@ interface IBackground {
   /** 背景过渡色 */
   backgroundGradientAngle: number
   backgroundGradient: { color: string; percentage: number }[]
+  /** 背景裁切 */
+  backgroundClip: 'border-box' | 'padding-box' | 'content-box' | 'text'
 }
 
 /** 背景信息 */

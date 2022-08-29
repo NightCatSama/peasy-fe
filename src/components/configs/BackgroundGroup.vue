@@ -35,6 +35,8 @@ const updateBackgroundType = (type: 'color' | 'image' | 'gradient') => {
   }
 }
 
+const updateBackgroundClip = (clip: IBackground['backgroundClip']) => background.backgroundClip = clip
+
 const handleAddColor = () => {
   background.backgroundGradient.push({
     color: background.backgroundGradient[background.backgroundGradient.length - 1].color,
@@ -55,6 +57,7 @@ const deleteColor = (index: number) => {
     :can-advanced="false"
     :default-collapsed="false"
   >
+    <!-- 背景类型 -->
     <SelectItem
       :model-value="background.backgroundType"
       :label="$t('background')"
@@ -65,6 +68,23 @@ const deleteColor = (index: number) => {
         gradient: $t('backgroundTypeGradient'),
       }"
       @update:model-value="updateBackgroundType"
+    ></SelectItem>
+
+    <!-- 背景裁切 -->
+    <SelectItem
+      v-if="background.backgroundType !== 'none'"
+      :model-value="background.backgroundClip || ''"
+      :label="$t('backgroundClip')"
+      :tip="background.backgroundClip === 'text' ? $t('backgroundClipTextTip') : ''"
+      :options="{
+        'border-box': $t('backgroundClipBorder'),
+        'padding-box': $t('backgroundClipPadding'),
+        'content-box': $t('backgroundClipContent'),
+        ...(node.component === 'Text' ? {
+          'text': $t('backgroundClipText')
+        } : null),
+      }"
+      @update:model-value="updateBackgroundClip"
     ></SelectItem>
 
     <!-- 背景色设置 -->

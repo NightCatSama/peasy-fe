@@ -140,6 +140,7 @@ export const getDefaultBackground = (initConfig?: Partial<IBackground>): IBackgr
       backgroundGradientAngle: 180,
       backgroundGradient: [],
       backgroundAttachment: 'scroll',
+      backgroundClip: 'border-box',
     },
     initConfig
   )
