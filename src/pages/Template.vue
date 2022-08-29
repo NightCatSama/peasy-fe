@@ -119,7 +119,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
           type="template"
           :item="item"
           :selected="selectedId === item.id"
-          :hide-operate="key === 'user'"
+          :hide-operate="key === 'official'"
           @on-material-click="selectedId = item.id!"
           @on-setting-material="handleMaterialSetting"
           @on-delete-material="handleDeleteMaterial"
