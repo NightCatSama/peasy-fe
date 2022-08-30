@@ -1,15 +1,20 @@
 <script setup lang="ts">
 import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
-import { PageNode, isSomeBasicType, DefaultIconStyleLink } from '@/config'
+import { PageNode, isSomeBasicType, DefaultIconStyleLink, getTextChildClassName } from '@/config'
 import ImageItem from './items/ImageItem.vue'
 import SelectItem from './items/SelectItem.vue'
 import SwitchItem from './items/SwitchItem.vue'
 import { usePageStore } from '@/stores/page'
-import SliderItem from './items/SliderItem.vue'
+import BtnItem from './items/BtnItem.vue'
 import ColorItem from './items/ColorItem.vue'
 import Tip from '../widgets/Tip.vue'
 import { $t } from '@/constants/i18n'
+import { onMounted, watch } from 'vue'
+import Btn from '../widgets/Btn.vue'
+import { getMockText } from '@/utils/mock'
+import { getDefaultBasic } from '@/utils/defaultConfig'
+import { emitter } from '@/utils/event'
 
 interface IBasicGroupProps {
   node: PageNode
@@ -17,7 +22,7 @@ interface IBasicGroupProps {
 }
 const { node, basic } = defineProps<IBasicGroupProps>()
 const pageStore = usePageStore()
-const { deleteActiveNode } = pageStore
+const { deleteActiveNode, insertNode, setActiveNode } = pageStore
 
 const isSection = $computed(() => node.type === 'section')
 
@@ -27,6 +32,8 @@ interface ShowItem {
   props: any
   setValue?: (val: any) => void
   hide?: boolean
+  labelSuffix?: string
+  labelSuffixClick?: () => void
 }
 
 const configs: ShowItem[] = $computed(() => {
@@ -50,7 +57,36 @@ const configs: ShowItem[] = $computed(() => {
         setValue: (val: string) => {
           basic.text = val
         },
+        labelSuffix: !basic.isSonText ? 'Add Son Text' : '',
+        labelSuffixClick: () => {
+          if (basic.isSonText) return
+          if (!node.children) node.children = []
+          const newSonNode = insertNode(
+            node,
+            node,
+            node.children.length || 0,
+            true,
+            true,
+          )
+          newSonNode.config.props.basic = getDefaultBasic('Text', { isSonText: true})
+          emitter.emit('saveHistory')
+        },
       },
+      ...(node.children || []).map((n, i) => ({
+        component: BtnItem,
+        props: {
+          label: `{{{${i}}}}`,
+          modelValue: 'edit',
+          canDelete: true,
+          onClick: () => {
+            setActiveNode(n)
+          },
+          onDelete: () => {
+            node.children?.splice(i, 1)
+            emitter.emit('saveHistory')
+          }
+        },
+      })),
       {
         component: SelectItem,
         props: {
@@ -283,7 +319,11 @@ const configs: ShowItem[] = $computed(() => {
           :is="item.component"
           v-bind="item.props"
           @update:model-value="item?.setValue"
-        ></component>
+        >
+          <template v-if="item.labelSuffix && item.labelSuffixClick" #label-suffix>
+            <Btn type="text" @click="() => item.labelSuffixClick?.()" size="sm">{{ item.labelSuffix }}</Btn>
+          </template>
+        </component>
       </template>
     </template>
   </Group>

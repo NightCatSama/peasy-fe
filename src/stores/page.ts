@@ -8,6 +8,7 @@ import {
   IPage,
   IMaterialItem,
   DataType,
+  getTextChildClassName,
 } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
@@ -277,8 +278,8 @@ export const usePageStore = defineStore('page', {
       }
     },
     /** 插入 Component 组件 */
-    insertNode(dragNode: PageNode, parentNode: PageNode, index: number, isLinkProp = false) {
-      const newNode = this.handleInsertNode(formatNodeByUniqueName(dragNode, this.nameMap, isLinkProp))
+    insertNode(dragNode: PageNode, parentNode: PageNode, index: number, isLinkProp = false, removeChildren = false) {
+      const newNode = this.handleInsertNode(formatNodeByUniqueName(dragNode, this.nameMap, isLinkProp, removeChildren))
       parentNode.children?.splice(index, 0, newNode)
       return newNode
     },
@@ -659,6 +660,24 @@ export const usePageStore = defineStore('page', {
         }
       } catch(e) {
       }
-    }
+    },
+    /** 获取文本组件内的子组件 */
+    // getTextChildren(pageNode: PageNode): PageNode[] {
+    //   if (!pageNode || pageNode.component !== 'Text') return []
+    //   const node = pageNode as PageNode<'Text'>
+    //   const basic = useGroupConfig(node, 'basic') as ITextBasicType
+    //   const textChild = basic.text.match(/{{{(.+?)}}}/ig) || []
+    //   return textChild.map((text: string) => {
+    //     const childrenName = getTextChildClassName(node.name, text.slice(3, -3))
+    //     const origin = node.children?.find(n => n.name === childrenName)
+    //     if (origin) {
+    //       return origin
+    //     } else {
+    //       const n = formatNodeByUniqueName(node, this.nameMap, true, true)
+    //       n.name = childrenName
+    //       return n
+    //     }
+    //   })
+    // }
   },
 })

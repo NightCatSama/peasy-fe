@@ -22,9 +22,13 @@ export const formatNodeByUniqueName = (
   originNode: PageNode,
   nameMap: { [key: string]: PageNode },
   /** 是否链接到原组件，适用于复制组件 */
-  isLinkProp: boolean = false
+  isLinkProp: boolean = false,
+  removeChildren: boolean = false
 ): PageNode => {
   const newNode = cloneDeep(originNode)
+  if (removeChildren) {
+    newNode.children = []
+  }
   let pendingNodeList = [newNode]
 
   // 全部的节点

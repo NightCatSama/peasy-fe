@@ -4,6 +4,7 @@ import InputItem from '@/components/configs/items/InputItem.vue'
 import { PageNode } from '@/config'
 import { updateDirection } from '@/utils/moveable'
 import { $t } from '@/constants/i18n';
+import { watch } from 'vue';
 
 interface ISizeGroupProps {
   node: PageNode

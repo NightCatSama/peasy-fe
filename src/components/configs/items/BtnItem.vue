@@ -1,0 +1,55 @@
+<script setup lang="ts">
+import { emitter } from '@/utils/event'
+import Icon from '@/components/widgets/Icon.vue'
+import Btn from '@/components/widgets/Btn.vue'
+
+interface IBtnItemProps {
+  label: string
+  tip?: string
+  modelValue: string
+  canDelete?: boolean
+  wrapperClass?: string
+  onClick: () => void
+  onDelete?: () => void
+}
+
+const { label, tip, canDelete, modelValue, wrapperClass, onClick, onDelete } = defineProps<IBtnItemProps>()
+</script>
+
+<template>
+  <div :class="['item', wrapperClass]">
+    <span class="label" v-if="label">
+      <slot name="label" :label="label">{{ label }}</slot>
+      <Icon
+        v-if="tip"
+        name="question"
+        class="question-icon"
+        :size="13"
+        v-tooltip="{
+          content: tip
+        }"
+      ></Icon>
+      <div class="label-suffix"><slot name="label-suffix"></slot></div>
+    </span>
+    <Btn type="inner" color="second" size="sm" @click="() => onClick?.()">{{ modelValue }}</Btn>
+    <Icon v-if="canDelete" name="close" type="btn" color="red" :size="16" @click="() => onDelete?.()"></Icon>
+    <slot></slot>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.item {
+  .label {
+    flex: 1;
+    display: flex;
+    align-items: center;
+
+    &-suffix {
+      flex: 1;
+      display: flex;
+      justify-content: flex-end;
+      align-items: center;
+    }
+  }
+}
+</style>

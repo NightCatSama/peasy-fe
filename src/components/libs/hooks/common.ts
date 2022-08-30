@@ -1,4 +1,4 @@
-import { ComponentName, getTagClassName, getUniqueName, GroupPropType } from '@/config'
+import { ComponentName, getTagClassName, getUniqueName, GroupPropType, PageNode } from '@/config'
 import { watch, computed, reactive, ref, onMounted, onBeforeMount } from 'vue'
 import { useAnimation } from './animation'
 import { useEffect } from './effect'
@@ -26,6 +26,7 @@ export type IProps<T extends ComponentName = any> = {
   tags: string[]
   componentName: string
   direction?: 'row' | 'column'
+  children?: PageNode<any>[]
 } & GroupPropType<T>
 
 /** 所有基础组件的公共处理逻辑 */

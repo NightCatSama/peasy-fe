@@ -21,7 +21,7 @@ interface ILibComponentProps {
 const { parent, item, inModule } = defineProps<ILibComponentProps>()
 
 const pageStore = usePageStore()
-const { setActiveNode, insertNode, swapNode, addActiveParentChain } = pageStore
+const { setActiveNode, insertNode, swapNode, addActiveParentChain, getTextChildren } = pageStore
 const { activeNode } = storeToRefs(pageStore)
 
 const dragStore = useDragStore()
@@ -200,6 +200,7 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
       tags: item.tags,
       componentName: item.name,
       direction: parent ? useConfigProps(parent).layout?.direction : void 0,
+      children: item.children,
       inheritAttrs: {
         class: [
           'lib-component',

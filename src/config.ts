@@ -289,3 +289,4 @@ export const DefaultColor = '#333333'
 
 export const getUniqueName = (name: string) => `_name_${name}_`
 export const getTagClassName = (tag: string) => `_tag_${tag}_`
+export const getTextChildClassName = (name: string, index: number) => `_text_${name}_son_${index}_`
