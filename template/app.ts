@@ -1,7 +1,12 @@
-import type { createApp as VueCreateApp } from 'vue'
+
 import type { IPage, PageNode } from '../src/config'
 import { Text, Block, Image, Icon, Media } from '@/components/libs'
 
+// Debug
+// import { createApp } from 'vue'
+
+// Build
+import type { createApp as VueCreateApp } from 'vue'
 const createApp = (window as any)?.Vue?.createApp as typeof VueCreateApp
 
 if (!createApp) {
@@ -17,13 +22,19 @@ const getTemplate = (pageNode: PageNode[]) => {
 }
 
 const getHtml = (obj: PageNode, parent?: PageNode): string => {
-  return `<${obj.component} :direction='${parent?.name ? `getProps("${parent.name}")?.layout?.direction` : '""'}' :tags='${
+  return `
+<${obj.component}
+  :direction='${parent?.name ? `getProps("${parent.name}")?.layout?.direction` : '""'}'
+  :tags='${
     JSON.stringify(obj.tags) || '[]'
-  }' componentName="${obj.name}" v-bind='getProps("${obj.name}")'>${(
-    obj.children || []
-  )
-    .map((child) => getHtml(child, obj))
-    .join('')}</${obj.component}>`;
+  }'
+  componentName="${obj.name}"
+  :children='${obj.component === 'Text' && obj.children ? `getChild("${obj.name}")` : 'undefined'}'
+  v-bind='getProps("${obj.name}")'
+>
+${(obj.children || []).map((child) => getHtml(child, obj)).join('')}
+</${obj.component}>
+`;
 };
 
 const data: IPage = (window as any).data || []
@@ -66,6 +77,13 @@ if (data) {
             ...(this.isMobile && linkNode?.config?.mobile ? linkNode.config.mobile : {}),
             ...(this.isMobile && config?.mobile ? config.mobile : {}),
           }
+        }
+      },
+      getChild() {
+        return (name: string) => {
+          const node = this.nameMap[name] as PageNode
+          console.log(name, node.children, node?.config?.props?.basic?.isSonText)
+          return node?.children || []
         }
       }
     },

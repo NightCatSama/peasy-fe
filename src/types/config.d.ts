@@ -13,6 +13,8 @@ interface ICommonType {
 interface ITextBasicType {
   text: string
   whiteSpace: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap'
+  /** 是否为子 Text 组件 */
+  isSonText?: boolean
 }
 
 /** Image 组件基础配置 */

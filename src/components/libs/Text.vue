@@ -5,7 +5,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useAttrs } from 'vue'
+import { getUniqueName } from '@/config';
+import { nextTick, useAttrs, watch } from 'vue'
 import { useProps, IProps } from './hooks/common'
 
 const { elem, uName, style, props, tagClassNames } = useProps(
@@ -14,18 +15,56 @@ const { elem, uName, style, props, tagClassNames } = useProps(
 )
 
 const classNames = $computed(() => ['text', uName.value, ...tagClassNames.value])
+
+watch(() => [props.basic.text, props.children], () => {
+  // 若有子节点，则需要在渲染完成之后
+  // 从 text-children 中取出节点渲染到 text-content 中
+  if (!props.basic.isSonText && props.children) {
+    setTimeout(() => {
+      if (!elem.value) return
+      const textElem = elem.value.querySelector('.text-content') as HTMLElement
+      const textChildElem = elem.value.querySelector('.text-children') as HTMLElement
+      props.children?.forEach((child, index) => {
+        const beReplaceElem = textElem.querySelector('[data-textchild="' + index + '"]')
+        const replaceElem = textChildElem.querySelector('#' + getUniqueName(child.name))
+        if (beReplaceElem && replaceElem) {
+          const newNode = replaceElem.cloneNode(true) as HTMLElement
+          newNode.dataset.textchild = '' + index
+          newNode.classList.remove('lib-component')
+          newNode.style.pointerEvents = 'none'
+          textElem.replaceChild(newNode, beReplaceElem)
+        }
+      })
+    })
+  }
+}, { immediate: true, deep: true })
+
+const renderText = $computed(() => {
+  let text = props.basic.text
+  if (!elem.value) return text
+  const textChild = text.match(/{{(\d+?)}}/ig) || []
+  textChild.forEach((t: string) => {
+    const index = parseInt(t.slice(2, -2))
+    if (!props?.children?.[index - 1]) return
+    const reg = new RegExp('{{(' + index + ')}}', 'ig')
+    text = text.replace(reg, `<span data-textchild="${index - 1}"></span>`)
+  })
+  return text
+})
 </script>
 
 <template>
-  <div ref="elem" :id="uName" :style="style" :class="classNames" v-bind="props.inheritAttrs">
-    {{ props.basic.text }}
+  <div ref="elem" :style="style" :class="classNames" :id="uName" v-bind="props.inheritAttrs">
+    <span class="text-content" v-html="renderText"></span>
+    <div v-if="!props.basic.isSonText" class="text-children"><slot></slot></div>
   </div>
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 .text {
-  display: inline-flex;
-  word-break: break-word;
-  white-space: pre;
+  display: inline-block;
+}
+.text-children {
+  display: none;
 }
 </style>

@@ -16,7 +16,7 @@ export const getDefaultCommon = (initConfig?: Partial<ICommonType>): ICommonType
 
 export const getDefaultBasic = <
   T extends ComponentName = any,
-  P extends Partial<GroupPropType<T>['basic']> = any
+  P extends Partial<GroupPropType<T>['basic']> = any,
 >(
   component: T,
   initConfig?: P
@@ -24,7 +24,7 @@ export const getDefaultBasic = <
   let obj: any = {}
   if (isSomeBasicType(component, 'Text', obj)) {
     obj = {
-      text: 'Sample Text',
+      text: 'Text',
       whiteSpace: 'pre-line',
     }
   }

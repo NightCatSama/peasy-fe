@@ -178,6 +178,15 @@ const handleClick = (e: MouseEvent) => {
       }
     }
 
+    &.second {
+      color: $color;
+      background: $panel-light;
+
+      &:not(.disabled):hover {
+        opacity: 0.8;
+      }
+    }
+
     &.size-md {
       padding: 0 12px;
       border-radius: $inner-radius;
@@ -186,6 +195,15 @@ const handleClick = (e: MouseEvent) => {
       font-weight: bold;
       text-align: center;
       width: 100%;
+    }
+
+    &.size-sm {
+      padding: 0 12px;
+      border-radius: $inner-radius;
+      font-size: 12px;
+      height: 24px;
+      font-weight: bold;
+      text-align: center;
     }
   }
 

@@ -200,6 +200,7 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
       tags: item.tags,
       componentName: item.name,
       direction: parent ? useConfigProps(parent).layout?.direction : void 0,
+      children: item.component === 'Text' && item.children ? item.children : void 0,
       inheritAttrs: {
         class: [
           'lib-component',

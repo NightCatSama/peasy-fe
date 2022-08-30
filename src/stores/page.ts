@@ -7,7 +7,6 @@ import {
   GroupType,
   IPage,
   IMaterialItem,
-  DataType,
 } from '@/config'
 import { useDragStore } from './drag'
 import { formatNodeByUniqueName } from '@/utils/node'
@@ -277,8 +276,8 @@ export const usePageStore = defineStore('page', {
       }
     },
     /** 插入 Component 组件 */
-    insertNode(dragNode: PageNode, parentNode: PageNode, index: number, isLinkProp = false) {
-      const newNode = this.handleInsertNode(formatNodeByUniqueName(dragNode, this.nameMap, isLinkProp))
+    insertNode(dragNode: PageNode, parentNode: PageNode, index: number, isLinkProp = false, removeChildren = false) {
+      const newNode = this.handleInsertNode(formatNodeByUniqueName(dragNode, this.nameMap, isLinkProp, removeChildren))
       parentNode.children?.splice(index, 0, newNode)
       return newNode
     },
@@ -659,6 +658,6 @@ export const usePageStore = defineStore('page', {
         }
       } catch(e) {
       }
-    }
+    },
   },
 })
