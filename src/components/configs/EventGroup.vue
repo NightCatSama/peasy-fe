@@ -20,62 +20,64 @@ const { setLockScriptTrigger } = displayStore
 </script>
 
 <template>
-  <Group group-name="event" class="event-group" :default-collapsed="false" :can-advanced="true">
+  <Group group-name="event" class="event-group" :default-collapsed="false" :can-advanced="event.type !== 'none'">
     <template #default="{ showAdvanced }">
       <SelectItem
         :label="$t('eventTriggerType')"
-        :options="{ tap: $t('eventTap'), mousedown: $t('eventMouseDown'), touchstart: $t('eventTouchStart') }"
+        :options="{ none: $t('eventNone'), tap: $t('eventTap'), mousedown: $t('eventMouseDown'), touchstart: $t('eventTouchStart') }"
         v-model="event.type"
       ></SelectItem>
-      <TabsItem :data="{ link: $t('link'), scrollTo: $t('scrollTo'), func: $t('function') }" v-model="event.action"></TabsItem>
-      <template v-if="event.action === 'link'">
-        <InputItem
-          :label="$t('link')"
-          type="textarea"
-          :rows="2"
-          :placeholder="$t('linkPlaceholder')"
-          :model-value="event.link || ''"
-          @update:model-value="(value: string) => event.link = value"
-        ></InputItem>
-      </template>
-      <template v-if="event.action === 'scrollTo'">
-        <InputItem
-          :label="$t('scrollTo')"
-          :placeholder="$t('scrollToPlaceholder')"
-          type="textarea"
-          :rows="2"
-          :model-value="event.scrollTarget"
-          @update:model-value="(value: string) => event.scrollTarget = value"
-        ></InputItem>
-      </template>
-      <template v-if="event.action === 'func'">
-        <InputItem
-          :label="$t('function')"
-          type="textarea"
-          :tip="$t('functionTip')"
-          :placeholder="$t('functionPlaceholder')"
-          :model-value="event.execFunction || ''"
-          @update:model-value="(value: string) => event.execFunction = value"
-        >
-          <template #label-suffix>
-            <Icon
-              :class="['lock-icon', { active: lockScriptTrigger }]"
-              :name="lockScriptTrigger ? 'lock' : 'unlock'"
-              :size="14"
-              type="btn"
-              :active="lockScriptTrigger"
-              @click="setLockScriptTrigger(!lockScriptTrigger)"
-            ></Icon>
-          </template>
-        </InputItem>
-      </template>
-      <template v-if="showAdvanced">
-        <SwitchItem :label="$t('stopPropagation')" v-model="event.stopPropagation"></SwitchItem>
-        <SwitchItem
-          v-if="event.action === 'link'"
-          :label="$t('openNewTab')"
-          v-model="event.openNewTab"
-        ></SwitchItem>
+      <template v-if="event.type !== 'none'">
+        <TabsItem :data="{ link: $t('link'), scrollTo: $t('scrollTo'), func: $t('function') }" v-model="event.action"></TabsItem>
+        <template v-if="event.action === 'link'">
+          <InputItem
+            :label="$t('link')"
+            type="textarea"
+            :rows="2"
+            :placeholder="$t('linkPlaceholder')"
+            :model-value="event.link || ''"
+            @update:model-value="(value: string) => event.link = value"
+          ></InputItem>
+        </template>
+        <template v-if="event.action === 'scrollTo'">
+          <InputItem
+            :label="$t('scrollTo')"
+            :placeholder="$t('scrollToPlaceholder')"
+            type="textarea"
+            :rows="2"
+            :model-value="event.scrollTarget"
+            @update:model-value="(value: string) => event.scrollTarget = value"
+          ></InputItem>
+        </template>
+        <template v-if="event.action === 'func'">
+          <InputItem
+            :label="$t('function')"
+            type="textarea"
+            :tip="$t('functionTip')"
+            :placeholder="$t('functionPlaceholder')"
+            :model-value="event.execFunction || ''"
+            @update:model-value="(value: string) => event.execFunction = value"
+          >
+            <template #label-suffix>
+              <Icon
+                :class="['lock-icon', { active: lockScriptTrigger }]"
+                :name="lockScriptTrigger ? 'lock' : 'unlock'"
+                :size="14"
+                type="btn"
+                :active="lockScriptTrigger"
+                @click="setLockScriptTrigger(!lockScriptTrigger)"
+              ></Icon>
+            </template>
+          </InputItem>
+        </template>
+        <template v-if="showAdvanced">
+          <SwitchItem :label="$t('stopPropagation')" v-model="event.stopPropagation"></SwitchItem>
+          <SwitchItem
+            v-if="event.action === 'link'"
+            :label="$t('openNewTab')"
+            v-model="event.openNewTab"
+          ></SwitchItem>
+        </template>
       </template>
     </template>
   </Group>

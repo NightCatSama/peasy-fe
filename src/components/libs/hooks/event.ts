@@ -30,7 +30,7 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
     const handler = (e: Event) => {
       if (editContext?.isEditMode && editContext?.displayMode !== 'preview') return
       if (event.stopPropagation) {
-        e.preventDefault()
+        e.stopPropagation()
       }
       if (event.action === 'link') {
         if (!event.link) return

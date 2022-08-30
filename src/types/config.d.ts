@@ -152,7 +152,7 @@ interface IContainer {
 /** 事件处理 */
 interface IEvent {
   /** 事件类型 */
-  type: 'tap' | 'mousedown' | 'touchstart'
+  type: 'none' | 'tap' | 'mousedown' | 'touchstart'
   action: 'link' | 'func' | 'scrollTo'
   stopPropagation: boolean
   link: string
