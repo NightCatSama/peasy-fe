@@ -13,6 +13,7 @@ interface ICommonType {
 interface ITextBasicType {
   text: string
   whiteSpace: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap'
+  wordBreak?: 'normal' | 'break-all' | 'break-word' | 'keep-all'
   /** 是否为子 Text 组件 */
   isSonText?: boolean
 }
@@ -255,9 +256,13 @@ interface IColorVarItem {
 
 /** 字体设置 */
 interface IFontSetting {
+  /** 全局字体 */
   fontFamily: string
+  /** 全局字体大小 */
   fontSize: number
-  mediaFontSize: { [key: string]: number }
+  /** 媒体查询字体，key 是媒体查询宽度，value 是 fontSize */
+  mediaFontSize: { [minWidth: string]: number }
+  /** 自定义字体 */
   customFontFace: (
     | string
     | {

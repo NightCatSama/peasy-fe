@@ -53,6 +53,7 @@ const configs: ShowItem[] = $computed(() => {
         },
         setValue: (val: string) => {
           basic.text = val
+          setTimeout(() => emitter.emit('updateMoveable'))
         },
         labelSuffix: !basic.isSonText ? $t('addSubText') : '',
         labelSuffixClick: () => {
@@ -99,6 +100,22 @@ const configs: ShowItem[] = $computed(() => {
         },
         setValue: (val: ITextBasicType['whiteSpace']) => {
           basic.whiteSpace = val
+        },
+      },
+      {
+        component: SelectItem,
+        props: {
+          label: $t('wordBreak'),
+          modelValue: basic.wordBreak || '',
+          options: {
+            normal: $t('wordBreakNormal'),
+            'break-word': $t('wordBreakBreakWord'),
+            'break-all': $t('wordBreakBreakAll'),
+            'keep-all': $t('wordBreakKeepAll'),
+          },
+        },
+        setValue: (val: ITextBasicType['wordBreak']) => {
+          basic.wordBreak = val
         },
       },
     ]

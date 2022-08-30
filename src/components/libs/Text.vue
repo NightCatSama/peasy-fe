@@ -6,6 +6,7 @@ export default {
 
 <script setup lang="ts">
 import { getUniqueName } from '@/config';
+import { getIsEditMode } from '@/utils/context';
 import { nextTick, useAttrs, watch } from 'vue'
 import { useProps, IProps } from './hooks/common'
 
@@ -16,11 +17,13 @@ const { elem, uName, style, props, tagClassNames } = useProps(
 
 const classNames = $computed(() => ['text', uName.value, ...tagClassNames.value])
 
+const nextProcessFn: any = getIsEditMode() ? nextTick : setTimeout
+
 watch(() => [props.basic.text, props.children], () => {
   // 若有子节点，则需要在渲染完成之后
   // 从 text-children 中取出节点渲染到 text-content 中
   if (!props.basic.isSonText && props.children) {
-    setTimeout(() => {
+    nextProcessFn(() => {
       if (!elem.value) return
       const textElem = elem.value.querySelector('.text-content') as HTMLElement
       const textChildElem = elem.value.querySelector('.text-children') as HTMLElement

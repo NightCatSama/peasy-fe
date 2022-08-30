@@ -30,6 +30,8 @@ export const useTextBasicStyle = (basic: ITextBasicType) => {
 
   return {
     whiteSpace: basic.whiteSpace,
+    wordBreak: basic.wordBreak,
+    wordWrap: basic.wordBreak === 'break-word' ? 'break-word' : '',
   }
 }
 
