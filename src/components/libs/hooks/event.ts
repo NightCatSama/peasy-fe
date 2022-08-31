@@ -70,18 +70,21 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
     let removeListenerList: (() => void)[] = []
     if (event.type === 'tap') {
       el.addEventListener('click', handler, false)
+      removeListenerList.forEach((fn) => fn())
       removeListenerList.push(() => {
         el.removeEventListener('click', handler, false)
       })
     }
     if (event.type === 'mousedown') {
       el.addEventListener('mousedown', handler, false)
+      removeListenerList.forEach((fn) => fn())
       removeListenerList.push(() => {
         el.removeEventListener('mousedown', handler, false)
       })
     }
     if (event.type === 'touchstart') {
       el.addEventListener('touchstart', handler, false)
+      removeListenerList.forEach((fn) => fn())
       removeListenerList.push(() => {
         el.removeEventListener('touchstart', handler, false)
       })

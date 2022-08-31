@@ -10,6 +10,7 @@ import Redirect from '@/pages/Redirect.vue'
 import Me from '@/pages/Me.vue'
 import Template from '@/pages/Template.vue'
 import NotFound from '@/pages/NotFound.vue'
+import Admin from '@/pages/Admin.vue'
 
 const needReloadPage = (
   to: RouteLocationNormalized,
@@ -30,6 +31,7 @@ export const router = createRouter({
     { path: '/edit', component: Configure, name: 'create', beforeEnter: needReloadPage },
     { path: '/edit/:id', component: Configure, name: 'edit', beforeEnter: needReloadPage },
     { path: '/me', component: Me, name: 'user' },
+    { path: '/admin/fix/:code', component: Admin, name: 'admin-fix' },
     { path: '/template', component: Template, name: 'template' },
     { path: '/redirect', component: Redirect, name: 'redirect' },
     { path: '/:pathMatch(.*)', component: NotFound, name: 'not-found' },
