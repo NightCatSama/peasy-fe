@@ -25,6 +25,8 @@ app.use(router)
 app.use(createLogto, config)
 
 app.use(pinia)
+;(window as any).__pinia__ = pinia
+
 app.use(GlobalDirective)
 app.use(Toast, {
   position: 'bottom-right',
