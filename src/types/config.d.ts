@@ -284,6 +284,10 @@ interface IPageSetting {
   description: string
   /** 网站支持的客户端 */
   client: 'desktop' | 'mobile' | 'both'
+  /** Google Analytics */
+  googleAnalytics?: string
+  /** 自定义脚本 */
+  customCode?: string
 }
 
 /** 项目数据 */

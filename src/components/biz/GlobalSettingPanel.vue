@@ -29,6 +29,24 @@ const handleClientChange = (client: IPageSetting['client']) => {
     nextTick(() => emitter.emit('location', true))
   }
 }
+
+const googleAnalytics = $computed({
+  get() {
+    return setting.value.googleAnalytics || ''
+  },
+  set(val) {
+    setting.value.googleAnalytics = val
+  }
+})
+
+const customCode = $computed({
+  get() {
+    return setting.value.customCode || ''
+  },
+  set(val) {
+    setting.value.customCode = val
+  }
+})
 </script>
 
 <template>
@@ -60,6 +78,22 @@ const handleClientChange = (client: IPageSetting['client']) => {
       v-model="setting.favicon"
     >
     </ImageItem>
+    <InputItem
+      v-if="false"
+      :label="$t('pageGoogleAnalytics')"
+      :tip="$t('pageGoogleAnalyticsTip')"
+      :placeholder="$t('pageGoogleAnalyticsPlaceholder')"
+      wrapper-class="auto-item"
+      v-model="googleAnalytics"
+    ></InputItem>
+    <InputItem
+      v-if="false"
+      :label="$t('customCode')"
+      type="textarea"
+      v-model="customCode"
+      wrapper-class="column-item"
+      :placeholder="$t('customCodePlaceholder')"
+    ></InputItem>
   </div>
 </template>
 
@@ -94,6 +128,30 @@ const handleClientChange = (client: IPageSetting['client']) => {
     .input {
       flex: 1;
       font-size: 13px;
+    }
+
+    &.auto-item {
+      padding-top: 12px;
+      border-top: 1px solid rgba($white, 20%);
+      .label {
+        flex: 1;
+        flex-basis: auto;
+        flex-shrink: 0;
+        font-size: 14px;
+      }
+      .input {
+        // flex: 1;
+        width: 140px;
+        font-size: 13px;
+      }
+    }
+
+    &.column-item {
+      flex-direction: column;
+      .label {
+        flex-basis: auto;
+        margin-bottom: 4px;
+      }
     }
   }
 

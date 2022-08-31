@@ -59,7 +59,8 @@ const handleBlur = (e: Event) => {
         class="question-icon"
         :size="13"
         v-tooltip="{
-          content: tip
+          content: tip,
+          html: true
         }"
       ></Icon>
       <div class="label-suffix"><slot name="label-suffix"></slot></div>

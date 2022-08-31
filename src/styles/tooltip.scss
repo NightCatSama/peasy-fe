@@ -6,5 +6,11 @@
     max-width: 250px;
     width: max-content;
     width: intrinsic;
+    word-break: break-word;
+    word-wrap: break-word;
+
+    a {
+      color: $theme;
+    }
   }
 }
