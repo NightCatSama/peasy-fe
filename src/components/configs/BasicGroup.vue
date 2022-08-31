@@ -11,7 +11,7 @@ import ColorItem from './items/ColorItem.vue'
 import Tip from '../widgets/Tip.vue'
 import { $t } from '@/constants/i18n'
 import Btn from '../widgets/Btn.vue'
-import { getDefaultBasic } from '@/utils/defaultConfig'
+import { getDefaultBackground, getDefaultBasic, getDefaultBorder, getDefaultSpacing } from '@/utils/defaultConfig'
 import { emitter } from '@/utils/event'
 
 interface IBasicGroupProps {
@@ -66,7 +66,7 @@ const configs: ShowItem[] = $computed(() => {
             true,
             true,
           )
-          newSonNode.config.props.basic = getDefaultBasic('Text', { isSonText: true})
+          newSonNode.config.props.basic = getDefaultBasic('Text', { isSonText: true })
           emitter.emit('saveHistory')
         },
       },

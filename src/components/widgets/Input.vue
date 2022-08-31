@@ -56,6 +56,7 @@ const suffixMap = {
   auto: $t('unitAuto'),
   none: $t('unitNone'),
   stretch: $t('unitStretch'),
+  inherit: $t('inherit'),
 }
 const hideInput = $computed(() => type === 'number' && !isUnitType(suffixInValue))
 
@@ -83,6 +84,7 @@ const getValueBySuffix = $computed(() => (suffixType: SuffixType) => {
       auto: 'auto',
       none: 'none',
       stretch: 'stretch',
+      inherit: 'inherit',
     }[suffixType] || inputValue)
   )
 })
