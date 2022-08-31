@@ -79,7 +79,6 @@ const customCode = $computed({
     >
     </ImageItem>
     <InputItem
-      v-if="false"
       :label="$t('pageGoogleAnalytics')"
       :tip="$t('pageGoogleAnalyticsTip')"
       :placeholder="$t('pageGoogleAnalyticsPlaceholder')"
@@ -87,7 +86,6 @@ const customCode = $computed({
       v-model="googleAnalytics"
     ></InputItem>
     <InputItem
-      v-if="false"
       :label="$t('customCode')"
       type="textarea"
       v-model="customCode"
@@ -131,8 +129,6 @@ const customCode = $computed({
     }
 
     &.auto-item {
-      padding-top: 12px;
-      border-top: 1px solid rgba($white, 20%);
       .label {
         flex: 1;
         flex-basis: auto;

@@ -22,6 +22,28 @@ export const downloadByPageNode = (data: IPage) => {
     <style>${getFontStylesheet(data.font, 'html')}</style>
   `.trim()
   )
+  file = file.replace(
+    /<!--app-google-analytic-->/g,
+    `
+${
+      data.setting.googleAnalytics
+        ? `
+<script async src="https://www.googletagmanager.com/gtag/js?id=${data.setting.googleAnalytics}"></script>
+<script>
+  window.dataLayer = window.dataLayer || [];
+  function gtag(){dataLayer.push(arguments);}
+  gtag('js', new Date());
+
+  gtag('config', '${data.setting.googleAnalytics}');
+</script>
+`.trim() : ''
+}
+  `.trim()
+  )
+  file = file.replace(
+    /<!--app-custom-code-->/g,
+    data.setting.customCode ? data.setting.customCode : ''
+  )
 
   return downloadHtml(file)
 }
