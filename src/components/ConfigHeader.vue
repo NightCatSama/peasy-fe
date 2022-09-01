@@ -104,14 +104,21 @@ const activeIndex = $computed(() =>
 )
 
 const setDeviceBySize = (index: number) => {
+  if (index >= deviceList.value.length || index < 0) return
   setDevice(index)
-  nextTick(() => emitter.emit('location', true))
+  nextTick(() => {
+    emitter.emit('location', true)
+    emitter.emit('updateMoveable')
+  })
 }
 
 const handleDeviceChange = () => {
   deviceType.value = deviceType.value === 'mobile' ? 'desktop' : 'mobile'
   setDevice(0)
-  nextTick(() => emitter.emit('location', true))
+  nextTick(() => {
+    emitter.emit('location', true)
+    emitter.emit('updateMoveable')
+  })
 }
 
 const modeMap = {
@@ -143,9 +150,21 @@ const handleFontSizeSwitch = (value: boolean) => {
 
 const handleFontSizeChange = (value: number) => setMediaFontSize(device.value.width, value)
 
-useKeyPress(ShortcutKey.switchDevice, () => {
+/** 切换模拟器 */
+useKeyPress(ShortcutKey.switchDevice, (e) => {
   if (setting.value.client !== 'both') return
+  e.preventDefault()
   handleDeviceChange()
+})
+/** 切换到下一个设备尺寸 */
+useKeyPress(ShortcutKey.nextDeviceIndex, (e) => {
+  e.preventDefault()
+  setDeviceBySize(activeIndex + 1)
+})
+/** 切换到上一个设备尺寸 */
+useKeyPress(ShortcutKey.prevDeviceIndex, (e) => {
+  e.preventDefault()
+  setDeviceBySize(activeIndex - 1)
 })
 useKeyPress(ShortcutKey.SwitchDisplayMode, (e) => {
   e.preventDefault()

@@ -89,6 +89,18 @@ export const ShortcutMap = {
     title: $t('switchDevice'),
     value: isMacOS ? '⌘ + /' : 'Ctrl + /',
   },
+  /** 切换到下一个尺寸的设备模拟器 */
+  nextDeviceIndex: {
+    key: isMacOS ? 'meta.\'' : 'ctrl.\'',
+    title: $t('nextDeviceSize'),
+    value: isMacOS ? '⌘ + \'' : 'Ctrl + \'',
+  },
+  /** 切换到下一个尺寸的设备模拟器 */
+  prevDeviceIndex: {
+    key: isMacOS ? 'meta.;' : 'ctrl.;',
+    title: $t('prevDeviceSize'),
+    value: isMacOS ? '⌘ + ;' : 'Ctrl + ;',
+  },
   /** 全部折叠 */
   collapseAll: {
     key: (e: KeyboardEvent) => (isMacOS ? e.metaKey : e.ctrlKey) && (isMacOS ? e.shiftKey : e.altKey) && e.key === '.',

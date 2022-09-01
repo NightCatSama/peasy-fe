@@ -146,6 +146,13 @@ const handleBlur = (e: Event) => {
   handleChange(e)
 }
 
+const handleKeydown = (e: KeyboardEvent) => {
+  // 阻止冒泡，避免触发组件的剪切复制粘贴
+  if (['x', 'c', 'v'].includes(e.key)) {
+    e.stopPropagation()
+  }
+}
+
 onMounted(() => {
   if (autoFocus) inputRef?.focus()
 })
@@ -164,7 +171,7 @@ onMounted(() => {
       :placeholder="placeholder"
       :rows="4"
       v-bind="$attrs"
-      @keydown.stop
+      @keydown="handleKeydown"
       @keyup.enter="handleChange"
       @focus="handleFocus"
       @blur="handleBlur"
