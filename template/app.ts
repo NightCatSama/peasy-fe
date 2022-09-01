@@ -82,7 +82,6 @@ if (data) {
       getChild() {
         return (name: string) => {
           const node = this.nameMap[name] as PageNode
-          console.log(name, node.children, node?.config?.props?.basic?.isSonText)
           return node?.children || []
         }
       }
