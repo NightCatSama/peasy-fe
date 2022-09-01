@@ -1,5 +1,5 @@
 /** 单位 */
-type UnitType = '%' | 'px' | 'rem' | 'vw'
+type UnitType = '%' | 'px' | 'rem' | 'vw' | 'vh'
 /** 支持的全部选项 */
 type SuffixType = UnitType | 'auto' | 'none' | 'stretch' | 'circle' | 'refined'
 

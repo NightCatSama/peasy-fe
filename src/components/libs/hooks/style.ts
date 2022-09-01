@@ -237,11 +237,16 @@ export const useSpacingStyle = (spacing: ISpacing) => {
 export const useBackgroundStyle = (background: IBackground) => {
   if (!background) return {}
 
+  const backgroundClipStyles = {
+    backgroundClip: background.backgroundClip,
+    webkitBackgroundClip: background.backgroundClip,
+    webkitTextFillColor: background.backgroundClip === 'text' ? 'transparent' : '',
+  }
+
   if (background.backgroundType === 'color') {
     return {
       backgroundColor: getColor(background.backgroundColor),
-      backgroundClip: background.backgroundClip,
-      webkitBackgroundClip: background.backgroundClip,
+      ...backgroundClipStyles,
     }
   } else if (background.backgroundType === 'image') {
     return {
@@ -250,8 +255,7 @@ export const useBackgroundStyle = (background: IBackground) => {
       backgroundRepeat: background.backgroundRepeat,
       backgroundSize: background.backgroundSize,
       backgroundAttachment: background.backgroundAttachment,
-      backgroundClip: background.backgroundClip,
-      webkitBackgroundClip: background.backgroundClip,
+      ...backgroundClipStyles,
     }
   } else if (background.backgroundType === 'gradient') {
     return {
@@ -260,8 +264,7 @@ export const useBackgroundStyle = (background: IBackground) => {
       }deg, ${background.backgroundGradient.map(
         ({ color, percentage }) => `${getColor(color)} ${percentage}%`
       )})`,
-      backgroundClip: background.backgroundClip,
-      webkitBackgroundClip: background.backgroundClip,
+      ...backgroundClipStyles,
     }
   }
 }

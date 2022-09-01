@@ -31,7 +31,7 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
         component: InputItemVue,
         props: {
           type: 'number',
-          suffix: ['px', 'rem', 'vw'],
+          suffix: ['px', 'rem', 'vw', 'inherit'],
         },
       }
     case 'opacity':
@@ -71,6 +71,14 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
         props: {
           type: 'number',
           suffix: ['px', '%', 'rem', 'vw', 'auto', 'stretch'],
+        }
+      }
+    case 'height':
+      return {
+        component: InputItemVue,
+        props: {
+          type: 'number',
+          suffix: ['px', '%', 'rem', 'vh', 'vw', 'auto', 'stretch'],
         }
       }
     case 'duration':

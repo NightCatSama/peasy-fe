@@ -2,7 +2,7 @@ import { useDisplayStore } from '@/stores/display'
 import { getIsEditMode } from './context'
 
 export const isUnitType = (type: string): type is UnitType =>
-  (['%', 'px', 'rem', 'vw'] as UnitType[]).includes(type as unknown as UnitType)
+  (['%', 'px', 'rem', 'vw', 'vh'] as UnitType[]).includes(type as unknown as UnitType)
 
 export const getUnit = (s?: string): UnitType | '' => {
   if (!s || typeof s !== 'string') return ''
@@ -14,6 +14,9 @@ export const getUnit = (s?: string): UnitType | '' => {
   }
   if (s.slice(-2) === 'vw') {
     return 'vw'
+  }
+  if (s.slice(-2) === 'vh') {
+    return 'vh'
   }
   if (s.slice(-1) === '%') {
     return '%'
@@ -43,6 +46,8 @@ export const covertPXToUnit = (s: string, unit: string, referSiz?: number) => {
   else if (unit === '%') return `${fixedPointToNumber((parseFloat(s) / (referSiz || 100)) * 100)}%`
   else if (unit === 'vw')
     return `${fixedPointToNumber(parseFloat(s) * (100 / useDisplayStore().device.width))}vw`
+  else if (unit === 'vh')
+    return `${fixedPointToNumber(parseFloat(s) * (100 / useDisplayStore().device.height))}vh`
   return s
 }
 
@@ -71,6 +76,8 @@ export const covertSize = (
       return isEditMode ? `${useDisplayStore().curFootSize * n}px` : s
     case 'vw':
       return isEditMode ? `${n / (100 / useDisplayStore().device.width)}px` : s
+    case 'vh':
+      return isEditMode ? `${n / (100 / useDisplayStore().device.height)}px` : s
     case 'px':
     default:
       return s
@@ -84,6 +91,7 @@ export const covertSizeToOtherUnit = (n: number, oldUnit: string, newUnit: strin
   if (oldUnit === 'px') {
     if (newUnit === 'rem') return fixedPointToNumber(n / useDisplayStore().curFootSize)
     if (newUnit === 'vw') return fixedPointToNumber(n * (100 / useDisplayStore().device.width))
+    if (newUnit === 'vh') return fixedPointToNumber(n * (100 / useDisplayStore().device.height))
     return n
   }
 
@@ -93,7 +101,9 @@ export const covertSizeToOtherUnit = (n: number, oldUnit: string, newUnit: strin
       ? fixedPointToNumber(n * useDisplayStore().curFootSize)
       : oldUnit === 'vw'
       ? fixedPointToNumber(n / (100 / useDisplayStore().device.width))
+      : oldUnit === 'vh'
+      ? fixedPointToNumber(n / (100 / useDisplayStore().device.height))
       : n
-  if (newUnit === 'vw' || newUnit === 'rem') return covertSizeToOtherUnit(toPx, 'px', newUnit)
+  if (newUnit === 'vw' || newUnit === 'rem' || newUnit === 'vh') return covertSizeToOtherUnit(toPx, 'px', newUnit)
   return toPx
 }
