@@ -1,4 +1,4 @@
-import { getColorVarStylesheet } from './stylesheet'
+import { getColorVarStylesheet } from '@/utils/core'
 
 export const variableColorSymbol = '$'
 

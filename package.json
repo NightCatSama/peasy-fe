@@ -13,8 +13,8 @@
     "build:template": "rm -rf template-dist/ && npm run pre-build && vue-tsc --noEmit && VITE_IS_TEMPLATE=true vite build --config vite.template.config.ts && npm run cp:template",
     "cp:template": "cp -r template-dist/* peasy-be/template/",
     "cp:types": "cp -r src/types/config.d.ts peasy-be/types/ && cp -r src/config.ts peasy-be/types/",
-    "cp:stylesheet": "cp -r src/components/libs/hooks/stylesheet.ts peasy-be/template/",
-    "pre-build": "npm run cp:types && npm run cp:stylesheet",
+    "cp:core": "cp -r src/utils/core.ts peasy-be/template/",
+    "pre-build": "npm run cp:types && npm run cp:core",
     "preview": "vite preview",
     "prettier": "npx prettier --write src/"
   },
