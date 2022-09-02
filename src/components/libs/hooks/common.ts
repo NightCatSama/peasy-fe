@@ -43,27 +43,43 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
     useScrollByOffset(propsRef.position.showByOffset, (show: boolean) => propsRef.common.hide = !show)
   }
 
+  const styleMap = computed(() => ({
+    basic: (
+      componentTypeName === 'Text'
+      ? useTextBasicStyle(propsRef.basic)
+      : componentTypeName === 'Image'
+      ? useImageBasicStyle(propsRef.basic)
+      : componentTypeName === 'Icon'
+      ? useIconBasicStyle(propsRef.basic)
+      : {}
+    ),
+    font: useFontStyle(propsRef.font),
+    layout: useLayoutStyle(propsRef.layout),
+    size: useSizeStyle(propsRef.size, propsRef.direction),
+    spacing: useSpacingStyle(propsRef.spacing),
+    border: useBorderStyle(propsRef.border),
+    background: useBackgroundStyle(propsRef.background),
+    container: useContainerStyle(propsRef.container),
+    position: usePositionStyle(propsRef.position),
+    animation: useAnimationStyle(animationMap),
+    effect: useEffectStyle(propsRef.effect, propsRef.componentName),
+    common: (propsRef.common.hide ? { display: 'none' } : null),
+  }))
+
   const style = computed(() =>
     useStyle({
-      ...(
-        componentTypeName === 'Text'
-        ? useTextBasicStyle(propsRef.basic)
-        : componentTypeName === 'Image'
-        ? useImageBasicStyle(propsRef.basic)
-        : componentTypeName === 'Icon'
-        ? useIconBasicStyle(propsRef.basic)
-        : {}),
-      ...useFontStyle(propsRef.font),
-      ...useLayoutStyle(propsRef.layout),
-      ...useSizeStyle(propsRef.size, propsRef.direction),
-      ...useSpacingStyle(propsRef.spacing),
-      ...useBorderStyle(propsRef.border),
-      ...useBackgroundStyle(propsRef.background),
-      ...useContainerStyle(propsRef.container),
-      ...usePositionStyle(propsRef.position),
-      ...useAnimationStyle(animationMap),
-      ...useEffectStyle(propsRef.effect, propsRef.componentName),
-      ...(propsRef.common.hide ? { display: 'none' } : null),
+      ...styleMap.value.basic,
+      ...styleMap.value.font,
+      ...styleMap.value.layout,
+      ...styleMap.value.size,
+      ...styleMap.value.spacing,
+      ...styleMap.value.border,
+      ...styleMap.value.background,
+      ...styleMap.value.container,
+      ...styleMap.value.position,
+      ...styleMap.value.animation,
+      ...styleMap.value.effect,
+      ...styleMap.value.common,
     })
   )
 
@@ -82,6 +98,7 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
 
   return {
     elem,
+    styleMap,
     style,
     uName,
     tagClassNames,

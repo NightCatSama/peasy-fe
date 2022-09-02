@@ -8,8 +8,9 @@ export default {
 import { getContext } from '@/utils/context';
 import { useAttrs } from 'vue'
 import { IProps, useProps } from './hooks/common'
+import { useStyle } from './hooks/style';
 
-const { elem, uName, style, props, tagClassNames } = useProps(
+const { elem, uName, style, styleMap, props, tagClassNames } = useProps(
   useAttrs() as unknown as IProps<'InputField'>,
   'InputField'
 )
@@ -17,13 +18,32 @@ const { elem, uName, style, props, tagClassNames } = useProps(
 const classNames = $computed(() => ['input-field', uName.value, ...tagClassNames.value])
 const context = getContext()
 const disabled = $computed(() => context?.isEditMode && context?.displayMode !== 'preview')
+
+const wrapperStyles = $computed(() => useStyle({
+  ...styleMap.value.size,
+  ...styleMap.value.position,
+  ...styleMap.value.common,
+}))
+
+const componentStyles = $computed(() => useStyle({
+  ...styleMap.value.basic,
+  ...styleMap.value.font,
+  ...styleMap.value.spacing,
+  ...styleMap.value.border,
+  ...styleMap.value.background,
+  ...styleMap.value.container,
+  ...styleMap.value.animation,
+  ...styleMap.value.effect,
+}))
 </script>
 
 <template>
   <label
     ref="elem"
-    :class="['input-field-wrapper']"
+    :class="['input-field-wrapper', { disabled }]"
     :for="uName"
+    :style="wrapperStyles"
+    v-bind="props.inheritAttrs"
   >
     <component
       :class="classNames"
@@ -31,8 +51,7 @@ const disabled = $computed(() => context?.isEditMode && context?.displayMode !==
       :placeholder="props.basic.placeholder"
       :disabled="disabled || props.basic.disabled"
       :maxlength="props.basic.maxLength"
-      :style="style"
-      v-bind="props.inheritAttrs"
+      :style="componentStyles"
       :id="uName"
     ></component>
   </label>
@@ -41,7 +60,18 @@ const disabled = $computed(() => context?.isEditMode && context?.displayMode !==
 <style lang="scss" scoped>
 .input-field-wrapper {
   display: inline-flex;
+  &.disabled::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    z-index: 2;
+  }
   .input-field {
+    width: 100%;
+    height: 100%;
     background: transparent;
     outline: none;
     resize: none;
