@@ -1,5 +1,5 @@
 import { createApp } from 'vue'
-import { VTooltip, VClosePopper } from 'floating-vue'
+import FloatingVue, { VTooltip, VClosePopper } from 'floating-vue'
 import { createLogto, LogtoConfig } from '@logto/vue'
 
 import App from './App.vue'
@@ -41,6 +41,8 @@ app.use(Toast, {
   icon: true,
   rtl: false,
 })
+
+FloatingVue.options.themes.tooltip.html = true
 
 app.directive('tooltip', VTooltip)
 app.directive('close-popper', VClosePopper)

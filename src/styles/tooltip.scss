@@ -6,11 +6,21 @@
     max-width: 250px;
     width: max-content;
     width: intrinsic;
+    white-space: pre-line;
     word-break: break-word;
     word-wrap: break-word;
 
     a {
       color: $theme;
+    }
+
+    b {
+      color: $yellow;
+    }
+
+    em {
+      color: $purple;
+      font-style: normal;
     }
   }
 }

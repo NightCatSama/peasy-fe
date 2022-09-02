@@ -42,12 +42,21 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
       } else if (event.action === 'func' && !editContext?.lockScriptTrigger) {
         if (!event.execFunction) return
         const args = '...args'
-        const fn = new Function(args, `var [event, data, getByName, getByTag] = args;${event.execFunction}`)
+        const fn = new Function(args, `var [
+          event,
+          data,
+          name,
+          tag,
+          getDataByName,
+          getDataByTag,
+        ] = args;${event.execFunction}`)
         fn(
           e,
           propsRef,
+          (name: string) => (document.body.querySelector('#' + getUniqueName(name)) as any),
+          (tagName: string) => Array.from(document.body.querySelectorAll('.' + getTagClassName(tagName)) || []),
           (name: string) => (document.body.querySelector('.' + getUniqueName(name)) as any)?.__node__,
-          (tagName: string) => Array.from(document.body.querySelectorAll('.' + getTagClassName(tagName)) || []).map((el) => (el as any).__node__)
+          (tagName: string) => Array.from(document.body.querySelectorAll('.' + getTagClassName(tagName)) || []).map((el) => (el as any).__node__),
         )
       } else if (event.action === 'scrollTo') {
         if (event.scrollTarget) {
