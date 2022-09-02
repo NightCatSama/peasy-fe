@@ -23,7 +23,7 @@ const { effect, node } = defineProps<IEffectGroupProps>()
 
 const pageStore = usePageStore()
 const { getAllChildNode, getTagsByNode, nameMap } = pageStore
-const { activeNodeGroups } = storeToRefs(pageStore)
+const { activeNode, activeNodeGroups } = storeToRefs(pageStore)
 
 let collapsedIndex = $ref(0)
 
@@ -46,6 +46,7 @@ const handleNameChange = (val: string, item: IEffectItem) => {
   item.name = val
   handleSetStyle('hover', 'delete', item)
   handleSetStyle('active', 'delete', item)
+  handleSetStyle('focus', 'delete', item)
 }
 
 const handleTargetChange = (key: string, item: IEffectItem) => {
@@ -55,10 +56,11 @@ const handleTargetChange = (key: string, item: IEffectItem) => {
   item.name = ''
   handleSetStyle('hover', 'delete', item)
   handleSetStyle('active', 'delete', item)
+  handleSetStyle('focus', 'delete', item)
 }
 
 const handleSetStyle = (
-  styleType: 'hover' | 'active',
+  styleType: keyof IEffectItem['styles'],
   operation: 'add' | 'delete',
   item: IEffectItem
 ) => {
@@ -95,7 +97,7 @@ const effectTargetMap: { [key: string]: ISelectItem } = $computed(() => {
   return obj
 })
 
-const actionMap: { name: keyof IEffectItem['styles']; label: string }[] = $computed(() => [
+const actionMap: { name: keyof IEffectItem['styles']; label: string; hide?: boolean }[] = $computed(() => [
   {
     name: 'hover',
     label: $t('hover'),
@@ -104,6 +106,11 @@ const actionMap: { name: keyof IEffectItem['styles']; label: string }[] = $compu
     name: 'active',
     label: $t('active'),
   },
+  {
+    hide: activeNode.value?.component !== 'InputField',
+    name: 'focus',
+    label: $t('focus'),
+  }
 ])
 
 const timingFunction = {
@@ -192,26 +199,28 @@ let showTimingCode = $ref(false)
           </InputItem>
           <hr class="divider" :data-text="$t('action')" />
           <template v-for="obj in actionMap" :key="obj.name">
-            <component
-              v-if="item.styles[obj.name] !== void 0 && getEffectMap(item.target, item.targetType)?.[item.name]"
-              :label="obj.label"
-              :is="getEffectMap(item.target, item.targetType)[item.name].component"
-              :model-value="item.styles[obj.name]"
-              v-bind="getEffectMap(item.target, item.targetType)[item.name].props"
-              @update:model-value="item.styles[obj.name] = $event"
-            >
-              <Icon
-                :class="['delete-btn']"
-                type="circle"
-                name="line"
-                :size="8"
-                @click="handleSetStyle(obj.name, 'delete', item)"
-              ></Icon>
-            </component>
-            <div v-else class="item" @click="handleSetStyle(obj.name, 'add', item)">
-              <div class="label">{{ obj.label }}</div>
-              <Icon class="add-btn" name="plus" :size="16" type="circle"></Icon>
-            </div>
+            <template v-if="!obj.hide">
+              <component
+                v-if="item.styles[obj.name] !== void 0 && getEffectMap(item.target, item.targetType)?.[item.name]"
+                :label="obj.label"
+                :is="getEffectMap(item.target, item.targetType)[item.name].component"
+                :model-value="item.styles[obj.name]"
+                v-bind="getEffectMap(item.target, item.targetType)[item.name].props"
+                @update:model-value="item.styles[obj.name] = $event"
+              >
+                <Icon
+                  :class="['delete-btn']"
+                  type="circle"
+                  name="line"
+                  :size="8"
+                  @click="handleSetStyle(obj.name, 'delete', item)"
+                ></Icon>
+              </component>
+              <div v-else class="item" @click="handleSetStyle(obj.name, 'add', item)">
+                <div class="label">{{ obj.label }}</div>
+                <Icon class="add-btn" name="plus" :size="16" type="circle"></Icon>
+              </div>
+            </template>
           </template>
         </template>
       </template>

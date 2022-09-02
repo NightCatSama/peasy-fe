@@ -53,6 +53,14 @@ export const getDefaultBasic = <
       autoplay: false
     }
   }
+  if (isSomeBasicType(component, 'InputField', obj)) {
+    obj = {
+      type: 'input',
+      placeholder: 'placeholder',
+      disabled: false,
+      maxLength: 'none',
+    }
+  }
   return Object.assign(obj, initConfig)
 }
 

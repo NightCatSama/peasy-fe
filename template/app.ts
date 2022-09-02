@@ -28,6 +28,7 @@ const getHtml = (obj: PageNode, parent?: PageNode): string => {
   :tags='${
     JSON.stringify(obj.tags) || '[]'
   }'
+  data-name="${obj.name}"
   componentName="${obj.name}"
   :children='${obj.component === 'Text' && obj.children ? `getChild("${obj.name}")` : 'undefined'}'
   v-bind='getProps("${obj.name}")'

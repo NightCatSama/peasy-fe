@@ -248,6 +248,36 @@ export const getMockMedia = (): PageNode<'Media'> => {
   }
 }
 
+export const getMockInputField = (): PageNode<'InputField'> => {
+  return {
+    type: 'component',
+    name: 'InputField',
+    component: 'InputField',
+    tags: ['InputField'],
+    config: {
+      props: {
+        common: getDefaultCommon(),
+        basic: getDefaultBasic('InputField'),
+        font: getDefaultFont({
+          fontSize: '16px',
+        }),
+        size: getDefaultSize('component', {
+          width: '120px',
+          height: 'auto',
+        }),
+        spacing: getDefaultSpacing(),
+        border: getDefaultBorder(),
+        background: getDefaultBackground(),
+        container: getDefaultContainer(),
+        position: getDefaultPosition(),
+        event: getDefaultEvent(),
+        effect: getDefaultEffect(),
+        animation: getDefaultAnimation(),
+      },
+    },
+  }
+}
+
 export const EmptySection = {
   name: '空白章节',
   enName: 'Empty Section',
@@ -312,4 +342,15 @@ export const EmptyMedia = {
   cover: '',
   dataType: DataType.Page,
   node: getMockMedia(),
+}
+
+export const EmptyInputField = {
+  name: '输入框',
+  enName: 'InputField',
+  category: '基础',
+  categoryEn: 'Basic',
+  type: 'component',
+  cover: '',
+  dataType: DataType.Page,
+  node: getMockInputField(),
 }

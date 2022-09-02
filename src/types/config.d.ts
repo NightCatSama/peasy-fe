@@ -31,9 +31,16 @@ interface IMediaBasicType {
   autoplay: boolean
 }
 
-/** Button 组件基础配置 */
-interface IButtonBasicType {
-  type: ''
+/** 输入组件基础配置 */
+interface IInputFieldBasicType {
+  /** 组件类别 */
+  type: 'input' | 'number' | 'textarea'
+  /** 占位文本 */
+  placeholder: string
+  /** 是否可编辑 */
+  disabled: boolean
+  /** 最大输入长度 */
+  maxLength: string
 }
 
 /** Icon 组件基础配置 */
@@ -240,6 +247,7 @@ interface IEffectItem {
   styles: {
     hover?: any
     active?: any
+    focus?: any
   }
 }
 interface IEffect {

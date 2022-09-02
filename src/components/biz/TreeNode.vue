@@ -47,6 +47,7 @@ const icon = $computed(() => {
       Block: 'block',
       Icon: 'symbol',
       Media: 'video',
+      InputField: 'input',
     } as any
   )[node.component]
 })

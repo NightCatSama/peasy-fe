@@ -315,6 +315,59 @@ const configs: ShowItem[] = $computed(() => {
       },
     ]
   }
+  /** InputField 组件 */
+  if (isSomeBasicType(node.component, 'InputField', basic)) {
+    return [
+      {
+        component: SelectItem,
+        props: {
+          label: $t('inputFieldType'),
+          modelValue: basic.type,
+          options: {
+            input: $t('inputFieldTypeInput'),
+            textarea: $t('inputFieldTypeTextarea'),
+            number: $t('inputFieldTypeNumber'),
+          },
+        },
+        setValue: (val: IInputFieldBasicType['type']) => {
+          basic.type = val
+        },
+      },
+      {
+        component: InputItem,
+        props: {
+          label: $t('inputFieldPlaceholder'),
+          type: 'textarea',
+          modelValue: basic.placeholder,
+          realTime: true,
+        },
+        setValue: (val: string) => {
+          basic.placeholder = val
+        },
+      },
+      {
+        component: SwitchItem,
+        props: {
+          label: $t('inputFieldDisabled'),
+          modelValue: !!basic.disabled,
+        },
+        setValue: (val: IInputFieldBasicType['disabled']) => {
+          basic.disabled = val
+        },
+      },
+      {
+        component: InputItem,
+        props: {
+          label: $t('maxLength'),
+          modelValue: basic.maxLength,
+          placeholder: $t('maxLengthPlaceholder'),
+        },
+        setValue: (val: string) => {
+          basic.maxLength = val
+        },
+      }
+    ]
+  }
   return []
 })
 </script>

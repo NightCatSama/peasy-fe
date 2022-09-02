@@ -16,7 +16,7 @@ import { Modal } from './modal'
 import { materialApi } from '@/utils/mande'
 import SaveMaterialModal from './modal/SaveMaterialModal.vue'
 import { $t, getMaterialCategory, getMaterialName, lang } from '@/constants/i18n'
-import { EmptyBlock, EmptyIcon, EmptyImage, EmptySection, EmptyText, EmptyMedia } from '@/utils/mock'
+import { EmptyBlock, EmptyIcon, EmptyImage, EmptySection, EmptyText, EmptyMedia, EmptyInputField } from '@/utils/mock'
 
 const pageStore = usePageStore()
 const { pageData, materialData } = storeToRefs(pageStore)
@@ -86,7 +86,7 @@ const currentNodeList = $computed(() => {
       return [...list, EmptySection]
     }
     if (currentType === 'component') {
-      return [...list, EmptyBlock, EmptyText, EmptyImage, EmptyIcon, EmptyMedia]
+      return [...list, EmptyBlock, EmptyText, EmptyImage, EmptyIcon, EmptyMedia, EmptyInputField]
     }
   }
   return list

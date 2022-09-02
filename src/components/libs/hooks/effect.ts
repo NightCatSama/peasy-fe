@@ -23,6 +23,7 @@ export const covertValue = (name: string, value: any) => {
 export const selectorPriority: { [selector: string]: number } = {
   hover: 1,
   active: 2,
+  focus: 3,
 }
 
 export const useEffect = (propsRef: IProps<any>) => {
@@ -46,7 +47,7 @@ export const useEffect = (propsRef: IProps<any>) => {
       }
 
       const effectList = effect.effectList as IEffectItem[]
-      let styles: string[] = []
+      let styles: { style: string; priority: number }[] = []
 
       effectList.forEach((item) => {
         if (!Object.keys(item?.styles).length) return
@@ -58,27 +59,31 @@ export const useEffect = (propsRef: IProps<any>) => {
             else value = 'flex'
           }
           if (item?.targetType === 'self') {
-            styles[key === 'hover' ? 'unshift' : 'push'](
-              `#${uName}:${key} { ${effectName2PropertyMap[item.name]}: ${covertValue(item.name, value)}!important; }`
-            )
+            styles.push({
+              priority: selectorPriority[key] || 0,
+              style: `#${uName}:${key} { ${effectName2PropertyMap[item.name]}: ${covertValue(item.name, value)}!important; }`
+            })
           }
           if (item?.targetType === 'name') {
-            styles[key === 'hover' ? 'unshift' : 'push'](
-              `.${uName}:${key} .${getUniqueName(item.target)} { ${
+            styles.push({
+              priority: selectorPriority[key] || 0,
+              style: `.${uName}:${key} .${getUniqueName(item.target)} { ${
                 effectName2PropertyMap[item.name]
               }: ${covertValue(item.name, value)}!important; }`
-            )
+            })
           }
           if (item?.targetType === 'tag') {
-            styles[key === 'hover' ? 'unshift' : 'push'](
-              `.${uName}:${key} .${getTagClassName(item.target)} { ${
+            styles.push({
+              priority: selectorPriority[key] || 0,
+              style: `.${uName}:${key} .${getTagClassName(item.target)} { ${
                 effectName2PropertyMap[item.name]
               }: ${covertValue(item.name, value)}!important; }`
-            )
+            })
           }
         })
       })
-      dynamicAnimationStyles.innerHTML = styles.join('\n')
+      styles.sort((a, b) => a.priority - b.priority)
+      dynamicAnimationStyles.innerHTML = styles.map(s => s.style).join('\n')
     },
     { immediate: true, deep: true }
   )

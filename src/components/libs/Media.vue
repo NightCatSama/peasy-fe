@@ -81,7 +81,7 @@ const componentAttrs = $computed(() => ({
     ref="elem"
     :class="['media-wrapper', { disabled }, ...classNames]"
     :style="style"
-      :id="uName"
+    :id="uName"
     v-bind="props.inheritAttrs"
   >
     <component :is="componentName" v-bind="componentAttrs"></component>
