@@ -14,6 +14,7 @@ export const groupIconMap = {
   event: 'event',
   animation: 'animation',
   effect: 'effect',
+  code: 'code',
 } as any
 
 export const groupTitleMap: { [key in GroupType]: string } = {
@@ -31,6 +32,7 @@ export const groupTitleMap: { [key in GroupType]: string } = {
   animation: $t('animation'),
   effect: $t('effect'),
   custom: $t('custom'),
+  code: $t('code')
 }
 
 export const defaultGroupIcon = 'basic'

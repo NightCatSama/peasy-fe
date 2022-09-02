@@ -313,3 +313,22 @@ export const useEffectStyle = (effect: IEffect, name: string) => {
       .join(', '),
   }
 }
+
+export const useCodeStyle = (code: ICode) => {
+  if (!code || !code.style) return {}
+  const map = Object.fromEntries(
+    code.style
+      .split('\n')
+      .map((str) => str.split(':'))
+      .filter((arr) => arr.length === 2 && arr[0] && arr[1])
+      .map(([key, value]) => {
+        const name = key.trim()
+        const val = value.trim()
+        return [name, val.slice(-1) === ';' ? val.slice(0, -1) : val]
+      })
+  )
+
+  return {
+    ...map,
+  }
+}

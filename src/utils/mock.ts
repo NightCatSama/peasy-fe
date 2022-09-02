@@ -13,6 +13,7 @@ import {
   getDefaultPosition,
   getDefaultSize,
   getDefaultSpacing,
+  getDefaultCode,
 } from './defaultConfig'
 
 export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNode<'Block'> => {
@@ -35,6 +36,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
         event: getDefaultEvent(),
         effect: getDefaultEffect(),
         animation: getDefaultAnimation(),
+        code: getDefaultCode(),
       },
     },
     children: []
@@ -145,6 +147,7 @@ export const getMockModuleBlock = (): PageNode<'Block'> => {
         event: getDefaultEvent(),
         effect: getDefaultEffect(),
         animation: getDefaultAnimation(),
+        code: getDefaultCode(),
       },
     },
     children: [getMockIcon('apple'), getMockText(), getMockImage()],
@@ -170,6 +173,7 @@ export const getMockText = (): PageNode<'Text'> => {
         event: getDefaultEvent(),
         effect: getDefaultEffect(),
         animation: getDefaultAnimation(),
+        code: getDefaultCode(),
       },
     },
   }
@@ -193,6 +197,7 @@ export const getMockImage = (src?: string): PageNode<'Image'> => {
         event: getDefaultEvent(),
         effect: getDefaultEffect(),
         animation: getDefaultAnimation(),
+        code: getDefaultCode(),
       },
     },
   }
@@ -216,6 +221,7 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
         event: getDefaultEvent(),
         effect: getDefaultEffect(),
         animation: getDefaultAnimation(),
+        code: getDefaultCode(),
       },
     },
   }
@@ -243,6 +249,7 @@ export const getMockMedia = (): PageNode<'Media'> => {
         event: getDefaultEvent(),
         effect: getDefaultEffect(),
         animation: getDefaultAnimation(),
+        code: getDefaultCode(),
       },
     },
   }
@@ -273,6 +280,7 @@ export const getMockInputField = (): PageNode<'InputField'> => {
         event: getDefaultEvent(),
         effect: getDefaultEffect(),
         animation: getDefaultAnimation(),
+        code: getDefaultCode(),
       },
     },
   }

@@ -18,6 +18,7 @@ export const ComponentPropsGroup = {
     'event',
     'effect',
     'animation',
+    'code',
   ] as const,
   Text: [
     'common',
@@ -31,6 +32,7 @@ export const ComponentPropsGroup = {
     'event',
     'effect',
     'animation',
+    'code',
   ] as const,
   Image: [
     'common',
@@ -43,6 +45,7 @@ export const ComponentPropsGroup = {
     'event',
     'effect',
     'animation',
+    'code',
   ] as const,
   Icon: [
     'common',
@@ -55,6 +58,7 @@ export const ComponentPropsGroup = {
     'event',
     'effect',
     'animation',
+    'code',
   ] as const,
   Media: [
     'common',
@@ -68,6 +72,7 @@ export const ComponentPropsGroup = {
     'event',
     'effect',
     'animation',
+    'code',
   ] as const,
   InputField: [
     'common',
@@ -82,6 +87,7 @@ export const ComponentPropsGroup = {
     'event',
     'effect',
     'animation',
+    'code',
   ] as const,
 } as const
 
@@ -101,6 +107,7 @@ export type GroupType =
   | 'effect'
   | 'animation'
   | 'custom'
+  | 'code'
 
 /** 配置对应约束类型 */
 export interface GroupPropType<T extends ComponentName = any> {
@@ -124,6 +131,7 @@ export interface GroupPropType<T extends ComponentName = any> {
   event: IEvent
   effect: IEffect
   animation: IAnimation
+  code: ICode
   custom: any
 }
 
@@ -138,7 +146,7 @@ export type PropsTypes<T extends ComponentName = any> = IsAny<T> extends false
   : Partial<{
       [key in GroupType]: GroupPropType[key]
     }> &
-      Pick<GroupPropType<'Block'>, 'common' | 'effect' | 'event' | 'border' | 'spacing'>
+      Pick<GroupPropType<'Block'>, 'common' | 'effect' | 'event' | 'border' | 'spacing' | 'code'>
 
 export interface IPropConfig<T extends ComponentName = any> {
   /** 配置参数 */

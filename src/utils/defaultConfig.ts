@@ -271,3 +271,12 @@ export const getDefaultEffectItem = (target: string): IEffectItem => {
     styles: {},
   }
 }
+
+export const getDefaultCode = (initConfig?: Partial<ICode>): ICode =>
+  Object.assign(
+    {
+      script: '',
+      style: '',
+    },
+    initConfig
+  )

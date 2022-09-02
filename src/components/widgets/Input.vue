@@ -150,7 +150,7 @@ const handleBlur = (e: Event) => {
 
 const handleKeydown = (e: KeyboardEvent) => {
   // 阻止冒泡，避免触发组件的剪切复制粘贴
-  if (['x', 'c', 'v'].includes(e.key)) {
+  if (['x', 'c', 'v', 'ArrowLeft', 'ArrowUp', 'ArrowRight', 'ArrowDown'].includes(e.key)) {
     e.stopPropagation()
   }
 }

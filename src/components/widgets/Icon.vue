@@ -79,6 +79,7 @@ import SyncIcon from '@/assets/sync.svg'
 import StartIcon from '@/assets/start.svg'
 import VideoIcon from '@/assets/video.svg'
 import InputIcon from '@/assets/input.svg'
+import CodeIcon from '@/assets/code.svg'
 
 interface IIconProps {
   name: string
@@ -169,7 +170,8 @@ const iconMap = {
   sync: SyncIcon,
   start: StartIcon,
   video: VideoIcon,
-  input: InputIcon
+  input: InputIcon,
+  code: CodeIcon,
 } as any
 
 const { name, size = 26, type = 'circle', loading, active, color } = defineProps<IIconProps>()

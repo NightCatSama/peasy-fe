@@ -1,4 +1,5 @@
 import { ComponentName, getTagClassName, getUniqueName, GroupPropType, PageNode } from '@/config'
+import { getIsEditMode } from '@/utils/context'
 import { watch, computed, reactive, ref, onMounted, onBeforeMount } from 'vue'
 import { useAnimation } from './animation'
 import { useEffect } from './effect'
@@ -19,6 +20,7 @@ import {
   useSpacingStyle,
   useStyle,
   useTextBasicStyle,
+  useCodeStyle,
 } from './style'
 
 export type IProps<T extends ComponentName = any> = {
@@ -34,6 +36,7 @@ export type IProps<T extends ComponentName = any> = {
 export const useProps = <T extends IProps<any> = IProps>(props: T, componentTypeName: string) => {
   const propsRef = reactive(props)
   const elem = ref<HTMLDivElement | null>(null)
+  const isEditMode = getIsEditMode()
 
   useEvent(propsRef, elem)
   const { animationMap } = useAnimation(propsRef, elem)
@@ -64,6 +67,7 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
     animation: useAnimationStyle(animationMap),
     effect: useEffectStyle(propsRef.effect, propsRef.componentName),
     common: (propsRef.common.hide ? { display: 'none' } : null),
+    code: useCodeStyle(propsRef.code),
   }))
 
   const style = computed(() =>
@@ -80,6 +84,7 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
       ...styleMap.value.animation,
       ...styleMap.value.effect,
       ...styleMap.value.common,
+      ...styleMap.value.code,
     })
   )
 
@@ -89,6 +94,17 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
   onMounted(() => {
     if (!elem.value) return
     ;(elem.value as any).__node__ = props
+    if (props.code?.script && !isEditMode) {
+      const args = '...args'
+      const fn = new Function(args, `var [
+        elem,
+        props,
+      ] = args;${props.code.script}`)
+      fn(
+        elem.value,
+        propsRef,
+      )
+    }
   })
 
   onBeforeMount(() => {

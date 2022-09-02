@@ -20,6 +20,9 @@ import Dropdown from './widgets/Dropdown.vue'
 import Icon from './widgets/Icon.vue'
 import CustomGroup from './configs/CustomGroup.vue'
 import { lang } from '@/constants/i18n'
+import CodeGroup from './configs/CodeGroup.vue'
+import { onErrorCaptured } from 'vue'
+import { AlertError } from '@/utils/alert'
 
 interface IConfigGroupProps {
   groupType: GroupType
@@ -46,6 +49,7 @@ const componentNameMap: { [type in GroupType]: any | null } = {
   effect: EffectGroup,
   animation: AnimationGroup,
   custom: CustomGroup,
+  code: CodeGroup,
 }
 
 const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
@@ -65,11 +69,21 @@ const showTitle = $computed(
     ? lang === 'en' && (bindProps as any)?.titleEn || (bindProps as any)?.title
     : groupTitleMap[groupType]
 )
+
+onErrorCaptured((err) => {
+  AlertError(err?.message ?? err?.name)
+  console.error(err)
+  return false
+})
 </script>
 
 <template>
   <div
-    v-if="activeNode && componentNameMap[groupType] && !ignoreGroup.includes(groupType)"
+    v-if="
+      activeNode &&
+      componentNameMap[groupType] &&
+      !ignoreGroup.includes(groupType)
+    "
     class="config-group"
   >
     <Component

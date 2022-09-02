@@ -254,6 +254,14 @@ interface IEffect {
   effectList: IEffectItem[]
 }
 
+/** 自定义代码设置 */
+interface ICode {
+  /** 自定义脚本 */
+  script: string
+  /** 自定义样式 */
+  style: string
+}
+
 /** 颜色变量 */
 interface IColorVarItem {
   /** 颜色变量名 */
