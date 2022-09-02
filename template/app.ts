@@ -1,6 +1,6 @@
 
 import type { IPage, PageNode } from '../src/config'
-import { Text, Block, Image, Icon, Media } from '@/components/libs'
+import { Text, Block, Image, Icon, Media, InputField } from '@/components/libs'
 
 // Debug
 // import { createApp } from 'vue'
@@ -102,6 +102,7 @@ if (data) {
       Image,
       Icon,
       Media,
+      InputField,
     }
   })
 } else {
