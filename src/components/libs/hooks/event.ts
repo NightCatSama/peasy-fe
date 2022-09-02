@@ -48,14 +48,14 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
           name,
           tag,
           getDataByName,
-          getDataByTag,
+          getDataByTag
         ] = args;${event.execFunction}`)
         fn(
           e,
           propsRef,
           (name: string) => (document.body.querySelector('#' + getUniqueName(name)) as any),
           (tagName: string) => Array.from(document.body.querySelectorAll('.' + getTagClassName(tagName)) || []),
-          (name: string) => (document.body.querySelector('.' + getUniqueName(name)) as any)?.__node__,
+          (name: string) => (document.body.querySelector('#' + getUniqueName(name)) as any)?.__node__,
           (tagName: string) => Array.from(document.body.querySelectorAll('.' + getTagClassName(tagName)) || []).map((el) => (el as any).__node__),
         )
       } else if (event.action === 'scrollTo') {
