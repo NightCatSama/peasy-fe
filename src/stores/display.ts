@@ -38,7 +38,7 @@ export const useDisplayStore = defineStore('display', {
     /** 当前模拟设备信息 */
     device: { width: 0, height: 0, zoom: 1 } as IDeviceInfo,
     /** 编辑组的状态保存，避免每次切换都恢复 */
-    groupStatus: {} as { [key: string]: IGroupStatus },
+    groupStatus: {} as { [component: string]: { [key: string]: IGroupStatus } },
     /** Layers 的状态保存，避免每次切换都恢复 */
     layerStatus: new WeakMap() as WeakMap<PageNode, boolean>,
     /**
@@ -67,7 +67,7 @@ export const useDisplayStore = defineStore('display', {
       }
     },
     getGroupStatus(state) {
-      return (group: string) => state.groupStatus[group]
+      return (componentName: string, group: string) => state.groupStatus?.[componentName]?.[group]
     },
     curPresetDeviceList(state) {
       return state.presetDevice[state.deviceType]
@@ -108,8 +108,9 @@ export const useDisplayStore = defineStore('display', {
         zoom: this.device.zoom,
       }
     },
-    saveGroupStatus(name: string, status: IGroupStatus) {
-      this.groupStatus[name] = status
+    saveGroupStatus(componentName: string, name: string, status: IGroupStatus) {
+      if (!this.groupStatus[componentName]) this.groupStatus[componentName] = {}
+      this.groupStatus[componentName][name] = status
     },
     setDisplayMode(mode: DisplayMode) {
       this.displayMode = mode

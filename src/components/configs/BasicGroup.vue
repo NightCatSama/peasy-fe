@@ -409,7 +409,7 @@ const configs: ShowItem[] = $computed(() => {
   <Group
     group-name="basic"
     class="basic-group"
-    :default-collapsed="true"
+    :default-collapsed="node.component === 'Block' ? false : true"
     :can-advanced="configs.some((item) => item.isAdvanced)"
   >
     <template #default="{ showAdvanced }">

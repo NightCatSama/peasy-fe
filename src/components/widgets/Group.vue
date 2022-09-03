@@ -34,7 +34,7 @@ const showTitle = $computed(() => {
     : (groupName && groupTitleMap[groupName])
 })
 
-const status = getGroupStatus(groupStatusKey)
+const status = getGroupStatus(activeNode.value?.component, groupStatusKey)
 
 let collapsed = $ref(status ? status.collapsed : defaultCollapsed)
 let showAdvanced = $ref(status ? status.advanced : false)
@@ -44,7 +44,7 @@ const isMobileStyle = $computed(() => isMobileGroupConfig(activeNode.value, grou
 const handleSwitchMobileConfig = () => groupName && switchActiveNodeConfigMode(groupName)
 
 onUpdated(() => {
-  saveGroupStatus(groupStatusKey, { collapsed, advanced: showAdvanced })
+  saveGroupStatus(activeNode.value?.component, groupStatusKey, { collapsed, advanced: showAdvanced })
 })
 const collapseFn = () => (collapsed = false)
 onMounted(() => {
