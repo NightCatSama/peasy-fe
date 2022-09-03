@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ref, watch, watchPostEffect } from 'vue'
+import { Component, onBeforeUnmount, onMounted, ref, ComponentPublicInstance, watch, watchPostEffect } from 'vue'
 import { storeToRefs } from 'pinia'
 import draggable from 'vuedraggable'
 import type { SortableEvent } from 'sortablejs'
@@ -31,8 +31,8 @@ const { setDropZone, setDragNode, getIsInDragNode } = dragStore
 const displayStore = useDisplayStore()
 const { displayMode, lockDrag } = storeToRefs(displayStore)
 
-const componentRef = ref(null)
-const $el = $computed(() => (componentRef?.value as any)?.$el as HTMLDivElement)
+const componentRef = $ref<ComponentPublicInstance | null>(null)
+let $el = $ref<HTMLElement | null>(null)
 
 /** 当前组件是否为激活组件 */
 const isActive = $computed(() => activeNode.value === item)
@@ -64,7 +64,7 @@ const openMoveable = () => {
 
 // 切换编辑模式时，如果当前组件为激活组件，需要重新设置 moveable
 watch(
-  () => [isActive, displayMode.value, isHide],
+  () => [isActive, displayMode.value, isHide, $el],
   () => openMoveable(),
   { flush: 'post' }
 )
@@ -78,13 +78,16 @@ watch(
 
 // 激活时，手动去触发父组件的 active-node 事件，用于更新 pageStore 的父组件链 activeParentChain
 watch(
-  () => isActive,
-  () => isActive && $el?.parentElement!.dispatchEvent(new Event('active-node', { bubbles: true })),
+  () => [isActive, $el],
+  () => isActive && $el?.parentElement?.dispatchEvent(new Event('active-node', { bubbles: true })),
   { flush: 'post' }
 )
 
 // 销毁组件时手动关闭 moveable
-onMounted(() => openMoveable())
+onMounted(() => {
+  $el = componentRef?.$el
+  openMoveable()
+})
 onBeforeUnmount(() => isActive && disabledMoveable())
 
 /** 当前组件是否拖拽中 */
@@ -182,6 +185,8 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
     e.stopPropagation()
   }
 }
+
+const handleSetElement = (el: HTMLElement) => $el = el
 </script>
 
 <template>
@@ -215,6 +220,7 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
         ...componentEvents,
         ...$attrs,
       },
+      onUpdateElem: (el: HTMLElement) => handleSetElement(el)
     }"
     :disabled="displayMode !== 'drag' || (dragNode && dragNodeType !== 'component')"
     :sort="true"

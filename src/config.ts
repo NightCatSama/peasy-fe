@@ -8,6 +8,7 @@ export enum DataType {
 export const ComponentPropsGroup = {
   Block: [
     'common',
+    'basic',
     'layout',
     'size',
     'spacing',
@@ -113,6 +114,7 @@ export type GroupType =
 export interface GroupPropType<T extends ComponentName = any> {
   common: ICommonType
   basic: {
+    Block: IBlockBasicType
     Text: ITextBasicType
     Image: IImageBasicType
     Icon: IIconBasicType
@@ -146,7 +148,7 @@ export type PropsTypes<T extends ComponentName = any> = IsAny<T> extends false
   : Partial<{
       [key in GroupType]: GroupPropType[key]
     }> &
-      Pick<GroupPropType<'Block'>, 'common' | 'effect' | 'event' | 'border' | 'spacing' | 'code'>
+      Pick<GroupPropType<'Block'>, 'common' | 'basic' | 'effect' | 'event' | 'border' | 'spacing' | 'code'>
 
 export interface IPropConfig<T extends ComponentName = any> {
   /** 配置参数 */

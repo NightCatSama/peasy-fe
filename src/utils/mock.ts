@@ -26,6 +26,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
     config: {
       props: {
         common: getDefaultCommon(),
+        basic: getDefaultBasic('Block'),
         size: getDefaultSize(type),
         layout: getDefaultLayout(),
         spacing: getDefaultSpacing(),
@@ -137,6 +138,7 @@ export const getMockModuleBlock = (): PageNode<'Block'> => {
     config: {
       props: {
         common: getDefaultCommon(),
+        basic: getDefaultBasic('Block'),
         size: getDefaultSize(),
         layout: getDefaultLayout(),
         spacing: getDefaultSpacing(),

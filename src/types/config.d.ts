@@ -9,6 +9,14 @@ interface ICommonType {
   hide: boolean
 }
 
+/** Block 组件基础配置 */
+interface IBlockBasicType {
+  /** 容器标签 */
+  tag: string
+  /** 自定义属性 */
+  attrs: string
+}
+
 /** Text 组件基础配置 */
 interface ITextBasicType {
   text: string

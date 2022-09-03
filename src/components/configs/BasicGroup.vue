@@ -33,6 +33,39 @@ interface ShowItem {
 }
 
 const configs: ShowItem[] = $computed(() => {
+  /** Block 组件 */
+  if (isSomeBasicType(node.component, 'Block', basic)) {
+    return [
+      {
+        component: SelectItem,
+        props: {
+          label: $t('tagType'),
+          modelValue: basic.tag || 'div',
+          options: {
+            div: 'Div',
+            form: 'Form',
+            button: 'Button',
+          },
+        },
+        setValue: (val: IBlockBasicType['tag']) => {
+          basic.tag = val
+        },
+      },
+      {
+        component: InputItem,
+        props: {
+          label: $t('attrs'),
+          type: 'textarea',
+          modelValue: basic.attrs,
+          placeholder: $t('attrsPlaceholder'),
+          tip: $t('attrsTip'),
+        },
+        setValue: (val: string) => {
+          basic.attrs = val
+        },
+      },
+    ]
+  }
   /** Text 组件 */
   if (isSomeBasicType(node.component, 'Text', basic)) {
     return [

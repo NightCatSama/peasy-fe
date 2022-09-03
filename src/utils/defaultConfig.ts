@@ -22,6 +22,12 @@ export const getDefaultBasic = <
   initConfig?: P
 ): GroupPropType<T>['basic'] => {
   let obj: any = {}
+  if (isSomeBasicType(component, 'Block', obj)) {
+    obj = {
+      tag: 'div',
+      attrs: '',
+    }
+  }
   if (isSomeBasicType(component, 'Text', obj)) {
     obj = {
       text: 'Text',

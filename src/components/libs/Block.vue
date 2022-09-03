@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { useAttrs } from 'vue'
+import { nextTick, useAttrs, watch } from 'vue'
 import { IProps, useProps } from './hooks/common'
 
 const { elem, uName, style, props, tagClassNames } = useProps(
@@ -13,13 +13,42 @@ const { elem, uName, style, props, tagClassNames } = useProps(
   'Block'
 )
 
-const classNames = $computed(() => ['block', uName.value, ...tagClassNames.value])
+const classNames = $computed(() => ['block', uName.value, ...tagClassNames.value, customAttrs?.class])
+const elementTag = $computed(() => props.basic?.tag || 'div')
+const emit = defineEmits(['updateElem'])
+const customAttrs = $computed(() => props.basic?.attrs ? Object.fromEntries(
+  props.basic.attrs
+    .split('\n')
+    .map((str) => str.split(':'))
+    .filter((arr) => arr.length === 2 && arr[0] && arr[1])
+    .map(([key, value]) => {
+      const name = key.trim()
+      const val = value.trim()
+      return [name, val.slice(-1) === ';' ? val.slice(0, -1) : val]
+    })
+  ) : null
+)
+
+watch(() => elementTag, () => {
+  nextTick(() => emit('updateElem', elem.value))
+}, { flush: 'post' })
 </script>
 
 <template>
-  <div ref="elem" v-bind="props.inheritAttrs" :class="classNames" :style="style" :id="uName">
+  <component
+    :is="elementTag"
+    ref="elem"
+    v-bind="{
+      ...customAttrs,
+      ...props.inheritAttrs,
+    }"
+    :class="classNames"
+    :style="style"
+    :id="uName"
+    @submit.prevent
+  >
     <slot></slot>
-  </div>
+  </component>
 </template>
 
 <style scoped>

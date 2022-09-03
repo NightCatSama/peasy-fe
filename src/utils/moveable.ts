@@ -18,7 +18,7 @@ let isDragging = false
  */
 export const getMoveable = () => {
   if (moveable) return moveable
-  const containerElement = document.querySelector('.edit-section') as HTMLDivElement
+  const containerElement = document.querySelector('.edit-section') as HTMLElement
   if (!containerElement) return null
 
   moveable = new Moveable(containerElement, {
@@ -34,7 +34,7 @@ export const getMoveable = () => {
         events: {},
         render: (m, renderer) => {
           const rect = m.getRect()
-          const elem = m.props.target as HTMLDivElement
+          const elem = m.props.target as HTMLElement
           const name = elem?.getAttribute('data-name') || ''
           const zoom = useDisplayStore().device.zoom
           // 绘制激活态的边框、名称、拖拽时的宽高和距离等信息
@@ -128,7 +128,7 @@ export const getMoveable = () => {
 
   emitter.on('updateMoveable', updateMoveableRect)
 
-  const wrapperElement = document.querySelector('.edit-wrapper') as HTMLDivElement
+  const wrapperElement = document.querySelector('.edit-wrapper') as HTMLElement
   wrapperElement?.addEventListener('scroll', updateMoveableRect)
 
   return moveable
@@ -171,7 +171,7 @@ export const updateDirection = (item: PageNode) => {
 }
 
 /** 启用 moveable */
-export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageNode) => {
+export const useMoveable = (elem: HTMLElement, item: PageNode, parent?: PageNode) => {
   const moveable = getMoveable()
   if (!moveable) return
 
@@ -248,11 +248,11 @@ export const useMoveable = (elem: HTMLDivElement, item: PageNode, parent?: PageN
 }
 
 /** 开启拖拽定位模式 */
-export const openDragMode = (activeElem?: HTMLDivElement) => {
+export const openDragMode = (activeElem?: HTMLElement) => {
   const moveable = getMoveable()
   if (!moveable || useDisplayStore().lockDrag) return
   moveable.draggable = true
-  const elem = activeElem || (moveable.target as HTMLDivElement)
+  const elem = activeElem || (moveable.target as HTMLElement)
   setSnappableGuidelines(elem)
   const item = usePageStore().activeNode
   const props = useConfigProps(item)
@@ -296,7 +296,7 @@ export const openDragMode = (activeElem?: HTMLDivElement) => {
     })
   })
   moveable.on('dragEnd', (e) => {
-    const elem = e.target as HTMLDivElement
+    const elem = e.target as HTMLElement
     isDragging = false
     positionMap.forEach((key) => {
       if (units[key] && elem.dataset[`${key}Move`] && props.position) {
@@ -316,12 +316,12 @@ export const closeDragMode = () => {
 }
 
 /** 设置参考线 */
-export const setSnappableGuidelines = (activeElement?: HTMLDivElement) => {
+export const setSnappableGuidelines = (activeElement?: HTMLElement) => {
   const moveable = getMoveable()
   const editSection = document.querySelector('.edit-section') as HTMLElement
   if (!moveable || !editSection) return
 
-  const activeElem = activeElement || (moveable.target as HTMLDivElement)
+  const activeElem = activeElement || (moveable.target as HTMLElement)
   let horizontalGuidelines: number[] = []
   let verticalGuidelines: number[] = []
   // 需要参考的组件列表
@@ -334,7 +334,7 @@ export const setSnappableGuidelines = (activeElement?: HTMLDivElement) => {
 
   const siblingElement = Array.from(parentElement?.children || []).filter(
     (elem) => elem !== activeElem
-  ) as HTMLDivElement[]
+  ) as HTMLElement[]
   if (parentElement && parentElement.classList.contains('lib-component')) {
     referElemList.push(parentElement)
   }
