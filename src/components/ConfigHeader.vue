@@ -21,12 +21,13 @@ import Switch from './widgets/Switch.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Modal } from './modal'
 import { $t, lang } from '@/constants/i18n'
+import PageList from './biz/PageList.vue'
 
 const userStore = useUserStore()
 const { userName, avatar } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
-const { setting, colorVars, allPageData } = storeToRefs(pageStore)
+const { project, setting, colorVars, allPageData } = storeToRefs(pageStore)
 const { updateAllPageNode, setMediaFontSize } = pageStore
 
 const displayStore = useDisplayStore()
@@ -89,10 +90,13 @@ const emit = defineEmits(['save', 'download', 'project-setting'])
 
 const name = $ref('index')
 let showColorVarDropdown = $ref(false)
+let showPageList = $ref(false)
 
 const text = $computed(
   () => `${device.value.width || $t('headerWidth')} x ${device.value.height || $t('headerHeight')}`
 )
+
+const domain = $computed(() => project.value.domain ? `https://${project.value.domain}.p-easy.net` : '')
 
 const zoomText = $computed(() => `${Math.round(device.value.zoom * 100)}%`)
 
@@ -193,8 +197,14 @@ emitter.on('saveColorVars', (color: string) => {
 <template>
   <div class="header">
     <div class="left">
-      <div class="name">{{ name }}</div>
-      <div class="ext">.html</div>
+      <div class="page-info" @click="showPageList = !showPageList">
+        <div class="page-name">
+          <div class="name">{{ name }}</div>
+          <div class="ext">.html</div>
+          <Icon name="down" type="pure" color="grey" :size="9"></Icon>
+        </div>
+        <a v-if="domain" class="page-domain" target="_blank" :href="domain" @click.stop>{{ domain }}</a>
+      </div>
       <Btn
         class="project-setting-btn"
         type="text"
@@ -379,6 +389,7 @@ emitter.on('saveColorVars', (color: string) => {
         </template>
       </Dropdown>
     </div>
+    <PageList :class="{ show: showPageList }" @hide="showPageList = false"></PageList>
   </div>
 </template>
 
@@ -388,7 +399,7 @@ emitter.on('saveColorVars', (color: string) => {
   height: $header-height;
   flex-shrink: 0;
   background: $panel-header;
-  padding: 10px 24px;
+  padding: 10px 16px;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -397,23 +408,49 @@ emitter.on('saveColorVars', (color: string) => {
   .left {
     flex: 1;
     display: flex;
-    align-items: baseline;
+    .page-info {
+      padding: 6px 16px 6px 12px;
+      background-color: rgba($panel-dark, 35%);
+      border-radius: $normal-radius;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      cursor: pointer;
+
+      .page-name {
+        display: flex;
+        align-items: baseline;
+      }
+
+      .page-domain {
+        font-size: 12px;
+        line-height: 12px;
+        white-space: nowrap;
+        color: darken($color, 35%);
+        padding-bottom: 2px;
+        text-decoration: none;
+
+        &:hover {
+          color: darken($color, 15%);
+        }
+      }
+    }
 
     .name {
       color: $yellow;
-      font-size: 24px;
+      font-size: 18px;
       font-weight: bold;
     }
     .ext {
-      font-size: 14px;
+      font-size: 13px;
       margin-left: 3px;
       color: darken($color, 10%);
+      flex: 1;
     }
 
     .project-setting-btn {
-      position: relative;
-      top: 2px;
       padding: 0;
+      align-self: center;
       margin-left: 10px;
       color: $color;
     }

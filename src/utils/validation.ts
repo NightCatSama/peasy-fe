@@ -19,6 +19,10 @@ export const verifySubDomain = (subdomain: string) => {
     AlertError($t('domainVerifyEmptyMsg'))
     return false
   }
+  if (subdomain.length > 15) {
+    AlertError($t('domainLengthMsg'))
+    return false
+  }
   if (/[^0-9a-zA-Z_-]/g.test(subdomain)) {
     AlertError($t('domainValidMsg'))
     return false

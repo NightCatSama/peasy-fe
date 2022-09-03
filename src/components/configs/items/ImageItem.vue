@@ -176,9 +176,10 @@ const handleCoverError = () => {
     align-items: center;
 
     img {
-      max-width: 100%;
-      max-height: 100%;
+      max-width: 90%;
+      max-height: 90%;
       object-fit: contain;
+      border-radius: $inner-radius;
     }
   }
 }

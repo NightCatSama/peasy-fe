@@ -14,11 +14,14 @@ interface IMaterialCardProps {
   newText?: string
   selected?: boolean
   hideOperate?: boolean
+  showFilename?: boolean
 }
 
-const { type, item, isNew, newText = $t('newProject'), selected, hideOperate } = defineProps<IMaterialCardProps>()
+const { type, item, isNew, newText = $t('newProject'), showFilename, selected, hideOperate } = defineProps<IMaterialCardProps>()
 
 const router = useRouter()
+
+const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
 </script>
 
 <template>
@@ -40,7 +43,7 @@ const router = useRouter()
         <slot></slot>
       </div>
       <div class="material-card-info">
-        <div class="material-card-info-name">{{ item.name }}</div>
+        <div class="material-card-info-name">{{ showFilename ? getFilename((item as Project).filename) : item.name }}</div>
         <template v-if="type === 'project' && !hideOperate">
           <Icon
             type="circle"

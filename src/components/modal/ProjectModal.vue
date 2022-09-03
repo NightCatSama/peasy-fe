@@ -198,6 +198,9 @@ const verifyDomain = (event: Event) => {
         border: none;
         min-width: 20px;
         text-align: right;
+        max-width: 120px;
+        overflow-x: auto;
+        white-space: nowrap;
 
         &:focus {
           outline: none;

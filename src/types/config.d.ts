@@ -321,4 +321,5 @@ interface IProject {
   isPublic: boolean
   domain: string
   host: string
+  filename?: string
 }
