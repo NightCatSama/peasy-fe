@@ -15,7 +15,7 @@ export const getUnValidChar = (name: string) => {
 }
 
 export const verifySubDomain = (subdomain: string) => {
-  if (!subdomain || subdomain === 'www') {
+  if (!subdomain) {
     AlertError($t('domainVerifyEmptyMsg'))
     return false
   }
