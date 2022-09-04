@@ -21,6 +21,7 @@ interface IBasicGroupProps {
 const { node, basic } = defineProps<IBasicGroupProps>()
 const pageStore = usePageStore()
 const { deleteActiveNode, insertNode, setActiveNode } = pageStore
+let showElementTagInput = $ref(false)
 
 interface ShowItem {
   isAdvanced?: boolean
@@ -42,12 +43,26 @@ const configs: ShowItem[] = $computed(() => {
           label: $t('tagType'),
           modelValue: basic.tag || 'div',
           options: {
-            div: 'Div',
-            form: 'Form',
-            button: 'Button',
+            div: 'div',
+            form: 'form',
+            button: 'button',
+          },
+          onDblclick: () => {
+            showElementTagInput = !showElementTagInput
           },
         },
         setValue: (val: IBlockBasicType['tag']) => {
+          basic.tag = val
+        },
+      },
+      {
+        hide: !showElementTagInput,
+        component: InputItem,
+        props: {
+          label: $t('tagType'),
+          modelValue: basic.tag || '',
+        },
+        setValue: (val: string) => {
           basic.tag = val
         },
       },

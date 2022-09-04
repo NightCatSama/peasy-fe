@@ -31,7 +31,7 @@ const gotoEdit = () => {
 </script>
 
 <template>
-  <div class="preview-page" v-if="isAdmin">
+  <div class="preview-page">
     <div class="preview-helper" v-if="!hideHelper">
       <Logo :size="32"></Logo>
       <div class="logo-name">Peasy</div>
