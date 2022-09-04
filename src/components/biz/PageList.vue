@@ -11,6 +11,7 @@ import { useHistoryStore } from '@/stores/history';
 import { Project } from '@@/entities/project.entity';
 import { IMaterialItem } from '@/config';
 import SaveMaterialModal from '../modal/SaveMaterialModal.vue';
+import { emitter } from '@/utils/event';
 
 const pageStore = usePageStore()
 const { mainProject, allProjectData, project } = storeToRefs(pageStore)
@@ -63,6 +64,7 @@ const handleSwitchProject = async (item: IProject) => {
   }
   await switchProject(item.id)
   clearHistory()
+  emitter.emit('saveHistory')
 }
 
 /** 保存为模板 */
