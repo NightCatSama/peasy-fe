@@ -38,12 +38,13 @@ import DownloadModal from '@/components/modal/DownloadModal.vue'
 const route = useRoute()
 const router = useRouter()
 const id = $computed(() => (route.params?.id as string) || '')
+const projectId = $computed(() => (project.value?.id as string) || '')
 
 const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
-const { activeNode, setting, activeSection, allPageData, colorVars, font, project } = storeToRefs(pageStore)
+const { activeNode, setting, activeSection, allPageData, colorVars, font, project, activeNodeIsSonText } = storeToRefs(pageStore)
 const {
   setActiveSection,
   setActiveNode,
@@ -94,7 +95,7 @@ const handleSaveProject = async (editProject?: IProject) => {
   }
   const [alertCb, hide] = AlertProcess($t('saving'))
   try {
-    const data = await saveProjectData(id, saveProject)
+    const data = await saveProjectData(projectId, saveProject)
     alertCb($t('saveSuccess'))
     showProjectModal = false
     if (!id) {
@@ -139,7 +140,6 @@ onMounted(async () => {
         'switchActiveNodeConfigMode',
         'unlinkActiveNodeProp',
         'unlinkActiveNodePropGroup',
-        'loadTemplateData',
         'syncNodeModuleConfig',
         'changeNodeName',
       ].includes(name)
@@ -199,7 +199,7 @@ const preventUnload = (event: BeforeUnloadEvent) => {
   if (!isSave.value) {
     event.preventDefault()
     event.returnValue = ''
-    saveStoragePageState(id)
+    saveStoragePageState(projectId)
   }
 }
 
@@ -256,7 +256,7 @@ useKeyPress(ShortcutKey.cut, async (e) => {
 })
 useKeyPress(ShortcutKey.copyToClipboard, async (e) => {
   const selectText = document.getSelection()?.toString()
-  if (!activeNode.value || selectText) return
+  if (!activeNode.value || selectText || activeNodeIsSonText.value) return
   e.preventDefault()
   await copyActiveNodeToClipboard()
   Alert($t('copySuccess'))

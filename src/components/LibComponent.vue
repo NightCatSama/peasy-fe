@@ -56,8 +56,14 @@ const openMoveable = () => {
     const moveable = getMoveable()
     if (!moveable || !$el) return
 
+    /** 切换到子文本时，不更新 moveable */
+    let moveableTarget: HTMLElement = $el
+    if (item.component === 'Text' && item?.config?.props?.basic?.isSonText) {
+      moveableTarget = $el.parentElement?.parentElement as HTMLElement
+    }
+
     // 开启 moveable
-    useMoveable($el, item, parent)
+    useMoveable(moveableTarget, item, parent)
     setTimeout(() => emitter.emit('updateMoveable'), 300) // drag 视图切回来有个缩放动画，需要等动画完毕后重新定位
   }
 }

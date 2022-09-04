@@ -52,6 +52,12 @@ export const useHistoryStore = defineStore('history', {
       this.isSave = false
       return cloneDeep(this.history[this.currentIndex])
     },
+    clearHistory() {
+      this.history = []
+      this.currentIndex = 0
+      this.lastTime = 0
+      this.isSave = true
+    },
     setIsSave(isSave: boolean) {
       this.isSave = isSave
       clearStoragePageState()

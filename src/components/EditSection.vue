@@ -12,9 +12,11 @@ import { useDisplayStore } from '@/stores/display'
 import Icon from './widgets/Icon.vue'
 import { emitter } from '@/utils/event'
 import { useDragStore } from '@/stores/drag'
-import { disabledMoveable } from '@/utils/moveable'
 import Btn from './widgets/Btn.vue'
 import { ShortcutKey } from '@/constants/shortcut'
+import MaterialCard from './widgets/MaterialCard.vue'
+import { AlertSuccess } from '@/utils/alert'
+import { $t } from '@/constants/i18n'
 
 const pageStore = usePageStore()
 const {
@@ -25,8 +27,10 @@ const {
   setActiveNodeToRound,
   getActiveNodeRound,
   deleteActiveNode,
+  getTemplateData,
+  loadTemplateData,
 } = pageStore
-const { pageData, activeNode, activeParentNode, activeSectionIndex } = storeToRefs(pageStore)
+const { pageData, activeNode, activeParentNode, activeSectionIndex, templateList, activeNodeIsSonText } = storeToRefs(pageStore)
 
 const displayStore = useDisplayStore()
 const { setDeviceByParent } = displayStore
@@ -35,6 +39,8 @@ const { device, displayMode, curFootSize } = storeToRefs(displayStore)
 const dragStore = useDragStore()
 const { dragNode, dragType, dragNodeType, isCancelDrag } = storeToRefs(dragStore)
 const { setIsCancelDrag } = dragStore
+
+let isLoadingTemplate = $ref(false)
 
 const wrapperRef = ref<HTMLDivElement | null>(null)
 const contentRef = ref<HTMLDivElement | null>(null)
@@ -56,6 +62,13 @@ const wrapperSize = useSize(wrapperRef) as { width: number; height: number }
 const setWrapperSize = () => {
   wrapperSize.width = wrapperRef.value?.clientWidth || 0
   wrapperSize.height = wrapperRef.value?.clientHeight || 0
+}
+
+const handleGetTemplateList = async () => {
+  if (templateList.value.length > 0) return
+  isLoadingTemplate = true
+  await getTemplateData()
+  isLoadingTemplate = false
 }
 
 onMounted(() => {
@@ -86,6 +99,7 @@ onMounted(() => {
     setTimeout(() => emitter.emit('updateMoveable'))
   })
   pz.value.on('pan', () => emitter.emit('updateMoveable'))
+  handleGetTemplateList()
 })
 onUnmounted(() => window.removeEventListener('resize', setWrapperSize))
 
@@ -168,12 +182,13 @@ const handleLocationPage = (immediate = false) => {
 emitter.on('location', (immediate?: boolean) => handleLocationPage(immediate))
 
 // 点击编辑区域的空白区域，取消当前选择组件
-const hideMaterialsPanel = (e: Event) => {
+const handleEditSectionClick = (e: Event) => {
   const target = e.target as HTMLDivElement
   if (target?.classList.contains('edit-wrapper')) {
     setActiveNode()
   }
   emitter.emit('switchMaterialsPanel', false)
+  emitter.emit('switchPageList', false)
 }
 
 // 快捷键 - 定位当前组件
@@ -184,6 +199,7 @@ useKeyPress(ShortcutKey.location, (e) => {
 
 // 快捷键 - 删除激活组件
 useKeyPress(ShortcutKey.delete, (e) => {
+  if (activeNodeIsSonText.value) return
   e.preventDefault()
   deleteActiveNode()
 })
@@ -225,10 +241,19 @@ const handleLeaveTrash = (e: DragEvent) => {
   if (!e.clientX && !e.clientY) return
   setIsCancelDrag(false)
 }
+
+/** 选中一个模板 */
+const handleSelectTemplate = async(templateId: string) => {
+  emitter.emit('saveHistory')
+  isLoadingTemplate = true
+  await loadTemplateData(templateId)
+  isLoadingTemplate = false
+  AlertSuccess($t('templateApplySuccess'))
+}
 </script>
 
 <template>
-  <div :class="['edit-section', `edit-section-${displayMode}`]" v-tap="hideMaterialsPanel">
+  <div :class="['edit-section', `edit-section-${displayMode}`]" v-tap="handleEditSectionClick">
     <div ref="wrapperRef" class="edit-wrapper">
       <draggable
         ref="contentRef"
@@ -249,7 +274,7 @@ const handleLeaveTrash = (e: DragEvent) => {
         </template>
       </draggable>
     </div>
-    <Icon :class="['focus-btn']" name="focus" :size="26" @click="() => handleLocationPage()"></Icon>
+    <Icon v-if="!noPageData" :class="['focus-btn']" name="focus" :size="26" @click="() => handleLocationPage()"></Icon>
     <Icon
       v-if="dragNode && !noPageData && dragType === 'clone'"
       :class="['cancel-clone-btn', { active: isCancelDrag }]"
@@ -298,6 +323,22 @@ const handleLeaveTrash = (e: DragEvent) => {
         :disabled="!activeNode.children?.length"
         @click="setActiveNodeChildrenToActive"
       ></Btn>
+    </div>
+    <div v-if="noPageData" :class="['template-wrapper', { operate: !templateList.length }]">
+      <div class="template-title">{{ $t('templatePlaceholder') }}</div>
+      <div class="template-list" v-if="templateList.length">
+        <MaterialCard
+          :class="['template-item']"
+          v-for="item in templateList"
+          type="template"
+          :item="item"
+          :key="item.id"
+          hide-operate
+          @on-material-click="handleSelectTemplate(item.id!)"
+        ></MaterialCard>
+      </div>
+      <Icon v-else-if="isLoadingTemplate" name="spin" :size="48" loading></Icon>
+      <span v-else>{{ $t('templatePlaceholder') }}</span>
     </div>
   </div>
 </template>
@@ -433,6 +474,51 @@ const handleLeaveTrash = (e: DragEvent) => {
     }
     .children-btn :deep(.icon) {
       transform: rotate(90deg);
+    }
+  }
+  .template-wrapper {
+    position: absolute;
+    bottom: 10px;
+    left: 12px;
+    right: 12px;
+    color: $color;
+    font-size: 16px;
+    transition: all .3s;
+    padding: 12px 6px 4px;
+    border-radius: $normal-radius;
+
+    &:hover {
+      background-color: rgba($panel, 90%);
+    }
+
+    .template-title {
+      padding-left: 8px;
+      margin-bottom: 12px;
+      font-size: 14px;
+      color: rgba($color, 60%);
+    }
+
+    .template-list {
+      overflow-x: auto;
+      display: flex;
+      align-items: center;
+      border-radius: $normal-radius;
+      height: 160px;
+      padding: 4px 0;
+    }
+  }
+  .template-item {
+    width: 100px;
+    height: 100%;
+    margin: 0 8px;
+    flex-shrink: 0;
+
+    :deep(.material-card-info-name) {
+      color: $color;
+    }
+
+    &:hover :deep(.material-card-image) {
+      transform: scale(1.03);
     }
   }
 }

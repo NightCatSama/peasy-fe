@@ -19,7 +19,7 @@ const classNames = $computed(() => ['text', uName.value, ...tagClassNames.value]
 
 const nextProcessFn: any = getIsEditMode() ? nextTick : setTimeout
 
-watch(() => [props.basic.text, props.children], () => {
+watch(() => [props], () => {
   // 若有子节点，则需要在渲染完成之后
   // 从 text-children 中取出节点渲染到 text-content 中
   if (!props.basic.isSonText && props.children) {

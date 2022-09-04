@@ -316,10 +316,12 @@ interface IPageSetting {
 
 /** 项目数据 */
 interface IProject {
+  id?: string
   name: string
   cover: string
   isPublic: boolean
   domain: string
   host: string
   filename?: string
+  parentPage?: string
 }

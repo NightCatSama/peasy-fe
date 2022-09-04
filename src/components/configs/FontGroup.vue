@@ -72,7 +72,7 @@ const fontTabs = $computed(() => [
 
 const textShadowPreset = [
   '2px 4px 3px rgba(0,0,0,0.3)',
-  '6px 6px 0px rgba(0,0,0,0.2)',
+  '3px 3px 0px rgba(0,0,0,0.2)',
   '0px 4px 3px rgba(0,0,0,0.4), 0px 8px 13px rgba(0,0,0,0.1), 0px 18px 23px rgba(0,0,0,0.1)',
   '0 13.36px 8.896px #c4b59d, 0 -2px 1px #fff',
   '0px 10px 5px rgba(0,0,0,0.1), 10px 15px 5px rgba(0,0,0,0.05), -10px 15px 5px rgba(0,0,0,0.05)',
@@ -133,7 +133,7 @@ const textShadowPreset = [
         ></SelectItem>
         <PreviewItem :label="$t('textShadow')" :options="textShadowPreset" v-model="font.textShadow">
           <template #default="{ item: shadow, active }">
-            <div :class="['inner', { active }]" :style="{ textShadow: shadow }">T</div>
+            <div :class="['inner-text', { active }]" :style="{ textShadow: shadow }">T</div>
           </template>
         </PreviewItem>
         <InputItem :label="$t('fontFamily')" placeholder="inherit" v-model="font.fontFamily" />
@@ -149,7 +149,7 @@ const textShadowPreset = [
     margin-right: 8px;
   }
 
-  .inner {
+  .inner-text {
     display: flex;
     width: 100%;
     height: 100%;
@@ -158,6 +158,19 @@ const textShadowPreset = [
     font-size: 40px;
     font-weight: bold;
     color: $panel;
+
+    $edge: 12px;
+    &.active::after {
+      content: '';
+      position: absolute;
+      right: -$edge;
+      top: -$edge;
+      width: $edge * 2;
+      height: $edge * 2;
+      background: $theme;
+      transform: rotate(45deg);
+      box-shadow: $shadow;
+    }
   }
 }
 </style>

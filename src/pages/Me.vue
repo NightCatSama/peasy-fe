@@ -165,7 +165,7 @@ const handleMaterialSetting = async (material: IMaterialItem) => {
   showSaveMaterialModal = true
 }
 
-/** 设置物流数据 */
+/** 设置物料数据 */
 const setCurMaterialByProject = (project: Project) => {
   curMaterial = {
     name: project.name,

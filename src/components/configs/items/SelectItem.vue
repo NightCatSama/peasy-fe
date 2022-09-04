@@ -2,6 +2,7 @@
 import Select, { ISelectItem } from '@/components/widgets/Select.vue'
 import { emitter } from '@/utils/event'
 import Icon from '@/components/widgets/Icon.vue'
+import { inConfigMain } from '@/utils/helper';
 
 interface ISelectItemProps {
   label: string
@@ -13,18 +14,21 @@ interface ISelectItemProps {
 
 const { label, tip, modelValue, options, wrapperClass } = defineProps<ISelectItemProps>()
 const emit = defineEmits(['update:model-value'])
+const elem = $ref<HTMLElement | null>(null)
 
 const value = $computed({
   get: () => modelValue,
   set: (val: string) => {
     emit('update:model-value', val)
-    modelValue !== val && emitter.emit('saveHistory')
+    if (modelValue !== val && inConfigMain(elem)) {
+      emitter.emit('saveHistory')
+    }
   },
 })
 </script>
 
 <template>
-  <div :class="['item', wrapperClass]">
+  <div ref="elem" :class="['item', wrapperClass]">
     <span class="label" v-if="label">
       <slot name="label" :label="label">{{ label }}</slot>
       <Icon

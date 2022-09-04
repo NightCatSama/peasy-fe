@@ -77,28 +77,6 @@ const showCodeInput = $ref(false)
         margin-right: 0;
       }
     }
-
-    :deep(.inner-box) {
-      position: relative;
-      width: 100%;
-      height: 100%;
-      border-radius: $inner-radius;
-      background: $white-gradient;
-      overflow: hidden;
-
-      $edge: 8px;
-      &.active::after {
-        content: '';
-        position: absolute;
-        right: -$edge;
-        top: -$edge;
-        width: $edge * 2;
-        height: $edge * 2;
-        background: $theme;
-        transform: rotate(45deg);
-        box-shadow: $shadow;
-      }
-    }
   }
 }
 </style>

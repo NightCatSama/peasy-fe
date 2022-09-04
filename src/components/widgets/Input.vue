@@ -144,8 +144,8 @@ const handleFocus = (e: Event) => {
 
 const handleBlur = (e: Event) => {
   focus = false
-  onBlur?.(e)
   handleChange(e)
+  onBlur?.(e)
 }
 
 const handleKeydown = (e: KeyboardEvent) => {

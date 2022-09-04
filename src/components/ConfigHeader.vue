@@ -27,7 +27,7 @@ const userStore = useUserStore()
 const { userName, avatar } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
-const { project, setting, colorVars, allPageData } = storeToRefs(pageStore)
+const { project, mainProject, setting, colorVars, allPageData } = storeToRefs(pageStore)
 const { updateAllPageNode, setMediaFontSize } = pageStore
 
 const displayStore = useDisplayStore()
@@ -43,7 +43,7 @@ const { setDevice, setDisplayMode } = displayStore
 
 const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
-const { saveHistory, undoHistory, redoHistory } = historyStore
+const { undoHistory, redoHistory } = historyStore
 
 const { signIn, signOut, isAuthenticated } = useLogto()
 const handleSignIn = () => {
@@ -88,7 +88,7 @@ const switchLang = async(lang: 'zh' | 'en') => {
 
 const emit = defineEmits(['save', 'download', 'project-setting'])
 
-const name = $ref('index')
+const name = $computed(() => project.value.filename || 'index')
 let showColorVarDropdown = $ref(false)
 let showPageList = $ref(false)
 
@@ -96,7 +96,13 @@ const text = $computed(
   () => `${device.value.width || $t('headerWidth')} x ${device.value.height || $t('headerHeight')}`
 )
 
-const domain = $computed(() => project.value.domain ? `https://${project.value.domain}.p-easy.net` : '')
+const domain = $computed(() =>
+  (mainProject.value?.isPublic && mainProject.value?.domain)
+    ? `https://${mainProject.value.domain}.p-easy.net${
+      project.value.filename && project.value.filename !== 'index' ? `/${project.value.filename}.html` : ''
+    }`
+    : ''
+)
 
 const zoomText = $computed(() => `${Math.round(device.value.zoom * 100)}%`)
 
@@ -192,6 +198,8 @@ emitter.on('saveColorVars', (color: string) => {
     color,
   })
 })
+
+emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
 </script>
 
 <template>
@@ -340,7 +348,7 @@ emitter.on('saveColorVars', (color: string) => {
         name="redo"
         :size="16"
         type="btn"
-        v-tooltip="$t('redo')"
+        v-tooltip="$t('undo')"
         @click="() => canUndoHistory && updateAllPageNode(undoHistory())"
       ></Icon>
       <Icon
@@ -420,6 +428,10 @@ emitter.on('saveColorVars', (color: string) => {
       .page-name {
         display: flex;
         align-items: baseline;
+
+        .icon {
+          margin-left: 8px;
+        }
       }
 
       .page-domain {

@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Tabs, { ITabItem } from '@/components/widgets/Tabs.vue'
 import { emitter } from '@/utils/event'
+import { inConfigMain } from '@/utils/helper';
 
 interface ITabsItemProps {
   label?: string
@@ -12,14 +13,18 @@ interface ITabsItemProps {
 const { label, modelValue, data, iconMap } = defineProps<ITabsItemProps>()
 const emit = defineEmits(['update:model-value'])
 
+const elem = $ref<HTMLElement | null>(null)
+
 const handleChange = (val: string) => {
   emit('update:model-value', val)
-  modelValue !== val && emitter.emit('saveHistory')
+  if (modelValue !== val && inConfigMain(elem)) {
+    emitter.emit('saveHistory')
+  }
 }
 </script>
 
 <template>
-  <div class="item">
+  <div ref="elem" class="item">
     <div class="label">{{ label }}</div>
     <Tabs
       :data="data"

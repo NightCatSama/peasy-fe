@@ -286,3 +286,17 @@ export const getDefaultCode = (initConfig?: Partial<ICode>): ICode =>
     },
     initConfig
   )
+
+export const getDefaultColorVars = (): IColorVarItem[] => [{ name: '$primary', color: '#3e7ce8' }] as IColorVarItem[]
+export const getDefaultSetting = (): IPageSetting => ({
+  client: 'both',
+  title: 'Page Title',
+  favicon: '',
+  description: '',
+})
+export const getDefaultFontSetting = (): IFontSetting => ({
+  fontFamily: `'Lato', -apple-system, PingFang SC, "Helvetica Neue", sans-serif`,
+  customFontFace: ['https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap'],
+  fontSize: 20,
+  mediaFontSize: {},
+})

@@ -78,7 +78,7 @@ const configs: ShowItem[] = $computed(() => {
           placeholder: $t('textEmptyTip'),
           realTime: true,
           onBlur: () => {
-            if (!basic.text) {
+            if (!basic.isSonText && !basic.text) {
               deleteActiveNode()
             }
           },

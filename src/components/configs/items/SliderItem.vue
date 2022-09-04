@@ -1,6 +1,7 @@
 <script setup lang="ts">
 import Slider from '@/components/widgets/Slider.vue'
 import { emitter } from '@/utils/event'
+import { inConfigMain } from '@/utils/helper';
 
 type SliderPropType = Partial<InstanceType<typeof Slider>>
 
@@ -14,6 +15,8 @@ interface ISliderItemProps extends SliderPropType {
 const props = defineProps<ISliderItemProps>()
 const { label, wrapperClass, type = 'text', modelValue } = $(props)
 const emit = defineEmits(['update:model-value'])
+
+const elem = $ref<HTMLElement | null>(null)
 
 let value = $computed({
   get: () => modelValue,
@@ -32,12 +35,14 @@ const handleChange = (e: Event) => {
 }
 
 const handleDragEnd = () => {
-  emitter.emit('saveHistory')
+  if (inConfigMain(elem)) {
+    emitter.emit('saveHistory')
+  }
 }
 </script>
 
 <template>
-  <div :class="['item', wrapperClass]">
+  <div ref="elem" :class="['item', wrapperClass]">
     <div class="label">{{ label }}</div>
     <div :class="['value', `value-type-${type}`]">
       <div

@@ -8,6 +8,8 @@ export default {
 import Input from '@/components/widgets/Input.vue'
 import Icon from '@/components/widgets/Icon.vue'
 import { emitter } from '@/utils/event'
+import { inConfigMain } from '@/utils/helper';
+import { nextTick } from 'vue';
 
 type IInputProps = Partial<InstanceType<typeof Input>>
 
@@ -37,14 +39,17 @@ const value = $computed({
 let preValue = $ref('')
 
 const handleFocus = (e: Event) => {
-  // preValue = modelValue
+  preValue = modelValue
   onFocus?.(e)
 }
 
 const handleBlur = (e: Event) => {
-  if (modelValue !== preValue) {
-    emitter.emit('saveHistory')
-  }
+  const elem = e.target as HTMLElement
+  nextTick(() => {
+    if (modelValue !== preValue && inConfigMain(elem)) {
+      emitter.emit('saveHistory')
+    }
+  })
   onBlur?.(e)
 }
 </script>

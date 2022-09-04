@@ -54,7 +54,7 @@ export const useDisplayStore = defineStore('display', {
     /** 锁定脚本事件触发 */
     lockScriptTrigger: true,
     /** 是否右侧设置栏收起状态 */
-    minimize: false,
+    minimize: true,
     /** 当前展示的颜色类型 */
     colorType: 'variable' as 'variable' | 'recent',
   }),

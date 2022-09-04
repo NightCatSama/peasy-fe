@@ -7,6 +7,7 @@ import { AlertError } from '@/utils/alert'
 import { watch } from 'vue'
 import { imgErrorFallback } from '@/config'
 import { $t } from '@/constants/i18n'
+import { inConfigMain } from '@/utils/helper'
 
 interface IImageItemProps {
   label?: string
@@ -28,10 +29,13 @@ const emit = defineEmits(['update:model-value'])
 
 let showCover = $ref(!!modelValue)
 let coverUrl = $ref(modelValue)
+const elem = $ref<HTMLElement | null>(null)
 
 const handleChange = (img: string) => {
   emit('update:model-value', img)
-  emitter.emit('saveHistory')
+  if (inConfigMain(elem)) {
+    emitter.emit('saveHistory')
+  }
 }
 
 watch(() => modelValue, () => {
@@ -53,6 +57,7 @@ const handleCoverError = () => {
 
 <template>
   <InputItem
+    ref="elem"
     :wrapper-class="'image-item'"
     :model-value="modelValue"
     :label="label"

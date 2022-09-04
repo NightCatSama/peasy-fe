@@ -42,7 +42,9 @@ export const getStoragePageState = <T extends any>(id: string, state: T): T => {
 
 /** 是否有未保存的历史状态 */
 export const haveStoragePageState = (id: string) => {
-  return !!sessionStorage.getItem('__page_store_state_id__')
+  const stateId = sessionStorage.getItem('__page_store_state_id__') || ''
+  const state = sessionStorage.getItem('__page_store_state__')
+  return state && id === stateId
 }
 
 /** 清除未保存的历史状态 */

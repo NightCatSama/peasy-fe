@@ -18,6 +18,7 @@ import SwitchItem from '../configs/items/SwitchItem.vue'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { verifySubDomain } from '@/utils/validation'
+import { usePageStore } from '@/stores/page'
 
 interface IProjectModalProps {
   project: IProject
@@ -26,6 +27,9 @@ interface IProjectModalProps {
 
 const userStore = useUserStore()
 const { isVIP } = storeToRefs(userStore)
+
+const pageStore = usePageStore()
+const { allProjectData } = storeToRefs(pageStore)
 
 const { project, hideCreateCover } = defineProps<IProjectModalProps>()
 const propsRef = reactive(useAttrs())
@@ -38,20 +42,25 @@ let editProject: IProject | null = $ref({
   isPublic: false,
   domain: defaultDomain,
   host: '',
+  filename: 'index',
 })
 
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
 
+const isSubPage = $computed(() => project?.parentPage)
 
 watch(
   () => [project, propsRef.modelValue],
   () => {
     if (propsRef.modelValue && editProject) {
+      editProject.id = project.id
       editProject.name = project.name
       editProject.cover = project.cover
       editProject.isPublic = !!project.isPublic
       editProject.domain = project.domain || defaultDomain
       editProject.host = project.host || ''
+      editProject.filename = project.filename || 'index'
+      editProject.parentPage = project?.parentPage || ''
     }
   },
   { immediate: true }
@@ -60,6 +69,15 @@ watch(
 const handleSave = () => {
   if (!editProject?.name) {
     AlertError($t('projectNameRequired'))
+    return
+  }
+  if (isSubPage && !editProject?.filename) {
+    AlertError($t('projectFilenameRequired'))
+    return
+  }
+  // Filename 不允许重复
+  if (isSubPage && Object.values(allProjectData.value || []).find((item) => editProject?.filename === item.filename)) {
+    AlertError($t('projectFilenameExist'))
     return
   }
   if (editProject.domain && !verifySubDomain(editProject.domain)) {
@@ -95,6 +113,17 @@ const verifyDomain = (event: Event) => {
   elem.innerText = text.replace(/[^a-zA-Z0-9-]/g, '').toLocaleLowerCase()
   editProject.domain = elem.innerText
 }
+
+const filename = $computed({
+  get() {
+    return editProject?.filename || 'index'
+  },
+  set(value) {
+    if (editProject) {
+      editProject.filename = value
+    }
+  },
+})
 </script>
 
 <template>
@@ -107,6 +136,7 @@ const verifyDomain = (event: Event) => {
     v-bind="$attrs"
   >
     <div class="info-wrapper" v-if="editProject">
+      <InputItem v-if="isSubPage" :label="$t('filename')" v-model="filename"></InputItem>
       <InputItem :label="$t('name')" v-model="editProject.name"></InputItem>
       <ImageItem
         :label="$t('cover')"
@@ -114,25 +144,27 @@ const verifyDomain = (event: Event) => {
         v-model="editProject.cover"
         :rows="5">
       </ImageItem>
-      <SwitchItem
-        v-model="editProject.isPublic"
-        :label="$t('isPublic')"
-        :tip="$t('isPublicTip')"
-      >
-      </SwitchItem>
-      <div class="domain-input item" v-if="editProject.isPublic">
-        <div class="label">{{ $t('domain') }}</div>
-        <div class="domain">
-          <span
-            :class="['sub-domain', { disabled: !isVIP }]"
-            :contenteditable="isVIP ? 'true' : 'false'"
-            v-tooltip="{ content: $t('domainTip'), disabled: isVIP }"
-            @keydown.enter.stop="(e: Event) => (e.target as HTMLDivElement)?.blur()"
-            @blur="verifyDomain"
-          >{{ editProject.domain || (isVIP ? '' : $t('domainRandom')) }}</span>
-          <span>.p-easy.net</span>
+      <template v-if="!isSubPage">
+        <SwitchItem
+          v-model="editProject.isPublic"
+          :label="$t('isPublic')"
+          :tip="$t('isPublicTip')"
+        >
+        </SwitchItem>
+        <div class="domain-input item" v-if="editProject.isPublic">
+          <div class="label">{{ $t('domain') }}</div>
+          <div class="domain">
+            <span
+              :class="['sub-domain', { disabled: !isVIP }]"
+              :contenteditable="isVIP ? 'true' : 'false'"
+              v-tooltip="{ content: $t('domainTip'), disabled: isVIP }"
+              @keydown.enter.stop="(e: Event) => (e.target as HTMLDivElement)?.blur()"
+              @blur="verifyDomain"
+            >{{ editProject.domain || (isVIP ? '' : $t('domainRandom')) }}</span>
+            <span>.p-easy.net</span>
+          </div>
         </div>
-      </div>
+      </template>
     </div>
     <div class="btn-wrapper">
       <div class="btn-wrapper-left">

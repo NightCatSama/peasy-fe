@@ -19,7 +19,7 @@ import Tip from './widgets/Tip.vue'
 import { useUserStore } from '@/stores/user'
 
 const pageStore = usePageStore()
-const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, setting } =
+const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, activeNodeIsSonText } =
   storeToRefs(pageStore)
 const {
   unlinkActiveNodeProp,
@@ -102,6 +102,7 @@ const iconList: {
   },
   {
     // hide: !activeNode.value?.isModule,
+    hide: activeNodeIsSonText.value,
     name: 'save',
     tip: $t('save'),
     click: () => {
@@ -109,17 +110,19 @@ const iconList: {
     },
   },
   {
+    hide: activeNodeIsSonText.value,
     name: 'copy',
     tip: $t('copy'),
     click: copyActiveNode,
   },
   {
+    hide: activeNodeIsSonText.value,
     name: 'delete',
     tip: $t('delete'),
     click: deleteActiveNode,
   },
   {
-    hide: !isAdmin.value,
+    hide: !isAdmin.value || activeNodeIsSonText.value,
     name: 'sync',
     tip: $t('sync'),
     click: syncNodeModuleConfig,
@@ -128,7 +131,7 @@ const iconList: {
 
 /** 保存为物料 */
 useKeyPress(ShortcutKey.saveMaterial, (e: KeyboardEvent) => {
-  if (!activeNode.value) return
+  if (!activeNode.value || activeNodeIsSonText.value) return
   openMaterialModal()
 })
 
@@ -138,7 +141,9 @@ useKeyPress(ShortcutKey.SwitchConfigPanel, (e) => {
   setMinimize(!minimize.value)
 })
 
+/** 复制组件 */
 useKeyPress(ShortcutKey.copyComponent, (e) => {
+  if (activeNodeIsSonText.value) return
   e.preventDefault()
   copyActiveNode()
 })

@@ -94,7 +94,7 @@ const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
       <div class="material-card-image create" @click="$emit('on-project-click')">
         <div class="material-card-image-placeholder">
           <Icon name="add" :size="24" />
-          <span>{{ newText }}</span>
+          <span v-if="newText">{{ newText }}</span>
         </div>
         <slot></slot>
       </div>
@@ -158,10 +158,10 @@ const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
       flex-direction: column;
       justify-content: center;
       align-items: center;
-      font-size: 14px;
+      font-size: 13px;
 
-      .icon {
-        margin-bottom: 8px;
+      .icon:not(:last-child) {
+        margin-bottom: 4px;
       }
     }
   }
@@ -170,7 +170,7 @@ const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
     display: flex;
     align-items: center;
     padding: 6px 0px 6px 4px;
-    height: 32px;
+    height: 28px;
     &-name {
       color: $panel-light;
       font-size: 14px;

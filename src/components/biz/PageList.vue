@@ -1,24 +1,143 @@
 <script setup lang="ts">
-import { DefaultColor, PageNode } from '@/config'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
-import Element from '../widgets/Element.vue';
 import MaterialCard from '../widgets/MaterialCard.vue';
+import ProjectModal from '../modal/ProjectModal.vue';
+import { useRoute } from 'vue-router';
+import { Alert, AlertSuccess } from '@/utils/alert';
+import { $t } from '@/constants/i18n'
+import { Modal } from '../modal';
+import { useHistoryStore } from '@/stores/history';
+import { Project } from '@@/entities/project.entity';
+import { IMaterialItem } from '@/config';
+import SaveMaterialModal from '../modal/SaveMaterialModal.vue';
 
 const pageStore = usePageStore()
-const { activeNode, project } = storeToRefs(pageStore)
+const { mainProject, allProjectData, project } = storeToRefs(pageStore)
+const { saveProjectData, switchProject, deleteProject } = pageStore
+
+const historyStore = useHistoryStore()
+const { isSave } = storeToRefs(historyStore)
+const { clearHistory } = historyStore
+
+const route = useRoute()
+
+let curEditProject = $ref<IProject | null>(null)
+let showProjectModal = $ref(false)
+let showSaveMaterialModal = $ref(false)
+let curMaterial = $ref<IMaterialItem | null>(null)
+
+const curId = $computed(() => project.value.id)
+
+const handleOpenProjectModal = (item: IProject) => {
+  if (!curId) {
+    Alert($t('subPageTip'))
+    return
+  }
+  curEditProject = {
+    name: '',
+    cover: '',
+    isPublic: false,
+    domain: '',
+    host: '',
+    filename: '',
+    parentPage: mainProject.value?.id as string,
+  }
+  showProjectModal = true
+}
+
+/** 保存子页面 */
+const handleSaveProject = async (item: IProject) => {
+  await saveProjectData(item.id || '', item, true)
+  showProjectModal = false
+  curEditProject = null
+  AlertSuccess($t('saveSuccess'))
+}
+
+/** 切换页面 */
+const handleSwitchProject = async (item: IProject) => {
+  if (!item.id || item.id === curId) return
+  if (!isSave.value) {
+    Alert($t('subPageRouterTip'))
+    return
+  }
+  await switchProject(item.id)
+  clearHistory()
+}
+
+/** 保存为模板 */
+const handleSaveToTemplate = async (project: Project) => {
+  setCurMaterialByProject(project)
+  showSaveMaterialModal = true
+}
+
+/** 设置物料数据 */
+const setCurMaterialByProject = (project: Project) => {
+  curMaterial = {
+    name: project.name,
+    enName: '',
+    type: 'template',
+    category: '',
+    categoryEn: '',
+    cover: project.cover || '',
+    page: project.page,
+  }
+}
+
+const handleDeleteProject = async (project: Project) => {
+  if (project.id === mainProject.value?.id) {
+    Alert($t('deleteMainPageTip'))
+    return
+  }
+  if (await Modal.confirm($t('deleteConfirm', project.name))) {
+    await deleteProject(project.id)
+    AlertSuccess($t('deleteSuccess'))
+  }
+}
+
+const handleSettingProject = async (project: Project) => {
+  showProjectModal = true
+  curEditProject = project
+}
 </script>
 
 <template>
-  <div class="page-list" v-click-outside="() => $emit('hide')">
-    <!-- <Element class="page-item" :cover="project.cover" :name="project.name"></Element> -->
+  <div class="page-list">
+    <MaterialCard
+      v-for="(item, id) in allProjectData"
+      class="page-item"
+      type="project"
+      :key="id"
+      :item="(item as any)"
+      :selected="id === curId"
+      show-filename
+      @on-save-template="handleSaveToTemplate"
+      @on-project-click="handleSwitchProject"
+      @on-delete-project="handleDeleteProject"
+      @on-setting-project="handleSettingProject"
+    ></MaterialCard>
     <MaterialCard
       class="page-item"
       type="project"
-      :item="(project as any)"
       hide-operate
-      show-filename
+      is-new
+      :new-text="''"
+      @on-project-click="handleOpenProjectModal"
     ></MaterialCard>
+    <ProjectModal
+      v-if="curEditProject"
+      v-model="showProjectModal"
+      :project="curEditProject"
+      hide-create-cover
+      @save="handleSaveProject"
+    ></ProjectModal>
+    <SaveMaterialModal
+      v-if="curMaterial"
+      :action-text="curMaterial.id ? $t('edit') : $t('saveOf')"
+      :material="curMaterial"
+      hide-create-cover
+      v-model="showSaveMaterialModal"
+    ></SaveMaterialModal>
   </div>
 </template>
 
@@ -36,6 +155,8 @@ const { activeNode, project } = storeToRefs(pageStore)
   height: 0;
   padding: 0 24px 0;
   overflow: hidden;
+  display: flex;
+  align-items: center;
 
   &.show {
     padding: 16px 24px 12px;
@@ -46,7 +167,7 @@ const { activeNode, project } = storeToRefs(pageStore)
     height: 132px;
     width: 90px;
     cursor: pointer;
-    margin: 0 12px 0 0;
+    margin: 0 18px 0 0;
     border-radius: $normal-radius;
 
     .material-card-info {
@@ -58,9 +179,13 @@ const { activeNode, project } = storeToRefs(pageStore)
       }
     }
 
-    .material-card-image {
-      outline: 4px solid $theme;
-      box-shadow: $shadow;
+    &.selected .material-card-image::after {
+      content: '';
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: 100%;
     }
   }
 }
