@@ -155,6 +155,12 @@ export const ShortcutMap = {
     title: $t('switchShortcut'),
     value: isMacOS ? '⌘ + Shift + P' : 'Ctrl + Shift + P',
   },
+  /** 页面列表 */
+  switchPageList: {
+    key: isMacOS ? 'meta.shift.o' : 'ctrl.shift.o',
+    title: $t('switchPageList'),
+    value: isMacOS ? '⌘ + Shift + O' : 'Ctrl + Shift + O',
+  },
 }
 
 export const ShortcutKey = Object.fromEntries(

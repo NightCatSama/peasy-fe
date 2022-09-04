@@ -148,7 +148,7 @@ const handleSettingProject = async (project: Project) => {
   left: 0;
   width: 100%;
   overflow-x: auto;
-  background-color: rgba($panel-header, 90%);
+  background-color: rgba($panel-header, 98%);
   z-index: $header-page-list-zIndex;
   border-top: 1px solid $border;
   transition: all .2s;

@@ -190,6 +190,10 @@ useKeyPress(ShortcutKey.saveProject, (e) => {
   e.preventDefault()
   emit('save')
 })
+useKeyPress(ShortcutKey.switchPageList, (e) => {
+  e.preventDefault()
+  showPageList = !showPageList
+})
 
 emitter.on('saveColorVars', (color: string) => {
   showColorVarDropdown = true
