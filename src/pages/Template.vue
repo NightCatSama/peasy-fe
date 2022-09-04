@@ -16,7 +16,7 @@ import { getSetLoading } from '@/utils/context';
 
 const router = useRouter()
 const userStore = useUserStore()
-const { uid, isLogin } = storeToRefs(userStore)
+const { uid, isLogin, isAdmin } = storeToRefs(userStore)
 
 let template = $ref<IMaterialItem[]>([])
 let selectedId = $ref('')
@@ -126,6 +126,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
         >
           <div class="preview-btn-group" v-if="selectedId === item.id">
             <a
+              v-if="key === 'official' || isAdmin"
               class="preview-btn"
               target="_blank"
               :href="templatePreviewUrl(item.id, true)"
