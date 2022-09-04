@@ -29,6 +29,7 @@
     "floating-vue": "^2.0.0-beta.17",
     "html2canvas": "^1.4.1",
     "jsoneditor": "^9.9.0",
+    "jszip": "^3.10.1",
     "lodash-es": "^4.17.21",
     "mande": "^2.0.2",
     "mitt": "^3.0.0",

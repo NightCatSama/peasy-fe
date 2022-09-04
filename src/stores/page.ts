@@ -29,7 +29,7 @@ import { $t } from '@/constants/i18n'
 import { copyToClipboard, getClipboardText } from '@/utils/clipboard'
 import { Modal } from '@/components/modal'
 import { isValidName } from '@/utils/validation'
-import { downloadByPageNode } from '@/utils/download'
+import { downloadAllPages, downloadByPageNode } from '@/utils/download'
 import { getDefaultColorVars, getDefaultFontSetting, getDefaultSetting } from '@/utils/defaultConfig'
 
 type MaterialData = {
@@ -244,6 +244,9 @@ export const usePageStore = defineStore('page', {
         font: this.font,
         setting: this.setting,
       } as IPage, this.project.filename)
+    },
+    async downloadAll() {
+      downloadAllPages(Object.values(this.allProjectData))
     },
     /** 保存物料数据 */
     async fetchSaveMaterial(params: IMaterialItem) {

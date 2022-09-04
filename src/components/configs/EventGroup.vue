@@ -36,6 +36,7 @@ const { setLockScriptTrigger } = displayStore
             :rows="2"
             :placeholder="$t('linkPlaceholder')"
             :model-value="event.link || ''"
+            :tip="$t('eventLinkTip')"
             @update:model-value="(value: string) => event.link = value"
           ></InputItem>
         </template>
@@ -70,13 +71,13 @@ const { setLockScriptTrigger } = displayStore
             </template>
           </InputItem>
         </template>
+        <SwitchItem
+          v-if="event.action === 'link'"
+          :label="$t('openNewTab')"
+          v-model="event.openNewTab"
+        ></SwitchItem>
         <template v-if="showAdvanced">
           <SwitchItem :label="$t('stopPropagation')" v-model="event.stopPropagation"></SwitchItem>
-          <SwitchItem
-            v-if="event.action === 'link'"
-            :label="$t('openNewTab')"
-            v-model="event.openNewTab"
-          ></SwitchItem>
         </template>
       </template>
     </template>

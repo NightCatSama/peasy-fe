@@ -1,6 +1,8 @@
 import { parsePageData } from '@/utils/core'
 import type { IPage, PageNode } from '@/config'
 import temp from '../../template-dist/index.html?raw'
+import JSZip from 'jszip'
+import { Project } from '@@/entities/project.entity'
 
 export const downloadByPageNode = (data: IPage, filename = '') => {
   let file = parsePageData(data, temp)
@@ -16,4 +18,20 @@ export const downloadHtml = (html: string, filename = '') => {
   a.click()
   URL.revokeObjectURL(url)
   a.remove()
+}
+
+export const downloadAllPages = (project: Project[]) => {
+  const zip = new JSZip()
+  project.forEach((p) => {
+    zip.file(`${p.filename || 'index'}.html`, parsePageData(p.page, temp))
+  })
+  zip.generateAsync({ type: 'blob' }).then((content) => {
+    const url = URL.createObjectURL(content)
+    let a = document.createElement('a')
+    a.href = url
+    a.download = `p-easy.zip`
+    a.click()
+    URL.revokeObjectURL(url)
+    a.remove()
+  })
 }

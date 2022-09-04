@@ -42,7 +42,7 @@ let editProject: IProject | null = $ref({
   isPublic: false,
   domain: defaultDomain,
   host: '',
-  filename: 'index',
+  filename: '',
 })
 
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
@@ -59,7 +59,7 @@ watch(
       editProject.isPublic = !!project.isPublic
       editProject.domain = project.domain || defaultDomain
       editProject.host = project.host || ''
-      editProject.filename = project.filename || 'index'
+      editProject.filename = project.filename || ''
       editProject.parentPage = project?.parentPage || ''
     }
   },
@@ -78,7 +78,11 @@ const handleSave = () => {
   // Filename 不允许重复
   if (
     isSubPage &&
-    Object.values(allProjectData.value || []).find((item) => editProject?.id !== item.id && editProject?.filename === item.filename)
+    (
+      editProject?.filename === 'index' ||
+      Object.values(allProjectData.value || [])
+        .find((item) => editProject?.id !== item.id && editProject?.filename === item.filename)
+    )
   ) {
     AlertError($t('projectFilenameExist'))
     return
@@ -119,7 +123,7 @@ const verifyDomain = (event: Event) => {
 
 const filename = $computed({
   get() {
-    return editProject?.filename || 'index'
+    return editProject?.filename || ''
   },
   set(value) {
     if (editProject) {

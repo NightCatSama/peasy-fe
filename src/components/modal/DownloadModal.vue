@@ -13,13 +13,14 @@ import { storeToRefs } from 'pinia'
 import { Modal as ModalInstance } from '.'
 
 interface IDownloadModalProps {
+  showDownloadAll: boolean
   project: IProject
 }
 
 const userStore = useUserStore()
 const { isLogin } = storeToRefs(userStore)
 
-const { project } = defineProps<IDownloadModalProps>()
+const { project, showDownloadAll } = defineProps<IDownloadModalProps>()
 
 const emit = defineEmits(['download'])
 
@@ -91,37 +92,42 @@ const openVercelGuideModal = () => {
     close-on-click-mask
     v-bind="$attrs"
   >
-    <div>
-      <Btn type="btn" class="download-btn" @click="$emit('download')">{{ $t('downloadImmediately') }}</Btn>
-      <div class="download-tip">
-        <div class="tip-desc">{{ $t('downloadNetworkTip') }}</div>
-        <h2>1. {{ $t('downloadPeasy') }}</h2>
-        <p v-html="
-          project?.isPublic && project?.domain
-              ? $t('downloadPeasyLink', project.domain)
-              : !isLogin
-                ? $t('downloadPeasyMsgNoLogin')
-                : $t('downloadPeasyMsg')
-        "></p>
-        <h2>2. {{ $t('downloadGithubPage') }}</h2>
-        <p v-html="$t('downloadGithubPageMsg')"></p>
-        <Btn
-          class="guide-btn"
-          size="sm"
-          type="inner"
-          color="default"
-          @click="openGithubPageGuideModal"
-        >{{ $t('checkGuide') }}</Btn>
-        <h2>3. {{ $t('downloadVercel') }}</h2>
-        <p v-html="$t('downloadVercelMsg')"></p>
-        <Btn
-          class="guide-btn"
-          size="sm"
-          type="inner"
-          color="default"
-          @click="openVercelGuideModal"
-        >{{ $t('checkGuide') }}</Btn>
-      </div>
+    <Btn type="btn" class="download-btn" @click="$emit('download')">{{ $t('downloadImmediately') }}</Btn>
+    <Btn
+      v-if="showDownloadAll"
+      type="btn"
+      class="download-btn"
+      color="purple"
+      @click="$emit('download-all')"
+    >{{ $t('downloadAll') }}</Btn>
+    <div class="download-tip">
+      <div class="tip-desc">{{ $t('downloadNetworkTip') }}</div>
+      <h2>1. {{ $t('downloadPeasy') }}</h2>
+      <p v-html="
+        project?.isPublic && project?.domain
+            ? $t('downloadPeasyLink', project.domain)
+            : !isLogin
+              ? $t('downloadPeasyMsgNoLogin')
+              : $t('downloadPeasyMsg')
+      "></p>
+      <h2>2. {{ $t('downloadGithubPage') }}</h2>
+      <p v-html="$t('downloadGithubPageMsg')"></p>
+      <Btn
+        class="guide-btn"
+        size="sm"
+        type="inner"
+        color="default"
+        @click="openGithubPageGuideModal"
+      >{{ $t('checkGuide') }}</Btn>
+      <h2>3. {{ $t('downloadVercel') }}</h2>
+      <p v-html="$t('downloadVercelMsg')"></p>
+      <Btn
+        class="guide-btn"
+        size="sm"
+        type="inner"
+        color="default"
+        @click="openVercelGuideModal"
+      >{{ $t('checkGuide') }}</Btn>
     </div>
   </Modal>
 </template>
@@ -130,6 +136,7 @@ const openVercelGuideModal = () => {
 .download-modal {
   .download-btn {
     margin-bottom: 16px;
+    margin-right: 12px;
   }
   .download-tip {
     .tip-desc {

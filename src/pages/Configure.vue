@@ -44,7 +44,7 @@ const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
-const { activeNode, setting, activeSection, allPageData, colorVars, font, project, activeNodeIsSonText } = storeToRefs(pageStore)
+const { activeNode, setting, activeSection, allPageData, colorVars, font, project, activeNodeIsSonText, allProjectData } = storeToRefs(pageStore)
 const {
   setActiveSection,
   setActiveNode,
@@ -52,6 +52,7 @@ const {
   getAssetsData,
   getProjectData,
   download,
+  downloadAll,
   saveProjectData,
   loadTemplateData,
   pasteClipboardNode,
@@ -78,6 +79,20 @@ const handleDownload = async () => {
   const timer = setTimeout(() => hide = setGlobalLoading($t('downloadLoading')), 300)
   try {
     download()
+    // const res = await download()
+    // downloadHtml(res.data)
+  } finally {
+    clearTimeout(timer)
+    hide?.()
+  }
+}
+
+/** 下载整个项目 */
+const handleDownloadAll = async () => {
+  let hide: any
+  const timer = setTimeout(() => hide = setGlobalLoading($t('downloadLoading')), 300)
+  try {
+    downloadAll()
     // const res = await download()
     // downloadHtml(res.data)
   } finally {
@@ -362,7 +377,13 @@ watch(
       :project="project"
       @save="handleSaveProject"
     ></ProjectModal>
-    <DownloadModal :project="project" v-model="showDownloadModal" @download="handleDownload"></DownloadModal>
+    <DownloadModal
+      :project="project"
+      :show-download-all="Object.keys(allProjectData).length > 1"
+      v-model="showDownloadModal"
+      @download="handleDownload"
+      @download-all="handleDownloadAll"
+    ></DownloadModal>
   </div>
 </template>
 
