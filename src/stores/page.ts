@@ -243,17 +243,7 @@ export const usePageStore = defineStore('page', {
         colorVars: this.colorVars,
         font: this.font,
         setting: this.setting,
-      } as IPage)
-      // const data = this.allPageData
-      // const res = await downloadApi.post<any>({
-      //   data: {
-      //     pageData: this.allPageData,
-      //     colorVars: this.colorVars,
-      //     font: this.font,
-      //     setting: this.setting,
-      //   } as IPage,
-      // })
-      // return res
+      } as IPage, this.project.filename)
     },
     /** 保存物料数据 */
     async fetchSaveMaterial(params: IMaterialItem) {
