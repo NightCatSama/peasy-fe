@@ -22,7 +22,7 @@ const { isLogin } = storeToRefs(userStore)
 
 const { project, showDownloadAll } = defineProps<IDownloadModalProps>()
 
-const emit = defineEmits(['download'])
+const emit = defineEmits(['download', 'download-all'])
 
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
 
