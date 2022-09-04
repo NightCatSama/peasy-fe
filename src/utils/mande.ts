@@ -40,4 +40,7 @@ export const materialApi = mande(`${apiURL}/api/data/material`)
 export const projectApi = mande(`${apiURL}/api/data/project`)
 export const logtoMeApi = mande(`${apiURL}/api/users/me`)
 export const fixApi = mande(`${apiURL}/api/data/fix`)
-export const templatePreviewUrl = (templateId: string, hideHelper = false) => `${import.meta.env.VITE_URL_BASE}preview/${templateId}?hideHelper=${hideHelper}`
+export const templatePreviewUrl = (templateId: string, hideHelper = false) =>
+`${import.meta.env.VITE_URL_BASE}preview/${templateId}?hideHelper=${hideHelper}`
+export const getTemplatePreview = (templateId: string) =>
+  `${apiURL}/api/data/preview/template/${templateId}`

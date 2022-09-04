@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user';
-import { fixApi } from '@/utils/mande';
+import { fixApi, getTemplatePreview } from '@/utils/mande';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router'
 import Logo from '@/components/Logo.vue';
@@ -16,7 +16,7 @@ const hideHelper = $ref(route.query.hideHelper === 'true')
 
 const previewURL = $computed(() => {
   const { id } = route.params as any
-  return `http://localhost:3030/site/api/data/template/preview/${id}`
+  return getTemplatePreview(id)
 })
 
 const gotoEdit = () => {
