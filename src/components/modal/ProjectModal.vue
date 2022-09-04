@@ -76,7 +76,10 @@ const handleSave = () => {
     return
   }
   // Filename 不允许重复
-  if (isSubPage && Object.values(allProjectData.value || []).find((item) => editProject?.filename === item.filename)) {
+  if (
+    isSubPage &&
+    Object.values(allProjectData.value || []).find((item) => editProject?.id !== item.id && editProject?.filename === item.filename)
+  ) {
     AlertError($t('projectFilenameExist'))
     return
   }
