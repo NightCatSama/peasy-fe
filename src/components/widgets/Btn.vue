@@ -106,7 +106,7 @@ const handleClick = (e: MouseEvent) => {
 
   &-type-btn {
     &.primary {
-      color: $color;
+      color: $white;
       background: $theme-gradient;
 
       &:not(.disabled):hover {
@@ -124,7 +124,7 @@ const handleClick = (e: MouseEvent) => {
     }
 
     &.purple {
-      color: $color;
+      color: $white;
       background: $purple-gradient;
 
       &:not(.disabled):hover {
