@@ -14,6 +14,7 @@ import { storeToRefs } from 'pinia'
 import CollapseItem from './items/CollapseItem.vue'
 import type { ISelectItem } from '../widgets/Select.vue'
 import { $t } from '@/constants/i18n'
+import { emitter } from '@/utils/event'
 
 interface IEffectGroupProps {
   node: PageNode
@@ -69,6 +70,7 @@ const handleSetStyle = (
   } else {
     delete item.styles[styleType]
   }
+  emitter.emit('saveHistory')
 }
 
 const effectTargetMap: { [key: string]: ISelectItem } = $computed(() => {

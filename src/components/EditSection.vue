@@ -249,6 +249,7 @@ const handleSelectTemplate = async(templateId: string) => {
   await loadTemplateData(templateId)
   isLoadingTemplate = false
   AlertSuccess($t('templateApplySuccess'))
+  emitter.emit('saveHistory')
 }
 </script>
 
