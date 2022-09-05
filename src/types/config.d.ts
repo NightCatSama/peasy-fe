@@ -19,8 +19,11 @@ interface IBlockBasicType {
 
 /** Text 组件基础配置 */
 interface ITextBasicType {
+  /** 组件文本 */
   text: string
+  /** 换行方式 */
   whiteSpace: 'normal' | 'nowrap' | 'pre' | 'pre-line' | 'pre-wrap'
+  /** 换行截断处理方式 */
   wordBreak?: 'normal' | 'break-all' | 'break-word' | 'keep-all'
   /** 是否为子 Text 组件 */
   isSonText?: boolean
@@ -28,14 +31,21 @@ interface ITextBasicType {
 
 /** Image 组件基础配置 */
 interface IImageBasicType {
+  /** 图片资源路径 */
   src: string
+  /** 对齐方式 */
   objectFit: 'cover' | 'contain' | 'fill' | 'none' | 'scale-down'
 }
 
+/** Media 组件基础配置 */
 interface IMediaBasicType {
+  /** 资源类型 */
   type: 'source' | 'youtube' | 'iframe'
+  /** 资源路径，source/iframe 有效 */
   src: string
+  /** Youtube ID */
   youtubeId: string
+  /** 是否自动播放 */
   autoplay: boolean
 }
 
@@ -53,59 +63,93 @@ interface IInputFieldBasicType {
 
 /** Icon 组件基础配置 */
 interface IIconBasicType {
-  name: string // 图标名字
-  size: string // 图标大小
-  color: string // 图标颜色
-  prefixClass: string // 图标前缀
-  extraClass: string // 图标额外属性
-  styleLink: string // 图标字体的 css 链接
+  /** 图标名字 */
+  name: string
+  /** 图标大小 */
+  size: string
+  /** 图标颜色 */
+  color: string
+  /** 图标前缀 */
+  prefixClass: string
+  /** 图标额外属性 */
+  extraClass: string
+  /** 图标字体的 css 链接 */
+  styleLink: string
 }
 
 /** 尺寸信息 */
 interface ISize {
+  /** 宽度 */
   width: string | 'auto' | 'stretch'
+  /** 高度 */
   height: string | 'auto' | 'stretch'
+  /** 最小宽度 */
   minWidth: string | 'auto'
+  /** 最小高度 */
   minHeight: string | 'auto'
+  /** 最大宽度 */
   maxWidth: string | 'none'
+  /** 最大高度 */
   maxHeight: string | 'none'
 }
 
 /** 容器的布局信息 */
 interface ILayout {
+  /** 方向 */
   direction: 'row' | 'column'
+  /** 主轴对齐方式 */
   justify: 'start' | 'end' | 'center' | 'space-between' | 'space-around' | 'space-evenly'
+  /** 交叉轴对齐方式 */
   align: 'start' | 'end' | 'center' | 'stretch' | 'baseline'
+  /** 是否换行 */
   wrap: 'nowrap' | 'wrap' | 'wrap-reverse'
+  /** 是否反向 */
   reverse?: boolean
 }
 
 /** 字体样式 */
 interface IFont {
+  /** 文字大小 */
   fontSize: string
+  /** 行高 */
   lineHeight: string
+  /** 颜色 */
   color: string
+  /** 自重 */
   fontWeight: 'normal' | 'bold' | '500' | '600' | '800' | '900'
+  /** 文字风格 */
   fontStyle: 'normal' | 'italic'
+  /** 文字装饰 */
   textDecoration: 'none' | 'underline' | 'line-through'
+  /** 对齐方式 */
   textAlign: 'left' | 'right' | 'center' | 'justify'
+  /** 文字阴影 */
   textShadow: string
+  /** 字体 */
   fontFamily: string
 }
 
 /** 间距信息，上右下左 */
 interface ISpacing {
+  /** 外边距 */
   margin: [number, number, number, number]
+  /** 内边距 */
   padding: [number, number, number, number]
 }
 
 /** 位置信息 */
 interface IPosition {
+  /** 位置 */
   position: 'static' | 'absolute' | 'fixed'
+  /** 距离左侧位置 */
   left: string | 'auto'
+  /** 距离上侧位置 */
   top: string | 'auto'
+  /** 距离右侧位置 */
   right: string | 'auto'
+  /** 距离下侧位置 */
   bottom: string | 'auto'
+  /** 层级 */
   zIndex: number
   /** 距离容器顶部一定距离时展示，仅 fixed 有效 */
   showByOffset?: string
@@ -114,19 +158,27 @@ interface IPosition {
 /** 边框信息 */
 type BorderStyle = 'solid' | 'dashed' | 'dotted' | 'double'
 interface IBorder {
+  /** 边框宽度 */
   borderWidth: [string, string, string, string]
+  /** 边框风格 */
   borderStyle: [BorderStyle, BorderStyle, BorderStyle, BorderStyle]
+  /** 边框颜色 */
   borderColor: string | [string, string, string, string]
+  /** 边框圆角 */
   borderRadius: string | 'circle' | [string, string, string, string]
 }
 
+/** 背景信息 */
 interface IBackground {
+  /** 背景类型 */
   backgroundType: 'none' | 'color' | 'image' | 'gradient'
   /** 背景色 */
   backgroundColor: string
   /** 背景图 */
   backgroundImage: string
+  /** 背景图的展示方式 */
   backgroundSize: 'cover' | 'contain' | 'auto'
+  /** 背景图的位置展示 */
   backgroundPosition:
     | 'left top'
     | 'top'
@@ -137,7 +189,9 @@ interface IBackground {
     | 'left bottom'
     | 'bottom'
     | 'right bottom'
+  /** 背景图的重复方式 */
   backgroundRepeat: 'repeat' | 'repeat-x' | 'repeat-y' | 'no-repeat'
+  /** 固定背景图 */
   backgroundAttachment: 'scroll' | 'fixed'
   /** 背景过渡色 */
   backgroundGradientAngle: number
@@ -146,12 +200,17 @@ interface IBackground {
   backgroundClip: 'border-box' | 'padding-box' | 'content-box' | 'text'
 }
 
-/** 背景信息 */
+/** 容器信息 */
 interface IContainer {
+  /** 溢出处理方式 */
   overflow: 'visible' | 'hidden' | 'scroll' | 'auto'
+  /** 阴影 */
   boxShadow: string
+  /** 透明度 */
   opacity: number
+  /** Filter 滤镜 */
   filter: string
+  /** 指针 */
   cursor:
     | 'inherit'
     | 'auto'
@@ -168,11 +227,17 @@ interface IContainer {
 interface IEvent {
   /** 事件类型 */
   type: 'none' | 'tap' | 'mousedown' | 'touchstart'
+  /** 事件行为 */
   action: 'link' | 'func' | 'scrollTo'
+  /** 阻止冒泡 */
   stopPropagation: boolean
+  /** [link] 跳转链接 */
   link: string
+  /** [link] 是否打开新标签 */
   openNewTab: boolean
+  /** [func] 执行方法脚本 */
   execFunction: string
+  /** [scrollTo] 滚动到的目标，数字为顶部距离，其他为组件 name */
   scrollTarget: string
 }
 
