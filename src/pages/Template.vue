@@ -126,7 +126,6 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
         >
           <div class="preview-btn-group" v-if="selectedId === item.id">
             <a
-              v-if="key === 'official' || isAdmin"
               class="preview-btn"
               target="_blank"
               :href="templatePreviewUrl(item.id, true)"

@@ -1,23 +1,21 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user';
-import { fixApi, getTemplatePreview } from '@/utils/mande';
+import { getTemplatePreview } from '@/utils/mande';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router'
 import Logo from '@/components/Logo.vue';
 import Btn from '@/components/widgets/Btn.vue';
+import { onMounted } from 'vue';
 
 const route = useRoute()
 const router = useRouter()
 
 const userStore = useUserStore()
-const { isAdmin } = storeToRefs(userStore)
+const { isAdmin, accessToken } = storeToRefs(userStore)
 
 const hideHelper = $ref(route.query.hideHelper === 'true')
 
-const previewURL = $computed(() => {
-  const { id } = route.params as any
-  return getTemplatePreview(id)
-})
+let previewURL = $ref('')
 
 const gotoEdit = () => {
   const { id } = route.params as any
@@ -28,6 +26,28 @@ const gotoEdit = () => {
     }
   })
 }
+
+onMounted(async () => {
+  const { id } = route.params as any
+  var xhr = new XMLHttpRequest()
+
+  // 需要在请求头中设置 Authorization，否则自己为公开的模板也无法预览
+  xhr.open('GET', getTemplatePreview(id))
+  xhr.onreadystatechange = handler
+  xhr.responseType = 'blob'
+  xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken.value)
+  xhr.send()
+
+  function handler(this: XMLHttpRequest) {
+    if (this.readyState === this.DONE) {
+      if (this.status === 200) {
+        previewURL = URL.createObjectURL(this.response)
+      } else {
+        console.error('Error')
+      }
+    }
+  }
+})
 </script>
 
 <template>
@@ -38,7 +58,7 @@ const gotoEdit = () => {
       <Btn :text="$t('useTemplate')" @click="gotoEdit"></Btn>
       <Btn class="close-btn" type="icon" :icon="'close'" color="default" @click="hideHelper = true"></Btn>
     </div>
-    <iframe :src="previewURL" scrolling="no" border="0" frameborder="0" framespacing="0" allowfullscreen="true"></iframe>
+    <iframe v-if="previewURL" :src="previewURL" scrolling="no" border="0" frameborder="0" framespacing="0" allowfullscreen="true"></iframe>
   </div>
 </template>
 

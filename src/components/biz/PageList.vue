@@ -49,7 +49,11 @@ const handleOpenProjectModal = (item: IProject) => {
 
 /** 保存子页面 */
 const handleSaveProject = async (item: IProject) => {
-  await saveProjectData(item.id || '', item, true)
+  await saveProjectData(
+    item.id || '',
+    item,
+    item.id ? false : true // 新增子页面时，需要创建默认的页面数据
+  )
   showProjectModal = false
   curEditProject = null
   AlertSuccess($t('saveSuccess'))
@@ -130,7 +134,7 @@ const handleSettingProject = async (project: Project) => {
       v-if="curEditProject"
       v-model="showProjectModal"
       :project="curEditProject"
-      hide-create-cover
+      :hide-create-cover="curEditProject.id !== project.id"
       @save="handleSaveProject"
     ></ProjectModal>
     <SaveMaterialModal
