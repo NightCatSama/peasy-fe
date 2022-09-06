@@ -51,7 +51,7 @@ defineExpose({})
     </div>
     <div v-if="inputVerify" class="input-verify">
         <div class="input-verify-text">Please type <span class="highlight">{{ inputVerify }}</span> to confirm.</div>
-        <Input v-model="value" @input="value = $event.target.value"></Input>
+        <Input v-model="value" @input="(e: any) => value = e.target.value"></Input>
       </div>
     <div class="btn-group">
       <div class="extra-link-wrapper" v-if="extraLink">
