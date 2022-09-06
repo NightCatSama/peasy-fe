@@ -50,7 +50,7 @@ defineExpose({})
       <div>{{ msg }}</div>
     </div>
     <div v-if="inputVerify" class="input-verify">
-        <div class="input-verify-text">Please type <span class="highlight">{{ inputVerify }}</span> to confirm.</div>
+        <div class="input-verify-text">{{ $t('deleteConfirmInput1') }}<span class="highlight">{{ inputVerify }}</span>{{ $t('deleteConfirmInput2') }}</div>
         <Input v-model="value" @input="(e: any) => value = e.target.value"></Input>
       </div>
     <div class="btn-group">

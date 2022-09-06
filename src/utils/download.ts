@@ -1,8 +1,9 @@
 import { parsePageData } from '@/utils/core'
 import type { IPage, PageNode } from '@/config'
-import temp from '../../template-dist/index.html?raw'
 import JSZip from 'jszip'
 import { Project } from '@@/entities/project.entity'
+
+import temp from '../../template-dist/index.html?raw'
 
 export const downloadByPageNode = (data: IPage, filename = '') => {
   let file = parsePageData(data, temp)
