@@ -7,7 +7,6 @@ import { useUserStore } from './stores/user'
 import { AlertError } from './utils/alert';
 import { logtoMeApi, persistToken } from './utils/mande'
 import Icon from './components/widgets/Icon.vue';
-import { emitter } from './utils/event';
 
 let isReady = $ref(false)
 
@@ -19,6 +18,10 @@ let showGlobalLoading = $ref(false)
 let globalLoadingText = $ref('')
 
 onBeforeMount(async () => {
+  if (/windows|win32/i.test(navigator.userAgent)) {
+    document.body.classList.add('windows')
+  }
+
   // 先获取 token
   const { token } = await persistToken()
   isReady = true
@@ -99,6 +102,31 @@ provide('globalLoading', {
 
   &-text {
     margin-top: 10px;
+  }
+}
+</style>
+
+<style lang="scss">
+.windows {
+  // 滚动条的宽度
+  ::-webkit-scrollbar {
+    width: 6px;
+    height: 6px;
+    background-color: $tr;
+  }
+  // 滚动条的滑块
+  ::-webkit-scrollbar-thumb {
+    background-color: rgba($white, 30%);
+    border-radius: 3px;
+  }
+  // 滚动条
+  ::-webkit-scrollbar {
+    width:8px;
+    height:8px;
+    background-color: $tr;
+  }
+  ::-webkit-scrollbar-button, ::-webkit-scrollbar-track-piece, ::-webkit-scrollbar-track, ::-webkit-scrollbar-corner {
+    background-color: $tr;
   }
 }
 </style>
