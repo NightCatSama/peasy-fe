@@ -14,7 +14,7 @@ const router = useRouter()
 const userStore = useUserStore()
 const { isAdmin, accessToken } = storeToRefs(userStore)
 
-const hideHelper = $computed(() => route.name === 'preview-project' || route.query.hideHelper === 'true')
+const hideHelper = $ref(route.name === 'preview-project' || route.query.hideHelper === 'true')
 
 const gotoEdit = () => {
   const { id } = route.params as any
