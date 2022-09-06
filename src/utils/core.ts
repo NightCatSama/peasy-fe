@@ -29,8 +29,8 @@ export const parsePageData = (data: IPage, temp: string) => {
     /<!--app-google-analytic-->/g,
     `
 ${
-      data.setting.googleAnalytics
-        ? `
+  data.setting.googleAnalytics
+    ? `
 <script async src="https://www.googletagmanager.com/gtag/js?id=${data.setting.googleAnalytics}"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
