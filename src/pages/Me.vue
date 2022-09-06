@@ -138,7 +138,7 @@ const handleSaveToTemplate = async (project: Project) => {
   showSaveMaterialModal = true
 }
 
-/** 处理物流展示图片的点击事件 */
+/** 处理物料展示图片的点击事件 */
 const handleMaterialImageClick = async (material: IMaterialItem) => {
   if (material.type === 'template') {
     if (await Modal.confirm($t('createTemplateTip'))) {
@@ -200,6 +200,18 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
       (p) => p.id !== material.id
     )
     AlertSuccess($t('deleteSuccess'))
+  }
+}
+
+/** 处理编辑物料 */
+const handleEditMaterial = (material: IMaterialItem) => {
+  if (material.type === 'template') {
+    router.push({
+      name: 'template-edit',
+      params: {
+        id: material.id,
+      }
+    })
   }
 }
 
@@ -280,6 +292,7 @@ const openChat = () => {
         @on-material-click="handleMaterialImageClick"
         @on-setting-material="handleMaterialSetting"
         @on-delete-material="handleDeleteMaterial"
+        @on-edit-material="handleEditMaterial"
       ></Templates>
       <Materials
         v-if="curMenu === 'material'"

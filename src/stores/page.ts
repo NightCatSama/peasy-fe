@@ -41,7 +41,10 @@ let prevCutNode: PageNode | null = null
 export const usePageStore = defineStore('page', {
   state: () =>
     getStoragePageState('', {
+      /** 当前编辑的项目 */
       project: { id: '', name: '', cover: '', isPublic: false, domain: '', host: '', parentPage: '' } as IProject,
+      /** 当前编辑的模板 */
+      template: null as IMaterialItem | null,
       allProjectData: {} as { [projectId: string]: Project },
       /** 所有页面数据 */
       allPageData: [] as PageNode<any>[],
@@ -250,7 +253,6 @@ export const usePageStore = defineStore('page', {
     },
     /** 保存物料数据 */
     async fetchSaveMaterial(params: IMaterialItem) {
-      const originNode = params.node
       const material = this.covertMaterialNode(params)
       const res = await materialApi.patch<IResponse<IMaterialItem>>(material)
       const list = this.materialData?.[material.type]
@@ -267,6 +269,9 @@ export const usePageStore = defineStore('page', {
           this.materialData[material.type].unshift(res.data)
         }
       }
+      if (this.template && this.template.id === material.id) {
+        this.template = material
+      }
       return res.data
     },
     /** 删除单个物料数据 */
@@ -279,8 +284,12 @@ export const usePageStore = defineStore('page', {
         }
       })
     },
-    /** 载入模板数据 */
-    async loadTemplateData(materialId: string) {
+    /**
+     * 载入模板数据
+     * @param id 模板id
+     * @param isEdit 是否当前页面为编辑模板，是的话，则将模板数据合并到 project 中
+     */
+    async loadTemplateData(materialId: string, isEditTemplate = false) {
       if (!materialId) return
       if (this.materialData.template?.length > 0) {
         const template = this.materialData.template.find((item) => item.id === materialId)
@@ -289,6 +298,9 @@ export const usePageStore = defineStore('page', {
           this.colorVars = template.page.colorVars
           this.font = template.page.font
           this.setting = template.page.setting
+          if (isEditTemplate) {
+            this.setEditTemplate(template)
+          }
           return
         }
       }
@@ -299,7 +311,13 @@ export const usePageStore = defineStore('page', {
         this.colorVars = page.colorVars
         this.font = page.font
         this.setting = page.setting
+        if (isEditTemplate) {
+          this.setEditTemplate(res.data)
+        }
       }
+    },
+    setEditTemplate(material: IMaterialItem) {
+       this.template = material
     },
     setProjectData(data: Project) {
       if (this.project.id && this.project.id !== data.id) {

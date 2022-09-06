@@ -13,6 +13,7 @@ export const saveStoragePageState = (id: string) => {
       JSON.stringify({
         allPageData: pageStore.allPageData,
         project: pageStore.project,
+        template: pageStore.template,
         colorVars: pageStore.colorVars,
         font: pageStore.font,
         setting: pageStore.setting,

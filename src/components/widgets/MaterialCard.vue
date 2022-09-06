@@ -72,6 +72,15 @@ const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
         </template>
         <template v-else-if="!hideOperate">
           <Icon
+            v-if="type === 'template'"
+            type="circle"
+            class="material-card-info-btn"
+            name="edit"
+            :size="9"
+            v-tooltip="{ content: $t('edit'), placement: 'top', distance: 10 }"
+            @click="$emit('on-edit-material', item as IMaterialItem)"
+          ></Icon>
+          <Icon
             type="circle"
             class="material-card-info-btn"
             name="advanced"
@@ -198,7 +207,7 @@ const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
       display: none;
       transition: all 0.3s;
       &:hover {
-        background: $panel;
+        background: darken($panel-light, 8%);
       }
       &.danger {
         &:hover {

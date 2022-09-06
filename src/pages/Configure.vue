@@ -32,6 +32,8 @@ import { useUserStore } from '@/stores/user'
 import { getJSONEditor } from '@/utils/jsoneditor'
 import { getSetLoading } from '@/utils/context'
 import DownloadModal from '@/components/modal/DownloadModal.vue'
+import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
+import { IMaterialItem } from '@/config'
 
 const route = useRoute()
 const router = useRouter()
@@ -42,7 +44,18 @@ const userStore = useUserStore()
 const { isAdmin } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
-const { activeNode, setting, activeSection, allPageData, colorVars, font, project, activeNodeIsSonText, allProjectData } = storeToRefs(pageStore)
+const {
+  activeNode,
+  setting,
+  activeSection,
+  allPageData,
+  colorVars,
+  font,
+  project,
+  activeNodeIsSonText,
+  allProjectData,
+  template,
+} = storeToRefs(pageStore)
 const {
   setActiveSection,
   setActiveNode,
@@ -55,6 +68,7 @@ const {
   loadTemplateData,
   pasteClipboardNode,
   copyActiveNodeToClipboard,
+  fetchSaveMaterial
 } = pageStore
 
 const displayStore = useDisplayStore()
@@ -66,8 +80,12 @@ const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
 const { saveHistory, undoHistory, redoHistory, setIsSave } = historyStore
 
 let showProjectModal = $ref(false)
+let showSaveMaterialModal = $ref(false)
 let showKeyboard = $ref(false)
 let showDownloadModal = $ref(false)
+
+/** 模板编辑 */
+const isEditTemplate = $computed(() => route.name === 'template-edit')
 
 const setGlobalLoading = getSetLoading()
 
@@ -126,6 +144,31 @@ const handleSaveProject = async (editProject?: IProject) => {
   }
 }
 
+/** 保存模板 */
+const handleSaveMaterial = async () => {
+  const [alertCb, hide] = AlertProcess($t('saving'))
+  const material: IMaterialItem = {
+    ...template.value!,
+    page: {
+      pageData: allPageData.value,
+      /** 颜色变量 */
+      colorVars: colorVars.value,
+      /** 页面配置 */
+      setting: setting.value,
+      /** 字体配置 */
+      font: font.value,
+    }
+  }
+  try {
+    const data = await fetchSaveMaterial(material)
+    alertCb($t('saveSuccess'))
+    setIsSave(true)
+  } catch (e: any) {
+    hide()
+    throw e
+  }
+}
+
 emitter.on('saveProject', handleSaveProject)
 
 let showLeftPanel = $ref(false)
@@ -175,7 +218,11 @@ onMounted(async () => {
   const hide = setGlobalLoading?.($t('loading'))
   if (id) {
     try {
-      await getProjectData(id)
+      if (isEditTemplate) {
+        await loadTemplateData(id, true)
+      } else {
+        await getProjectData(id)
+      }
     } catch (e) {
       router.replace({ name: 'create' })
     } finally {
@@ -351,9 +398,11 @@ watch(
     ></Sidebar>
     <div class="container">
       <ConfigHeader
+        :is-template="isEditTemplate"
         @download="showDownloadModal = true"
-        @save="handleSaveProject"
+        @save="() => !isEditTemplate ? handleSaveProject() : handleSaveMaterial()"
         @project-setting="showProjectModal = true"
+        @template-setting="showSaveMaterialModal = true"
       ></ConfigHeader>
       <!-- 页面主体内容 -->
       <div class="content">
@@ -375,6 +424,13 @@ watch(
       :project="project"
       @save="handleSaveProject"
     ></ProjectModal>
+    <SaveMaterialModal
+      v-if="template"
+      :action-text="$t('edit')"
+      :material="template"
+      v-model="showSaveMaterialModal"
+      :on-save="() => setIsSave(true)"
+    ></SaveMaterialModal>
     <DownloadModal
       :project="project"
       :show-download-all="Object.keys(allProjectData).length > 1"

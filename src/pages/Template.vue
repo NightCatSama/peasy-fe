@@ -88,6 +88,18 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
   }
 }
 
+/** 处理编辑物料 */
+const handleEditMaterial = (material: IMaterialItem) => {
+  if (material.type === 'template') {
+    router.push({
+      name: 'template-edit',
+      params: {
+        id: material.id,
+      }
+    })
+  }
+}
+
 const gotoDashboard = () => {
   router.push({
     name: 'dashboard',
@@ -131,6 +143,7 @@ const gotoDashboard = () => {
           @on-material-click="selectedId = item.id!"
           @on-setting-material="handleMaterialSetting"
           @on-delete-material="handleDeleteMaterial"
+          @on-edit-material="handleEditMaterial"
         >
           <div class="preview-btn-group" v-if="selectedId === item.id">
             <a
@@ -172,7 +185,7 @@ const gotoDashboard = () => {
 
   .title {
     font-size: 32px;
-    margin: 40px 24px 64px 24px;
+    margin: 24px 24px 40px 24px;
     color: $white;
     display: flex;
     align-items: center;

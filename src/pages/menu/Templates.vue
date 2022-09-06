@@ -34,9 +34,10 @@ const openPreviewTemplate = (item: IMaterialItem) => {
           <MaterialCard
             v-for="(item, index) in templates"
             :key="item.name + index"
-            :type="'templates'"
+            :type="'template'"
             :item="item"
             @on-material-click="openPreviewTemplate(item)"
+            @on-edit-material="$emit('on-edit-material', item)"
             @on-setting-project="$emit('on-setting-material', item)"
             @on-delete-project="$emit('on-delete-material', item)"
           >
@@ -89,10 +90,10 @@ const openPreviewTemplate = (item: IMaterialItem) => {
     border-radius: $inner-radius;
 
     .material-card {
-      margin: 0 16px 0 0;
+      margin: 0 24px 0 0;
       flex-shrink: 0;
-      width: 160px;
-      height: 240px;
+      width: 150px;
+      height: 220px;
       font-size: 16px;
     }
   }

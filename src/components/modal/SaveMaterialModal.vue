@@ -16,7 +16,7 @@ import { createMaterialSnapshot } from '@/utils/snapshot'
 import { watch, nextTick } from 'vue'
 import TreeNode from '../biz/TreeNode.vue'
 import ImageItem from '../configs/items/ImageItem.vue'
-import { Alert, AlertError, AlertSuccess } from '@/utils/alert'
+import { Alert, AlertError, AlertProcess, AlertSuccess } from '@/utils/alert'
 import { useUserStore } from '@/stores/user'
 import { cloneDeep } from 'lodash-es'
 import { uploadByBase64 } from '@/utils/oss'
@@ -106,10 +106,12 @@ const initJSONDependence = async () => {
 
 /** 自动生成封面 */
 const handleCreateCover = async () => {
-  if (!node || !editItem) return
+  if (!editItem) return
   try {
     coverLoading = true
-    const elem = document.querySelector(`[data-name="${node.name}"]`) as HTMLElement
+    const elem = isTemplate
+      ? document.querySelector(`.edit-content`) as HTMLElement
+      : document.querySelector(`[data-name="${node?.name}"]`) as HTMLElement
     if (!elem) return
     const cover = await createMaterialSnapshot(elem)
     if (cover.length >= 10000) {
@@ -149,19 +151,25 @@ const handleSave = async () => {
     AlertError($t('nameRequired'))
     return
   }
-  const data = await fetchSaveMaterial({
-    ...editItem,
-    node: isTemplate
-      ? void 0
-      : ({
-          ...node,
-          isModule: node?.isModule || false,
-          moduleConfig: node?.isModule && moduleConfigEditor ? moduleConfigEditor.get() : [],
-          moduleDependence: moduleDependenceElemEditor ? moduleDependenceElemEditor.get() : null,
-        } as PageNode),
-  })
-  onSave?.(data)
-  AlertSuccess($t('saveSuccess'))
+  const [alertCb, hide] = AlertProcess($t('saving'))
+  try {
+    const data = await fetchSaveMaterial({
+      ...editItem,
+      node: isTemplate
+        ? void 0
+        : ({
+            ...node,
+            isModule: node?.isModule || false,
+            moduleConfig: node?.isModule && moduleConfigEditor ? moduleConfigEditor.get() : [],
+            moduleDependence: moduleDependenceElemEditor ? moduleDependenceElemEditor.get() : null,
+          } as PageNode),
+    })
+    onSave?.(data)
+    alertCb($t('saveSuccess'))
+  } catch(e) {
+    hide?.()
+    throw e
+  }
   modal?.hide()
 }
 

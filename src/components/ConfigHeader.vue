@@ -24,11 +24,17 @@ import { $t, lang } from '@/constants/i18n'
 import PageList from './biz/PageList.vue'
 import { getDomainURL } from '@/utils/mande'
 
+interface IConfigHeaderProps {
+  isTemplate: boolean
+}
+
+const { isTemplate } = defineProps<IConfigHeaderProps>()
+
 const userStore = useUserStore()
 const { userName, avatar } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
-const { project, mainProject, setting, colorVars, allPageData } = storeToRefs(pageStore)
+const { project, mainProject, setting, colorVars, allPageData, template } = storeToRefs(pageStore)
 const { updateAllPageNode, setMediaFontSize } = pageStore
 
 const displayStore = useDisplayStore()
@@ -87,7 +93,7 @@ const switchLang = async(lang: 'zh' | 'en') => {
   }
 }
 
-const emit = defineEmits(['save', 'download', 'project-setting'])
+const emit = defineEmits(['save', 'download', 'project-setting', 'template-setting'])
 
 const name = $computed(() => project.value.filename || 'index')
 let showColorVarDropdown = $ref(false)
@@ -208,7 +214,7 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
 <template>
   <div class="header">
     <div class="left">
-      <div class="page-info" @click="showPageList = !showPageList">
+      <div v-if="!isTemplate" class="page-info" @click="showPageList = !showPageList">
         <div class="page-name">
           <div class="name">{{ name }}</div>
           <div class="ext">.html</div>
@@ -216,12 +222,15 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
         </div>
         <a v-if="domain" class="page-domain" target="_blank" :href="domain" @click.stop>{{ domain }}</a>
       </div>
+      <div v-else class="page-info">
+        <span class="page-label">{{ $t('editTemplate') }}: <span class="name">{{ template?.name }}</span></span>
+      </div>
       <Btn
         class="project-setting-btn"
         type="text"
         color="default"
         v-tooltip="$t('projectSetting')"
-        @click="$emit('project-setting')"
+        @click="isTemplate ? $emit('template-setting') : $emit('project-setting')"
       >
         <Icon name="project-setting" :size="16"></Icon>
       </Btn>
@@ -373,6 +382,7 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
         :text="$t('save')"
       ></Btn>
       <Btn
+        v-if="!isTemplate"
         class="download-btn"
         @click="$emit('download')"
         :disabled="allPageData.length === 0"
@@ -437,6 +447,16 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
         }
       }
 
+      .page-label {
+        display: flex;
+        align-items: baseline;
+        font-size: 14px;
+
+        .name {
+          margin-left: 10px;
+        }
+      }
+
       .page-domain {
         font-size: 12px;
         line-height: 12px;
@@ -478,7 +498,7 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
 
     .redo-icon,
     .undo-icon {
-      margin-right: 20px;
+      margin-right: 12px;
 
       &:not(.disabled):hover {
         color: $theme;
@@ -596,7 +616,7 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
   }
 
   .save-btn {
-    margin-right: 12px;
+    margin-right: 16px;
   }
 }
 

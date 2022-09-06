@@ -31,6 +31,7 @@ export const router = createRouter({
     { path: '', redirect: '/edit', name: 'home' },
     { path: '/edit', component: Configure, name: 'create', beforeEnter: needReloadPage },
     { path: '/edit/:id', component: Configure, name: 'edit', beforeEnter: needReloadPage },
+    { path: '/template/edit/:id', component: Configure, name: 'template-edit', beforeEnter: needReloadPage },
     { path: '/dashboard', component: Me, name: 'dashboard' },
     { path: '/admin/fix/:code', component: Admin, name: 'admin-fix' },
     { path: '/preview/:id', component: Preview, name: 'preview' },

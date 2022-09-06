@@ -339,7 +339,6 @@ const handleSelectTemplate = async(templateId: string) => {
         ></MaterialCard>
       </div>
       <Icon v-else-if="isLoadingTemplate" name="spin" :size="48" loading></Icon>
-      <span v-else>{{ $t('templatePlaceholder') }}</span>
     </div>
   </div>
 </template>
