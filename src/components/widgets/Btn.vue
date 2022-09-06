@@ -4,9 +4,9 @@ import Icon from './Icon.vue'
 
 interface IBtnProps {
   text?: string
-  size?: 'md' | 'sm' | 'xs'
+  size?: 'lg' | 'md' | 'sm' | 'xs'
   type?: 'text' | 'btn' | 'inner' | 'icon'
-  color?: 'primary' | 'default' | 'second' | 'purple'
+  color?: 'primary' | 'default' | 'second' | 'purple' | 'orange' | 'red'
   icon?: InstanceType<typeof Icon>['name']
   disabled?: boolean
   isBlock?: boolean
@@ -27,6 +27,16 @@ const handleClick = (e: MouseEvent) => {
     return
   }
 }
+
+const iconSize = $computed(() => {
+  if (size === 'lg') {
+    return 20
+  }
+  if (size === 'sm') {
+    return 14
+  }
+  return 14
+})
 </script>
 
 <template>
@@ -41,7 +51,7 @@ const handleClick = (e: MouseEvent) => {
     role="button"
     @click="handleClick"
   >
-    <Icon v-if="icon" class="btn-icon" :name="icon" :size="14"></Icon>
+    <Icon v-if="icon" class="btn-icon" :name="icon" :size="iconSize"></Icon>
     <div class="text">
       <slot>{{ text }}</slot>
     </div>
@@ -132,6 +142,15 @@ const handleClick = (e: MouseEvent) => {
       }
     }
 
+    &.orange {
+      color: $white;
+      background: $orange-gradient;
+
+      &:not(.disabled):hover {
+        opacity: 0.8;
+      }
+    }
+
     &.size-md {
       padding: 0 24px;
       border-radius: 18px;
@@ -181,6 +200,24 @@ const handleClick = (e: MouseEvent) => {
     &.second {
       color: $color;
       background: $panel-light;
+
+      &:not(.disabled):hover {
+        opacity: 0.8;
+      }
+    }
+
+    &.purple {
+      color: $white;
+      background: $purple-gradient;
+
+      &:not(.disabled):hover {
+        opacity: 0.8;
+      }
+    }
+
+    &.red {
+      color: $white;
+      background: $red-gradient;
 
       &:not(.disabled):hover {
         opacity: 0.8;
@@ -239,6 +276,17 @@ const handleClick = (e: MouseEvent) => {
       font-size: 16px;
       width: 28px;
       height: 28px;
+      font-weight: bold;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    &.size-lg {
+      border-radius: 50%;
+      font-size: 18px;
+      width: 42px;
+      height: 42px;
       font-weight: bold;
       display: flex;
       justify-content: center;

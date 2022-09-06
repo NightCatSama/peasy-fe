@@ -109,6 +109,8 @@ const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
   display: inline-flex;
   flex-direction: column;
   margin: 12px 24px 12px 0;
+  color: $panel-light;
+  font-size: 14px;
 
   &.project,
   &.template {
@@ -172,8 +174,6 @@ const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
     padding: 6px 0px 6px 4px;
     height: 28px;
     &-name {
-      color: $panel-light;
-      font-size: 14px;
       flex: 1;
       white-space: nowrap;
       overflow: hidden;
@@ -210,9 +210,7 @@ const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
     }
   }
   &:hover {
-    .material-card-info-name {
-      color: $panel;
-    }
+    color: $panel;
     .material-card-info-btn {
       opacity: 1;
       display: flex;

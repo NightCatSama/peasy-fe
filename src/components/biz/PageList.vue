@@ -68,7 +68,7 @@ const handleSwitchProject = async (item: IProject) => {
   }
   await switchProject(item.id)
   clearHistory()
-  emitter.emit('saveHistory')
+  emitter.emit('saveHistory', true)
 }
 
 /** 保存为模板 */
@@ -175,14 +175,11 @@ const handleSettingProject = async (project: Project) => {
     cursor: pointer;
     margin: 0 18px 0 0;
     border-radius: $normal-radius;
+    color: $yellow;
 
     .material-card-info {
       height: 24px;
       margin-top: 4px;
-
-      .material-card-info-name {
-        color: $yellow;
-      }
     }
 
     &.selected .material-card-image::after {

@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user';
-import { getTemplatePreview } from '@/utils/mande';
+import { getTemplatePreview, getProjectPreview } from '@/utils/mande';
 import { storeToRefs } from 'pinia';
 import { useRoute, useRouter } from 'vue-router'
 import Logo from '@/components/Logo.vue';
@@ -13,7 +13,7 @@ const router = useRouter()
 const userStore = useUserStore()
 const { isAdmin, accessToken } = storeToRefs(userStore)
 
-const hideHelper = $ref(route.query.hideHelper === 'true')
+const hideHelper = $computed(() => route.name === 'preview-project' || route.query.hideHelper === 'true')
 
 let previewURL = $ref('')
 
@@ -27,12 +27,17 @@ const gotoEdit = () => {
   })
 }
 
-onMounted(async () => {
+const getPreviewURL = () => {
   const { id } = route.params as any
+  const isProject = route.name === 'preview-project'
+  return isProject ? getProjectPreview(id) : getTemplatePreview(id)
+}
+
+onMounted(async () => {
   var xhr = new XMLHttpRequest()
 
   // 需要在请求头中设置 Authorization，否则自己为公开的模板也无法预览
-  xhr.open('GET', getTemplatePreview(id))
+  xhr.open('GET', getPreviewURL())
   xhr.onreadystatechange = handler
   xhr.responseType = 'blob'
   xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken.value)

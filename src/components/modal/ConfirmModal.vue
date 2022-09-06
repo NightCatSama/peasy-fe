@@ -9,6 +9,7 @@ import Modal from './Modal.vue'
 import Btn from '../widgets/Btn.vue'
 import Icon from '../widgets/Icon.vue'
 import { $t } from '@/constants/i18n';
+import Input from '../widgets/Input.vue';
 
 interface IConfirmModal {
   title?: string
@@ -19,6 +20,7 @@ interface IConfirmModal {
   cancelText?: string
   onOk?: () => void
   onCancel?: () => void
+  inputVerify?: string
 }
 
 const {
@@ -28,11 +30,15 @@ const {
   onExtraLinkClick = null,
   okText = $t('ok'),
   cancelText = $t('cancel'),
+  inputVerify = '',
   onOk,
   onCancel,
 } = defineProps<IConfirmModal>()
 
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
+let value = $ref('')
+
+const okBtnDisabled = $computed(() => !!(inputVerify && value !== inputVerify))
 
 defineExpose({})
 </script>
@@ -43,6 +49,10 @@ defineExpose({})
       <!-- <Icon class="tip-icon" color="theme" :name="'warning'" :size="16"></Icon> -->
       <div>{{ msg }}</div>
     </div>
+    <div v-if="inputVerify" class="input-verify">
+        <div class="input-verify-text">Please type <span class="highlight">{{ inputVerify }}</span> to confirm.</div>
+        <Input v-model="value" @input="value = $event.target.value"></Input>
+      </div>
     <div class="btn-group">
       <div class="extra-link-wrapper" v-if="extraLink">
         <Btn type="text" size="sm" class="extra-link" @click="onExtraLinkClick">
@@ -66,6 +76,7 @@ defineExpose({})
         class="ok-btn"
         type="btn"
         size="sm"
+        :disabled="okBtnDisabled"
         @click="
           () => {
             onOk?.()
@@ -89,6 +100,21 @@ defineExpose({})
 
     .tip-icon {
       margin-right: 10px;
+    }
+  }
+  .input-verify {
+    margin-top: 12px;
+    font-size: 14px;
+    display: flex;
+    flex-direction: column;
+
+    &-text {
+      margin-bottom: 6px;
+
+      .highlight {
+        color: $yellow;
+        font-weight: bold;
+      }
     }
   }
   .btn-group {

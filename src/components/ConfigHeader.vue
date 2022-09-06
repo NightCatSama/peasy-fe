@@ -22,6 +22,7 @@ import { useRouter, useRoute } from 'vue-router'
 import { Modal } from './modal'
 import { $t, lang } from '@/constants/i18n'
 import PageList from './biz/PageList.vue'
+import { getDomainURL } from '@/utils/mande'
 
 const userStore = useUserStore()
 const { userName, avatar } = storeToRefs(userStore)
@@ -70,7 +71,7 @@ const gotoMePage = async () => {
           }
     ))
   ) {
-    router.push('/me')
+    router.push({ name: 'dashboard' })
   }
 }
 const switchLang = async(lang: 'zh' | 'en') => {
@@ -98,9 +99,7 @@ const text = $computed(
 
 const domain = $computed(() =>
   (mainProject.value?.isPublic && mainProject.value?.domain)
-    ? `https://${mainProject.value.domain}.p-easy.net${
-      project.value.filename && project.value.filename !== 'index' ? `/${project.value.filename}.html` : ''
-    }`
+    ? getDomainURL(mainProject.value.domain, project.value.filename)
     : ''
 )
 

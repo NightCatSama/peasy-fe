@@ -3,7 +3,6 @@ import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { useLogto } from '@logto/vue'
 import Btn from '@/components/widgets/Btn.vue'
-import Icon from '@/components/widgets/Icon.vue'
 import Avatar from '@/components/widgets/Avatar.vue'
 import { materialApi, projectApi } from '@/utils/mande'
 import { onErrorCaptured, onMounted, reactive } from 'vue'
@@ -19,6 +18,13 @@ import { SaveProjectDto } from '@@/dto/data.dto'
 import { $t } from '@/constants/i18n'
 import MaterialCard from '@/components/widgets/MaterialCard.vue'
 import { getSetLoading } from '@/utils/context'
+import Icon from '@/components/widgets/Icon.vue'
+import Dashboard from './menu/Dashboard.vue'
+import Templates from './menu/Templates.vue'
+import Materials from './menu/Materials.vue'
+import Settings from './menu/Settings.vue'
+import Chat from '@/components/biz/Chat.vue'
+import { emitter } from '@/utils/event'
 
 const router = useRouter()
 
@@ -31,17 +37,17 @@ const handleSignIn = () => {
   sessionStorage.setItem('redirect', location.href)
   signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
 }
-const handleSignOut = () => signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
-
-const handleUpdateAvatar = (img: string) => {
-  updateAvatar(img)
+const handleSignOut = async () => {
+  if (await Modal.confirm('', { title: $t('signOutTipTitle') })) {
+    signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
+  }
 }
 
 let showProjectModal = $ref(false)
 let showSaveMaterialModal = $ref(false)
 let curMaterial = $ref<IMaterialItem | null>(null)
 let curEditProject = $ref<Project | null>(null)
-let curType = $ref('project')
+let curMenu = $ref('dashboard')
 
 let showMap = reactive<{
   [key: string]: (IMaterialItem | Project)[]
@@ -52,16 +58,11 @@ let showMap = reactive<{
   component: [],
 })
 
-let titleMap: { [key: string]: string } = {
-  project: $t('project'),
-  template: $t('template'),
-  component: $t('component'),
-  section: $t('section'),
-}
-
 onMounted(async () => {
   if (!isLogin.value) {
     showMap['project'] = []
+    curMenu = ''
+    handleSignIn()
     return
   }
   const setGlobalLoading = getSetLoading()
@@ -103,7 +104,7 @@ const handleGotoProject = (project?: Project) => {
 }
 
 const handleDeleteProject = async (project: Project) => {
-  if (await Modal.confirm($t('deleteConfirm', project.name))) {
+  if (await Modal.confirm($t('deleteConfirmMsg', project.name), { title: $t('deleteConfirm', project.name), inputVerify: project.name })) {
     await projectApi.delete(project.id)
     showMap['project'] = projectList.filter((p) => p.id !== project.id)
     AlertSuccess($t('deleteSuccess'))
@@ -204,64 +205,92 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
   }
 }
 
-const setCurType = (type: string) => {
-  curType = type
+const openLink = (link: string) => {
+  let a: HTMLAnchorElement | null = document.createElement('a')
+  a.href = link
+  a.setAttribute('target', '_blank')
+  a.click()
+  a.remove()
+  a = null
+}
+
+const openChat = () => {
+  emitter.emit('openChat')
 }
 </script>
 
 <template>
   <div class="me-page">
-    <div class="user-info">
-      <Avatar :image="avatar" :size="100" :can-upload="isLogin" :on-upload="handleUpdateAvatar"></Avatar>
-      <div class="user-right" v-if="!isLogin">
-        <Btn class="sign-btn" type="btn" size="sm" color="primary" @click="handleSignIn">{{ $t('signIn') }}</Btn>
+    <div class="left-sidebar">
+      <div class="user-info">
+        <Avatar :image="avatar" :size="80"></Avatar>
+        <div class="user-name">{{ userName }}</div>
+        <span v-if="vipName" :class="['tag', vipName]">{{ vipName }}</span>
       </div>
-      <div class="user-right" v-else>
-        <div class="user-name">
-          <span>{{ userName }}</span>
-          <span v-if="vipName" class="tag">{{ vipName }}</span>
+      <div class="menu-list" v-if="isLogin">
+        <div :class="['menu-item', { active: curMenu === 'dashboard' }]" @click="curMenu = 'dashboard'">
+          <Icon class="menu-item-icon" name="home" :size="16"></Icon>
+          <div class="menu-item-text">{{ $t('dashboard') }}</div>
         </div>
-        <Btn class="sign-btn" type="btn" size="sm" color="default" @click="handleSignOut">{{ $t('signOut') }}</Btn>
+        <div :class="['menu-item', { active: curMenu === 'template' }]" @click="curMenu = 'template'">
+          <Icon class="menu-item-icon" name="template" :size="16"></Icon>
+          <div class="menu-item-text">{{ $t('templates') }}</div>
+        </div>
+        <div :class="['menu-item', { active: curMenu === 'material' }]" @click="curMenu = 'material'">
+          <Icon class="menu-item-icon" name="material" :size="16"></Icon>
+          <div class="menu-item-text">{{ $t('materials') }}</div>
+        </div>
+        <div :class="['menu-item', { active: curMenu === 'setting' }]" @click="curMenu = 'setting'">
+          <Icon class="menu-item-icon" name="advanced" :size="16"></Icon>
+          <div class="menu-item-text">{{ $t('settings') }}</div>
+        </div>
+      </div>
+      <div class="menu-list">
+        <div class="menu-item link" @click="openLink('https://discord.gg/AXQP9YUSXk')">
+          <Icon class="menu-item-icon" name="discord" :size="16"></Icon>
+          <div class="menu-item-text">{{ $t('discord') }}</div>
+        </div>
+        <div class="menu-item link" @click="openChat">
+          <Icon class="menu-item-icon" name="chat" :size="16"></Icon>
+          <div class="menu-item-text">{{ $t('supportChat') }}</div>
+        </div>
+      </div>
+      <div class="menu-list">
+        <div v-if="isLogin" class="menu-item danger" @click="handleSignOut">
+          <Icon class="menu-item-icon" name="signout" :size="16"></Icon>
+          <div class="menu-item-text">{{ $t('signOut') }}</div>
+        </div>
+        <div v-else class="menu-item primary" @click="handleSignIn">
+          <Icon class="menu-item-icon" name="signin" :size="16"></Icon>
+          <div class="menu-item-text">{{ $t('signIn') }}</div>
+        </div>
       </div>
     </div>
-    <div :class="['data-wrapper', `data-wrapper-${curType}`]" v-if="isLogin">
-      <div class="type-tabs">
-        <div
-          :class="['type-tabs-item', { active: curType === type }]"
-          v-for="(list, type) in showMap"
-          :key="type"
-          @click="setCurType(type as string)"
-        >
-          {{ titleMap[type] }}
-          <span class="count">{{ list.length }}</span>
-        </div>
-      </div>
-      <div class="data-list">
-        <MaterialCard
-          v-if="curType === 'project'"
-          type="project"
-          is-new
-          @on-project-click="handleGotoProject"
-        >
-        </MaterialCard>
-        <MaterialCard
-          v-for="(item, index) in showMap[curType]"
-          :key="item.name + index"
-          :type="curType"
-          :item="item"
-          @on-project-click="handleGotoProject"
-          @on-material-click="handleMaterialImageClick"
-          @on-save-template="handleSaveToTemplate"
-          @on-setting-project="handleOpenProjectModal"
-          @on-delete-project="handleDeleteProject"
-          @on-setting-material="handleMaterialSetting"
-          @on-delete-material="handleDeleteMaterial"
-        >
-        </MaterialCard>
-        <div class="empty-tip" v-if="showMap[curType].length === 0 && curType !== 'project'">
-          {{ curType === 'template' ? $t('saveTemplateTip') : $t('saveMaterialTip') }}
-        </div>
-      </div>
+    <div class="content">
+      <Dashboard
+        v-show="curMenu === 'dashboard'"
+        :projects="(showMap['project'] as Project[])"
+        :sub-projects="[]"
+        @on-project-click="handleGotoProject"
+        @on-save-template="handleSaveToTemplate"
+        @on-setting-project="handleOpenProjectModal"
+        @on-delete-project="handleDeleteProject"
+      ></Dashboard>
+      <Templates
+        v-if="curMenu === 'template'"
+        :templates="(showMap['template'] as IMaterialItem[])"
+        @on-material-click="handleMaterialImageClick"
+        @on-setting-material="handleMaterialSetting"
+        @on-delete-material="handleDeleteMaterial"
+      ></Templates>
+      <Materials
+        v-if="curMenu === 'material'"
+        :section="(showMap['section'] as IMaterialItem[])"
+        :component="(showMap['component'] as IMaterialItem[])"
+        @on-setting-material="handleMaterialSetting"
+        @on-delete-material="handleDeleteMaterial"
+      ></Materials>
+      <Settings v-if="curMenu === 'setting'"></Settings>
     </div>
     <ProjectModal
       v-if="curEditProject"
@@ -278,69 +307,102 @@ const setCurType = (type: string) => {
       v-model="showSaveMaterialModal"
       :on-save="updateMaterial"
     ></SaveMaterialModal>
+    <Chat></Chat>
   </div>
 </template>
 
 <style lang="scss" scoped>
 .me-page {
   position: relative;
-  background: #e7e7e9;
-  min-height: 100vh;
+  color: $white;
+  background: $bg-default-gradient;
+  height: 100vh;
   font-family: $font-family;
-  .user-info {
-    height: 240px;
-    display: flex;
-    // flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    background: $panel-gradient;
-  }
-  .user-right {
+  display: flex;
+
+  .left-sidebar {
+    width: 280px;
+    height: 100%;
+    background: $panel-sidebar-gradient;
     display: flex;
     flex-direction: column;
-    margin-left: 20px;
+    padding: 80px 32px;
+  }
+
+  .user-info {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 12px;
+  }
+  .tag {
+    font-size: 13px;
+    border-radius: $inner-radius;
+    color: $white;
+    background: $purple-gradient;
+    padding: 2px 8px;
+    display: flex;
+    align-self: start;
+    margin-bottom: 12px;
+
+    &.Advanced {
+      background: $purple-gradient;
+    }
+
+    &.Professional {
+      background: $orange-gradient;
+    }
+
+    &.Basic {
+      background: $grey-gradient;
+    }
   }
   .user-name {
     display: flex;
-    justify-content: center;
     align-items: center;
-    font-size: 30px;
+    font-size: 24px;
     color: $yellow;
-
-    .tag {
-      margin-left: 6px;
-      font-size: 12px;
-      border-radius: 4px;
-      color: $white;
-      background: $purple-gradient;
-      padding: 1px 4px;
-      transform: scale(.9);
-    }
+    margin: 6px 0;
+    word-break: break-word;
+    font-weight: bold;
   }
 
-  .type-tabs {
-    display: flex;
-    margin-bottom: 24px;
-    padding-bottom: 12px;
-    border-bottom: 1px solid rgba(0, 0, 0, .15);
+  .menu-list {
+    margin-top: 40px;
 
-    &-item {
-      padding: 8px 12px;
-      margin-right: 30px;
-      color: $panel-light;
+    .menu-item {
+      padding: 8px;
+      color: $color;
+      display: flex;
+      align-items: center;
+      border-radius: $normal-radius;
+      margin-bottom: 4px;
       cursor: pointer;
-      user-select: none;
+      transition: all .3s;
 
-      &.active {
-        color: $panel;
-        font-weight: bold;
-        .count {
-          color: $theme;
+      &.active, &:hover {
+        background-color: rgba(0, 0, 0, .25);
+      }
+
+      &.link:hover {
+        color: $cyan;
+        background-color: rgba(0, 0, 0, .05);
+      }
+
+      &.primary {
+        &.active, &:hover {
+          background-color: rgba($green, .5);
         }
       }
 
-      .count {
-        color: #9e9ea7;
+      &.danger {
+        &.active, &:hover {
+          background-color: rgba($red, .5);
+        }
+      }
+
+      &-icon {
+        margin-right: 6px;
       }
     }
   }
@@ -368,6 +430,16 @@ const setCurType = (type: string) => {
       font-size: 14px;
       color: #9e9ea7;
     }
+  }
+
+  :deep(.material-card) {
+    color: $color;
+  }
+  .content {
+    flex: 1;
+    height: 100%;
+    overflow: auto;
+    padding: 120px 48px 20px;
   }
 }
 </style>

@@ -167,8 +167,8 @@ onMounted(async () => {
     }
   })
   // 记录数据记录
-  emitter.on('saveHistory', () => {
-    saveHistory(allPageData.value)
+  emitter.on('saveHistory', (init?: boolean) => {
+    saveHistory(allPageData.value, init)
   })
   window.addEventListener('beforeunload', preventUnload)
   // 初始化加载页面数据

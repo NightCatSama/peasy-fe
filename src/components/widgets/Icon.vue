@@ -80,6 +80,16 @@ import StartIcon from '@/assets/start.svg'
 import VideoIcon from '@/assets/video.svg'
 import InputIcon from '@/assets/input.svg'
 import CodeIcon from '@/assets/code.svg'
+import HomeIcon from '@/assets/home.svg'
+import TemplateIcon from '@/assets/template.svg'
+import MaterialIcon from '@/assets/material.svg'
+import SignoutIcon from '@/assets/signout.svg'
+import SigninIcon from '@/assets/signin.svg'
+import DetailIcon from '@/assets/detail.svg'
+import DiscordIcon from '@/assets/discord.svg'
+import ChatIcon from '@/assets/chat.svg'
+import ChatOIcon from '@/assets/chat-o.svg'
+import SendIcon from '@/assets/send.svg'
 
 interface IIconProps {
   name: string
@@ -172,6 +182,16 @@ const iconMap = {
   video: VideoIcon,
   input: InputIcon,
   code: CodeIcon,
+  home: HomeIcon,
+  template: TemplateIcon,
+  material: MaterialIcon,
+  signout: SignoutIcon,
+  signin: SigninIcon,
+  detail: DetailIcon,
+  discord: DiscordIcon,
+  chat: ChatIcon,
+  'chat-o': ChatOIcon,
+  send: SendIcon,
 } as any
 
 const { name, size = 26, type = 'circle', loading, active, color } = defineProps<IIconProps>()
@@ -265,6 +285,9 @@ const style = $ref({
   }
   &.icon-color-grey {
     color: $grey;
+  }
+  &.icon-color-green {
+    color: $green;
   }
 }
 </style>

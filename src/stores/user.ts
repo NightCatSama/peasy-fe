@@ -28,13 +28,14 @@ export const useUserStore = defineStore('user', {
         return 'Admin'
       }
       if (state.userInfo?.member === MemberRole.Advanced) {
-        return 'Adv'
+        return 'Advanced'
       }
       if (state.userInfo?.member === MemberRole.Professional) {
-        return 'Pro'
+        return 'Professional'
       }
-      return ''
-    }
+      return 'Basic'
+    },
+    member: (state) => state.userInfo?.member || MemberRole.Member
   },
   actions: {
     async fetchUserInfo() {
