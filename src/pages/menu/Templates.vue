@@ -1,10 +1,6 @@
 <script setup lang="ts">
-import { Project } from '@@/entities/project.entity'
-import { useRouter } from 'vue-router'
 import MaterialCard from '@/components/widgets/MaterialCard.vue'
-import { getDomainURL, projectApi, templatePreviewUrl } from '@/utils/mande'
-import { reactive } from 'vue'
-import { IResponse } from '@@/types/response'
+import { templatePreviewUrl } from '@/utils/mande'
 import Icon from '@/components/widgets/Icon.vue'
 import { IMaterialItem } from '@/config'
 

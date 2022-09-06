@@ -1,11 +1,12 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user';
 import { getTemplatePreview, getProjectPreview } from '@/utils/mande';
-import { storeToRefs } from 'pinia';
+import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import Logo from '@/components/Logo.vue';
 import Btn from '@/components/widgets/Btn.vue';
 import { onMounted } from 'vue';
+import { usePreviewURL } from '@/toolkit/hooks/usePreviewURL';
 
 const route = useRoute()
 const router = useRouter()
@@ -14,8 +15,6 @@ const userStore = useUserStore()
 const { isAdmin, accessToken } = storeToRefs(userStore)
 
 const hideHelper = $computed(() => route.name === 'preview-project' || route.query.hideHelper === 'true')
-
-let previewURL = $ref('')
 
 const gotoEdit = () => {
   const { id } = route.params as any
@@ -33,26 +32,7 @@ const getPreviewURL = () => {
   return isProject ? getProjectPreview(id) : getTemplatePreview(id)
 }
 
-onMounted(async () => {
-  var xhr = new XMLHttpRequest()
-
-  // 需要在请求头中设置 Authorization，否则自己为公开的模板也无法预览
-  xhr.open('GET', getPreviewURL())
-  xhr.onreadystatechange = handler
-  xhr.responseType = 'blob'
-  xhr.setRequestHeader('Authorization', 'Bearer ' + accessToken.value)
-  xhr.send()
-
-  function handler(this: XMLHttpRequest) {
-    if (this.readyState === this.DONE) {
-      if (this.status === 200) {
-        previewURL = URL.createObjectURL(this.response)
-      } else {
-        console.error('Error')
-      }
-    }
-  }
-})
+const { previewURL } = usePreviewURL(getPreviewURL())
 </script>
 
 <template>

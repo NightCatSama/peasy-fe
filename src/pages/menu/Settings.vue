@@ -1,18 +1,20 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import Icon from '@/components/widgets/Icon.vue'
-import { $t } from '@/constants/i18n'
+import { $t, lang } from '@/constants/i18n'
 import { useUserStore } from '@/stores/user'
 import Avatar from '@/components/widgets/Avatar.vue'
 import { storeToRefs } from 'pinia'
 import Btn from '@/components/widgets/Btn.vue'
 import { Alert } from '@/utils/alert'
+import { Modal } from '@/components/modal'
 
 const userStore = useUserStore()
 const { avatar, userName, isLogin, vipName } = storeToRefs(userStore)
 const { updateAvatar } = userStore
 
 const router = useRouter()
+const route = useRoute()
 
 const handleUpdateAvatar = (img: string) => {
   updateAvatar(img)
@@ -20,6 +22,17 @@ const handleUpdateAvatar = (img: string) => {
 
 const handleUpgradePlan = () => {
   Alert($t('upgradePlanTip'))
+}
+
+const switchLang = async(lang: 'zh' | 'en') => {
+  router.replace({
+    name: route.name!,
+    params: { ...route.params },
+    query: {
+      lang
+    }
+  })
+  setTimeout(() => location.reload(), 0)
 }
 </script>
 
@@ -36,6 +49,12 @@ const handleUpgradePlan = () => {
       <div class="item">
         <div class="label">{{ $t('account') }}</div>
         <div class="value">{{ userName }}</div>
+      </div>
+      <div class="item">
+        <div class="label">{{ $t('language') }}</div>
+        <Btn type="text" class="value" @click=" () => switchLang(lang === 'en' ? 'zh' : 'en')">
+          {{ lang === 'zh' ? $t('switchToEN') : $t('switchToZH') }}
+        </Btn>
       </div>
       <div class="item">
         <div class="label">{{ $t('yourPlan') }}</div>
@@ -132,7 +151,7 @@ const handleUpgradePlan = () => {
 
   .item {
     display: flex;
-    margin-bottom: 40px;
+    margin-bottom: 32px;
     flex-direction: column;
 
     .label {
@@ -147,13 +166,14 @@ const handleUpgradePlan = () => {
 
     .value {
       color: $color;
+      align-self: flex-start;
+      padding: 0;
     }
 
     .table {
       display: flex;
       width: 100%;
       margin: 12px 0;
-      // border: 1px solid $grey;
       border-radius: $normal-radius;
       overflow: hidden;
 
@@ -201,11 +221,12 @@ const handleUpgradePlan = () => {
 
         &-pricing {
           font-size: 24px;
-          color: $white;
+          color: $color;
           margin-top: 4px;
 
           &.highlight {
             color: $yellow;
+            font-weight: bold;
           }
 
           .date {

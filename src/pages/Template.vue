@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import { IMaterialItem } from '@/config';
-import { templatePreviewUrl, materialApi } from '@/utils/mande';
+import { templatePreviewUrl, materialApi, getTemplatePreview } from '@/utils/mande';
 import { IResponse } from '@@/types/response';
 import { onBeforeMount } from 'vue'
 import MaterialCard from '@/components/widgets/MaterialCard.vue'
@@ -13,6 +13,8 @@ import { $t } from '@/constants/i18n';
 import { AlertSuccess } from '@/utils/alert';
 import SaveMaterialModal from '../components/modal/SaveMaterialModal.vue';
 import { getSetLoading } from '@/utils/context';
+import { usePreviewURL } from '@/toolkit/hooks/usePreviewURL';
+import Btn from '@/components/widgets/Btn.vue';
 
 const router = useRouter()
 const userStore = useUserStore()
@@ -85,13 +87,19 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     AlertSuccess($t('deleteSuccess'))
   }
 }
+
+const gotoDashboard = () => {
+  router.push({
+    name: 'dashboard',
+  })
+}
 </script>
 
 <template>
   <div class="template-page">
     <div :class="['title', { highlight: selectedId }]">
       <span>{{ $t('templateTip') }}</span>
-      <!-- <Icon v-if="selectedId" name="start" :size="36" type="btn" @click="handleGotoProject"></Icon> -->
+      <Btn class="back-btn" type="text" @click="gotoDashboard">{{ $t('backDashboard') }}</Btn>
     </div>
     <div class="template-group">
       <MaterialCard
@@ -137,6 +145,7 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
             >{{ $t('useIt') }}</div>
           </div>
         </MaterialCard>
+        <div v-if="key === 'user' && !selfTemplate.length" class="empty-tip">{{ $t('templateNoData') }}</div>
       </div>
     </div>
     <SaveMaterialModal
@@ -154,32 +163,36 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
 .template-page {
   display: flex;
   flex-direction: column;
-  justify-content: center;
-  align-items: center;
   width: 100%;
-  min-height: 100vh;
-  background-color: #EEE;
-  overflow: hidden;
+  height: 100vh;
+  color: $color;
+  background: $bg-default-gradient;
+  overflow: auto;
+  padding: 40px;
 
   .title {
     font-size: 32px;
-    margin: 80px 0 64px 0;
-    color: $color-dark;
+    margin: 40px 24px 64px 24px;
+    color: $white;
     display: flex;
     align-items: center;
+    justify-content: space-between;
 
-    :deep(.icon) {
-      margin-left: 4px;
-    }
-    &.highlight :deep(.icon) {
-      color: $blue;
+    .back-btn {
+      padding: 8px 12px;
+      font-size: 14px;
+      color: $grey;
+
+      &:hover {
+        color: $white;
+      }
     }
   }
   .template-group {
     display: flex;
     flex-direction: column;
     margin-bottom: 24px;
-    max-width: 980px;
+    // max-width: 980px;
     width: 100%;
 
     .new-project {
@@ -189,9 +202,9 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
 
     .template-title {
       font-size: 24px;
-      color: $panel-light;
+      color: $white;
       padding: 12px 24px;
-      border-bottom: 1px solid rgba(0,0,0,.15);
+      border-bottom: 1px solid rgba($white, .15);
       margin-bottom: 12px;
     }
   }
@@ -202,6 +215,13 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     padding: 0 24px;
     flex: 1;
     overflow-x: auto;
+
+    .template-item {
+      width: 180px;
+      height: 260px;
+      color: $color;
+      flex-shrink: 0;
+    }
   }
 
   :deep(.preview-btn-group) {
@@ -212,8 +232,8 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
     display: flex;
     flex-direction: column;
     .preview-btn {
-      height: 28px;
-      line-height: 28px;
+      height: 32px;
+      line-height: 32px;
       text-align: center;
       color: $white;
       font-size: 14px;
@@ -237,6 +257,11 @@ const handleDeleteMaterial = async (material: IMaterialItem) => {
         }
       }
     }
+  }
+  .empty-tip {
+    margin: 12px 0;
+    font-size: 14px;
+    color: rgba($white, 50%);
   }
 }
 </style>
