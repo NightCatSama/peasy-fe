@@ -39,7 +39,8 @@ ${
 
   gtag('config', '${data.setting.googleAnalytics}');
 </script>
-`.trim() : ''
+`.trim()
+    : ''
 }
   `.trim()
   )
