@@ -151,12 +151,15 @@ const switchLang = async(lang: 'zh' | 'en') => {
 
   .item {
     display: flex;
-    margin-bottom: 32px;
+    margin-bottom: 20px;
     flex-direction: column;
+    padding: 16px 24px;
+    border-radius: $normal-radius;
+    background-color: rgba($black, .2);
 
     .label {
       font-size: 20px;
-      color: $pink;
+      color: $white;
       margin-bottom: 4px;
       font-weight: bold;
       display: flex;
@@ -165,9 +168,13 @@ const switchLang = async(lang: 'zh' | 'en') => {
     }
 
     .value {
-      color: $color;
+      color: $grey;
       align-self: flex-start;
       padding: 0;
+
+      &.btn {
+        color: $blue;
+      }
     }
 
     .table {
