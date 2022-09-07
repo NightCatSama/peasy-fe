@@ -55,7 +55,6 @@ export const useEffect = (propsRef: IProps<any>) => {
         if (!Object.keys(item?.styles).length) return
         Object.entries(item?.styles).forEach(([key, val]) => {
           let value = getColor(val)
-          console.log('item.name => ', item.name)
           if (item.name === 'hide') {
             if (value) value = 'none'
             else value = 'flex'
@@ -91,7 +90,6 @@ export const useEffect = (propsRef: IProps<any>) => {
 
 export const getEffectStyle = (item: IEffectItem, value: string) => {
   if (item.name === 'custom') {
-    console.log('value => ', value)
     return `${value}!important;`
   } else {
     return `${effectName2PropertyMap[item.name]}: ${covertValue(item.name, value)}!important;`
