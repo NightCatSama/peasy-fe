@@ -8,7 +8,7 @@ import { onErrorCaptured, onMounted, reactive } from 'vue'
 import { IMaterialItem, IPage } from '@/config'
 import { Project } from '@@/entities/project.entity'
 import { IResponse } from '@@/types/response'
-import { useRouter } from 'vue-router'
+import { useRoute, useRouter } from 'vue-router'
 import { Modal } from '@/components/modal'
 import ProjectModal from '@/components/modal/ProjectModal.vue'
 import { AlertError, AlertSuccess } from '@/utils/alert'
@@ -25,6 +25,7 @@ import Chat from '@/components/biz/Chat.vue'
 import { emitter } from '@/utils/event'
 
 const router = useRouter()
+const route = useRoute()
 
 const userStore = useUserStore()
 const { userName, avatar, vipName, isLogin } = storeToRefs(userStore)
@@ -45,7 +46,7 @@ let showProjectModal = $ref(false)
 let showSaveMaterialModal = $ref(false)
 let curMaterial = $ref<IMaterialItem | null>(null)
 let curEditProject = $ref<Project | null>(null)
-let curMenu = $ref('dashboard')
+let curMenu = $ref(route.query.page || 'dashboard')
 
 let showMap = reactive<{
   [key: string]: (IMaterialItem | Project)[]
@@ -227,6 +228,16 @@ const openLink = (link: string) => {
 const openChat = () => {
   emitter.emit('openChat')
 }
+
+const handleSwitchPage = (menuType: string) => {
+  curMenu = menuType
+  router.replace({
+    name: route.name!,
+    query: menuType !== 'dashboard' ? {
+      page: menuType,
+    } : {}
+  })
+}
 </script>
 
 <template>
@@ -238,19 +249,19 @@ const openChat = () => {
         <span v-if="vipName" :class="['tag', vipName]">{{ vipName }}</span>
       </div>
       <div class="menu-list" v-if="isLogin">
-        <div :class="['menu-item', { active: curMenu === 'dashboard' }]" @click="curMenu = 'dashboard'">
+        <div :class="['menu-item', { active: curMenu === 'dashboard' }]" @click="handleSwitchPage('dashboard')">
           <Icon class="menu-item-icon" name="home" :size="16"></Icon>
           <div class="menu-item-text">{{ $t('dashboard') }}</div>
         </div>
-        <div :class="['menu-item', { active: curMenu === 'template' }]" @click="curMenu = 'template'">
+        <div :class="['menu-item', { active: curMenu === 'template' }]" @click="handleSwitchPage('template')">
           <Icon class="menu-item-icon" name="template" :size="16"></Icon>
           <div class="menu-item-text">{{ $t('templates') }}</div>
         </div>
-        <div :class="['menu-item', { active: curMenu === 'material' }]" @click="curMenu = 'material'">
+        <div :class="['menu-item', { active: curMenu === 'material' }]" @click="handleSwitchPage('material')">
           <Icon class="menu-item-icon" name="material" :size="16"></Icon>
           <div class="menu-item-text">{{ $t('materials') }}</div>
         </div>
-        <div :class="['menu-item', { active: curMenu === 'setting' }]" @click="curMenu = 'setting'">
+        <div :class="['menu-item', { active: curMenu === 'setting' }]" @click="handleSwitchPage('setting')">
           <Icon class="menu-item-icon" name="advanced" :size="16"></Icon>
           <div class="menu-item-text">{{ $t('settings') }}</div>
         </div>

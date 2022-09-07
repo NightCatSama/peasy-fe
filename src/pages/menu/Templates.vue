@@ -38,8 +38,8 @@ const openPreviewTemplate = (item: IMaterialItem) => {
             :item="item"
             @on-material-click="openPreviewTemplate(item)"
             @on-edit-material="$emit('on-edit-material', item)"
-            @on-setting-project="$emit('on-setting-material', item)"
-            @on-delete-project="$emit('on-delete-material', item)"
+            @on-setting-material="$emit('on-setting-material', item)"
+            @on-delete-material="$emit('on-delete-material', item)"
           >
           </MaterialCard>
         </template>
