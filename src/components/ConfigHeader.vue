@@ -388,6 +388,14 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
         :disabled="allPageData.length === 0"
         :text="$t('download')"
       ></Btn>
+      <Btn
+        v-if="isTemplate"
+        class="download-btn"
+        @click="$emit('preview')"
+        color="orange"
+        :disabled="allPageData.length === 0"
+        :text="$t('preview')"
+      ></Btn>
       <Dropdown type="pure-dropdown" popper-class="user-dropdown">
         <Avatar :image="avatar" :size="36" can-operator />
         <template #content="{ hide }">

@@ -60,14 +60,15 @@ const { previewURL } = usePreviewURL(getPreviewURL())
       left: 0;
       width: 100%;
       height: 80px;
-      color: $black;
-      background: rgba($black, 10%);
+      color: $white;
+      background: rgba($black, 80%);
       display: flex;
       align-items: center;
       font-size: 20px;
       z-index: 1;
       padding: 0 120px;
       box-shadow: -2px 0 4px 0 rgba(0, 0, 0, .05);
+      z-index: 999999;
 
       .logo-name {
         font-weight: bold;

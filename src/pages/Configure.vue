@@ -34,6 +34,7 @@ import { getSetLoading } from '@/utils/context'
 import DownloadModal from '@/components/modal/DownloadModal.vue'
 import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
 import { IMaterialItem } from '@/config'
+import { templatePreviewUrl } from '@/utils/mande'
 
 const route = useRoute()
 const router = useRouter()
@@ -338,6 +339,16 @@ const handlePasteNode = async(pasteToInside?: boolean) => {
   }
 }
 
+/** 打开模板预览链接 */
+const openPreviewTemplate = () => {
+  let a: HTMLAnchorElement | null = document.createElement('a')
+  a.href = templatePreviewUrl(template.value?.id!)
+  a.setAttribute('target', '_blank')
+  a.click()
+  a.remove()
+  a = null
+}
+
 const switchSectionByRound = $computed(() => (change: number) => {
   const index = allPageData.value.findIndex((item) => item === activeSection.value)
   switchSectionToIndex(index + change)
@@ -400,6 +411,7 @@ watch(
       <ConfigHeader
         :is-template="isEditTemplate"
         @download="showDownloadModal = true"
+        @preview="openPreviewTemplate"
         @save="() => !isEditTemplate ? handleSaveProject() : handleSaveMaterial()"
         @project-setting="showProjectModal = true"
         @template-setting="showSaveMaterialModal = true"
