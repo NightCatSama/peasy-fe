@@ -314,7 +314,12 @@ const openMaterialModal = async () => {
           ></Icon>
         </div>
         <div class="content layers-content">
-          <TreeNode v-for="node in pageData" :key="node.name" :node="node"> </TreeNode>
+          <TreeNode
+            v-for="node in pageData"
+            :key="node.name"
+            :node="node"
+            can-drag
+          ></TreeNode>
         </div>
       </div>
     </div>

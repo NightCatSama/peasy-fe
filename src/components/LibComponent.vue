@@ -106,6 +106,7 @@ const handleAddNode = (event: SortableEvent) => {
   if (event.pullMode === 'clone' && event.newIndex !== void 0) {
     insertNode(dragNode.value, item, event.newIndex)
     setDragNode(null)
+    emitter.emit('saveHistory')
   }
 }
 
@@ -115,6 +116,7 @@ const handleSortNode = (event: SortableEvent) => {
   if (event.pullMode !== 'clone' && event.oldIndex !== void 0 && event.newIndex !== void 0) {
     swapNode(item, event.oldIndex, event.newIndex)
     setDragNode(null)
+    emitter.emit('saveHistory')
   }
 }
 

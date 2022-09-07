@@ -8,20 +8,28 @@ import Icon from '../widgets/Icon.vue'
 import { usePageStore } from '@/stores/page'
 import { emitter } from '@/utils/event'
 import { useConfigProps } from '@/utils/config'
+import draggable from 'vuedraggable'
+import type { SortableEvent } from 'sortablejs'
+import { useDragStore } from '@/stores/drag'
 
 interface ITreeNodeListProps {
   node: PageNode
   preview?: boolean
+  canDrag?: boolean
 }
 
-const { node, preview } = defineProps<ITreeNodeListProps>()
+const { node, preview, canDrag } = defineProps<ITreeNodeListProps>()
 
 const displayStore = useDisplayStore()
 const { layerStatus } = storeToRefs(displayStore)
 
+const dragStore = useDragStore()
+const { dragNode, dragType, dropZone, dragNodeType, isCancelDrag } = storeToRefs(dragStore)
+const { setDropZone, setDragNode, getIsInDragNode } = dragStore
+
 const pageStore = usePageStore()
 const { activeNode, activeParentChain } = storeToRefs(pageStore)
-const { setActiveNodeHide, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode, changeNodeName } =
+const { setActiveNodeHide, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode, changeNodeName, swapNode } =
   pageStore
 
 let collapse = ref(!!layerStatus.value.get(node))
@@ -75,6 +83,41 @@ const handleActiveNodeChange = async (event: Event) => {
   elem.scrollLeft = 0
   changeNodeName(activeNode.value, elem.innerText)
   elem.innerText = activeNode.value.name
+}
+
+/** 拖拽排序组件 */
+const handleSortNode = (event: SortableEvent) => {
+  // 只在拖拽组件为当前组件时才处理，避免重复处理
+  if (dragNode.value !== node) {
+    return
+  }
+  // 交互组件位置
+  if (event.pullMode !== 'clone' && event.oldIndex !== void 0 && event.newIndex !== void 0) {
+    swapNode(node, event.oldIndex, event.newIndex)
+    setDragNode(null)
+  }
+}
+
+/** 子组件的 drag start 事件处理 */
+const handleChildrenDragStart = (event: DragEvent) => {
+  // 已存在拖拽元素或者当前组件是 Module 组件，不允许拖拽
+  if (dragNode.value || node.isModule) {
+    return
+  }
+  // 设置拖拽组件
+  setDragNode(node, 'move')
+  setDropZone(node)
+}
+
+const handleDragEnter = (e: DragEvent) => {
+  if (
+    dragNode.value && // 存在拖拽组件
+    node.component === 'Block' &&
+    !node.isModule // 当前组件不是 Module 组件
+  ) {
+    e.stopPropagation()
+    setDropZone(node)
+  }
 }
 </script>
 
@@ -156,13 +199,29 @@ const handleActiveNodeChange = async (event: Event) => {
       </template>
     </div>
     <div class="tree-node-children">
-      <TreeNode
-        v-show="preview || (canCollapse && collapse)"
-        v-for="child in node.children"
-        :preview="preview"
-        :key="child.name"
-        :node="child"
-      ></TreeNode>
+      <draggable
+        ref="contentRef"
+        :model-value="node.children"
+        :item-key="'name'"
+        :group="{ name: 'tree', put: true, pull: true }"
+        :disabled="!canDrag"
+        :component-data="{
+          onDragenter: handleDragEnter,
+        }"
+        :ghost-class="'ghost-move'"
+        @sort="handleSortNode"
+      >
+        <template #item="{ element: child }">
+          <TreeNode
+            v-if="preview || (canCollapse && collapse)"
+            :preview="preview"
+            :key="child.name"
+            :node="child"
+            :can-drag="canDrag"
+            @dragstart="(event: DragEvent) => handleChildrenDragStart(event)"
+          ></TreeNode>
+        </template>
+      </draggable>
     </div>
   </div>
 </template>
