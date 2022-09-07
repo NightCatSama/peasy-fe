@@ -214,7 +214,7 @@ let showTimingCode = $ref(false)
                   :class="['delete-btn']"
                   type="circle"
                   name="line"
-                  :size="8"
+                  :size="12"
                   @click="handleSetStyle(obj.name, 'delete', item)"
                 ></Icon>
               </component>

@@ -6,6 +6,7 @@ import ImageItemVue from '@/components/configs/items/ImageItem.vue'
 import SwitchItemVue from '@/components/configs/items/SwitchItem.vue'
 import TabsItemVue from '@/components/configs/items/TabsItem.vue'
 import TipVue from '@/components/widgets/Tip.vue'
+import { $t } from './i18n'
 
 export const getFormPropsByType = (type: ModuleConfigType | string) => {
   switch (type) {
@@ -98,6 +99,23 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
           min: 0,
           max: 20,
           interval: 1,
+        },
+      }
+    case 'transform':
+      return {
+        component: InputItemVue,
+        props: {
+          type: 'text',
+          placeholder: 'scale(1.1)',
+          tip: $t('transformTip'),
+        },
+      }
+    case 'custom':
+      return {
+        component: InputItemVue,
+        props: {
+          type: 'text',
+          placeholder: 'key: value',
         },
       }
     default:

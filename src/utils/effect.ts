@@ -76,6 +76,16 @@ export const allEffectMap: IEffectShowItemMap = {
     label: $t('filterBlur'),
     ...getFormPropsByType('blur'),
     defaultValue: 0,
+  },
+  transform: {
+    label: $t('transform'),
+    ...getFormPropsByType('transform'),
+    defaultValue: '',
+  },
+  custom: {
+    label: $t('custom'),
+    ...getFormPropsByType('custom'),
+    defaultValue: '',
   }
 }
 
@@ -141,6 +151,16 @@ export const getEffectShowItemByGroup = (
         }
       }
       return null
+    }
+    case 'code': {
+      return {
+        transform: Object.assign({}, allEffectMap['transform'], {
+          defaultValue: '',
+        }),
+        custom: Object.assign({}, allEffectMap['custom'], {
+          defaultValue: '',
+        }),
+      }
     }
     default:
       return null

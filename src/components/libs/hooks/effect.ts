@@ -11,6 +11,8 @@ export const effectName2PropertyMap: { [name: string]: string } = {
   opacity: 'opacity',
   hide: 'display',
   blur: 'filter',
+  transform: 'transform',
+  custom: '',
 }
 
 export const covertValue = (name: string, value: any) => {
@@ -53,7 +55,7 @@ export const useEffect = (propsRef: IProps<any>) => {
         if (!Object.keys(item?.styles).length) return
         Object.entries(item?.styles).forEach(([key, val]) => {
           let value = getColor(val)
-
+          console.log('item.name => ', item.name)
           if (item.name === 'hide') {
             if (value) value = 'none'
             else value = 'flex'
@@ -61,23 +63,19 @@ export const useEffect = (propsRef: IProps<any>) => {
           if (item?.targetType === 'self') {
             styles.push({
               priority: selectorPriority[key] || 0,
-              style: `#${uName}:${key} { ${effectName2PropertyMap[item.name]}: ${covertValue(item.name, value)}!important; }`
+              style: `#${uName}:${key} { ${getEffectStyle(item, value)} }`
             })
           }
           if (item?.targetType === 'name') {
             styles.push({
               priority: selectorPriority[key] || 0,
-              style: `.${uName}:${key} .${getUniqueName(item.target)} { ${
-                effectName2PropertyMap[item.name]
-              }: ${covertValue(item.name, value)}!important; }`
+              style: `.${uName}:${key} .${getUniqueName(item.target)} { ${getEffectStyle(item, value)} }`
             })
           }
           if (item?.targetType === 'tag') {
             styles.push({
               priority: selectorPriority[key] || 0,
-              style: `.${uName}:${key} .${getTagClassName(item.target)} { ${
-                effectName2PropertyMap[item.name]
-              }: ${covertValue(item.name, value)}!important; }`
+              style: `.${uName}:${key} .${getTagClassName(item.target)} { ${getEffectStyle(item, value)} }`
             })
           }
         })
@@ -89,4 +87,13 @@ export const useEffect = (propsRef: IProps<any>) => {
   )
 
   onBeforeUnmount(() => removeListenerList.forEach((fn) => fn()))
+}
+
+export const getEffectStyle = (item: IEffectItem, value: string) => {
+  if (item.name === 'custom') {
+    console.log('value => ', value)
+    return `${value}!important;`
+  } else {
+    return `${effectName2PropertyMap[item.name]}: ${covertValue(item.name, value)}!important;`
+  }
 }

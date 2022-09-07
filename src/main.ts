@@ -43,6 +43,7 @@ app.use(Toast, {
 })
 
 FloatingVue.options.themes.tooltip.html = true
+FloatingVue.options.themes.tooltip.popperTriggers = ['hover', 'focus']
 
 app.directive('tooltip', VTooltip)
 app.directive('close-popper', VClosePopper)
