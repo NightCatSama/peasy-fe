@@ -93,7 +93,7 @@ const switchLang = async(lang: 'zh' | 'en') => {
   }
 }
 
-const emit = defineEmits(['save', 'download', 'project-setting', 'template-setting'])
+const emit = defineEmits(['save', 'download', 'preview', 'project-setting', 'template-setting'])
 
 const name = $computed(() => project.value.filename || 'index')
 let showColorVarDropdown = $ref(false)
