@@ -349,6 +349,7 @@ const handleSelectTemplate = async(templateId: string) => {
   flex: 1;
   height: 100%;
   overflow: hidden;
+  background-color: var(--editor-background-color);
 
   .edit-wrapper {
     width: 100%;
@@ -370,6 +371,7 @@ const handleSelectTemplate = async(templateId: string) => {
       overflow: visible;
       background: #fff;
       color: black;
+      border-radius: $normal-radius;
 
       &.placeholder {
         min-height: 80px;

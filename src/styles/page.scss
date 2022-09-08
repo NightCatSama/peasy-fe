@@ -16,7 +16,7 @@
         height: 100%;
         position: absolute;
         z-index: 1;
-        outline: 1px dashed rgba($theme, 35%);
+        outline: 1px dashed var(--contours-color);
         pointer-events: none;
         transition: outline 0.15s;
       }
@@ -29,7 +29,7 @@
         height: 100%;
         position: absolute;
         z-index: 1;
-        outline: 1px solid rgba($theme, 60%);
+        outline: 1px solid var(--contours-color);
         pointer-events: none;
       }
 

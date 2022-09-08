@@ -1,3 +1,5 @@
+import { getColorVarStylesheet } from "./core"
+
 /** TODO: 判断是否为标准颜色格式 */
 export const isColor = (color: string): boolean => {
   return true
@@ -51,4 +53,14 @@ export const initRecentColors = () => {
   } catch (error) {
     console.log('recentColor read error: ', error)
   }
+}
+
+let dynamicAnimationStyles = null as HTMLStyleElement | null
+export const useEditorStylesheet = (stylesheet: string) => {
+  // 初始化动态样式表
+  if (!dynamicAnimationStyles) {
+    dynamicAnimationStyles = document.createElement('style')
+    document.head.appendChild(dynamicAnimationStyles)
+  }
+  dynamicAnimationStyles.innerHTML = stylesheet.trim()
 }

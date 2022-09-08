@@ -23,6 +23,7 @@ import { Modal } from './modal'
 import { $t, lang } from '@/constants/i18n'
 import PageList from './biz/PageList.vue'
 import { getDomainURL } from '@/utils/mande'
+import EditorSettingModal from './modal/EditorSettingModal.vue'
 
 interface IConfigHeaderProps {
   isTemplate: boolean
@@ -62,6 +63,9 @@ const handleSignOut = async () => {
     signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
   }
 }
+
+let showEditorSetting = $ref(false)
+
 const router = useRouter()
 const route = useRoute()
 const gotoMePage = async () => {
@@ -403,6 +407,7 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
             <template v-if="isAuthenticated">
               <div class="user-name">{{ userName }}</div>
               <div class="item" @click=" () => { gotoMePage(); hide() }">{{ $t('profile') }}</div>
+              <div class="item" @click=" () => { showEditorSetting = true; hide() }">{{ $t('editorSetting') }}</div>
               <div class="item" @click=" () => { switchLang(lang === 'en' ? 'zh' : 'en'); hide() }">
                 {{ lang === 'zh' ? $t('switchToEN') : $t('switchToZH') }}
               </div>
@@ -419,6 +424,7 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
       </Dropdown>
     </div>
     <PageList :class="{ show: showPageList }" @hide="showPageList = false"></PageList>
+    <EditorSettingModal v-model="showEditorSetting"></EditorSettingModal>
   </div>
 </template>
 

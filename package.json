@@ -36,6 +36,7 @@
     "moveable": "^0.30.0",
     "panzoom": "^9.4.3",
     "pinia": "^2.0.15",
+    "pinia-plugin-persistedstate": "^2.1.1",
     "uuid": "^8.3.2",
     "vue": "^3.2.37",
     "vue-router": "^4.1.3",

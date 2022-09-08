@@ -35,6 +35,7 @@ import DownloadModal from '@/components/modal/DownloadModal.vue'
 import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
 import { IMaterialItem } from '@/config'
 import { templatePreviewUrl } from '@/utils/mande'
+import { useEditorStylesheet } from '@/utils/color'
 
 const route = useRoute()
 const router = useRouter()
@@ -74,7 +75,7 @@ const {
 
 const displayStore = useDisplayStore()
 const { setDeviceByParent, setDevice } = displayStore
-const { deviceType, displayMode, lockScriptTrigger } = storeToRefs(displayStore)
+const { deviceType, displayMode, lockScriptTrigger, editorSettings } = storeToRefs(displayStore)
 
 const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
@@ -389,6 +390,24 @@ watch(
 watch(
   () => font.value,
   () => useFont(font.value, '.edit-content'),
+  { deep: true, immediate: true, flush: 'sync' }
+)
+
+// 更新编辑器配置
+watch(
+  () => editorSettings.value,
+  () => {
+    const stylesheet = `
+      :root {
+        --editor-background-color: ${editorSettings.value.backgroundColor};
+        --contours-color: ${editorSettings.value.contoursColor};
+      }
+      .rCS19atnxs.moveable-control-box {
+        --moveable-color: ${editorSettings.value.selectColor};
+      }
+    `
+    useEditorStylesheet(stylesheet)
+  },
   { deep: true, immediate: true, flush: 'sync' }
 )
 

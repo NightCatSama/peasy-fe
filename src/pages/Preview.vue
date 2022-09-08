@@ -52,6 +52,7 @@ const { previewURL } = usePreviewURL(getPreviewURL())
     background: #FFF;
     width: 100%;
     height: 100vh;
+    overflow: hidden;
     font-family: $font-family;
 
     .preview-helper {
@@ -61,7 +62,7 @@ const { previewURL } = usePreviewURL(getPreviewURL())
       width: 100%;
       height: 80px;
       color: $white;
-      background: rgba($black, 80%);
+      background: rgba($black, 70%);
       display: flex;
       align-items: center;
       font-size: 20px;

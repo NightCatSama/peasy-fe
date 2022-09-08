@@ -19,6 +19,10 @@ export interface IGroupStatus {
 export type DisplayMode = 'preview' | 'drag' | 'edit'
 
 export const useDisplayStore = defineStore('display', {
+  persist: {
+    key: '__display_store__',
+    paths: ['editorSettings', 'minimize']
+  },
   state: () => ({
     /** 预设 */
     presetDevice: {
@@ -57,6 +61,15 @@ export const useDisplayStore = defineStore('display', {
     minimize: true,
     /** 当前展示的颜色类型 */
     colorType: 'variable' as 'variable' | 'recent',
+    /** 编辑器设置 */
+    editorSettings: {
+      /** 背景色 */
+      backgroundColor: '#333',
+      /** 选中颜色 */
+      selectColor: '#4af',
+      /** 组件轮廓 */
+      contoursColor: '#3da8f5',
+    },
   }),
   getters: {
     /** 当前展示的宽高（缩放后） */

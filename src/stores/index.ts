@@ -1,7 +1,10 @@
 import { createPinia } from 'pinia'
+import piniaPluginPersistedstate from 'pinia-plugin-persistedstate'
 import { useRoute } from 'vue-router'
 
 const pinia = createPinia()
+
+pinia.use(piniaPluginPersistedstate)
 
 /** 存储未保存的历史状态 */
 export const saveStoragePageState = (id: string) => {
