@@ -21,12 +21,17 @@ import { verifySubDomain } from '@/utils/validation'
 import { usePageStore } from '@/stores/page'
 import ColorItem from '../configs/items/ColorItem.vue'
 import { useDisplayStore } from '@/stores/display'
+import { getDefaultEditorSetting } from '@/utils/defaultConfig'
 
 const displayStore = useDisplayStore()
 
 const { editorSettings } = storeToRefs(displayStore)
 
 const handleSave = () => null
+
+const handleResetDefault = () => {
+  editorSettings.value = getDefaultEditorSetting()
+}
 </script>
 
 <template>
@@ -42,6 +47,18 @@ const handleSave = () => null
       <ColorItem :label="$t('editorBackground')" v-model="editorSettings.backgroundColor"></ColorItem>
       <ColorItem :label="$t('editorSelected')" v-model="editorSettings.selectColor"></ColorItem>
       <ColorItem :label="$t('editorContours')" v-model="editorSettings.contoursColor"></ColorItem>
+    </div>
+    <div class="btn-wrapper">
+      <div class="btn-wrapper-left">
+        <Btn
+          class="reset-btn"
+          type="text"
+          size="sm"
+          @click="handleResetDefault"
+          >{{ $t('defaultSetting') }}</Btn
+        >
+      </div>
+      <Btn class="save-btn" type="inner" :text="$t('close')" @click="$emit('close')"></Btn>
     </div>
   </Modal>
 </template>
@@ -77,6 +94,11 @@ const handleSave = () => null
     &-left {
       flex: 1;
       display: flex;
+    }
+
+    .reset-btn {
+      margin-left: -4px;
+      flex: none;
     }
 
     .save-btn {

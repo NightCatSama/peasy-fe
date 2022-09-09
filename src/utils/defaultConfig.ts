@@ -5,6 +5,7 @@ import {
   isSomeBasicType,
   PageNode,
 } from '@/config'
+import type { IEditorSetting } from '@/stores/display'
 
 export const getDefaultCommon = (initConfig?: Partial<ICommonType>): ICommonType =>
   Object.assign(
@@ -299,4 +300,12 @@ export const getDefaultFontSetting = (): IFontSetting => ({
   customFontFace: ['https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap'],
   fontSize: 20,
   mediaFontSize: {},
+})
+export const getDefaultEditorSetting = (): IEditorSetting => ({
+  /** 背景色 */
+  backgroundColor: '#202124',
+  /** 选中颜色 */
+  selectColor: '#4af',
+  /** 组件轮廓 */
+  contoursColor: '#3da8f5',
 })

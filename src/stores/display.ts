@@ -1,4 +1,5 @@
 import { PageNode } from '@/config'
+import { getDefaultEditorSetting } from '@/utils/defaultConfig'
 import { getDefaultDevice } from '@/utils/device'
 import { defineStore } from 'pinia'
 import { usePageStore } from './page'
@@ -14,6 +15,16 @@ export interface IDeviceInfo {
 export interface IGroupStatus {
   collapsed: boolean
   advanced: boolean
+}
+
+/** 编辑器配置 */
+export interface IEditorSetting {
+  /** 背景色 */
+  backgroundColor: string
+  /** 选中颜色 */
+  selectColor: string
+  /** 组件轮廓 */
+  contoursColor: string
 }
 
 export type DisplayMode = 'preview' | 'drag' | 'edit'
@@ -62,14 +73,7 @@ export const useDisplayStore = defineStore('display', {
     /** 当前展示的颜色类型 */
     colorType: 'variable' as 'variable' | 'recent',
     /** 编辑器设置 */
-    editorSettings: {
-      /** 背景色 */
-      backgroundColor: '#333',
-      /** 选中颜色 */
-      selectColor: '#4af',
-      /** 组件轮廓 */
-      contoursColor: '#3da8f5',
-    },
+    editorSettings: getDefaultEditorSetting(),
   }),
   getters: {
     /** 当前展示的宽高（缩放后） */

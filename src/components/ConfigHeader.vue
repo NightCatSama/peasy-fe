@@ -424,7 +424,7 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
       </Dropdown>
     </div>
     <PageList :class="{ show: showPageList }" @hide="showPageList = false"></PageList>
-    <EditorSettingModal v-model="showEditorSetting"></EditorSettingModal>
+    <EditorSettingModal v-model="showEditorSetting" @close="showEditorSetting = false"></EditorSettingModal>
   </div>
 </template>
 
