@@ -34,7 +34,7 @@ const { pageData, activeNode, activeParentNode, activeSectionIndex, templateList
 
 const displayStore = useDisplayStore()
 const { setDeviceByParent } = displayStore
-const { device, displayMode, curFootSize } = storeToRefs(displayStore)
+const { device, displayMode, curFootSize, isFirst } = storeToRefs(displayStore)
 
 const dragStore = useDragStore()
 const { dragNode, dragType, dragNodeType, isCancelDrag } = storeToRefs(dragStore)
@@ -75,8 +75,10 @@ onMounted(() => {
   setWrapperSize()
   window.addEventListener('resize', setWrapperSize, false)
 
-  // 根据屏幕宽度初始化设备
-  setDeviceByParent(wrapperSize!.width, wrapperSize!.height)
+  if (isFirst.value) {
+    // 根据屏幕宽度初始化设备
+    setDeviceByParent(wrapperSize!.width, wrapperSize!.height)
+  }
 
   // 初始化 PanZoom
   pz.value = panzoom(contentElem!, {

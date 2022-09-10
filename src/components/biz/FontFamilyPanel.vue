@@ -1,15 +1,16 @@
 <script setup lang="ts">
-import { Alert } from '@/utils/alert'
 import InputItem from '../configs/items/InputItem.vue'
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
 import GroupItem from '../configs/items/GroupItem.vue'
 import SliderItem from '../configs/items/SliderItem.vue'
 import Btn from '../widgets/Btn.vue'
-import Icon from '../widgets/Icon.vue'
+import BtnItem from '../configs/items/BtnItem.vue'
 
 const pageStore = usePageStore()
 const { font } = storeToRefs(pageStore)
+
+let showMediaSetting = $ref(false)
 
 const handleAddFontFace = () => {
   font.value.customFontFace.push('')
@@ -35,15 +36,41 @@ const deleteFontFace = (index: number) => {
       :min="10"
       :max="100"
     >
-      <Icon
+      <!-- <Icon
         name="question"
         class="question-icon"
         :size="13"
         v-tooltip="{
           content: $t('mediaFontSizeTip')
         }"
-      ></Icon>
+      ></Icon> -->
     </SliderItem>
+    <BtnItem
+      class="media-item"
+      :label="$t('mediaFontSize')"
+      :tip="$t('mediaFontSizeTip')"
+      :model-value="showMediaSetting ? $t('hidden') : $t('edit')"
+      :btn-color="'primary'"
+      :on-click="() => showMediaSetting = !showMediaSetting"
+    >
+      <template #default v-if="Object.keys(font.mediaFontSize).length === 0">
+        <span class="media-item-text">{{ $t('mediaFontSizeEmpty') }}</span>
+      </template>
+    </BtnItem>
+    <div class="media-setting" v-show="showMediaSetting">
+      <GroupItem
+        v-for="(val, width) in font.mediaFontSize"
+        :key="width"
+        @delete="() => delete font.mediaFontSize[width]"
+      >
+        <SliderItem
+          :label="'' + width"
+          :model-value="+val"
+          :max="100"
+          @update:model-value="val => font.mediaFontSize[width] = Number(val)"
+        ></SliderItem>
+      </GroupItem>
+    </div>
     <InputItem
       wrapper-class="font-family-item"
       :label="$t('fontFamily')"
@@ -73,9 +100,7 @@ const deleteFontFace = (index: number) => {
         @update:model-value="(val: string) => font.customFontFace[index] = val"
       ></InputItem>
     </GroupItem>
-    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddFontFace"
-      >{{ $t('addFontFace') }}</Btn
-    >
+    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddFontFace">{{ $t('addFontFace') }}</Btn>
   </div>
 </template>
 
@@ -123,6 +148,7 @@ const deleteFontFace = (index: number) => {
   }
 
   .font-family-item,
+  .media-item,
   .font-size-item {
     margin-bottom: 12px;
   }
@@ -139,6 +165,38 @@ const deleteFontFace = (index: number) => {
   .add-color-btn {
     min-height: 32px;
     flex-shrink: 0;
+  }
+
+  .media-item {
+    display: flex;
+
+    &-text {
+      font-size: 12px;
+      color: $grey;
+      cursor: default;
+    }
+  }
+
+  .media-setting {
+    margin-bottom: 12px;
+
+    .item .label {
+      flex: none;
+      width: 40px;
+      text-align: center;
+    }
+
+    .group-item-delete {
+      width: 32px;
+      display: flex;
+      align-items: center;
+
+      .delete-btn {
+        width: 24px;
+        height: 24px;
+        border-radius: 50%;
+      }
+    }
   }
 }
 </style>

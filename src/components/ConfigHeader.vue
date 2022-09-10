@@ -7,8 +7,6 @@ import Avatar from './widgets/Avatar.vue'
 import { useDisplayStore } from '@/stores/display'
 import Dropdown from './widgets/Dropdown.vue'
 import Icon from './widgets/Icon.vue'
-import { nextTick, onMounted, ref } from 'vue'
-import Slider from './widgets/Slider.vue'
 import Select from './widgets/Select.vue'
 import { useKeyPress } from 'ahooks-vue'
 import { emitter } from '@/utils/event'
@@ -17,13 +15,13 @@ import ColorVarList from './biz/ColorVarList.vue'
 import { useHistoryStore } from '@/stores/history'
 import { usePageStore } from '@/stores/page'
 import { useUserStore } from '@/stores/user'
-import Switch from './widgets/Switch.vue'
 import { useRouter, useRoute } from 'vue-router'
 import { Modal } from './modal'
 import { $t, lang } from '@/constants/i18n'
 import PageList from './biz/PageList.vue'
 import { getDomainURL } from '@/utils/mande'
 import EditorSettingModal from './modal/EditorSettingModal.vue'
+import Simulator from './biz/Simulator.vue'
 
 interface IConfigHeaderProps {
   isTemplate: boolean
@@ -35,19 +33,15 @@ const userStore = useUserStore()
 const { userName, avatar } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
-const { project, mainProject, setting, colorVars, allPageData, template } = storeToRefs(pageStore)
-const { updateAllPageNode, setMediaFontSize } = pageStore
+const { project, mainProject, colorVars, allPageData, template } = storeToRefs(pageStore)
+const { updateAllPageNode } = pageStore
 
 const displayStore = useDisplayStore()
 const {
-  device,
   displayMode,
-  deviceType,
-  curWidthFootSize,
-  curFootSize,
   curPresetDeviceList: deviceList,
 } = storeToRefs(displayStore)
-const { setDevice, setDisplayMode } = displayStore
+const { setDisplayMode } = displayStore
 
 const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
@@ -103,42 +97,11 @@ const name = $computed(() => project.value.filename || 'index')
 let showColorVarDropdown = $ref(false)
 let showPageList = $ref(false)
 
-const text = $computed(
-  () => `${device.value.width || $t('headerWidth')} x ${device.value.height || $t('headerHeight')}`
-)
-
 const domain = $computed(() =>
   (mainProject.value?.isPublic && mainProject.value?.domain)
     ? getDomainURL(mainProject.value.domain, project.value.filename)
     : ''
 )
-
-const zoomText = $computed(() => `${Math.round(device.value.zoom * 100)}%`)
-
-const hoverIndex = ref(-1)
-const activeIndex = $computed(() =>
-  deviceList.value.findIndex(
-    (d: number[]) => device.value.width === d[0] && device.value.height === d[1]
-  )
-)
-
-const setDeviceBySize = (index: number) => {
-  if (index >= deviceList.value.length || index < 0) return
-  setDevice(index)
-  nextTick(() => {
-    emitter.emit('location', true)
-    emitter.emit('updateMoveable')
-  })
-}
-
-const handleDeviceChange = () => {
-  deviceType.value = deviceType.value === 'mobile' ? 'desktop' : 'mobile'
-  setDevice(0)
-  nextTick(() => {
-    emitter.emit('location', true)
-    emitter.emit('updateMoveable')
-  })
-}
 
 const modeMap = {
   edit: {
@@ -159,32 +122,6 @@ const handleModeClick = (value: any) => {
   setDisplayMode(value)
 }
 
-const handleFontSizeSwitch = (value: boolean) => {
-  if (value) {
-    setMediaFontSize(device.value.width, curFootSize.value)
-  } else {
-    setMediaFontSize(device.value.width, 0)
-  }
-}
-
-const handleFontSizeChange = (value: number) => setMediaFontSize(device.value.width, value)
-
-/** 切换模拟器 */
-useKeyPress(ShortcutKey.switchDevice, (e) => {
-  if (setting.value.client !== 'both') return
-  e.preventDefault()
-  handleDeviceChange()
-})
-/** 切换到下一个设备尺寸 */
-useKeyPress(ShortcutKey.nextDeviceIndex, (e) => {
-  e.preventDefault()
-  setDeviceBySize(activeIndex + 1)
-})
-/** 切换到上一个设备尺寸 */
-useKeyPress(ShortcutKey.prevDeviceIndex, (e) => {
-  e.preventDefault()
-  setDeviceBySize(activeIndex - 1)
-})
 useKeyPress(ShortcutKey.SwitchDisplayMode, (e) => {
   e.preventDefault()
   const displayModeList = ['edit', 'drag', 'preview'] as const
@@ -256,94 +193,7 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
           <ColorVarList></ColorVarList>
         </template>
       </Dropdown>
-      <Dropdown placement="bottom" :distance="10">
-        <div class="size">
-          {{ text }}<span class="zoom">{{ zoomText }}</span>
-        </div>
-        <template #content>
-          <div class="device-wrapper">
-            <div class="title">
-              <span>
-                {{ $t('simulator') }}
-                <span class="title-extra" v-if="hoverIndex > -1">
-                  {{ deviceList[hoverIndex][0] + ' × ' + deviceList[hoverIndex][1] }}
-                </span>
-              </span>
-              <Btn
-                v-if="setting.client === 'both'"
-                type="text"
-                icon="switch"
-                size="sm"
-                class="switch-device-btn"
-                @click="handleDeviceChange"
-              >
-                {{ deviceType === 'desktop' ? $t('mobile') : $t('desktop') }}
-              </Btn>
-            </div>
-            <div class="device-list">
-              <div
-                :class="['device-item', { active: activeIndex === index }]"
-                v-for="(item, index) in deviceList"
-                :key="index"
-                v-hover="(isHover: boolean) => hoverIndex = isHover ? index : -1"
-                @click="setDeviceBySize(index)"
-              >
-                <template v-if="deviceType === 'mobile'">
-                  <Icon v-if="index === 0" name="mobile" type="pure" :size="20" />
-                  <Icon v-else-if="index === 1" name="mobile" type="pure" :size="24" />
-                  <Icon v-else name="tablet" type="pure" :size="26" />
-                </template>
-                <template v-else>
-                  <Icon v-if="index === 0" name="device-sm" type="pure" :size="28" />
-                  <Icon v-else-if="index === 1" name="device-md" type="pure" :size="28" />
-                  <Icon v-else name="device-lg" type="pure" :size="28" />
-                </template>
-              </div>
-            </div>
-            <div class="title">
-              <span
-                >{{ $t('zoom') }} <span class="title-extra">{{ zoomText }}</span></span
-              >
-            </div>
-            <Slider
-              width="200px"
-              v-model="device.zoom"
-              :min="0.2"
-              :max="2"
-              :interval="0.01"
-              :contained="true"
-            ></Slider>
-            <div class="title media-title">
-              <span>
-                {{ $t('mediaFontSize') }}
-                <Icon
-                  name="question"
-                  class="question-icon"
-                  :size="13"
-                  v-tooltip="{
-                    content: $t('mediaFontSizeTip')
-                  }"
-                ></Icon>
-                <span class="title-extra">{{ curFootSize }}px</span>
-              </span>
-              <Switch
-                :model-value="!!curWidthFootSize"
-                @update:model-value="handleFontSizeSwitch"
-              ></Switch>
-            </div>
-            <Slider
-              v-if="!!curWidthFootSize"
-              width="200px"
-              :model-value="curWidthFootSize"
-              :min="10"
-              :max="100"
-              :interval="1"
-              :contained="true"
-              @update:model-value="handleFontSizeChange"
-            ></Slider>
-          </div>
-        </template>
-      </Dropdown>
+      <Simulator></Simulator>
       <Select
         :class="['mode-wrapper', displayMode]"
         :options="modeMap"
@@ -588,42 +438,6 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
     }
   }
 
-  .size {
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background: $panel-light-gradient;
-    margin: 0 5px;
-    cursor: pointer;
-    transition: all 0.3s;
-
-    &:hover {
-      opacity: 0.8;
-    }
-  }
-
-  .size {
-    height: 36px;
-    padding: 0 18px;
-    font-size: 14px;
-    border-radius: 18px;
-    .zoom {
-      position: relative;
-      margin-left: 16px;
-
-      &::after {
-        content: '';
-        position: absolute;
-        left: -8px;
-        top: 50%;
-        transform: translateY(-50%);
-        width: 1px;
-        height: 10px;
-        background: darken($color, 20%);
-      }
-    }
-  }
-
   .download-btn {
     margin-right: 12px;
     min-width: 100px;
@@ -631,81 +445,6 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
 
   .save-btn {
     margin-right: 16px;
-  }
-}
-
-.device-wrapper {
-  .title {
-    position: relative;
-    font-size: 14px;
-    color: $color;
-    margin-bottom: 5px;
-    font-weight: bold;
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-
-    &.media-title {
-      display: flex;
-      margin-top: 10px;
-
-      &:last-child {
-        margin-bottom: 0;
-      }
-
-      .question-icon {
-        position: relative;
-        top: 2px;
-      }
-    }
-
-    .title-extra {
-      margin-left: 2px;
-      font-size: 12px;
-      color: rgba($pink, 80%);
-    }
-
-    .switch-device-btn {
-      font-size: 12px;
-      color: $theme;
-    }
-  }
-  .device-list {
-    color: $color;
-    display: flex;
-    justify-content: flex-start;
-    margin-bottom: 12px;
-
-    .device-item {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      width: 42px;
-      height: 42px;
-      font-size: 10px;
-      color: $panel;
-      background: $panel-light-gradient;
-      border-radius: 5px;
-      cursor: pointer;
-
-      &:not(:last-child) {
-        margin-right: 8px;
-      }
-
-      &:hover {
-        background: lighten($panel-light, 17%);
-      }
-
-      &.active {
-        background: lighten($panel-light, 17%);
-        color: $white;
-      }
-
-      .device-text {
-        margin-top: 2px;
-      }
-    }
   }
 }
 </style>

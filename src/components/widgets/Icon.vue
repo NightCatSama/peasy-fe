@@ -90,6 +90,7 @@ import DiscordIcon from '@/assets/discord.svg'
 import ChatIcon from '@/assets/chat.svg'
 import ChatOIcon from '@/assets/chat-o.svg'
 import SendIcon from '@/assets/send.svg'
+import PenIcon from '@/assets/pen.svg'
 
 interface IIconProps {
   name: string
@@ -192,6 +193,7 @@ const iconMap = {
   chat: ChatIcon,
   'chat-o': ChatOIcon,
   send: SendIcon,
+  pen: PenIcon,
 } as any
 
 const { name, size = 26, type = 'circle', loading, active, color } = defineProps<IIconProps>()

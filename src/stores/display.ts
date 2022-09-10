@@ -32,7 +32,7 @@ export type DisplayMode = 'preview' | 'drag' | 'edit'
 export const useDisplayStore = defineStore('display', {
   persist: {
     key: '__display_store__',
-    paths: ['editorSettings', 'minimize']
+    paths: ['editorSettings', 'minimize', 'presetDevice', 'activeIndex', 'device', 'isFirst']
   },
   state: () => ({
     /** 预设 */
@@ -41,13 +41,19 @@ export const useDisplayStore = defineStore('display', {
         [1366, 768],
         [1920, 1080],
         [2560, 1440],
+        [1366, 768],
       ],
       mobile: [
         [375, 667],
         [414, 896],
         [768, 1024],
+        [375, 667],
       ],
     },
+    /** 是否首次进入 */
+    isFirst: true,
+    /** 当前设备预设索引 */
+    activeIndex: 0,
     /** 设备模式 */
     deviceType: 'desktop' as 'desktop' | 'mobile',
     /** 当前模拟设备信息 */
@@ -116,9 +122,11 @@ export const useDisplayStore = defineStore('display', {
         this.presetDevice[this.deviceType],
         this.deviceType
       )
+      this.isFirst = false
     },
     setDevice(index: number = 0) {
       const size = this.presetDevice[this.deviceType][index]
+      this.activeIndex = index
       this.device = {
         width: size[0],
         height: size[1],
