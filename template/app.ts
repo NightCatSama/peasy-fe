@@ -111,4 +111,4 @@ if (data) {
   })
 }
 
-app.mount('#app')
+app.mount(document.body)

@@ -26,7 +26,7 @@ export const useIntersectionObserver = (
 
   // 创建一个观察器实例并传入回调函数
   const observer = new IntersectionObserver(callback, {
-    root: document.body,
+    root: null,
     rootMargin: '0px',
     threshold: 0.0,
   })
