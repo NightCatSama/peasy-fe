@@ -1,6 +1,7 @@
 import { createVNode, render } from 'vue'
 import ConfirmModal from './ConfirmModal.vue'
 import GuideModal from './GuideModal.vue'
+import PromptModal from './PromptModal.vue'
 
 export class Modal {
   static id = 0
@@ -11,6 +12,31 @@ export class Modal {
         msg,
         showClose: true,
         onOk: () => res(true),
+        onCancel: () => res(false),
+        ...options,
+        modelValue: true,
+        uniqId: id,
+        'onUpdate:modelValue': () => destroy(),
+      }) as any
+
+      render(vnode, document.body)
+
+      const destroy = () => {
+        const elem = document.getElementById(id)
+        document.body.removeChild(elem!)
+        render(null, document.body)
+        vnode = null
+      }
+    })
+  }
+
+  static prompt(msg: string, options?: any): Promise<string | boolean> {
+    return new Promise((res) => {
+      const id = '__modal__' + Modal.id++
+      let vnode = createVNode(PromptModal, {
+        msg,
+        showClose: true,
+        onOk: (text: string) => res(text),
         onCancel: () => res(false),
         ...options,
         modelValue: true,

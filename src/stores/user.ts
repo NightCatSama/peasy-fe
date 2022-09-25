@@ -1,12 +1,15 @@
 import { PageNode } from '@/config'
-import { logtoMeApi } from '@/utils/mande'
+import { activeMemberApi, logtoMeApi } from '@/utils/mande'
 import { defineStore } from 'pinia'
-import { MemberRole } from '@@/types/user'
+import { IUserProfile, MemberRole } from '@@/types/user'
+import { IResponse } from '@@/types/response'
 
 export interface IUserInfo {
   username: string
   avatar: string
   member?: MemberRole
+  /** 会员过期时间 */
+  expireTime?: number
   roleNames: string[]
   uid: string
 }
@@ -35,7 +38,8 @@ export const useUserStore = defineStore('user', {
       }
       return 'Basic'
     },
-    member: (state) => state.userInfo?.member || MemberRole.Member
+    member: (state) => state.userInfo?.member || MemberRole.Member,
+    expireDate: (state) => state.userInfo?.expireTime ? new Date(state.userInfo.expireTime).toLocaleDateString() : '',
   },
   actions: {
     async fetchUserInfo() {
@@ -46,6 +50,7 @@ export const useUserStore = defineStore('user', {
         ...this.userInfo!,
         avatar: data.avatar || '',
         member: data.member || MemberRole.Member,
+        expireTime: data.expireTime,
       }
     },
     async updateAvatar(img: string) {
@@ -57,6 +62,17 @@ export const useUserStore = defineStore('user', {
       this.userInfo = {
         ...this.userInfo!,
         avatar: img,
+      }
+    },
+    /** 激活会员 */
+    async activeMember(code: string) {
+      if (!this.isLogin) return
+
+      const { data } = await activeMemberApi.post<IResponse<IUserProfile['customData']>>('', { code })
+      this.userInfo = {
+        ...this.userInfo!,
+        member: data.member || MemberRole.Member,
+        expireTime: data.expireTime,
       }
     },
     setUserInfo(accessToken: string, userInfo: IUserInfo) {

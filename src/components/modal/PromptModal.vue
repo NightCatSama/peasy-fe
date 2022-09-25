@@ -14,11 +14,10 @@ import Input from '../widgets/Input.vue';
 interface IConfirmModal {
   title?: string
   msg: string
-  extraLink?: string
   onExtraLinkClick?: () => void
   okText?: string
   cancelText?: string
-  onOk?: () => void
+  onOk?: (text: string) => void
   onCancel?: () => void
   inputVerify?: string
 }
@@ -26,8 +25,6 @@ interface IConfirmModal {
 const {
   title,
   msg,
-  extraLink = '',
-  onExtraLinkClick = null,
   okText = $t('ok'),
   cancelText = $t('cancel'),
   inputVerify = '',
@@ -38,7 +35,7 @@ const {
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
 let value = $ref('')
 
-const okBtnDisabled = $computed(() => !!(inputVerify && value !== inputVerify))
+const okBtnDisabled = $computed(() => !value)
 
 defineExpose({})
 </script>
@@ -46,19 +43,12 @@ defineExpose({})
 <template>
   <Modal ref="modal" class="confirm-modal" :title="title" v-bind="$attrs">
     <div class="modal-msg">
-      <!-- <Icon class="tip-icon" color="theme" :name="'warning'" :size="16"></Icon> -->
       <div>{{ msg }}</div>
     </div>
-    <div v-if="inputVerify" class="input-verify">
-      <div class="input-verify-text">{{ $t('deleteConfirmInput1') }}<span class="highlight">{{ inputVerify }}</span>{{ $t('deleteConfirmInput2') }}</div>
+    <div class="input-verify">
       <Input v-model="value" @input="(e: any) => value = e.target.value"></Input>
     </div>
     <div class="btn-group">
-      <div class="extra-link-wrapper" v-if="extraLink">
-        <Btn type="text" size="sm" class="extra-link" @click="onExtraLinkClick">
-          {{ extraLink }}
-        </Btn>
-      </div>
       <Btn
         class="cancel-btn"
         type="btn"
@@ -79,7 +69,7 @@ defineExpose({})
         :disabled="okBtnDisabled"
         @click="
           () => {
-            onOk?.()
+            onOk?.(value)
             modal?.hide()
           }
         "
@@ -122,11 +112,6 @@ defineExpose({})
     justify-content: flex-end;
     align-items: center;
     margin-top: 20px;
-
-    .extra-link-wrapper {
-      margin-left: -4px;
-      flex: 1;
-    }
     .cancel-btn {
       margin-right: 10px;
     }

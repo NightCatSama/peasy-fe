@@ -10,8 +10,8 @@ import { Alert } from '@/utils/alert'
 import { Modal } from '@/components/modal'
 
 const userStore = useUserStore()
-const { avatar, userName, isLogin, vipName } = storeToRefs(userStore)
-const { updateAvatar } = userStore
+const { avatar, userName, isLogin, vipName, expireDate } = storeToRefs(userStore)
+const { updateAvatar, activeMember } = userStore
 
 const router = useRouter()
 const route = useRoute()
@@ -22,6 +22,15 @@ const handleUpdateAvatar = (img: string) => {
 
 const handleUpgradePlan = () => {
   Alert($t('upgradePlanTip'))
+}
+
+const handleInviteCode = async() => {
+  const code = await Modal.prompt($t('inviteCode'))
+
+  if (code && typeof code === 'string') {
+    await activeMember(code)
+    Alert($t('activeSuccess'))
+  }
 }
 
 const switchLang = async(lang: 'zh' | 'en') => {
@@ -58,12 +67,18 @@ const switchLang = async(lang: 'zh' | 'en') => {
       </div>
       <div class="item">
         <div class="label">{{ $t('yourPlan') }}</div>
-        <div class="value">{{ vipName }}</div>
+        <div class="value">
+          <span>{{ vipName }}</span>
+          <span v-if="expireDate" class="expire-date">{{ $t('expiresOn') }} {{ expireDate }}</span>
+        </div>
       </div>
       <div class="item">
         <div class="label">
           <span>{{ $t('pricingPlan') }}</span>
-          <Btn color="purple" @click="handleUpgradePlan">{{ $t('upgradePlan') }}</Btn>
+          <div class="btn-wrapper">
+            <Btn type="text" size="sm" color="second" class="invite-code-btn" @click="handleInviteCode">{{ $t('iHaveInviteCode') }}</Btn>
+            <Btn color="purple" @click="handleUpgradePlan">{{ $t('upgradePlan') }}</Btn>
+          </div>
         </div>
         <div class="table">
           <div class="table-column header">
@@ -171,10 +186,24 @@ const switchLang = async(lang: 'zh' | 'en') => {
       color: $grey;
       align-self: flex-start;
       padding: 0;
+      display: flex;
+      flex-direction: column;
 
       &.btn {
         color: $blue;
       }
+
+      .expire-date {
+        margin-top: 4px;
+        color: $pink;
+        font-size: 12px;
+      }
+    }
+
+    .invite-code-btn {
+      margin-right: 12px;
+      color: $grey;
+      text-decoration: underline;
     }
 
     .table {

@@ -40,6 +40,7 @@ export const downloadApi = mande(`${apiURL}/api/data/download`)
 export const materialApi = mande(`${apiURL}/api/data/material`)
 export const projectApi = mande(`${apiURL}/api/data/project`)
 export const logtoMeApi = mande(`${apiURL}/api/users/me`)
+export const activeMemberApi = mande(`${apiURL}/api/users/active-member`)
 export const sendEmailApi = mande(`${apiURL}/api/users/send-email`)
 export const fixApi = mande(`${apiURL}/api/data/fix`)
 
