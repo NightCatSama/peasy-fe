@@ -1,5 +1,6 @@
 
 import type { IPage, PageNode } from '../src/config'
+import { unescapeHtml } from '../src/utils/xss'
 import { Text, Block, Image, Icon, Media, InputField } from '@/components/libs'
 
 // Debug
@@ -7,7 +8,6 @@ import { Text, Block, Image, Icon, Media, InputField } from '@/components/libs'
 
 // Build
 import type { createApp as VueCreateApp } from 'vue'
-import { unescapeHtml } from '../src/utils/xss'
 const createApp = (window as any)?.Vue?.createApp as typeof VueCreateApp
 
 if (!createApp) {
