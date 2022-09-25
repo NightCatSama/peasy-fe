@@ -7,6 +7,7 @@ import { Text, Block, Image, Icon, Media, InputField } from '@/components/libs'
 
 // Build
 import type { createApp as VueCreateApp } from 'vue'
+import { unescapeHtml } from '../src/utils/xss'
 const createApp = (window as any)?.Vue?.createApp as typeof VueCreateApp
 
 if (!createApp) {
@@ -38,7 +39,11 @@ ${(obj.children || []).map((child) => getHtml(child, obj)).join('')}
 `;
 };
 
-const data: IPage = (window as any).data || []
+const data: IPage = JSON.parse(
+  unescapeHtml((window as any).data)
+    .replace(/\r/g, '\\r')
+    .replace(/\n/g, '\\n')
+) || []
 
 const isMobile = () => document.body.clientWidth < 768
 

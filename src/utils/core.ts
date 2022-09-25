@@ -4,9 +4,16 @@
  */
 
 import type { IPage } from 'types/config'
+import { escapeHtml } from './xss'
 
 export const parsePageData = (data: IPage, temp: string) => {
-  const dataScript = `<script>window.data = ${JSON.stringify(data)}</script>`
+  const replaceFn = (key: string, value: any) => {
+    if (typeof value === 'string') {
+      return value.replace(/"/g, '\\"')
+    }
+    return value
+  }
+  const dataScript = `<script>window.data = "${escapeHtml(JSON.stringify(data, replaceFn))}"</script>`
 
   let file = temp
   file = file.replace(/<!--app-data-->/g, dataScript)

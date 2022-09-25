@@ -7,6 +7,7 @@ export default {
 <script setup lang="ts">
 import { getUniqueName } from '@/config';
 import { getIsEditMode } from '@/utils/context';
+import { escapeHtml } from '@/utils/xss';
 import { nextTick, useAttrs, watch } from 'vue'
 import { useProps, IProps } from './hooks/common'
 
@@ -43,7 +44,7 @@ watch(() => [props], () => {
 }, { immediate: true, deep: true })
 
 const renderText = $computed(() => {
-  let text = props.basic.text
+  let text = escapeHtml(props.basic.text)
   if (!elem.value) return text
   const textChild = text.match(/{{(\d+?)}}/ig) || []
   textChild.forEach((t: string) => {
