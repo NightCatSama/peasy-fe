@@ -89,9 +89,10 @@ const switchLang = async(lang: 'zh' | 'en') => {
             <div class="table-td">{{ $t('projectCount') }}</div>
             <div class="table-td">{{ $t('pageCount') }}</div>
             <div class="table-td">{{ $t('templates') }}</div>
+            <div class="table-td">{{ $t('multiplePages') }}</div>
             <div class="table-td">{{ $t('consultingServices') }}</div>
             <div class="table-td">{{ $t('customSubDomain') }}</div>
-            <div class="table-td">{{ $t('customHost') }}</div>
+            <!-- <div class="table-td">{{ $t('customHost') }}</div> -->
           </div>
           <div class="table-column">
             <div class="table-td">
@@ -105,11 +106,14 @@ const switchLang = async(lang: 'zh' | 'en') => {
               <Icon name="check" color="green" :size="16"></Icon>
             </div>
             <div class="table-td">
-              <Icon name="close" color="grey" :size="16"></Icon>
+              <Icon name="check" color="green" :size="16"></Icon>
             </div>
             <div class="table-td">
               <Icon name="close" color="grey" :size="16"></Icon>
             </div>
+            <!-- <div class="table-td">
+              <Icon name="close" color="grey" :size="16"></Icon>
+            </div> -->
           </div>
           <div class="table-column">
             <div class="table-td">
@@ -128,6 +132,9 @@ const switchLang = async(lang: 'zh' | 'en') => {
             <div class="table-td">
               <Icon name="check" color="green" :size="16"></Icon>
             </div>
+            <!-- <div class="table-td">
+              <Icon name="check" color="green" :size="16"></Icon>
+            </div> -->
           </div>
           <div class="table-column">
             <div class="table-td">
@@ -146,6 +153,9 @@ const switchLang = async(lang: 'zh' | 'en') => {
             <div class="table-td">
               <Icon name="check" color="green" :size="16"></Icon>
             </div>
+            <!-- <div class="table-td">
+              <Icon name="check" color="green" :size="16"></Icon>
+            </div> -->
           </div>
         </div>
       </div>
