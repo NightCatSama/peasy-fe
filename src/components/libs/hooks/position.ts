@@ -4,7 +4,7 @@ import { onBeforeUnmount, onMounted } from "vue"
 export const useScrollByOffset = (showByOffset: string, cb: (show: boolean) => void) => {
   const editContext = getContext()
   if (editContext?.isEditMode || !showByOffset || !parseFloat(showByOffset)) return
-  const containerElement = document.body!
+  const containerElement = document.documentElement!
 
   const handleScroll = (e: Event) => {
     setShow((e.target as HTMLElement).scrollTop)
