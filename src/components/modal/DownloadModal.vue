@@ -32,19 +32,19 @@ const openGithubPageGuideModal = () => {
     tips: [
       {
         msg: $t('downloadGithubPageStep1'),
-        image: 'https://peasy.oss-cn-shanghai.aliyuncs.com/a14ea300-da79-40b0-82f2-65c7429c9209',
+        image: 'https://peasy.soapphoto.com/a14ea300-da79-40b0-82f2-65c7429c9209',
       },
       {
         msg: $t('downloadGithubPageStep2'),
-        image: 'https://peasy.oss-cn-shanghai.aliyuncs.com/a2022e8e-f1dc-4e5f-a7f4-6ad178ed012f',
+        image: 'https://peasy.soapphoto.com/a2022e8e-f1dc-4e5f-a7f4-6ad178ed012f',
       },
       {
         msg: $t('downloadGithubPageStep3'),
-        image: 'https://peasy.oss-cn-shanghai.aliyuncs.com/4fce2510-f8d0-4194-86e7-bf32d1505456',
+        image: 'https://peasy.soapphoto.com/4fce2510-f8d0-4194-86e7-bf32d1505456',
       },
       {
         msg: $t('downloadGithubPageStep4'),
-        image: 'https://peasy.oss-cn-shanghai.aliyuncs.com/0ea96476-2f33-41fe-b580-8e158e2247ce',
+        image: 'https://peasy.soapphoto.com/0ea96476-2f33-41fe-b580-8e158e2247ce',
       }
     ],
   })
@@ -56,27 +56,27 @@ const openVercelGuideModal = () => {
     tips: [
       {
         msg: $t('downloadVercelStep1'),
-        image: 'https://peasy.oss-cn-shanghai.aliyuncs.com/a14ea300-da79-40b0-82f2-65c7429c9209',
+        image: 'https://peasy.soapphoto.com/a14ea300-da79-40b0-82f2-65c7429c9209',
       },
       {
         msg: $t('downloadVercelStep2'),
-        image: 'https://peasy.oss-cn-shanghai.aliyuncs.com/a2022e8e-f1dc-4e5f-a7f4-6ad178ed012f',
+        image: 'https://peasy.soapphoto.com/a2022e8e-f1dc-4e5f-a7f4-6ad178ed012f',
       },
       {
         msg: $t('downloadVercelStep3'),
-        image: 'https://peasy.oss-cn-shanghai.aliyuncs.com/4fce2510-f8d0-4194-86e7-bf32d1505456',
+        image: 'https://peasy.soapphoto.com/4fce2510-f8d0-4194-86e7-bf32d1505456',
       },
       {
         msg: $t('downloadVercelStep4'),
-        image: 'https://peasy.oss-cn-shanghai.aliyuncs.com/6584ab9e-8431-41de-b563-f62408e3fb76',
+        image: 'https://peasy.soapphoto.com/6584ab9e-8431-41de-b563-f62408e3fb76',
       },
       {
         msg: $t('downloadVercelStep5'),
-        image: 'https://peasy.oss-cn-shanghai.aliyuncs.com/6b305ed8-b929-4fc5-86e2-663e95c17585',
+        image: 'https://peasy.soapphoto.com/6b305ed8-b929-4fc5-86e2-663e95c17585',
       },
       {
         msg: $t('downloadVercelStep6'),
-        image: 'https://peasy.oss-cn-shanghai.aliyuncs.com/c11f6c42-3af5-4d22-a09b-b2ad7e822c6d',
+        image: 'https://peasy.soapphoto.com/c11f6c42-3af5-4d22-a09b-b2ad7e822c6d',
       }
     ],
   })

@@ -17,7 +17,7 @@ export const upload = async (file: File) => {
   try {
     const client = await getClient()
     const res = await client.put(uuidv4(), file)
-    return res.url
+    return res.url.replace(/peasy.oss-cn-shanghai.aliyuncs.com/, 'peasy.soapphoto.com')
   } catch (e) {
     alert(e)
   }
