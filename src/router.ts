@@ -5,9 +5,9 @@ import {
   RouteLocationNormalized,
 } from 'vue-router'
 
-import Configure from '@/pages/Configure.vue'
+import Configure from '@/pages/configure/Configure.vue'
 import Redirect from '@/pages/Redirect.vue'
-import Me from '@/pages/Me.vue'
+import Dashboard from '@/pages/dashboard/Dashboard.vue'
 import Template from '@/pages/Template.vue'
 import NotFound from '@/pages/NotFound.vue'
 import Admin from '@/pages/Admin.vue'
@@ -32,7 +32,7 @@ export const router = createRouter({
     { path: '/edit', component: Configure, name: 'create', beforeEnter: needReloadPage },
     { path: '/edit/:id', component: Configure, name: 'edit', beforeEnter: needReloadPage },
     { path: '/template/edit/:id', component: Configure, name: 'template-edit', beforeEnter: needReloadPage },
-    { path: '/dashboard', component: Me, name: 'dashboard' },
+    { path: '/dashboard', component: Dashboard, name: 'dashboard' },
     { path: '/admin/fix/:code', component: Admin, name: 'admin-fix' },
     { path: '/preview/:id', component: Preview, name: 'preview' },
     { path: '/preview/p/:id', component: Preview, name: 'preview-project' },

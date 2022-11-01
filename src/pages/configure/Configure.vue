@@ -10,11 +10,7 @@ import MaterialsPanel from '@/components/MaterialsPanel.vue'
 import Keyboard from '@/components/Keyboard.vue'
 import EditSection from '@/components/EditSection.vue'
 import { emitter } from '@/utils/event'
-import { useDisplayStore } from '@/stores/display'
 import { useColorVars } from '@/components/libs/hooks/color'
-import { useHistoryStore } from '@/stores/history'
-import { useKeyPress } from 'ahooks-vue'
-import { ShortcutKey } from '@/constants/shortcut'
 import { useFont } from '@/components/libs/hooks/font'
 import { Alert, AlertError, AlertProcess, AlertSuccess } from '@/utils/alert'
 import { useRoute, useRouter } from 'vue-router'
@@ -28,7 +24,6 @@ import { Modal } from '@/components/modal'
 import ProjectModal from '@/components/modal/ProjectModal.vue'
 import { destroyMoveable } from '@/utils/moveable'
 import { $t } from '@/constants/i18n'
-import { useUserStore } from '@/stores/user'
 import { getJSONEditor } from '@/utils/jsoneditor'
 import { getSetLoading } from '@/utils/context'
 import DownloadModal from '@/components/modal/DownloadModal.vue'
@@ -36,55 +31,50 @@ import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
 import { IMaterialItem } from '@/config'
 import { templatePreviewUrl } from '@/utils/mande'
 import { useEditorStylesheet } from '@/utils/color'
+import { useShortCut } from './hooks/shortcut'
+import { useProvide } from './hooks/provide'
+import { useDisplayStoreHelper, useHistoryStoreHelper, usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
 
 const route = useRoute()
 const router = useRouter()
 const id = $computed(() => (route.params?.id as string) || '')
 const projectId = $computed(() => (project.value?.id as string) || '')
 
-const userStore = useUserStore()
-const { isAdmin } = storeToRefs(userStore)
+const { isAdmin } = useUserStoreHelper()
 
-const pageStore = usePageStore()
 const {
-  activeNode,
+  pageStore,
   setting,
-  activeSection,
   allPageData,
   colorVars,
   font,
   project,
-  activeNodeIsSonText,
   allProjectData,
   template,
-} = storeToRefs(pageStore)
-const {
-  setActiveSection,
-  setActiveNode,
-  updateAllPageNode,
   getAssetsData,
   getProjectData,
   download,
   downloadAll,
   saveProjectData,
   loadTemplateData,
-  pasteClipboardNode,
-  copyActiveNodeToClipboard,
   fetchSaveMaterial
-} = pageStore
+} = usePageStoreHelper()
 
-const displayStore = useDisplayStore()
-const { setDeviceByParent, setDevice } = displayStore
-const { deviceType, displayMode, lockScriptTrigger, editorSettings } = storeToRefs(displayStore)
+const {
+  deviceType,
+  setDevice,
+  editorSettings
+} = useDisplayStoreHelper()
 
-const historyStore = useHistoryStore()
-const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
-const { saveHistory, undoHistory, redoHistory, setIsSave } = historyStore
+const { isSave, saveHistory, setIsSave } = useHistoryStoreHelper()
 
 let showProjectModal = $ref(false)
 let showSaveMaterialModal = $ref(false)
-let showKeyboard = $ref(false)
 let showDownloadModal = $ref(false)
+
+const { showKeyboard } = useShortCut()
+
+useProvide()
 
 /** 模板编辑 */
 const isEditTemplate = $computed(() => route.name === 'template-edit')
@@ -265,81 +255,6 @@ const preventUnload = (event: BeforeUnloadEvent) => {
   }
 }
 
-// 快捷键 - 重做
-useKeyPress(ShortcutKey.undo, (e) => {
-  if (e.shiftKey) return
-  if (!canUndoHistory.value) return
-  e.preventDefault()
-  updateAllPageNode(undoHistory())
-})
-
-// 快捷键 - 撤销
-useKeyPress(ShortcutKey.redo, (e) => {
-  if (!canRedoHistory.value) return
-  e.preventDefault()
-  updateAllPageNode(redoHistory())
-})
-
-// 快捷键 - 折叠/展开全部
-useKeyPress(ShortcutKey.collapseAll, (e) => {
-  e.preventDefault()
-  emitter.emit('collapseGroup')
-})
-
-// 快捷键 - 切换 Section
-useKeyPress(ShortcutKey.switchSection, (e) => {
-  e.preventDefault()
-  if (e.key === '0') {
-    switchSectionToIndex(-1)
-  } else if (+e.key > 0) {
-    switchSectionToIndex(+e.key - 1)
-  }
-})
-useKeyPress(ShortcutKey.nextSection, (e) => {
-  if (e.shiftKey) return
-  e.preventDefault()
-  switchSectionByRound(1)
-})
-useKeyPress(ShortcutKey.prevSection, (e) => {
-  e.preventDefault()
-  switchSectionByRound(-1)
-})
-// 快捷键 - 切换快捷键是否展示
-useKeyPress(ShortcutKey.switchShortcut, (e) => {
-  e.preventDefault()
-  showKeyboard = !showKeyboard
-})
-// 复制粘贴
-useKeyPress(ShortcutKey.cut, async (e) => {
-  if (!activeNode.value) return
-  e.preventDefault()
-  await copyActiveNodeToClipboard(true)
-  Alert($t('cutSuccess'))
-})
-useKeyPress(ShortcutKey.copyToClipboard, async (e) => {
-  const selectText = document.getSelection()?.toString()
-  if (!activeNode.value || selectText || activeNodeIsSonText.value) return
-  e.preventDefault()
-  await copyActiveNodeToClipboard()
-  Alert($t('copySuccess'))
-})
-useKeyPress(ShortcutKey.pasteToInside, async (e) => {
-  e.preventDefault()
-  handlePasteNode(true)
-})
-useKeyPress(ShortcutKey.paste, async (e) => {
-  if (e.shiftKey) return
-  e.preventDefault()
-  handlePasteNode(false)
-})
-
-const handlePasteNode = async(pasteToInside?: boolean) => {
-  if (!activeNode.value) return
-  if (await pasteClipboardNode(pasteToInside)) {
-    Alert($t('pasteSuccess'))
-  }
-}
-
 /** 打开模板预览链接 */
 const openPreviewTemplate = () => {
   let a: HTMLAnchorElement | null = document.createElement('a')
@@ -349,35 +264,6 @@ const openPreviewTemplate = () => {
   a.remove()
   a = null
 }
-
-const switchSectionByRound = $computed(() => (change: number) => {
-  const index = allPageData.value.findIndex((item) => item === activeSection.value)
-  switchSectionToIndex(index + change)
-})
-const switchSectionToIndex = $computed(() => (index: number) => {
-  if (index === -1) {
-    setActiveSection(null)
-  } else if (allPageData.value[index]) {
-    setActiveSection(allPageData.value[index])
-    setActiveNode(allPageData.value[index])
-  }
-  nextTick(() => emitter.emit('location'))
-})
-
-// 向子组件传递当前编辑模式，在 lib/ 下的组件中使用
-// 为啥使用 provide，因为需要保持 lib/ 下的依赖干净，在纯页面生成时是不需要 store 相关数据引用的
-let context = reactive({ isEditMode: true, displayMode: displayMode.value, lockScriptTrigger: lockScriptTrigger.value })
-provide('editContext', context)
-
-// 更新 provide
-watch(
-  () => [displayMode.value, lockScriptTrigger.value],
-  () => {
-    context.displayMode = displayMode.value
-    context.lockScriptTrigger = lockScriptTrigger.value
-  },
-  { immediate: true, flush: 'sync' }
-)
 
 // 更新颜色变量
 watch(
