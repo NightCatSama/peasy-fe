@@ -1,14 +1,12 @@
 <script setup lang="ts">
 import Btn from '@/components/widgets/Btn.vue'
-import { useUserStore } from '@/stores/user';
+import { useUserStoreHelper } from '@/hooks/store';
 import { fixApi } from '@/utils/mande';
-import { storeToRefs } from 'pinia';
 import { useRoute } from 'vue-router'
 
 const route = useRoute()
 
-const userStore = useUserStore()
-const { isAdmin } = storeToRefs(userStore)
+const { isAdmin } = useUserStoreHelper()
 
 const handleFix = () => {
   fixApi.get(route.params.code as string)

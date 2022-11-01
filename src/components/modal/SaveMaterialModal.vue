@@ -25,6 +25,7 @@ import { $t } from '@/constants/i18n'
 import type JSONEditor from 'jsoneditor'
 import Switch from '../widgets/Switch.vue'
 import { copyToClipboard } from '@/utils/clipboard'
+import { usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
 
 interface SaveMaterialModalProps {
   modelValue: boolean
@@ -37,12 +38,9 @@ interface SaveMaterialModalProps {
 
 const { modelValue, material, autoCreateCover, actionText = $t('save'), hideCreateCover, onSave } = defineProps<SaveMaterialModalProps>()
 
-const pageStore = usePageStore()
-const { colorVars } = storeToRefs(pageStore)
-const { fetchSaveMaterial } = pageStore
+const { colorVars, fetchSaveMaterial } = usePageStoreHelper()
 
-const userStore = useUserStore()
-const { isAdmin } = storeToRefs(userStore)
+const { isAdmin } = useUserStoreHelper()
 
 let editItem: IMaterialItem | null = $ref(null)
 let coverLoading = $ref(!!autoCreateCover)

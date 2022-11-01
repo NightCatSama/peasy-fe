@@ -11,6 +11,7 @@ import { useConfigProps } from '@/utils/config'
 import draggable from 'vuedraggable'
 import type { SortableEvent } from 'sortablejs'
 import { useDragStore } from '@/stores/drag'
+import { useDisplayStoreHelper, useDragStoreHelper } from '@/hooks/store'
 
 interface ITreeNodeListProps {
   node: PageNode
@@ -20,12 +21,9 @@ interface ITreeNodeListProps {
 
 const { node, preview, canDrag } = defineProps<ITreeNodeListProps>()
 
-const displayStore = useDisplayStore()
-const { layerStatus } = storeToRefs(displayStore)
+const { layerStatus } = useDisplayStoreHelper()
 
-const dragStore = useDragStore()
-const { dragNode, dragType, dropZone, dragNodeType, isCancelDrag } = storeToRefs(dragStore)
-const { setDropZone, setDragNode, getIsInDragNode } = dragStore
+const { dragNode, setDropZone, setDragNode } = useDragStoreHelper()
 
 const pageStore = usePageStore()
 const { activeNode, activeParentChain } = storeToRefs(pageStore)

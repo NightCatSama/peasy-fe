@@ -22,12 +22,9 @@ import { usePageStore } from '@/stores/page'
 import ColorItem from '../configs/items/ColorItem.vue'
 import { useDisplayStore } from '@/stores/display'
 import { getDefaultEditorSetting } from '@/utils/defaultConfig'
+import { useDisplayStoreHelper } from '@/hooks/store'
 
-const displayStore = useDisplayStore()
-
-const { editorSettings } = storeToRefs(displayStore)
-
-const handleSave = () => null
+const { editorSettings } = useDisplayStoreHelper()
 
 const handleResetDefault = () => {
   editorSettings.value = getDefaultEditorSetting()

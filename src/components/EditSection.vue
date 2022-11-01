@@ -17,9 +17,10 @@ import { ShortcutKey } from '@/constants/shortcut'
 import MaterialCard from './widgets/MaterialCard.vue'
 import { AlertSuccess } from '@/utils/alert'
 import { $t } from '@/constants/i18n'
+import { useDisplayStoreHelper, useDragStoreHelper, usePageStoreHelper } from '@/hooks/store'
 
-const pageStore = usePageStore()
 const {
+  pageData, activeNode, activeParentNode, activeSectionIndex, templateList, activeNodeIsSonText,
   setActiveNode,
   addSection,
   setActiveParentNodeToActive,
@@ -29,16 +30,10 @@ const {
   deleteActiveNode,
   getTemplateData,
   loadTemplateData,
-} = pageStore
-const { pageData, activeNode, activeParentNode, activeSectionIndex, templateList, activeNodeIsSonText } = storeToRefs(pageStore)
+} = usePageStoreHelper()
 
-const displayStore = useDisplayStore()
-const { setDeviceByParent } = displayStore
-const { device, displayMode, curFootSize, isFirst } = storeToRefs(displayStore)
-
-const dragStore = useDragStore()
-const { dragNode, dragType, dragNodeType, isCancelDrag } = storeToRefs(dragStore)
-const { setIsCancelDrag } = dragStore
+const { device, displayMode, curFootSize, isFirst, setDeviceByParent } = useDisplayStoreHelper()
+const { dragNode, dragType, dragNodeType, isCancelDrag, setIsCancelDrag } = useDragStoreHelper()
 
 let isLoadingTemplate = $ref(false)
 

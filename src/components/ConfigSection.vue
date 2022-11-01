@@ -17,11 +17,10 @@ import { $t, getMaterialName } from '@/constants/i18n'
 import { Modal } from './modal'
 import Tip from './widgets/Tip.vue'
 import { useUserStore } from '@/stores/user'
+import { useDisplayStoreHelper, usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
 
-const pageStore = usePageStore()
-const { nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, activeNodeIsSonText } =
-  storeToRefs(pageStore)
 const {
+  nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, activeNodeIsSonText,
   unlinkActiveNodeProp,
   switchActiveNodeConfigMode,
   getAllTags,
@@ -33,14 +32,11 @@ const {
   getMaterialByMaterialId,
   changeNodeName,
   syncNodeModuleConfig,
-} = pageStore
+} = usePageStoreHelper()
 
-const displayStore = useDisplayStore()
-const { minimize, deviceType } = storeToRefs(displayStore)
-const { setMinimize } = displayStore
+const { minimize, setMinimize } = useDisplayStoreHelper()
 
-const userStore = useUserStore()
-const { isAdmin } = storeToRefs(userStore)
+const { isAdmin } = useUserStoreHelper()
 
 let showLayer = $ref(false)
 let showSaveMaterialModal = $ref(false)
@@ -155,7 +151,7 @@ const openMaterialModal = async () => {
   let id = ''
   // 若当前组件是由物料新建来的，则复用前物料信息，并提示是否覆盖
   if (activeNode.value.materialId) {
-    material = getMaterialByMaterialId(activeNode.value.materialId)
+    material = getMaterialByMaterialId.value(activeNode.value.materialId)
     if (material && material.id) {
       if (await Modal.confirm(
         $t('materialExistTipMsg', getMaterialName(material)),

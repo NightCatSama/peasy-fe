@@ -1,7 +1,5 @@
 <script setup lang="ts">
-import { provide, onMounted, nextTick, watch, reactive, onBeforeUnmount, inject } from 'vue'
-import { usePageStore } from '@/stores/page'
-import { storeToRefs } from 'pinia'
+import { onMounted, nextTick, watch, onBeforeUnmount } from 'vue'
 
 import ConfigSection from '@/components/ConfigSection.vue'
 import Sidebar from '@/components/Sidebar.vue'
@@ -12,7 +10,7 @@ import EditSection from '@/components/EditSection.vue'
 import { emitter } from '@/utils/event'
 import { useColorVars } from '@/components/libs/hooks/color'
 import { useFont } from '@/components/libs/hooks/font'
-import { Alert, AlertError, AlertProcess, AlertSuccess } from '@/utils/alert'
+import { AlertProcess } from '@/utils/alert'
 import { useRoute, useRouter } from 'vue-router'
 import {
   saveStoragePageState,

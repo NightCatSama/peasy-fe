@@ -19,17 +19,16 @@ import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { verifySubDomain } from '@/utils/validation'
 import { usePageStore } from '@/stores/page'
+import { usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
 
 interface IProjectModalProps {
   project: IProject
   hideCreateCover?: boolean
 }
 
-const userStore = useUserStore()
-const { isVIP } = storeToRefs(userStore)
+const { isVIP } = useUserStoreHelper()
 
-const pageStore = usePageStore()
-const { allProjectData } = storeToRefs(pageStore)
+const { allProjectData } = usePageStoreHelper()
 
 const { project, hideCreateCover } = defineProps<IProjectModalProps>()
 const propsRef = reactive(useAttrs())

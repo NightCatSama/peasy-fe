@@ -14,18 +14,15 @@ import Icon from '../widgets/Icon.vue'
 import { useDisplayStore } from '@/stores/display'
 import { useConfigProps } from '@/utils/config'
 import { $t } from '@/constants/i18n'
+import { useDisplayStoreHelper } from '@/hooks/store'
 
 interface IPositionGroupProps {
   node: PageNode
   position: IPosition
 }
 const { position, node } = defineProps<IPositionGroupProps>()
-const pageStore = usePageStore()
-const { activeParentNode } = storeToRefs(pageStore)
 
-const displayStore = useDisplayStore()
-const { setLockDragSetPosition } = displayStore
-const { lockDragSetPosition } = storeToRefs(displayStore)
+const { lockDragSetPosition, setLockDragSetPosition } = useDisplayStoreHelper()
 
 const positionMap: { [key in IPosition['position']]?: string } = {
   static: $t('static'),

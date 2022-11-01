@@ -5,20 +5,17 @@ import { IResponse } from '@@/types/response';
 import { onBeforeMount } from 'vue'
 import MaterialCard from '@/components/widgets/MaterialCard.vue'
 import { useRouter } from 'vue-router';
-import { storeToRefs } from 'pinia';
-import { useUserStore } from '@/stores/user';
-import Icon from '@/components/widgets/Icon.vue';
 import { Modal } from '@/components/modal';
 import { $t } from '@/constants/i18n';
 import { AlertSuccess } from '@/utils/alert';
 import SaveMaterialModal from '../components/modal/SaveMaterialModal.vue';
 import { getSetLoading } from '@/utils/context';
-import { usePreviewURL } from '@/toolkit/hooks/usePreviewURL';
 import Btn from '@/components/widgets/Btn.vue';
+import { useUserStoreHelper } from '@/hooks/store';
 
 const router = useRouter()
-const userStore = useUserStore()
-const { uid, isLogin, isAdmin } = storeToRefs(userStore)
+
+const { uid, isLogin } = useUserStoreHelper()
 
 let template = $ref<IMaterialItem[]>([])
 let selectedId = $ref('')

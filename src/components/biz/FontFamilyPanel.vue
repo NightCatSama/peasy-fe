@@ -6,9 +6,9 @@ import GroupItem from '../configs/items/GroupItem.vue'
 import SliderItem from '../configs/items/SliderItem.vue'
 import Btn from '../widgets/Btn.vue'
 import BtnItem from '../configs/items/BtnItem.vue'
+import { usePageStoreHelper } from '@/hooks/store'
 
-const pageStore = usePageStore()
-const { font } = storeToRefs(pageStore)
+const { font } = usePageStoreHelper()
 
 let showMediaSetting = $ref(false)
 

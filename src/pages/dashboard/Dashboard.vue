@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user'
-import { storeToRefs } from 'pinia'
 import { useLogto } from '@logto/vue'
 import Avatar from '@/components/widgets/Avatar.vue'
 import { materialApi, projectApi } from '@/utils/mande'
@@ -23,13 +21,12 @@ import Materials from './menu/Materials.vue'
 import Settings from './menu/Settings.vue'
 import Chat from '@/components/biz/Chat.vue'
 import { emitter } from '@/utils/event'
+import { useUserStoreHelper } from '@/hooks/store'
 
 const router = useRouter()
 const route = useRoute()
 
-const userStore = useUserStore()
-const { userName, avatar, vipName, isLogin } = storeToRefs(userStore)
-const { updateAvatar } = userStore
+const { userName, avatar, vipName, isLogin } = useUserStoreHelper()
 
 const { signOut, signIn } = useLogto()
 const handleSignIn = () => {

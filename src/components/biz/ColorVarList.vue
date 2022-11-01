@@ -7,9 +7,9 @@ import Icon from '../widgets/Icon.vue'
 import InputItem from '../configs/items/InputItem.vue'
 import Btn from '../widgets/Btn.vue'
 import GroupItem from '../configs/items/GroupItem.vue'
+import { usePageStoreHelper } from '@/hooks/store'
 
-const pageStore = usePageStore()
-const { colorVars } = storeToRefs(pageStore)
+const { colorVars } = usePageStoreHelper()
 
 const deleteColor = (index: number) => {
   colorVars.value.splice(index, 1)

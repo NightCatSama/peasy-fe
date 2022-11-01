@@ -2,16 +2,13 @@
 import { useRoute, useRouter } from 'vue-router'
 import Icon from '@/components/widgets/Icon.vue'
 import { $t, lang } from '@/constants/i18n'
-import { useUserStore } from '@/stores/user'
 import Avatar from '@/components/widgets/Avatar.vue'
-import { storeToRefs } from 'pinia'
 import Btn from '@/components/widgets/Btn.vue'
 import { Alert } from '@/utils/alert'
 import { Modal } from '@/components/modal'
+import { useUserStoreHelper } from '@/hooks/store'
 
-const userStore = useUserStore()
-const { avatar, userName, isLogin, vipName, expireDate } = storeToRefs(userStore)
-const { updateAvatar, activeMember } = userStore
+const { avatar, userName, isLogin, vipName, expireDate, updateAvatar, activeMember } = useUserStoreHelper()
 
 const router = useRouter()
 const route = useRoute()

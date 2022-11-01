@@ -1,18 +1,12 @@
 <script setup lang="ts">
-import { useUserStore } from '@/stores/user';
 import { getTemplatePreview, getProjectPreview } from '@/utils/mande';
-import { storeToRefs } from 'pinia'
 import { useRoute, useRouter } from 'vue-router'
 import Logo from '@/components/Logo.vue';
 import Btn from '@/components/widgets/Btn.vue';
-import { onMounted } from 'vue';
 import { usePreviewURL } from '@/toolkit/hooks/usePreviewURL';
 
 const route = useRoute()
 const router = useRouter()
-
-const userStore = useUserStore()
-const { isAdmin, accessToken } = storeToRefs(userStore)
 
 const hideHelper = $ref(route.name === 'preview-project' || route.query.hideHelper === 'true')
 

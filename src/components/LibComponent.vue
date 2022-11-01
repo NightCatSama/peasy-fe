@@ -1,16 +1,12 @@
 <script setup lang="ts">
-import { Component, onBeforeUnmount, onMounted, ref, ComponentPublicInstance, watch, watchPostEffect } from 'vue'
-import { storeToRefs } from 'pinia'
+import { onBeforeUnmount, onMounted, ComponentPublicInstance, watch } from 'vue'
 import draggable from 'vuedraggable'
 import type { SortableEvent } from 'sortablejs'
-
-import { usePageStore } from '@/stores/page'
-import { useDragStore } from '@/stores/drag'
 import { emitter } from '@/utils/event'
-import { disabledMoveable, getMoveable, updateMoveableRect, useMoveable } from '@/utils/moveable'
-import { useDisplayStore } from '@/stores/display'
+import { disabledMoveable, getMoveable, useMoveable } from '@/utils/moveable'
 import { PageNode } from '@/config'
 import { useConfigProps } from '@/utils/config'
+import { useDisplayStoreHelper, useDragStoreHelper, usePageStoreHelper } from '@/hooks/store'
 
 interface ILibComponentProps {
   parent?: PageNode
@@ -20,16 +16,11 @@ interface ILibComponentProps {
 
 const { parent, item, inModule } = defineProps<ILibComponentProps>()
 
-const pageStore = usePageStore()
-const { setActiveNode, insertNode, swapNode, addActiveParentChain } = pageStore
-const { activeNode } = storeToRefs(pageStore)
+const { activeNode, setActiveNode, insertNode, swapNode, addActiveParentChain } = usePageStoreHelper()
 
-const dragStore = useDragStore()
-const { dragNode, dragType, dropZone, dragNodeType, isCancelDrag } = storeToRefs(dragStore)
-const { setDropZone, setDragNode, getIsInDragNode } = dragStore
+const { dragNode, dragType, dropZone, dragNodeType, isCancelDrag, setDropZone, setDragNode, getIsInDragNode } = useDragStoreHelper()
 
-const displayStore = useDisplayStore()
-const { displayMode, lockDrag } = storeToRefs(displayStore)
+const { displayMode, lockDrag } = useDisplayStoreHelper()
 
 const componentRef = $ref<ComponentPublicInstance | null>(null)
 let $el = $ref<HTMLElement | null>(null)
@@ -136,7 +127,7 @@ const componentEvents = $computed(() =>
             dragNode.value && // 存在拖拽组件
             !item.isModule && // 当前组件不是 Module 组件
             !inDraggable && // 当前组件不是拖拽中的组件 （避免自己拖拽进自己）
-            !getIsInDragNode(item.name) && // 当前组件不是拖拽组件的子组件 （避免把拖拽自己拖进自己的子组件）
+            !getIsInDragNode.value(item.name) && // 当前组件不是拖拽组件的子组件 （避免把拖拽自己拖进自己的子组件）
             (e.target as HTMLDivElement)?.dataset?.name === item.name // 确认目前触发的元素是当前组件
           ) {
             setDropZone(item)
@@ -242,7 +233,7 @@ const handleSetElement = (el: HTMLElement) => $el = el
         :parent="item"
         :in-module="item.isModule || inModule"
         :key="subItem.name"
-        @mousedown="(e) => preventChildrenMousedown(e, subItem)"
+        @mousedown="(e: MouseEvent) => preventChildrenMousedown(e, subItem)"
         @dragstart="(event: DragEvent) => handleChildrenDragStart(event, subItem)"
       ></LibComponent>
     </template>

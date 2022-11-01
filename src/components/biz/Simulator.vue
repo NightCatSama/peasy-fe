@@ -13,8 +13,8 @@ import Switch from '../widgets/Switch.vue'
 import Slider from '../widgets/Slider.vue'
 import Btn from '../widgets/Btn.vue'
 import Input from '../widgets/Input.vue'
+import { useDisplayStoreHelper, usePageStoreHelper } from '@/hooks/store'
 
-const displayStore = useDisplayStore()
 const {
   device,
   activeIndex,
@@ -22,12 +22,10 @@ const {
   curWidthFootSize,
   curFootSize,
   curPresetDeviceList: deviceList,
-} = storeToRefs(displayStore)
-const { setDevice } = displayStore
+  setDevice,
+} = useDisplayStoreHelper()
 
-const pageStore = usePageStore()
-const { setting, template } = storeToRefs(pageStore)
-const { setMediaFontSize } = pageStore
+const { setting, template, setMediaFontSize } = usePageStoreHelper()
 
 const hoverIndex = ref(-1)
 

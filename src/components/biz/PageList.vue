@@ -12,14 +12,11 @@ import { Project } from '@@/entities/project.entity';
 import { IMaterialItem } from '@/config';
 import SaveMaterialModal from '../modal/SaveMaterialModal.vue';
 import { emitter } from '@/utils/event';
+import { useHistoryStoreHelper, usePageStoreHelper } from '@/hooks/store';
 
-const pageStore = usePageStore()
-const { mainProject, allProjectData, project } = storeToRefs(pageStore)
-const { saveProjectData, switchProject, deleteProject } = pageStore
+const { mainProject, allProjectData, project, saveProjectData, switchProject, deleteProject } = usePageStoreHelper()
 
-const historyStore = useHistoryStore()
-const { isSave } = storeToRefs(historyStore)
-const { clearHistory } = historyStore
+const { isSave, clearHistory } = useHistoryStoreHelper()
 
 const route = useRoute()
 

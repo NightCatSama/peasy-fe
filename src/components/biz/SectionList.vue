@@ -1,5 +1,6 @@
 <script setup lang="ts">
 import { PageNode } from '@/config'
+import { useDragStoreHelper, usePageStoreHelper } from '@/hooks/store'
 import { useDisplayStore } from '@/stores/display'
 import { useDragStore } from '@/stores/drag'
 import { usePageStore } from '@/stores/page'
@@ -9,12 +10,9 @@ import type { SortableEvent } from 'sortablejs'
 import { nextTick } from 'vue'
 import draggable from 'vuedraggable'
 
-const pageStore = usePageStore()
-const { addSection, setActiveSection, setActiveNode, swapSection } = pageStore
-const { activeSection, isActiveAllSection, allPageData } = storeToRefs(pageStore)
+const { activeSection, isActiveAllSection, allPageData, addSection, setActiveSection, setActiveNode, swapSection } = usePageStoreHelper()
 
-const dragStore = useDragStore()
-const { dragNode, dragType, dragNodeType, isCancelDrag } = storeToRefs(dragStore)
+const { dragNode, dragType, dragNodeType, isCancelDrag } = useDragStoreHelper()
 
 const handleSectionItemClick = (item: PageNode | null) => {
   setActiveSection(item)

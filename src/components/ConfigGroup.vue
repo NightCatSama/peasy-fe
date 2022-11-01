@@ -23,6 +23,7 @@ import { lang } from '@/constants/i18n'
 import CodeGroup from './configs/CodeGroup.vue'
 import { onErrorCaptured } from 'vue'
 import { AlertError } from '@/utils/alert'
+import { usePageStoreHelper } from '@/hooks/store'
 
 interface IConfigGroupProps {
   groupType: GroupType
@@ -31,8 +32,7 @@ interface IConfigGroupProps {
 }
 const { groupType, index, minimize } = defineProps<IConfigGroupProps>()
 
-const pageStore = usePageStore()
-const { activeNode } = storeToRefs(pageStore)
+const { activeNode } = usePageStoreHelper()
 
 const componentNameMap: { [type in GroupType]: any | null } = {
   common: null,

@@ -8,15 +8,14 @@ import TabsItem from './items/TabsItem.vue'
 import SwitchItem from './items/SwitchItem.vue'
 import { useDisplayStore } from '@/stores/display'
 import { storeToRefs } from 'pinia'
+import { useDisplayStoreHelper } from '@/hooks/store'
 
 interface IEventGroupProps {
   node: PageNode
   event: IEvent
 }
 const { node, event } = defineProps<IEventGroupProps>()
-const displayStore = useDisplayStore()
-const { lockScriptTrigger } = storeToRefs(displayStore)
-const { setLockScriptTrigger } = displayStore
+const { lockScriptTrigger, setLockScriptTrigger } = useDisplayStoreHelper()
 </script>
 
 <template>

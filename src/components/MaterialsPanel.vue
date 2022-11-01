@@ -1,36 +1,24 @@
 <script setup lang="ts">
-import { nextTick } from 'vue'
 import draggable from 'vuedraggable'
-
-import { usePageStore } from '@/stores/page'
 import { emitter } from '@/utils/event'
-import { storeToRefs } from 'pinia'
 import Element from './widgets/Element.vue'
-import { useDragStore } from '@/stores/drag'
-import { DisplayMode, useDisplayStore } from '@/stores/display'
-import { PageNode, IMaterialItem, DataStatus } from '@/config'
+import { DisplayMode } from '@/stores/display'
+import { IMaterialItem, DataStatus } from '@/config'
 import Tabs from './widgets/Tabs.vue'
-import { Alert, AlertError } from '@/utils/alert'
-import { useUserStore } from '@/stores/user'
+import { Alert } from '@/utils/alert'
 import { Modal } from './modal'
-import { materialApi } from '@/utils/mande'
 import SaveMaterialModal from './modal/SaveMaterialModal.vue'
-import { $t, getMaterialCategory, getMaterialName, lang } from '@/constants/i18n'
+import { $t, getMaterialCategory, getMaterialName } from '@/constants/i18n'
 import { EmptyBlock, EmptyIcon, EmptyImage, EmptySection, EmptyText, EmptyMedia, EmptyInputField } from '@/utils/mock'
+import { useDisplayStoreHelper, useDragStoreHelper, usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
 
-const pageStore = usePageStore()
-const { pageData, materialData } = storeToRefs(pageStore)
-const { addSection, deleteMaterial } = pageStore
+const { pageData, materialData, addSection, deleteMaterial } = usePageStoreHelper()
 
-const dragStore = useDragStore()
-const { setDragNode, setIsCancelDrag } = dragStore
+const { setDragNode, setIsCancelDrag } = useDragStoreHelper()
 
-const displayStore = useDisplayStore()
-const { displayMode } = storeToRefs(displayStore)
-const { setDisplayMode } = displayStore
+const { displayMode, setDisplayMode } = useDisplayStoreHelper()
 
-const userStore = useUserStore()
-const { isAdmin, uid } = storeToRefs(userStore)
+const { isAdmin, uid } = useUserStoreHelper()
 
 let preDisplayMode = $ref<DisplayMode>('edit')
 

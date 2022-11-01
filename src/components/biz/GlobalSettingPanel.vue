@@ -8,13 +8,11 @@ import SelectItem from '../configs/items/SelectItem.vue'
 import { useDisplayStore } from '@/stores/display'
 import { nextTick } from 'vue'
 import { emitter } from '@/utils/event'
+import { useDisplayStoreHelper, usePageStoreHelper } from '@/hooks/store'
 
-const pageStore = usePageStore()
-const { setting } = storeToRefs(pageStore)
+const { setting } = usePageStoreHelper()
 
-const displayStore = useDisplayStore()
-const { deviceType } = storeToRefs(displayStore)
-const { setDevice } = displayStore
+const { deviceType, setDevice } = useDisplayStoreHelper()
 
 const handleClientChange = (client: IPageSetting['client']) => {
   setting.value.client = client

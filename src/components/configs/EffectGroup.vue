@@ -15,6 +15,7 @@ import CollapseItem from './items/CollapseItem.vue'
 import type { ISelectItem } from '../widgets/Select.vue'
 import { $t } from '@/constants/i18n'
 import { emitter } from '@/utils/event'
+import { usePageStoreHelper } from '@/hooks/store'
 
 interface IEffectGroupProps {
   node: PageNode
@@ -22,9 +23,7 @@ interface IEffectGroupProps {
 }
 const { effect, node } = defineProps<IEffectGroupProps>()
 
-const pageStore = usePageStore()
-const { getAllChildNode, getTagsByNode, nameMap } = pageStore
-const { activeNode, activeNodeGroups } = storeToRefs(pageStore)
+const { getTagsByNode, nameMap, activeNode } = usePageStoreHelper()
 
 let collapsedIndex = $ref(0)
 
@@ -35,7 +34,7 @@ const handleAddEffect = () => {
 
 /** 得到当前目标下可用的过渡属性 */
 const getEffectMap = $computed(() => (target: string, targetType: string): IEffectShowItemMap => {
-  return targetType === 'tag' ? allEffectMap : getEffectMapByNode(nameMap[target], targetType === 'self') || {}
+  return targetType === 'tag' ? allEffectMap : getEffectMapByNode(nameMap.value[target], targetType === 'self') || {}
 })
 
 const getEffectLabel = (target: string, targetType: string) =>
@@ -82,7 +81,7 @@ const effectTargetMap: { [key: string]: ISelectItem } = $computed(() => {
       type: 'self',
     },
   }
-  getTagsByNode(node.children || []).forEach((tag) => {
+  getTagsByNode.value(node.children || []).forEach((tag) => {
     obj[tag] = {
       target: tag,
       title: tag,

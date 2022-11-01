@@ -22,6 +22,7 @@ import PageList from './biz/PageList.vue'
 import { getDomainURL } from '@/utils/mande'
 import EditorSettingModal from './modal/EditorSettingModal.vue'
 import Simulator from './biz/Simulator.vue'
+import { useDisplayStoreHelper, usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
 
 interface IConfigHeaderProps {
   isTemplate: boolean
@@ -29,19 +30,15 @@ interface IConfigHeaderProps {
 
 const { isTemplate } = defineProps<IConfigHeaderProps>()
 
-const userStore = useUserStore()
-const { userName, avatar } = storeToRefs(userStore)
+const { userName, avatar } = useUserStoreHelper()
 
-const pageStore = usePageStore()
-const { project, mainProject, colorVars, allPageData, template } = storeToRefs(pageStore)
-const { updateAllPageNode } = pageStore
+const { project, mainProject, colorVars, allPageData, template, updateAllPageNode } = usePageStoreHelper()
 
-const displayStore = useDisplayStore()
 const {
   displayMode,
   curPresetDeviceList: deviceList,
-} = storeToRefs(displayStore)
-const { setDisplayMode } = displayStore
+  setDisplayMode
+} = useDisplayStoreHelper()
 
 const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
