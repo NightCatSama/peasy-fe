@@ -118,7 +118,9 @@ const boxStyles = $computed(() => {
   return {
     borderWidth: border.borderWidth.join(' '),
     borderStyle: border.borderStyle.join(' '),
-    borderColor: Array.isArray(border.borderColor) ? border.borderColor.map(getColor).join(' ') : getColor(border.borderColor),
+    borderColor: Array.isArray(border.borderColor)
+      ? border.borderColor.map(getColor).join(' ')
+      : getColor(border.borderColor),
     borderRadius: Array.isArray(border.borderRadius)
       ? border.borderRadius.map(getBorderRadius).join(' ')
       : getBorderRadius(border.borderRadius),

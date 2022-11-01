@@ -72,7 +72,7 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
         props: {
           type: 'number',
           suffix: ['px', '%', 'rem', 'vw', 'auto', 'stretch'],
-        }
+        },
       }
     case 'height':
       return {
@@ -80,7 +80,7 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
         props: {
           type: 'number',
           suffix: ['px', '%', 'rem', 'vh', 'vw', 'auto', 'stretch'],
-        }
+        },
       }
     case 'duration':
     case 'delay':

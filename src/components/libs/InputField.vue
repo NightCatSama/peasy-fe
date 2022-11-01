@@ -5,10 +5,10 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { getContext } from '@/utils/context';
+import { getContext } from '@/utils/context'
 import { useAttrs } from 'vue'
 import { IProps, useProps } from './hooks/common'
-import { useStyle } from './hooks/style';
+import { useStyle } from './hooks/style'
 
 const { elem, uName, style, styleMap, props, tagClassNames } = useProps(
   useAttrs() as unknown as IProps<'InputField'>,
@@ -19,22 +19,26 @@ const classNames = $computed(() => ['input-field', uName.value, ...tagClassNames
 const context = getContext()
 const disabled = $computed(() => context?.isEditMode && context?.displayMode !== 'preview')
 
-const wrapperStyles = $computed(() => useStyle({
-  ...styleMap.value.size,
-  ...styleMap.value.position,
-  ...styleMap.value.common,
-}))
+const wrapperStyles = $computed(() =>
+  useStyle({
+    ...styleMap.value.size,
+    ...styleMap.value.position,
+    ...styleMap.value.common,
+  })
+)
 
-const componentStyles = $computed(() => useStyle({
-  ...styleMap.value.basic,
-  ...styleMap.value.font,
-  ...styleMap.value.spacing,
-  ...styleMap.value.border,
-  ...styleMap.value.background,
-  ...styleMap.value.container,
-  ...styleMap.value.animation,
-  ...styleMap.value.effect,
-}))
+const componentStyles = $computed(() =>
+  useStyle({
+    ...styleMap.value.basic,
+    ...styleMap.value.font,
+    ...styleMap.value.spacing,
+    ...styleMap.value.border,
+    ...styleMap.value.background,
+    ...styleMap.value.container,
+    ...styleMap.value.animation,
+    ...styleMap.value.effect,
+  })
+)
 </script>
 
 <template>
@@ -75,7 +79,8 @@ const componentStyles = $computed(() => useStyle({
     background: transparent;
     outline: none;
     resize: none;
-    &:focus, &:active {
+    &:focus,
+    &:active {
       border: none;
       outline: none;
     }

@@ -34,7 +34,7 @@ const { project, hideCreateCover } = defineProps<IProjectModalProps>()
 const propsRef = reactive(useAttrs())
 
 const emit = defineEmits(['save'])
-const defaultDomain = $computed(() => isVIP.value ? 'your-domain' : '')
+const defaultDomain = $computed(() => (isVIP.value ? 'your-domain' : ''))
 let editProject: IProject | null = $ref({
   name: '',
   cover: '',
@@ -77,11 +77,10 @@ const handleSave = () => {
   // Filename 不允许重复
   if (
     isSubPage &&
-    (
-      editProject?.filename === 'index' ||
-      Object.values(allProjectData.value || [])
-        .find((item) => editProject?.id !== item.id && editProject?.filename === item.filename)
-    )
+    (editProject?.filename === 'index' ||
+      Object.values(allProjectData.value || []).find(
+        (item) => editProject?.id !== item.id && editProject?.filename === item.filename
+      ))
   ) {
     AlertError($t('projectFilenameExist'))
     return
@@ -144,18 +143,10 @@ const filename = $computed({
     <div class="info-wrapper" v-if="editProject">
       <InputItem v-if="isSubPage" :label="$t('filename')" v-model="filename"></InputItem>
       <InputItem :label="$t('name')" v-model="editProject.name"></InputItem>
-      <ImageItem
-        :label="$t('cover')"
-        :loading="coverLoading"
-        v-model="editProject.cover"
-        :rows="5">
+      <ImageItem :label="$t('cover')" :loading="coverLoading" v-model="editProject.cover" :rows="5">
       </ImageItem>
       <template v-if="!isSubPage">
-        <SwitchItem
-          v-model="editProject.isPublic"
-          :label="$t('isPublic')"
-          :tip="$t('isPublicTip')"
-        >
+        <SwitchItem v-model="editProject.isPublic" :label="$t('isPublic')" :tip="$t('isPublicTip')">
         </SwitchItem>
         <div class="domain-input item" v-if="editProject.isPublic">
           <div class="label">{{ $t('domain') }}</div>
@@ -166,7 +157,8 @@ const filename = $computed({
               v-tooltip="{ content: $t('domainTip'), disabled: isVIP }"
               @keydown.enter.stop="(e: Event) => (e.target as HTMLDivElement)?.blur()"
               @blur="verifyDomain"
-            >{{ editProject.domain || (isVIP ? '' : $t('domainRandom')) }}</span>
+              >{{ editProject.domain || (isVIP ? '' : $t('domainRandom')) }}</span
+            >
             <span>.p-easy.net</span>
           </div>
         </div>

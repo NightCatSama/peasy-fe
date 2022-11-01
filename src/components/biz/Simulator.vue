@@ -39,7 +39,6 @@ const zoomText = $computed(() => `${Math.round(device.value.zoom * 100)}%`)
 //   )
 // )
 
-
 const setDeviceBySize = (index: number) => {
   if (index >= deviceList.value.length || index < 0) return
   setDevice(index)
@@ -174,7 +173,7 @@ useKeyPress(ShortcutKey.prevDeviceIndex, (e) => {
               class="question-icon"
               :size="13"
               v-tooltip="{
-                content: $t('mediaFontSizeTip')
+                content: $t('mediaFontSizeTip'),
               }"
             ></Icon>
             <span v-if="curWidthFootSize" class="title-extra">{{ curFootSize }}px</span>

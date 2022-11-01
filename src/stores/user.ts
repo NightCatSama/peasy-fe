@@ -25,7 +25,9 @@ export const useUserStore = defineStore('user', {
     uid: (state) => state.userInfo?.uid || '',
     isLogin: (state) => !!state.accessToken,
     isAdmin: (state) => state.userInfo?.roleNames?.includes('admin'),
-    isVIP: (state) => state.userInfo?.roleNames?.includes('admin') || [MemberRole.Advanced, MemberRole.Professional].includes(state.userInfo?.member!),
+    isVIP: (state) =>
+      state.userInfo?.roleNames?.includes('admin') ||
+      [MemberRole.Advanced, MemberRole.Professional].includes(state.userInfo?.member!),
     vipName: (state) => {
       if (state.userInfo?.roleNames?.includes('admin')) {
         return 'Admin'
@@ -39,7 +41,8 @@ export const useUserStore = defineStore('user', {
       return 'Basic'
     },
     member: (state) => state.userInfo?.member || MemberRole.Member,
-    expireDate: (state) => state.userInfo?.expireTime ? new Date(state.userInfo.expireTime).toLocaleDateString() : '',
+    expireDate: (state) =>
+      state.userInfo?.expireTime ? new Date(state.userInfo.expireTime).toLocaleDateString() : '',
   },
   actions: {
     async fetchUserInfo() {
@@ -68,7 +71,9 @@ export const useUserStore = defineStore('user', {
     async activeMember(code: string) {
       if (!this.isLogin) return
 
-      const { data } = await activeMemberApi.post<IResponse<IUserProfile['customData']>>('', { code })
+      const { data } = await activeMemberApi.post<IResponse<IUserProfile['customData']>>('', {
+        code,
+      })
       this.userInfo = {
         ...this.userInfo!,
         member: data.member || MemberRole.Member,
@@ -82,6 +87,6 @@ export const useUserStore = defineStore('user', {
     clearUserInfo() {
       this.accessToken = ''
       this.userInfo = null
-    }
+    },
   },
 })

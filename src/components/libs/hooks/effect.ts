@@ -62,25 +62,31 @@ export const useEffect = (propsRef: IProps<any>) => {
           if (item?.targetType === 'self') {
             styles.push({
               priority: selectorPriority[key] || 0,
-              style: `#${uName}:${key} { ${getEffectStyle(item, value)} }`
+              style: `#${uName}:${key} { ${getEffectStyle(item, value)} }`,
             })
           }
           if (item?.targetType === 'name') {
             styles.push({
               priority: selectorPriority[key] || 0,
-              style: `.${uName}:${key} .${getUniqueName(item.target)} { ${getEffectStyle(item, value)} }`
+              style: `.${uName}:${key} .${getUniqueName(item.target)} { ${getEffectStyle(
+                item,
+                value
+              )} }`,
             })
           }
           if (item?.targetType === 'tag') {
             styles.push({
               priority: selectorPriority[key] || 0,
-              style: `.${uName}:${key} .${getTagClassName(item.target)} { ${getEffectStyle(item, value)} }`
+              style: `.${uName}:${key} .${getTagClassName(item.target)} { ${getEffectStyle(
+                item,
+                value
+              )} }`,
             })
           }
         })
       })
       styles.sort((a, b) => a.priority - b.priority)
-      dynamicAnimationStyles.innerHTML = styles.map(s => s.style).join('\n')
+      dynamicAnimationStyles.innerHTML = styles.map((s) => s.style).join('\n')
     },
     { immediate: true, deep: true }
   )

@@ -20,7 +20,12 @@ import { useUserStore } from '@/stores/user'
 import { useDisplayStoreHelper, usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
 
 const {
-  nameMap, pageData, activeNode, activeNodeGroups, activeNodeHide, activeNodeIsSonText,
+  nameMap,
+  pageData,
+  activeNode,
+  activeNodeGroups,
+  activeNodeHide,
+  activeNodeIsSonText,
   unlinkActiveNodeProp,
   switchActiveNodeConfigMode,
   getAllTags,
@@ -153,13 +158,12 @@ const openMaterialModal = async () => {
   if (activeNode.value.materialId) {
     material = getMaterialByMaterialId.value(activeNode.value.materialId)
     if (material && material.id) {
-      if (await Modal.confirm(
-        $t('materialExistTipMsg', getMaterialName(material)),
-        {
+      if (
+        await Modal.confirm($t('materialExistTipMsg', getMaterialName(material)), {
           title: $t('materialExistTip'),
           cancelText: $t('newMaterial'),
           showClose: true,
-          closeOnClickMask: true
+          closeOnClickMask: true,
         })
       ) {
         id = material.id
@@ -180,11 +184,13 @@ const openMaterialModal = async () => {
     node,
   }
   // 新建物料成功后，更新原编辑组件的物料来源 id
-  saveCallback = !id ? (material: IMaterialItem) => {
-    if (!node) return
-    node.materialId = material.id
-    showSaveMaterialModal = false
-  } : null
+  saveCallback = !id
+    ? (material: IMaterialItem) => {
+        if (!node) return
+        node.materialId = material.id
+        showSaveMaterialModal = false
+      }
+    : null
   showSaveMaterialModal = true
 }
 </script>
@@ -264,13 +270,18 @@ const openMaterialModal = async () => {
                 @click="() => (disabledUnlinkDropdown ? handleUnlink(false) : null)"
               >
                 <Icon :name="activeNode.propLink ? 'link-broken' : 'link'" :size="14"></Icon>
-                {{ $t('unlink') }}<span class="link-text" @click.stop="handleFocusLinkNode">{{
+                {{ $t('unlink')
+                }}<span class="link-text" @click.stop="handleFocusLinkNode">{{
                   activeNode.propLink
                 }}</span>
               </div>
               <template #content>
-                <div class="select-option" @click="() => handleUnlink(false)">{{ $t('unlinkSelf') }}</div>
-                <div class="select-option" @click="() => handleUnlink(true)">{{ $t('unlinkAll') }}</div>
+                <div class="select-option" @click="() => handleUnlink(false)">
+                  {{ $t('unlinkSelf') }}
+                </div>
+                <div class="select-option" @click="() => handleUnlink(true)">
+                  {{ $t('unlinkAll') }}
+                </div>
               </template>
             </Dropdown>
           </div>
@@ -310,12 +321,7 @@ const openMaterialModal = async () => {
           ></Icon>
         </div>
         <div class="content layers-content">
-          <TreeNode
-            v-for="node in pageData"
-            :key="node.name"
-            :node="node"
-            can-drag
-          ></TreeNode>
+          <TreeNode v-for="node in pageData" :key="node.name" :node="node" can-drag></TreeNode>
         </div>
       </div>
     </div>

@@ -55,7 +55,11 @@ export class Modal {
     })
   }
 
-  static guide(options: { title: string, tips: { image: string, msg: string }[], [key: string]: any }) {
+  static guide(options: {
+    title: string
+    tips: { image: string; msg: string }[]
+    [key: string]: any
+  }) {
     const { title, tips, ...restProps } = options
 
     return new Promise((res) => {

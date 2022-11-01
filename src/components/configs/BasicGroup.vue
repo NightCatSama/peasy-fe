@@ -11,7 +11,12 @@ import ColorItem from './items/ColorItem.vue'
 import Tip from '../widgets/Tip.vue'
 import { $t } from '@/constants/i18n'
 import Btn from '../widgets/Btn.vue'
-import { getDefaultBackground, getDefaultBasic, getDefaultBorder, getDefaultSpacing } from '@/utils/defaultConfig'
+import {
+  getDefaultBackground,
+  getDefaultBasic,
+  getDefaultBorder,
+  getDefaultSpacing,
+} from '@/utils/defaultConfig'
 import { emitter } from '@/utils/event'
 
 interface IBasicGroupProps {
@@ -97,7 +102,7 @@ const configs: ShowItem[] = $computed(() => {
               deleteActiveNode()
             }
           },
-          tip: !basic.isSonText ? $t('subTextTip') : ''
+          tip: !basic.isSonText ? $t('subTextTip') : '',
         },
         setValue: (val: string) => {
           basic.text = val
@@ -107,13 +112,7 @@ const configs: ShowItem[] = $computed(() => {
         labelSuffixClick: () => {
           if (basic.isSonText) return
           if (!node.children) node.children = []
-          const newSonNode = insertNode(
-            node,
-            node,
-            node.children.length || 0,
-            true,
-            true,
-          )
+          const newSonNode = insertNode(node, node, node.children.length || 0, true, true)
           newSonNode.config.props.basic = getDefaultBasic('Text', { isSonText: true })
           emitter.emit('saveHistory')
         },
@@ -130,7 +129,7 @@ const configs: ShowItem[] = $computed(() => {
           onDelete: () => {
             node.children?.splice(i, 1)
             emitter.emit('saveHistory')
-          }
+          },
         },
       })),
       {
@@ -413,7 +412,7 @@ const configs: ShowItem[] = $computed(() => {
         setValue: (val: string) => {
           basic.maxLength = val
         },
-      }
+      },
     ]
   }
   return []
@@ -436,7 +435,9 @@ const configs: ShowItem[] = $computed(() => {
           @update:model-value="item?.setValue"
         >
           <template v-if="item.labelSuffix && item.labelSuffixClick" #label-suffix>
-            <Btn type="text" @click="() => item.labelSuffixClick?.()" size="sm">{{ item.labelSuffix }}</Btn>
+            <Btn type="text" @click="() => item.labelSuffixClick?.()" size="sm">{{
+              item.labelSuffix
+            }}</Btn>
           </template>
         </component>
       </template>

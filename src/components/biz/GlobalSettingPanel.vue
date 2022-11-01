@@ -34,7 +34,7 @@ const googleAnalytics = $computed({
   },
   set(val) {
     setting.value.googleAnalytics = val
-  }
+  },
 })
 
 const customCode = $computed({
@@ -43,7 +43,7 @@ const customCode = $computed({
   },
   set(val) {
     setting.value.customCode = val
-  }
+  },
 })
 </script>
 

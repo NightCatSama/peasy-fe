@@ -20,7 +20,12 @@ import { $t } from '@/constants/i18n'
 import { useDisplayStoreHelper, useDragStoreHelper, usePageStoreHelper } from '@/hooks/store'
 
 const {
-  pageData, activeNode, activeParentNode, activeSectionIndex, templateList, activeNodeIsSonText,
+  pageData,
+  activeNode,
+  activeParentNode,
+  activeSectionIndex,
+  templateList,
+  activeNodeIsSonText,
   setActiveNode,
   addSection,
   setActiveParentNodeToActive,
@@ -114,9 +119,13 @@ watchEffect(() => {
 })
 
 // 页面数据变化时，同步去更新 Moveable 的激活框
-watch([pageData], () => {
-  nextTick(() => emitter.emit('updateMoveable'))
-}, { flush: 'post', deep: true })
+watch(
+  [pageData],
+  () => {
+    nextTick(() => emitter.emit('updateMoveable'))
+  },
+  { flush: 'post', deep: true }
+)
 
 // 当首次新建 Section，去居中预览页面窗口
 watch(
@@ -240,7 +249,7 @@ const handleLeaveTrash = (e: DragEvent) => {
 }
 
 /** 选中一个模板 */
-const handleSelectTemplate = async(templateId: string) => {
+const handleSelectTemplate = async (templateId: string) => {
   emitter.emit('saveHistory')
   isLoadingTemplate = true
   await loadTemplateData(templateId)
@@ -272,7 +281,13 @@ const handleSelectTemplate = async(templateId: string) => {
         </template>
       </draggable>
     </div>
-    <Icon v-if="!noPageData" :class="['focus-btn']" name="focus" :size="26" @click="() => handleLocationPage()"></Icon>
+    <Icon
+      v-if="!noPageData"
+      :class="['focus-btn']"
+      name="focus"
+      :size="26"
+      @click="() => handleLocationPage()"
+    ></Icon>
     <Icon
       v-if="dragNode && !noPageData && dragType === 'clone'"
       :class="['cancel-clone-btn', { active: isCancelDrag }]"
@@ -482,7 +497,7 @@ const handleSelectTemplate = async(templateId: string) => {
     right: 12px;
     color: $color;
     font-size: 16px;
-    transition: all .3s;
+    transition: all 0.3s;
     padding: 12px 6px 4px;
     border-radius: $normal-radius;
 

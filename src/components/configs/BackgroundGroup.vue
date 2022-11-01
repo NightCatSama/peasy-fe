@@ -35,7 +35,8 @@ const updateBackgroundType = (type: 'color' | 'image' | 'gradient') => {
   }
 }
 
-const updateBackgroundClip = (clip: IBackground['backgroundClip']) => background.backgroundClip = clip
+const updateBackgroundClip = (clip: IBackground['backgroundClip']) =>
+  (background.backgroundClip = clip)
 
 const handleAddColor = () => {
   background.backgroundGradient.push({
@@ -80,9 +81,11 @@ const deleteColor = (index: number) => {
         'border-box': $t('backgroundClipBorder'),
         'padding-box': $t('backgroundClipPadding'),
         'content-box': $t('backgroundClipContent'),
-        ...(node.component === 'Text' ? {
-          'text': $t('backgroundClipText')
-        } : null),
+        ...(node.component === 'Text'
+          ? {
+              text: $t('backgroundClipText'),
+            }
+          : null),
       }"
       @update:model-value="updateBackgroundClip"
     ></SelectItem>
@@ -175,9 +178,9 @@ const deleteColor = (index: number) => {
                 dotsPos[i],
                 dotsPos[i + 1],
                 {
-                  background: `linear-gradient(90deg, ${getColor(background.backgroundGradient[i].color)}, ${
-                    getColor(background.backgroundGradient[i + 1].color)
-                  })`,
+                  background: `linear-gradient(90deg, ${getColor(
+                    background.backgroundGradient[i].color
+                  )}, ${getColor(background.backgroundGradient[i + 1].color)})`,
                 },
               ])
           "

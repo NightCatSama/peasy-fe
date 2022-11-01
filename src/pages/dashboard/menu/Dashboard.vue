@@ -21,13 +21,15 @@ const { projects, subProjects } = defineProps<IDashboardProps>()
 const router = useRouter()
 
 let collapseIndex = $ref(-1)
-let projectMap = reactive<{ [key: string]: { project: Project, subPage: Project[] } }>({})
+let projectMap = reactive<{ [key: string]: { project: Project; subPage: Project[] } }>({})
 
 const handleFetchProjectDetail = async (project: Project) => {
   if (projectMap[project.id]) {
     return
   }
-  const { data } = await projectApi.get<IResponse<{ project: Project; subPage: Project[]}>>(project.id)
+  const { data } = await projectApi.get<IResponse<{ project: Project; subPage: Project[] }>>(
+    project.id
+  )
   projectMap[project.id] = data
 }
 
@@ -61,9 +63,15 @@ const handleSwitchIndex = (index: number, project: Project) => {
 }
 
 const handleDeleteSubPage = async (mainProjectId: string, subPage: Project) => {
-  if (await Modal.confirm($t('deleteConfirmMsg', subPage.name), { title: $t('deleteConfirm', subPage.name) })) {
+  if (
+    await Modal.confirm($t('deleteConfirmMsg', subPage.name), {
+      title: $t('deleteConfirm', subPage.name),
+    })
+  ) {
     await projectApi.delete(subPage.id)
-    projectMap[mainProjectId].subPage = projectMap[mainProjectId].subPage.filter((p) => p.id !== subPage.id)
+    projectMap[mainProjectId].subPage = projectMap[mainProjectId].subPage.filter(
+      (p) => p.id !== subPage.id
+    )
     AlertSuccess($t('deleteSuccess'))
   }
 }
@@ -92,7 +100,8 @@ const handleDeleteSubPage = async (mainProjectId: string, subPage: Project) => {
                 :href="getDomainURL(item.domain)"
                 target="_blank"
                 @click.stop
-              >{{ getDomainURL(item.domain) }}</a>
+                >{{ getDomainURL(item.domain) }}</a
+              >
               <div v-else class="project-item-sign-text">{{ 'Not Public' }}</div>
             </div>
             <div class="project-item-operate-group">
@@ -103,7 +112,8 @@ const handleDeleteSubPage = async (mainProjectId: string, subPage: Project) => {
                 type="inner"
                 icon="edit"
                 @click.stop="() => handleGotoProject(item)"
-              >{{ $t('edit') }}</Btn>
+                >{{ $t('edit') }}</Btn
+              >
               <Btn
                 size="sm"
                 color="purple"
@@ -111,7 +121,8 @@ const handleDeleteSubPage = async (mainProjectId: string, subPage: Project) => {
                 type="inner"
                 icon="eye"
                 @click.stop="() => openPreviewProject(item)"
-              >{{ $t('preview') }}</Btn>
+                >{{ $t('preview') }}</Btn
+              >
               <Btn
                 size="sm"
                 color="red"
@@ -119,7 +130,8 @@ const handleDeleteSubPage = async (mainProjectId: string, subPage: Project) => {
                 type="inner"
                 icon="delete"
                 @click.stop="() => $emit('on-delete-project', item)"
-              >{{ $t('delete') }}</Btn>
+                >{{ $t('delete') }}</Btn
+              >
             </div>
           </div>
           <div :class="['project-page-list', { hide: collapseIndex !== index }]">
@@ -175,19 +187,20 @@ const handleDeleteSubPage = async (mainProjectId: string, subPage: Project) => {
     flex-direction: column;
     padding: 8px 16px;
     border-radius: $normal-radius;
-    background-color: rgba($black, .2);
+    background-color: rgba($black, 0.2);
 
-    transition: all .2s;
+    transition: all 0.2s;
 
     &:not(:last-child) {
       margin-bottom: 12px;
     }
 
-    &:hover, &.active {
-      background-color: rgba($black, .5);
-    .project-item-operate-group {
-      opacity: 1;
-    }
+    &:hover,
+    &.active {
+      background-color: rgba($black, 0.5);
+      .project-item-operate-group {
+        opacity: 1;
+      }
     }
   }
 
@@ -236,7 +249,7 @@ const handleDeleteSubPage = async (mainProjectId: string, subPage: Project) => {
       text-decoration: none;
       outline: none;
       border: none;
-      transition: all .2s;
+      transition: all 0.2s;
 
       &.link {
         cursor: pointer;
@@ -305,7 +318,7 @@ const handleDeleteSubPage = async (mainProjectId: string, subPage: Project) => {
     padding: 12px 12px 0;
     overflow: auto;
     flex-wrap: nowrap;
-    transition: all .3s;
+    transition: all 0.3s;
     height: 200px;
 
     &.hide {

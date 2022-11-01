@@ -46,11 +46,11 @@ export const fixApi = mande(`${apiURL}/api/data/fix`)
 
 /** 前端模板预览链接 */
 export const templatePreviewUrl = (templateId: string, hideHelper = false) =>
-`${import.meta.env.VITE_URL_BASE}preview/${templateId}?hideHelper=${hideHelper}`
+  `${import.meta.env.VITE_URL_BASE}preview/${templateId}?hideHelper=${hideHelper}`
 
 /** 前端项目预览链接 */
 export const projectPreviewUrl = (projectId: string) =>
-`${import.meta.env.VITE_URL_BASE}preview/p/${projectId}`
+  `${import.meta.env.VITE_URL_BASE}preview/p/${projectId}`
 
 /** 获取模板预览链接 */
 export const getTemplatePreview = (templateId: string) =>
@@ -61,6 +61,5 @@ export const getProjectPreview = (projectId: string) =>
   `${apiURL}/api/data/preview/project/${projectId}`
 
 /** 获取网站访问链接 */
-export const getDomainURL = (domain: string, filename?: string) => `https://${domain}.p-easy.net${
-  filename && filename !== 'index' ? `/${filename}.html` : ''
-}`
+export const getDomainURL = (domain: string, filename?: string) =>
+  `https://${domain}.p-easy.net${filename && filename !== 'index' ? `/${filename}.html` : ''}`

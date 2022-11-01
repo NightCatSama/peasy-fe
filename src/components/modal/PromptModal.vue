@@ -8,8 +8,8 @@ export default {
 import Modal from './Modal.vue'
 import Btn from '../widgets/Btn.vue'
 import Icon from '../widgets/Icon.vue'
-import { $t } from '@/constants/i18n';
-import Input from '../widgets/Input.vue';
+import { $t } from '@/constants/i18n'
+import Input from '../widgets/Input.vue'
 
 interface IConfirmModal {
   title?: string

@@ -30,7 +30,11 @@ import { copyToClipboard, getClipboardText } from '@/utils/clipboard'
 import { Modal } from '@/components/modal'
 import { isValidName } from '@/utils/validation'
 import { downloadAllPages, downloadByPageNode } from '@/utils/download'
-import { getDefaultColorVars, getDefaultFontSetting, getDefaultSetting } from '@/utils/defaultConfig'
+import {
+  getDefaultColorVars,
+  getDefaultFontSetting,
+  getDefaultSetting,
+} from '@/utils/defaultConfig'
 
 type MaterialData = {
   [key in PageNode['type']]: IMaterialItem[]
@@ -42,7 +46,15 @@ export const usePageStore = defineStore('page', {
   state: () =>
     getStoragePageState('', {
       /** 当前编辑的项目 */
-      project: { id: '', name: '', cover: '', isPublic: false, domain: '', host: '', parentPage: '' } as IProject,
+      project: {
+        id: '',
+        name: '',
+        cover: '',
+        isPublic: false,
+        domain: '',
+        host: '',
+        parentPage: '',
+      } as IProject,
       /** 当前编辑的模板 */
       template: null as IMaterialItem | null,
       allProjectData: {} as { [projectId: string]: Project },
@@ -76,7 +88,8 @@ export const usePageStore = defineStore('page', {
           : ComponentPropsGroup[state.activeNode.component as ComponentName]
         : null,
     isActiveAllSection: (state) => state.activeSection === null,
-    activeSectionIndex: (state) => state.activeSection === null ? 0 : state.allPageData.indexOf(state.activeSection),
+    activeSectionIndex: (state) =>
+      state.activeSection === null ? 0 : state.allPageData.indexOf(state.activeSection),
     /** 当前预览的展示数据 */
     pageData: (state): typeof state.allPageData => {
       if (!state.activeSection) return state.allPageData
@@ -150,23 +163,26 @@ export const usePageStore = defineStore('page', {
       state.activeNode ? useGroupConfig(state.activeNode, 'common').hide || false : false,
     activeNodeIsSonText: (state) =>
       state.activeNode ? useGroupConfig(state.activeNode, 'basic').isSonText || false : false,
-    getMaterialByMaterialId: (state) => (materialId: string): IMaterialItem | void => {
-      const { section, component, template } = state.materialData
-      return [
-        ...(section || []),
-        ...(component || []),
-        ...(template || [])
-      ].find((item) => item.id === materialId)
-    },
+    getMaterialByMaterialId:
+      (state) =>
+      (materialId: string): IMaterialItem | void => {
+        const { section, component, template } = state.materialData
+        return [...(section || []), ...(component || []), ...(template || [])].find(
+          (item) => item.id === materialId
+        )
+      },
     /** 模板列表 */
     templateList: (state) => state.materialData?.template || [],
     /** 主项目数据 */
-    mainProject: (state): IProject => state.project.parentPage ? state.allProjectData[state.project.parentPage] : state.project,
+    mainProject: (state): IProject =>
+      state.project.parentPage ? state.allProjectData[state.project.parentPage] : state.project,
   },
   actions: {
     /** 获取项目数据 */
     async getProjectData(id: string) {
-      const { data } = await projectApi.get<IResponse<{ project: Project, subPage: Project[] }>>('' + id)
+      const { data } = await projectApi.get<IResponse<{ project: Project; subPage: Project[] }>>(
+        '' + id
+      )
       const { project, subPage } = data
       this.setProjectData(project)
       this.allProjectData[project.id] = project
@@ -188,21 +204,23 @@ export const usePageStore = defineStore('page', {
       const body: SaveProjectDto = {
         name: params.name,
         cover: params.cover,
-        page: isEmptyPage ? {
-          pageData: [],
-          colorVars: getDefaultColorVars(),
-          setting: getDefaultSetting(),
-          /** 全局的字体设置 */
-          font: getDefaultFontSetting(),
-        } : {
-          pageData: this.allPageData,
-          /** 颜色变量 */
-          colorVars: this.colorVars,
-          /** 页面配置 */
-          setting: this.setting,
-          /** 字体配置 */
-          font: this.font,
-        },
+        page: isEmptyPage
+          ? {
+              pageData: [],
+              colorVars: getDefaultColorVars(),
+              setting: getDefaultSetting(),
+              /** 全局的字体设置 */
+              font: getDefaultFontSetting(),
+            }
+          : {
+              pageData: this.allPageData,
+              /** 颜色变量 */
+              colorVars: this.colorVars,
+              /** 页面配置 */
+              setting: this.setting,
+              /** 字体配置 */
+              font: this.font,
+            },
         isPublic: params.isPublic,
         domain: params.domain,
         host: params.host,
@@ -241,12 +259,15 @@ export const usePageStore = defineStore('page', {
     },
     /** 下载页面 */
     async download() {
-      downloadByPageNode({
-        pageData: this.allPageData,
-        colorVars: this.colorVars,
-        font: this.font,
-        setting: this.setting,
-      } as IPage, this.project.filename)
+      downloadByPageNode(
+        {
+          pageData: this.allPageData,
+          colorVars: this.colorVars,
+          font: this.font,
+          setting: this.setting,
+        } as IPage,
+        this.project.filename
+      )
     },
     async downloadAll() {
       downloadAllPages(Object.values(this.allProjectData))
@@ -277,12 +298,13 @@ export const usePageStore = defineStore('page', {
     /** 删除单个物料数据 */
     async deleteMaterial(id: string) {
       await materialApi.delete(id)
-      this.materialData && Object.values(this.materialData).forEach((list: IMaterialItem[]) => {
-        const index = list?.findIndex((item) => item.id === id)
-        if (index > -1) {
-          list.splice(index, 1)
-        }
-      })
+      this.materialData &&
+        Object.values(this.materialData).forEach((list: IMaterialItem[]) => {
+          const index = list?.findIndex((item) => item.id === id)
+          if (index > -1) {
+            list.splice(index, 1)
+          }
+        })
     },
     /**
      * 载入模板数据
@@ -317,7 +339,7 @@ export const usePageStore = defineStore('page', {
       }
     },
     setEditTemplate(material: IMaterialItem) {
-       this.template = material
+      this.template = material
     },
     setProjectData(data: Project) {
       if (this.project.id && this.project.id !== data.id) {
@@ -339,8 +361,16 @@ export const usePageStore = defineStore('page', {
       this.setting = page.setting
     },
     /** 插入 Component 组件 */
-    insertNode(dragNode: PageNode, parentNode: PageNode, index: number, isLinkProp = false, removeChildren = false) {
-      const newNode = this.handleInsertNode(formatNodeByUniqueName(dragNode, this.nameMap, isLinkProp, removeChildren))
+    insertNode(
+      dragNode: PageNode,
+      parentNode: PageNode,
+      index: number,
+      isLinkProp = false,
+      removeChildren = false
+    ) {
+      const newNode = this.handleInsertNode(
+        formatNodeByUniqueName(dragNode, this.nameMap, isLinkProp, removeChildren)
+      )
       parentNode.children?.splice(index, 0, newNode)
       return newNode
     },
@@ -589,8 +619,8 @@ export const usePageStore = defineStore('page', {
       const nodeList = [node, ...this.getAllChildNode(node)]
       const nodeNameMap: { [name: string]: PageNode } = {}
       const allNameMap = this.nameMap
-      nodeList.forEach(n => nodeNameMap[n.name] = n)
-      nodeList.forEach(n => {
+      nodeList.forEach((n) => (nodeNameMap[n.name] = n))
+      nodeList.forEach((n) => {
         // 如果非链接组件，或链接组件在物料中，则不需要处理
         if (!n.propLink || nodeNameMap[n.propLink]) return
         // 否则需要解除链接，并将链接组件的配置合并到当前组件中
@@ -605,13 +635,16 @@ export const usePageStore = defineStore('page', {
     handleInsertNode(node: PageNode) {
       // 若有依赖，则将依赖引入
       if (node.moduleDependence) {
-        if (node.moduleDependence.customFontFace && !this.font.customFontFace.includes(node.moduleDependence.customFontFace)) {
+        if (
+          node.moduleDependence.customFontFace &&
+          !this.font.customFontFace.includes(node.moduleDependence.customFontFace)
+        ) {
           this.font.customFontFace.push(node.moduleDependence.customFontFace)
           Alert($t('fontFaceImportTip'))
         }
         if (node.moduleDependence.colorVars && node.moduleDependence.colorVars?.length > 0) {
-          const addColorVars = node.moduleDependence.colorVars.filter(c1 =>
-            !this.colorVars.find(c2 => c1.name === c2.name)
+          const addColorVars = node.moduleDependence.colorVars.filter(
+            (c1) => !this.colorVars.find((c2) => c1.name === c2.name)
           )
           if (addColorVars.length > 0) {
             this.colorVars.push(...addColorVars)
@@ -671,7 +704,7 @@ export const usePageStore = defineStore('page', {
       let parentNode = this.activeParentNode
       let index
       // 粘贴到组件内部, 若当前选中组件不是容器组件，则按相邻组件粘贴处理
-      if (pasteToInside && (node.component === 'Block' && node.children)) {
+      if (pasteToInside && node.component === 'Block' && node.children) {
         parentNode = node
         index = node.children?.length
       } else {
@@ -690,7 +723,8 @@ export const usePageStore = defineStore('page', {
               (pasteNode.type === 'component' && !parentNode) ||
               // 不允许在 Module 中插入组件
               parentNode?.isModule
-            ) return
+            )
+              return
             // 若粘贴的组件已经在项目中，则提示是否要链接到原组件
             const originNode = this.nameMap[pasteNode.name]
             let isLink = false
@@ -719,8 +753,7 @@ export const usePageStore = defineStore('page', {
             return true
           }
         }
-      } catch(e) {
-      }
+      } catch (e) {}
     },
   },
 })

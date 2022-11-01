@@ -5,9 +5,9 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { getUniqueName } from '@/config';
-import { getIsEditMode } from '@/utils/context';
-import { escapeHtml } from '@/utils/xss';
+import { getUniqueName } from '@/config'
+import { getIsEditMode } from '@/utils/context'
+import { escapeHtml } from '@/utils/xss'
 import { nextTick, useAttrs, watch } from 'vue'
 import { useProps, IProps } from './hooks/common'
 
@@ -20,33 +20,37 @@ const classNames = $computed(() => ['text', uName.value, ...tagClassNames.value]
 
 const nextProcessFn: any = getIsEditMode() ? nextTick : setTimeout
 
-watch(() => [props], () => {
-  // 若有子节点，则需要在渲染完成之后
-  // 从 text-children 中取出节点渲染到 text-content 中
-  if (!props.basic.isSonText && props.children) {
-    nextProcessFn(() => {
-      if (!elem.value) return
-      const textElem = elem.value.querySelector('.text-content') as HTMLElement
-      const textChildElem = elem.value.querySelector('.text-children') as HTMLElement
-      props.children?.forEach((child, index) => {
-        const beReplaceElem = textElem.querySelector('[data-textchild="' + index + '"]')
-        const replaceElem = textChildElem.querySelector('#' + getUniqueName(child.name))
-        if (beReplaceElem && replaceElem) {
-          const newNode = replaceElem.cloneNode(true) as HTMLElement
-          newNode.dataset.textchild = '' + index
-          newNode.classList.remove('lib-component')
-          newNode.style.pointerEvents = 'none'
-          textElem.replaceChild(newNode, beReplaceElem)
-        }
+watch(
+  () => [props],
+  () => {
+    // 若有子节点，则需要在渲染完成之后
+    // 从 text-children 中取出节点渲染到 text-content 中
+    if (!props.basic.isSonText && props.children) {
+      nextProcessFn(() => {
+        if (!elem.value) return
+        const textElem = elem.value.querySelector('.text-content') as HTMLElement
+        const textChildElem = elem.value.querySelector('.text-children') as HTMLElement
+        props.children?.forEach((child, index) => {
+          const beReplaceElem = textElem.querySelector('[data-textchild="' + index + '"]')
+          const replaceElem = textChildElem.querySelector('#' + getUniqueName(child.name))
+          if (beReplaceElem && replaceElem) {
+            const newNode = replaceElem.cloneNode(true) as HTMLElement
+            newNode.dataset.textchild = '' + index
+            newNode.classList.remove('lib-component')
+            newNode.style.pointerEvents = 'none'
+            textElem.replaceChild(newNode, beReplaceElem)
+          }
+        })
       })
-    })
-  }
-}, { immediate: true, deep: true })
+    }
+  },
+  { immediate: true, deep: true }
+)
 
 const renderText = $computed(() => {
   let text = escapeHtml(props.basic.text)
   if (!elem.value) return text
-  const textChild = text.match(/{{(\d+?)}}/ig) || []
+  const textChild = text.match(/{{(\d+?)}}/gi) || []
   textChild.forEach((t: string) => {
     const index = parseInt(t.slice(2, -2))
     if (!props?.children?.[index - 1]) return

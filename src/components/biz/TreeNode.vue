@@ -27,8 +27,15 @@ const { dragNode, setDropZone, setDragNode } = useDragStoreHelper()
 
 const pageStore = usePageStore()
 const { activeNode, activeParentChain } = storeToRefs(pageStore)
-const { setActiveNodeHide, setActiveNode, deleteActiveNode, copyActiveNode, separateActiveNode, changeNodeName, swapNode } =
-  pageStore
+const {
+  setActiveNodeHide,
+  setActiveNode,
+  deleteActiveNode,
+  copyActiveNode,
+  separateActiveNode,
+  changeNodeName,
+  swapNode,
+} = pageStore
 
 let collapse = ref(!!layerStatus.value.get(node))
 let isEdit = $ref(false)
@@ -141,7 +148,9 @@ const handleDragEnter = (e: DragEvent) => {
           }"
           @keydown.enter.stop="(e: Event) => (e.target as HTMLDivElement)?.blur()"
           @blur="handleActiveNodeChange"
-        >{{ node.name }}</div>
+        >
+          {{ node.name }}
+        </div>
         <Icon
           v-if="isHide"
           class="tree-node-info-name-icon"

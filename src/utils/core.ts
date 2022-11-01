@@ -13,28 +13,30 @@ export const parsePageData = (data: IPage, temp: string) => {
     }
     return value
   }
-  const dataScript = `<script>window.data = "${escapeHtml(JSON.stringify(data, replaceFn))}"</script>`
+  const dataScript = `<script>window.data = "${escapeHtml(
+    JSON.stringify(data, replaceFn)
+  )}"</script>`
 
   let file = temp
   file = file.replace(/<!--app-data-->/g, () => dataScript)
-  file = file.replace(/<!--app-favicon-->/g, () => `<link rel="icon" href="${data.setting?.favicon}" />`)
-  file = file.replace(/<!--app-title-->/g, () => data.setting?.title)
   file = file.replace(
-    /<!--app-meta-->/g,
-    () => data.setting?.description
+    /<!--app-favicon-->/g,
+    () => `<link rel="icon" href="${data.setting?.favicon}" />`
+  )
+  file = file.replace(/<!--app-title-->/g, () => data.setting?.title)
+  file = file.replace(/<!--app-meta-->/g, () =>
+    data.setting?.description
       ? `<meta name="description" content="${data.setting.description}" />`
       : ''
   )
-  file = file.replace(
-    /<!--app-style-->/g,
-    () => `
+  file = file.replace(/<!--app-style-->/g, () =>
+    `
     <style>${getColorVarStylesheet(data.colorVars)}</style>
     <style>${getFontStylesheet(data.font, 'html')}</style>
   `.trim()
   )
-  file = file.replace(
-    /<!--app-google-analytic-->/g,
-    () => `
+  file = file.replace(/<!--app-google-analytic-->/g, () =>
+    `
 ${
   data.setting.googleAnalytics
     ? `
@@ -51,9 +53,8 @@ ${
 }
   `.trim()
   )
-  file = file.replace(
-    /<!--app-custom-code-->/g,
-    () => data.setting.customCode ? data.setting.customCode : ''
+  file = file.replace(/<!--app-custom-code-->/g, () =>
+    data.setting.customCode ? data.setting.customCode : ''
   )
 
   return file

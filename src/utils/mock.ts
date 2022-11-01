@@ -40,7 +40,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
         code: getDefaultCode(),
       },
     },
-    children: []
+    children: [],
   }
 }
 
@@ -114,7 +114,8 @@ export const getMockModuleBlock = (): PageNode<'Block'> => {
             props: {
               type: 'warning',
               message: '可以直接输入图片地址，或点击 Upload 上传图片。',
-              messageEn: 'You can directly input the image address, or click Upload to upload images.',
+              messageEn:
+                'You can directly input the image address, or click Upload to upload images.',
             },
           },
           {

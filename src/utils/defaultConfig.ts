@@ -17,7 +17,7 @@ export const getDefaultCommon = (initConfig?: Partial<ICommonType>): ICommonType
 
 export const getDefaultBasic = <
   T extends ComponentName = any,
-  P extends Partial<GroupPropType<T>['basic']> = any,
+  P extends Partial<GroupPropType<T>['basic']> = any
 >(
   component: T,
   initConfig?: P
@@ -57,7 +57,7 @@ export const getDefaultBasic = <
       type: 'youtube',
       src: 'https://interactive-examples.mdn.mozilla.net/media/cc0-videos/flower.webm',
       youtubeId: 'dQw4w9WgXcQ',
-      autoplay: false
+      autoplay: false,
     }
   }
   if (isSomeBasicType(component, 'InputField', obj)) {
@@ -103,7 +103,7 @@ export const getDefaultLayout = (initConfig?: Partial<ILayout>): ILayout =>
       justify: 'center',
       align: 'center',
       wrap: 'nowrap',
-      reverse: false
+      reverse: false,
     },
     initConfig
   )
@@ -195,7 +195,7 @@ export const getDefaultEvent = (initConfig?: Partial<IEvent>): IEvent =>
       link: '',
       openNewTab: true,
       execFunction: '',
-      scrollTarget: ''
+      scrollTarget: '',
     },
     initConfig
   )
@@ -229,7 +229,7 @@ export const getDefaultAnimationSettings = (name: IAnimationItem['name']): IAnim
   if (name === 'fade') {
     return {
       fade: {
-        opacity: .5,
+        opacity: 0.5,
       },
     }
   }
@@ -288,7 +288,8 @@ export const getDefaultCode = (initConfig?: Partial<ICode>): ICode =>
     initConfig
   )
 
-export const getDefaultColorVars = (): IColorVarItem[] => [{ name: '$primary', color: '#3e7ce8' }] as IColorVarItem[]
+export const getDefaultColorVars = (): IColorVarItem[] =>
+  [{ name: '$primary', color: '#3e7ce8' }] as IColorVarItem[]
 export const getDefaultSetting = (): IPageSetting => ({
   client: 'both',
   title: 'Page Title',
@@ -297,7 +298,9 @@ export const getDefaultSetting = (): IPageSetting => ({
 })
 export const getDefaultFontSetting = (): IFontSetting => ({
   fontFamily: `'Lato', -apple-system, PingFang SC, "Helvetica Neue", sans-serif`,
-  customFontFace: ['https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap'],
+  customFontFace: [
+    'https://fonts.googleapis.com/css2?family=Lato:ital,wght@0,400;0,700;0,900;1,400;1,700;1,900&display=swap',
+  ],
   fontSize: 20,
   mediaFontSize: {},
 })

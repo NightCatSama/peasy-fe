@@ -40,9 +40,9 @@ const handleAddColor = () => {
       >
       </ColorItem>
     </GroupItem>
-    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddColor"
-      >{{ $t('addColor') }}</Btn
-    >
+    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddColor">{{
+      $t('addColor')
+    }}</Btn>
   </div>
 </template>
 

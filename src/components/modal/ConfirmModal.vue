@@ -8,8 +8,8 @@ export default {
 import Modal from './Modal.vue'
 import Btn from '../widgets/Btn.vue'
 import Icon from '../widgets/Icon.vue'
-import { $t } from '@/constants/i18n';
-import Input from '../widgets/Input.vue';
+import { $t } from '@/constants/i18n'
+import Input from '../widgets/Input.vue'
 
 interface IConfirmModal {
   title?: string
@@ -50,7 +50,10 @@ defineExpose({})
       <div>{{ msg }}</div>
     </div>
     <div v-if="inputVerify" class="input-verify">
-      <div class="input-verify-text">{{ $t('deleteConfirmInput1') }}<span class="highlight">{{ inputVerify }}</span>{{ $t('deleteConfirmInput2') }}</div>
+      <div class="input-verify-text">
+        {{ $t('deleteConfirmInput1') }}<span class="highlight">{{ inputVerify }}</span
+        >{{ $t('deleteConfirmInput2') }}
+      </div>
       <Input v-model="value" @input="(e: any) => value = e.target.value"></Input>
     </div>
     <div class="btn-group">

@@ -1,21 +1,16 @@
-import { $t } from "@/constants/i18n"
-import { ShortcutKey } from "@/constants/shortcut"
-import { useHistoryStore } from "@/stores/history"
-import { usePageStore } from "@/stores/page"
-import { Alert } from "@/utils/alert"
-import { emitter } from "@/utils/event"
-import { useKeyPress } from "ahooks-vue"
+import { $t } from '@/constants/i18n'
+import { ShortcutKey } from '@/constants/shortcut'
+import { useHistoryStore } from '@/stores/history'
+import { usePageStore } from '@/stores/page'
+import { Alert } from '@/utils/alert'
+import { emitter } from '@/utils/event'
+import { useKeyPress } from 'ahooks-vue'
 import { storeToRefs } from 'pinia'
-import { nextTick } from "vue"
+import { nextTick } from 'vue'
 
 export const useShortCut = () => {
   const pageStore = usePageStore()
-  const {
-    allPageData,
-    activeSection,
-    activeNode,
-    activeNodeIsSonText,
-  } = storeToRefs(pageStore)
+  const { allPageData, activeSection, activeNode, activeNodeIsSonText } = storeToRefs(pageStore)
   const {
     setActiveNode,
     setActiveSection,
@@ -111,7 +106,7 @@ export const useShortCut = () => {
   })
 
   // 处理粘贴
-  const handlePasteNode = async(pasteToInside?: boolean) => {
+  const handlePasteNode = async (pasteToInside?: boolean) => {
     if (!activeNode.value) return
     if (await pasteClipboardNode(pasteToInside)) {
       Alert($t('pasteSuccess'))
@@ -136,6 +131,6 @@ export const useShortCut = () => {
   })
 
   return {
-    showKeyboard: $$(showKeyboard)
+    showKeyboard: $$(showKeyboard),
   }
 }

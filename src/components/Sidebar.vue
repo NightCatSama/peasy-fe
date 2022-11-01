@@ -21,7 +21,7 @@ const { activeMaterialsPanel } = defineProps<ISidebarProps>()
 
 const gotoHome = () => {
   router.push({
-    name: 'home'
+    name: 'home',
   })
 }
 </script>
@@ -33,9 +33,7 @@ const gotoHome = () => {
     </div>
     <div class="operator-panel">
       <div class="top">
-        <div
-          class="operator-item add-item"
-        >
+        <div class="operator-item add-item">
           <Icon
             :size="26"
             name="add"
@@ -54,7 +52,15 @@ const gotoHome = () => {
           type="pure"
         >
           <template #default="{ shown }">
-            <div class="operator-item first" v-tooltip="{ content: $t('question'), placement: 'right', distance: 10, disabled: shown }">
+            <div
+              class="operator-item first"
+              v-tooltip="{
+                content: $t('question'),
+                placement: 'right',
+                distance: 10,
+                disabled: shown,
+              }"
+            >
               <Icon :size="22" name="question-circle" :active="shown" />
             </div>
           </template>
@@ -77,7 +83,15 @@ const gotoHome = () => {
           type="pure"
         >
           <template #default="{ shown }">
-            <div class="operator-item" v-tooltip="{ content: $t('fontSetting'), placement: 'right', distance: 10, disabled: shown }">
+            <div
+              class="operator-item"
+              v-tooltip="{
+                content: $t('fontSetting'),
+                placement: 'right',
+                distance: 10,
+                disabled: shown,
+              }"
+            >
               <Icon :size="26" name="font" :active="shown" />
             </div>
           </template>
@@ -93,7 +107,15 @@ const gotoHome = () => {
           type="pure"
         >
           <template #default="{ shown }">
-            <div class="operator-item last" v-tooltip="{ content: $t('pageGlobalSetting'), placement: 'right', distance: 10, disabled: shown }">
+            <div
+              class="operator-item last"
+              v-tooltip="{
+                content: $t('pageGlobalSetting'),
+                placement: 'right',
+                distance: 10,
+                disabled: shown,
+              }"
+            >
               <Icon :size="26" name="advanced" :active="shown" />
             </div>
           </template>

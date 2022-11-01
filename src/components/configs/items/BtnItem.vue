@@ -14,7 +14,16 @@ interface IBtnItemProps {
   onDelete?: () => void
 }
 
-const { label, tip, btnColor = 'primary', canDelete, modelValue, wrapperClass, onClick, onDelete } = defineProps<IBtnItemProps>()
+const {
+  label,
+  tip,
+  btnColor = 'primary',
+  canDelete,
+  modelValue,
+  wrapperClass,
+  onClick,
+  onDelete,
+} = defineProps<IBtnItemProps>()
 </script>
 
 <template>
@@ -27,15 +36,24 @@ const { label, tip, btnColor = 'primary', canDelete, modelValue, wrapperClass, o
         class="question-icon"
         :size="13"
         v-tooltip="{
-          content: tip
+          content: tip,
         }"
       ></Icon>
       <div class="label-suffix"><slot name="label-suffix"></slot></div>
     </span>
     <slot>
-      <Btn type="inner" :color="btnColor" size="sm" @click="() => onClick?.()">{{ modelValue }}</Btn>
+      <Btn type="inner" :color="btnColor" size="sm" @click="() => onClick?.()">{{
+        modelValue
+      }}</Btn>
     </slot>
-    <Icon v-if="canDelete" name="close" type="btn" color="red" :size="16" @click="() => onDelete?.()"></Icon>
+    <Icon
+      v-if="canDelete"
+      name="close"
+      type="btn"
+      color="red"
+      :size="16"
+      @click="() => onDelete?.()"
+    ></Icon>
   </div>
 </template>
 

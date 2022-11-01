@@ -41,19 +41,18 @@ const handleResetDefault = () => {
     v-bind="$attrs"
   >
     <div class="info-wrapper">
-      <ColorItem :label="$t('editorBackground')" v-model="editorSettings.backgroundColor"></ColorItem>
+      <ColorItem
+        :label="$t('editorBackground')"
+        v-model="editorSettings.backgroundColor"
+      ></ColorItem>
       <ColorItem :label="$t('editorSelected')" v-model="editorSettings.selectColor"></ColorItem>
       <ColorItem :label="$t('editorContours')" v-model="editorSettings.contoursColor"></ColorItem>
     </div>
     <div class="btn-wrapper">
       <div class="btn-wrapper-left">
-        <Btn
-          class="reset-btn"
-          type="text"
-          size="sm"
-          @click="handleResetDefault"
-          >{{ $t('defaultSetting') }}</Btn
-        >
+        <Btn class="reset-btn" type="text" size="sm" @click="handleResetDefault">{{
+          $t('defaultSetting')
+        }}</Btn>
       </div>
       <Btn class="save-btn" type="inner" :text="$t('close')" @click="$emit('close')"></Btn>
     </div>

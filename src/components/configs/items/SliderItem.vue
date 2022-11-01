@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Slider from '@/components/widgets/Slider.vue'
 import { emitter } from '@/utils/event'
-import { inConfigMain } from '@/utils/helper';
+import { inConfigMain } from '@/utils/helper'
 
 type SliderPropType = Partial<InstanceType<typeof Slider>>
 

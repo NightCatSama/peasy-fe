@@ -8,7 +8,7 @@ export default {
 import Modal from './Modal.vue'
 import Btn from '../widgets/Btn.vue'
 import Icon from '../widgets/Icon.vue'
-import { $t } from '@/constants/i18n';
+import { $t } from '@/constants/i18n'
 
 interface IGuideModal {
   title?: string
@@ -18,13 +18,7 @@ interface IGuideModal {
   onOk?: () => void
 }
 
-const {
-  title,
-  tips,
-  extraLink = '',
-  onExtraLinkClick = null,
-  onOk,
-} = defineProps<IGuideModal>()
+const { title, tips, extraLink = '', onExtraLinkClick = null, onOk } = defineProps<IGuideModal>()
 
 let modal = $ref<InstanceType<typeof Modal> | null>(null)
 let index = $ref(0)
@@ -35,10 +29,15 @@ defineExpose({})
 </script>
 
 <template>
-  <Modal ref="modal" class="guide-modal" :title="title + ` (${index + 1}/${tips.length})`" v-bind="$attrs">
+  <Modal
+    ref="modal"
+    class="guide-modal"
+    :title="title + ` (${index + 1}/${tips.length})`"
+    v-bind="$attrs"
+  >
     <div class="modal-container">
       <div class="modal-tip-item" v-if="tip">
-        <img class="modal-tip-item-image" :src="tip.image" :alt="tip.msg">
+        <img class="modal-tip-item-image" :src="tip.image" :alt="tip.msg" />
         <div class="modal-tip-item-text" v-html="tip.msg"></div>
       </div>
     </div>

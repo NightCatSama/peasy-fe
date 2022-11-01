@@ -225,7 +225,11 @@ let showCodeInput = $ref(false)
             :label="$t('timingCode')"
             v-model="item.timingFunction"
           ></InputItem>
-          <SelectItem :label="$t('fillMode')" :options="fillModeMap" v-model="item.fillMode"></SelectItem>
+          <SelectItem
+            :label="$t('fillMode')"
+            :options="fillModeMap"
+            v-model="item.fillMode"
+          ></SelectItem>
           <SelectItem
             :label="$t('direction')"
             :options="directionMap"
@@ -235,7 +239,9 @@ let showCodeInput = $ref(false)
       </template>
     </CollapseItem>
     <div class="item">
-      <Btn type="text" :is-block="true" icon="plus" @click="handleAddAnimation">{{ $t('addAnimation') }}</Btn>
+      <Btn type="text" :is-block="true" icon="plus" @click="handleAddAnimation">{{
+        $t('addAnimation')
+      }}</Btn>
     </div>
   </Group>
 </template>

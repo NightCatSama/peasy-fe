@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { watch } from 'vue';
+import { watch } from 'vue'
 import Icon from './Icon.vue'
 import { imgErrorFallback } from '@/config'
 
@@ -12,15 +12,18 @@ const { cover = '', name, canOperate } = defineProps<IElementProps>()
 
 let coverUrl = $ref(cover)
 let srcset = $computed(() => {
-  if (coverUrl && (window.devicePixelRatio >= 2)) {
+  if (coverUrl && window.devicePixelRatio >= 2) {
     return `${coverUrl} 2x`
   }
   return ''
 })
 
-watch(() => cover, () => {
-  coverUrl = cover
-})
+watch(
+  () => cover,
+  () => {
+    coverUrl = cover
+  }
+)
 const handleCoverError = () => {
   coverUrl = imgErrorFallback
 }
@@ -50,12 +53,7 @@ const handleCoverError = () => {
       ></Icon>
     </div>
     <div class="image">
-      <img
-        v-if="coverUrl"
-        :src="coverUrl"
-        :srcset="srcset"
-        @error="handleCoverError"
-      >
+      <img v-if="coverUrl" :src="coverUrl" :srcset="srcset" @error="handleCoverError" />
       <div v-else class="image-placeholder">
         <Icon name="empty" :size="24" />
         <span>{{ $t('notCover') }}</span>

@@ -1,5 +1,5 @@
-import { getContext } from "@/utils/context"
-import { onBeforeUnmount, onMounted } from "vue"
+import { getContext } from '@/utils/context'
+import { onBeforeUnmount, onMounted } from 'vue'
 
 export const useScrollByOffset = (showByOffset: string, cb: (show: boolean) => void) => {
   const editContext = getContext()
@@ -15,7 +15,7 @@ export const useScrollByOffset = (showByOffset: string, cb: (show: boolean) => v
       cb(scrollTop > parseFloat(showByOffset))
     }
     if (showByOffset.endsWith('%')) {
-      cb(scrollTop > parseFloat(showByOffset) * containerElement.clientHeight / 100)
+      cb(scrollTop > (parseFloat(showByOffset) * containerElement.clientHeight) / 100)
     }
   }
 

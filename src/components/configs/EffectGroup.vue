@@ -34,7 +34,9 @@ const handleAddEffect = () => {
 
 /** 得到当前目标下可用的过渡属性 */
 const getEffectMap = $computed(() => (target: string, targetType: string): IEffectShowItemMap => {
-  return targetType === 'tag' ? allEffectMap : getEffectMapByNode(nameMap.value[target], targetType === 'self') || {}
+  return targetType === 'tag'
+    ? allEffectMap
+    : getEffectMapByNode(nameMap.value[target], targetType === 'self') || {}
 })
 
 const getEffectLabel = (target: string, targetType: string) =>
@@ -98,21 +100,23 @@ const effectTargetMap: { [key: string]: ISelectItem } = $computed(() => {
   return obj
 })
 
-const actionMap: { name: keyof IEffectItem['styles']; label: string; hide?: boolean }[] = $computed(() => [
-  {
-    name: 'hover',
-    label: $t('hover'),
-  },
-  {
-    name: 'active',
-    label: $t('active'),
-  },
-  {
-    hide: activeNode.value?.component !== 'InputField',
-    name: 'focus',
-    label: $t('focus'),
-  }
-])
+const actionMap: { name: keyof IEffectItem['styles']; label: string; hide?: boolean }[] = $computed(
+  () => [
+    {
+      name: 'hover',
+      label: $t('hover'),
+    },
+    {
+      name: 'active',
+      label: $t('active'),
+    },
+    {
+      hide: activeNode.value?.component !== 'InputField',
+      name: 'focus',
+      label: $t('focus'),
+    },
+  ]
+)
 
 const timingFunction = {
   ease: $t('ease'),
@@ -202,7 +206,10 @@ let showTimingCode = $ref(false)
           <template v-for="obj in actionMap" :key="obj.name">
             <template v-if="!obj.hide">
               <component
-                v-if="item.styles[obj.name] !== void 0 && getEffectMap(item.target, item.targetType)?.[item.name]"
+                v-if="
+                  item.styles[obj.name] !== void 0 &&
+                  getEffectMap(item.target, item.targetType)?.[item.name]
+                "
                 :label="obj.label"
                 :is="getEffectMap(item.target, item.targetType)[item.name].component"
                 :model-value="item.styles[obj.name]"
@@ -227,7 +234,9 @@ let showTimingCode = $ref(false)
       </template>
     </CollapseItem>
     <div class="item">
-      <Btn type="text" :is-block="true" icon="plus" @click="handleAddEffect">{{ $t('addEffect') }}</Btn>
+      <Btn type="text" :is-block="true" icon="plus" @click="handleAddEffect">{{
+        $t('addEffect')
+      }}</Btn>
     </div>
   </Group>
 </template>

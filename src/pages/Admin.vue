@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import Btn from '@/components/widgets/Btn.vue'
-import { useUserStoreHelper } from '@/hooks/store';
-import { fixApi } from '@/utils/mande';
+import { useUserStoreHelper } from '@/hooks/store'
+import { fixApi } from '@/utils/mande'
 import { useRoute } from 'vue-router'
 
 const route = useRoute()

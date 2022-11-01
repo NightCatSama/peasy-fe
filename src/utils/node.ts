@@ -46,7 +46,7 @@ export const formatNodeByUniqueName = (
       // 链接到原组件
       if (isLinkProp) {
         // 如果组件本身是链接组件，则继承特殊配置
-        node.config = node.propLink && node.config ? node.config : { props: {} } as any
+        node.config = node.propLink && node.config ? node.config : ({ props: {} } as any)
         node.propLink = node.propLink || originName
       }
       nameMap[node.name] = node
@@ -57,7 +57,7 @@ export const formatNodeByUniqueName = (
   }
 
   if (!isLinkProp) {
-    allChildNode.forEach(node => {
+    allChildNode.forEach((node) => {
       if (node.propLink) {
         node.propLink = nameUpdatedMap[node.propLink] || node.propLink
       }

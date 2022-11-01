@@ -86,7 +86,7 @@ export const allEffectMap: IEffectShowItemMap = {
     label: $t('custom'),
     ...getFormPropsByType('custom'),
     defaultValue: '',
-  }
+  },
 }
 
 export const getEffectShowItemByGroup = (

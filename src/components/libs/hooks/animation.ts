@@ -50,7 +50,7 @@ export const useAnimation = (propsRef: IProps, el: Ref<HTMLDivElement | null>) =
   let observer = $ref<IntersectionObserver | null>(null)
   let removeListenerList: (() => void)[] = $ref([])
   let animationMap: AnimationMapType = reactive(
-    new Map<IAnimationItem, { animationName: string; disabled: boolean, isAnimate?: boolean }>()
+    new Map<IAnimationItem, { animationName: string; disabled: boolean; isAnimate?: boolean }>()
   )
   let isBindClick = $ref(false)
   let isBindHover = $ref(false)
@@ -136,7 +136,11 @@ export const useAnimation = (propsRef: IProps, el: Ref<HTMLDivElement | null>) =
         const keyframeBody = getKeyframeBody(anim, position)
         const keyframe = getKeyframe(animName, keyframeBody)
         stylesheet += keyframe
-        animationMap.set(anim, { animationName: animName, disabled: anim.trigger !== 'always', isAnimate: false })
+        animationMap.set(anim, {
+          animationName: animName,
+          disabled: anim.trigger !== 'always',
+          isAnimate: false,
+        })
       })
 
       dynamicAnimationStyles.innerHTML = stylesheet

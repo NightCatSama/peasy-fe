@@ -2,7 +2,7 @@
 import Switch from '@/components/widgets/Switch.vue'
 import { emitter } from '@/utils/event'
 import Icon from '@/components/widgets/Icon.vue'
-import { inConfigMain } from '@/utils/helper';
+import { inConfigMain } from '@/utils/helper'
 
 interface ISwitchItemProps {
   label: string
@@ -36,7 +36,7 @@ const value = $computed({
         class="question-icon"
         :size="13"
         v-tooltip="{
-          content: tip
+          content: tip,
         }"
       ></Icon>
       <div class="label-suffix"><slot name="label-suffix"></slot></div>

@@ -19,15 +19,28 @@ const { lockScriptTrigger, setLockScriptTrigger } = useDisplayStoreHelper()
 </script>
 
 <template>
-  <Group group-name="event" class="event-group" :default-collapsed="false" :can-advanced="event.type !== 'none'">
+  <Group
+    group-name="event"
+    class="event-group"
+    :default-collapsed="false"
+    :can-advanced="event.type !== 'none'"
+  >
     <template #default="{ showAdvanced }">
       <SelectItem
         :label="$t('eventTriggerType')"
-        :options="{ none: $t('eventNone'), tap: $t('eventTap'), mousedown: $t('eventMouseDown'), touchstart: $t('eventTouchStart') }"
+        :options="{
+          none: $t('eventNone'),
+          tap: $t('eventTap'),
+          mousedown: $t('eventMouseDown'),
+          touchstart: $t('eventTouchStart'),
+        }"
         v-model="event.type"
       ></SelectItem>
       <template v-if="event.type !== 'none'">
-        <TabsItem :data="{ link: $t('link'), scrollTo: $t('scrollTo'), func: $t('function') }" v-model="event.action"></TabsItem>
+        <TabsItem
+          :data="{ link: $t('link'), scrollTo: $t('scrollTo'), func: $t('function') }"
+          v-model="event.action"
+        ></TabsItem>
         <template v-if="event.action === 'link'">
           <InputItem
             :label="$t('link')"

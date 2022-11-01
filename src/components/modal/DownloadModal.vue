@@ -45,7 +45,7 @@ const openGithubPageGuideModal = () => {
       {
         msg: $t('downloadGithubPageStep4'),
         image: 'https://peasy.soapphoto.com/0ea96476-2f33-41fe-b580-8e158e2247ce',
-      }
+      },
     ],
   })
 }
@@ -77,7 +77,7 @@ const openVercelGuideModal = () => {
       {
         msg: $t('downloadVercelStep6'),
         image: 'https://peasy.soapphoto.com/c11f6c42-3af5-4d22-a09b-b2ad7e822c6d',
-      }
+      },
     ],
   })
 }
@@ -92,24 +92,29 @@ const openVercelGuideModal = () => {
     close-on-click-mask
     v-bind="$attrs"
   >
-    <Btn type="btn" class="download-btn" @click="$emit('download')">{{ $t('downloadImmediately') }}</Btn>
+    <Btn type="btn" class="download-btn" @click="$emit('download')">{{
+      $t('downloadImmediately')
+    }}</Btn>
     <Btn
       v-if="showDownloadAll"
       type="btn"
       class="download-btn"
       color="purple"
       @click="$emit('download-all')"
-    >{{ $t('downloadAll') }}</Btn>
+      >{{ $t('downloadAll') }}</Btn
+    >
     <div class="download-tip">
       <div class="tip-desc">{{ $t('downloadNetworkTip') }}</div>
       <h2>1. {{ $t('downloadPeasy') }}</h2>
-      <p v-html="
-        project?.isPublic && project?.domain
+      <p
+        v-html="
+          project?.isPublic && project?.domain
             ? $t('downloadPeasyLink', project.domain)
             : !isLogin
-              ? $t('downloadPeasyMsgNoLogin')
-              : $t('downloadPeasyMsg')
-      "></p>
+            ? $t('downloadPeasyMsgNoLogin')
+            : $t('downloadPeasyMsg')
+        "
+      ></p>
       <h2>2. {{ $t('downloadGithubPage') }}</h2>
       <p v-html="$t('downloadGithubPageMsg')"></p>
       <Btn
@@ -118,16 +123,13 @@ const openVercelGuideModal = () => {
         type="inner"
         color="default"
         @click="openGithubPageGuideModal"
-      >{{ $t('checkGuide') }}</Btn>
+        >{{ $t('checkGuide') }}</Btn
+      >
       <h2>3. {{ $t('downloadVercel') }}</h2>
       <p v-html="$t('downloadVercelMsg')"></p>
-      <Btn
-        class="guide-btn"
-        size="sm"
-        type="inner"
-        color="default"
-        @click="openVercelGuideModal"
-      >{{ $t('checkGuide') }}</Btn>
+      <Btn class="guide-btn" size="sm" type="inner" color="default" @click="openVercelGuideModal">{{
+        $t('checkGuide')
+      }}</Btn>
     </div>
   </Modal>
 </template>

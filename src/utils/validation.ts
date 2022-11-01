@@ -1,5 +1,5 @@
-import { $t } from "@/constants/i18n"
-import { AlertError } from "./alert"
+import { $t } from '@/constants/i18n'
+import { AlertError } from './alert'
 
 export const validNameReg = /[^0-9a-zA-Z\u4e00-\u9fa5_-]/g
 

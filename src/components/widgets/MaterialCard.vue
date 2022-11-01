@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import { watch } from 'vue';
+import { watch } from 'vue'
 import Icon from './Icon.vue'
 import { IMaterialItem, imgErrorFallback, PageNodeType } from '@/config'
-import { Project } from '@@/entities/project.entity';
-import { useRouter } from 'vue-router';
-import { Modal } from '../modal';
-import { $t } from '@/constants/i18n';
+import { Project } from '@@/entities/project.entity'
+import { useRouter } from 'vue-router'
+import { Modal } from '../modal'
+import { $t } from '@/constants/i18n'
 
 interface IMaterialCardProps {
   type: string | number
@@ -17,11 +17,19 @@ interface IMaterialCardProps {
   showFilename?: boolean
 }
 
-const { type, item, isNew, newText = $t('newProject'), showFilename, selected, hideOperate } = defineProps<IMaterialCardProps>()
+const {
+  type,
+  item,
+  isNew,
+  newText = $t('newProject'),
+  showFilename,
+  selected,
+  hideOperate,
+} = defineProps<IMaterialCardProps>()
 
 const router = useRouter()
 
-const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
+const getFilename = (filename?: string) => (filename ? `${filename}` : 'index')
 </script>
 
 <template>
@@ -43,7 +51,9 @@ const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
         <slot></slot>
       </div>
       <div class="material-card-info">
-        <div class="material-card-info-name">{{ showFilename ? getFilename((item as Project).filename) : item.name }}</div>
+        <div class="material-card-info-name">
+          {{ showFilename ? getFilename((item as Project).filename) : item.name }}
+        </div>
         <template v-if="type === 'project' && !hideOperate">
           <Icon
             type="circle"
@@ -59,7 +69,7 @@ const getFilename = (filename?: string) => filename ? `${filename}` : 'index'
             name="advanced"
             :size="11"
             v-tooltip="{ content: $t('setting'), placement: 'top', distance: 10 }"
-            @click="$emit('on-setting-project', (item as Project))"
+            @click="$emit('on-setting-project', item as Project)"
           ></Icon>
           <Icon
             type="circle"

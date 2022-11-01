@@ -38,12 +38,16 @@ const handleChange = (img: string) => {
   }
 }
 
-watch(() => modelValue, () => {
-  coverUrl = modelValue
-  if (coverUrl) {
-    showCover = true
-  }
-}, { immediate: true })
+watch(
+  () => modelValue,
+  () => {
+    coverUrl = modelValue
+    if (coverUrl) {
+      showCover = true
+    }
+  },
+  { immediate: true }
+)
 
 const uploadImage = async (e: InputEvent) => {
   uploadByEvent(e, handleChange)
@@ -69,7 +73,15 @@ const handleCoverError = () => {
     <template #label v-if="!hideLabel"><slot name="label"></slot></template>
     <template #suffix>
       <div class="upload-wrapper">
-        <Icon v-if="modelValue" class="preview-btn" name="preview" type="circle" color="primary" :size="13" @click="showCover = !showCover" />
+        <Icon
+          v-if="modelValue"
+          class="preview-btn"
+          name="preview"
+          type="circle"
+          color="primary"
+          :size="13"
+          @click="showCover = !showCover"
+        />
         <div class="upload-btn">
           {{ $t('upload') }}
           <input type="file" class="upload-btn-input" :accept="accept" @change="uploadImage" />
@@ -85,20 +97,10 @@ const handleCoverError = () => {
           }"
         ></Icon>
       </div>
-      <div
-        v-if="showCover && coverUrl && !loading"
-        class="cover"
-        @click="showCover = false"
-      >
-        <img
-          :src="coverUrl"
-          @error="handleCoverError"
-        >
+      <div v-if="showCover && coverUrl && !loading" class="cover" @click="showCover = false">
+        <img :src="coverUrl" @error="handleCoverError" />
       </div>
-      <div
-        v-if="loading"
-        class="cover"
-      >
+      <div v-if="loading" class="cover">
         <Icon name="spin" :size="32" loading></Icon>
       </div>
     </template>
@@ -134,7 +136,7 @@ const handleCoverError = () => {
       align-items: center;
       background: rgba($panel, 70%);
       cursor: pointer;
-      transition: all .3s;
+      transition: all 0.3s;
 
       &:hover {
         color: $theme;
@@ -175,7 +177,7 @@ const handleCoverError = () => {
     background-color: $panel-dark;
     border-radius: $normal-radius;
     z-index: 1;
-    opacity: .95;
+    opacity: 0.95;
     display: flex;
     justify-content: center;
     align-items: center;

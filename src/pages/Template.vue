@@ -1,17 +1,17 @@
 <script setup lang="ts">
-import { IMaterialItem } from '@/config';
-import { templatePreviewUrl, materialApi, getTemplatePreview } from '@/utils/mande';
-import { IResponse } from '@@/types/response';
+import { IMaterialItem } from '@/config'
+import { templatePreviewUrl, materialApi, getTemplatePreview } from '@/utils/mande'
+import { IResponse } from '@@/types/response'
 import { onBeforeMount } from 'vue'
 import MaterialCard from '@/components/widgets/MaterialCard.vue'
-import { useRouter } from 'vue-router';
-import { Modal } from '@/components/modal';
-import { $t } from '@/constants/i18n';
-import { AlertSuccess } from '@/utils/alert';
-import SaveMaterialModal from '../components/modal/SaveMaterialModal.vue';
-import { getSetLoading } from '@/utils/context';
-import Btn from '@/components/widgets/Btn.vue';
-import { useUserStoreHelper } from '@/hooks/store';
+import { useRouter } from 'vue-router'
+import { Modal } from '@/components/modal'
+import { $t } from '@/constants/i18n'
+import { AlertSuccess } from '@/utils/alert'
+import SaveMaterialModal from '../components/modal/SaveMaterialModal.vue'
+import { getSetLoading } from '@/utils/context'
+import Btn from '@/components/widgets/Btn.vue'
+import { useUserStoreHelper } from '@/hooks/store'
 
 const router = useRouter()
 
@@ -50,8 +50,8 @@ const handleGotoProject = (id?: string) => {
     router.push({
       name: 'create',
       query: {
-        templateId: selectedId
-      }
+        templateId: selectedId,
+      },
     })
   }
 }
@@ -78,9 +78,7 @@ const updateMaterial = (material: IMaterialItem) => {
 const handleDeleteMaterial = async (material: IMaterialItem) => {
   if (await Modal.confirm($t('deleteConfirm', material.name))) {
     await materialApi.delete(material.id!)
-    selfTemplate = (selfTemplate as IMaterialItem[]).filter(
-      (p) => p.id !== material.id
-    )
+    selfTemplate = (selfTemplate as IMaterialItem[]).filter((p) => p.id !== material.id)
     AlertSuccess($t('deleteSuccess'))
   }
 }
@@ -92,7 +90,7 @@ const handleEditMaterial = (material: IMaterialItem) => {
       name: 'template-edit',
       params: {
         id: material.id,
-      }
+      },
     })
   }
 }
@@ -127,11 +125,13 @@ const gotoDashboard = () => {
       :key="key"
       v-show="!(key === 'user' && !isLogin)"
     >
-      <div class="template-title">{{ key === 'official' ? $t('officialTemplate') : $t('userTemplate') }}</div>
+      <div class="template-title">
+        {{ key === 'official' ? $t('officialTemplate') : $t('userTemplate') }}
+      </div>
       <div class="template-list">
         <MaterialCard
           class="template-item"
-          v-for="item in (key === 'official' ? template : selfTemplate)"
+          v-for="item in key === 'official' ? template : selfTemplate"
           :key="item.id"
           type="template"
           :item="item"
@@ -143,19 +143,17 @@ const gotoDashboard = () => {
           @on-edit-material="handleEditMaterial"
         >
           <div class="preview-btn-group" v-if="selectedId === item.id">
-            <a
-              class="preview-btn"
-              target="_blank"
-              :href="templatePreviewUrl(item.id, true)"
-            >{{ $t('preview') }}</a>
-            <div
-              class="preview-btn"
-              target="_blank"
-              @click="handleGotoProject(item.id)"
-            >{{ $t('useIt') }}</div>
+            <a class="preview-btn" target="_blank" :href="templatePreviewUrl(item.id, true)">{{
+              $t('preview')
+            }}</a>
+            <div class="preview-btn" target="_blank" @click="handleGotoProject(item.id)">
+              {{ $t('useIt') }}
+            </div>
           </div>
         </MaterialCard>
-        <div v-if="key === 'user' && !selfTemplate.length" class="empty-tip">{{ $t('templateNoData') }}</div>
+        <div v-if="key === 'user' && !selfTemplate.length" class="empty-tip">
+          {{ $t('templateNoData') }}
+        </div>
       </div>
     </div>
     <SaveMaterialModal
@@ -214,7 +212,7 @@ const gotoDashboard = () => {
       font-size: 24px;
       color: $white;
       padding: 12px 24px;
-      border-bottom: 1px solid rgba($white, .15);
+      border-bottom: 1px solid rgba($white, 0.15);
       margin-bottom: 12px;
     }
   }
@@ -250,7 +248,7 @@ const gotoDashboard = () => {
       cursor: pointer;
       text-decoration: none;
       font-family: $font-family;
-      transition: all .3s;
+      transition: all 0.3s;
       margin: 0 4px 4px;
       background: rgba($theme, 80%);
       border-radius: $inner-radius;

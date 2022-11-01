@@ -42,34 +42,46 @@ export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {
       } else if (event.action === 'func' && !editContext?.lockScriptTrigger) {
         if (!event.execFunction) return
         const args = '...args'
-        const fn = new Function(args, `var [
+        const fn = new Function(
+          args,
+          `var [
           event,
           data,
           name,
           tag,
           getDataByName,
           getDataByTag
-        ] = args;${event.execFunction}`)
+        ] = args;${event.execFunction}`
+        )
         fn(
           e,
           propsRef,
-          (name: string) => (document.body.querySelector('#' + getUniqueName(name)) as any),
-          (tagName: string) => Array.from(document.body.querySelectorAll('.' + getTagClassName(tagName)) || []),
-          (name: string) => (document.body.querySelector('#' + getUniqueName(name)) as any)?.__node__,
-          (tagName: string) => Array.from(document.body.querySelectorAll('.' + getTagClassName(tagName)) || []).map((el) => (el as any).__node__),
+          (name: string) => document.body.querySelector('#' + getUniqueName(name)) as any,
+          (tagName: string) =>
+            Array.from(document.body.querySelectorAll('.' + getTagClassName(tagName)) || []),
+          (name: string) =>
+            (document.body.querySelector('#' + getUniqueName(name)) as any)?.__node__,
+          (tagName: string) =>
+            Array.from(document.body.querySelectorAll('.' + getTagClassName(tagName)) || []).map(
+              (el) => (el as any).__node__
+            )
         )
       } else if (event.action === 'scrollTo') {
         if (event.scrollTarget) {
           if (+event.scrollTarget >= 0) {
-            const wrap = editContext?.isEditMode ? document.querySelector('.edit-wrapper') : document.documentElement
+            const wrap = editContext?.isEditMode
+              ? document.querySelector('.edit-wrapper')
+              : document.documentElement
             wrap?.scrollTo({
               top: +event.scrollTarget,
-              behavior: 'smooth'
+              behavior: 'smooth',
             })
           } else {
-            const elem = document.querySelector(`[data-name="${event.scrollTarget}"]`) as HTMLElement
+            const elem = document.querySelector(
+              `[data-name="${event.scrollTarget}"]`
+            ) as HTMLElement
             elem?.scrollIntoView({
-              behavior: 'smooth'
+              behavior: 'smooth',
             })
           }
         }

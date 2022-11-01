@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { getTemplatePreview, getProjectPreview } from '@/utils/mande';
+import { getTemplatePreview, getProjectPreview } from '@/utils/mande'
 import { useRoute, useRouter } from 'vue-router'
-import Logo from '@/components/Logo.vue';
-import Btn from '@/components/widgets/Btn.vue';
-import { usePreviewURL } from '@/toolkit/hooks/usePreviewURL';
+import Logo from '@/components/Logo.vue'
+import Btn from '@/components/widgets/Btn.vue'
+import { usePreviewURL } from '@/toolkit/hooks/usePreviewURL'
 
 const route = useRoute()
 const router = useRouter()
@@ -15,8 +15,8 @@ const gotoEdit = () => {
   router.push({
     name: 'create',
     query: {
-      templateId: id
-    }
+      templateId: id,
+    },
   })
 }
 
@@ -35,50 +35,64 @@ const { previewURL } = usePreviewURL(getPreviewURL())
       <Logo :size="32"></Logo>
       <div class="logo-name">Peasy</div>
       <Btn :text="$t('useTemplate')" @click="gotoEdit"></Btn>
-      <Btn class="close-btn" type="icon" :icon="'close'" color="default" @click="hideHelper = true"></Btn>
+      <Btn
+        class="close-btn"
+        type="icon"
+        :icon="'close'"
+        color="default"
+        @click="hideHelper = true"
+      ></Btn>
     </div>
-    <iframe v-if="previewURL" :src="previewURL" scrolling="no" border="0" frameborder="0" framespacing="0" allowfullscreen="true"></iframe>
+    <iframe
+      v-if="previewURL"
+      :src="previewURL"
+      scrolling="no"
+      border="0"
+      frameborder="0"
+      framespacing="0"
+      allowfullscreen="true"
+    ></iframe>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  .preview-page {
-    background: #FFF;
+.preview-page {
+  background: #fff;
+  width: 100%;
+  height: 100vh;
+  overflow: hidden;
+  font-family: $font-family;
+
+  .preview-helper {
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    height: 100vh;
-    overflow: hidden;
-    font-family: $font-family;
+    height: 80px;
+    color: $white;
+    background: rgba($black, 70%);
+    display: flex;
+    align-items: center;
+    font-size: 20px;
+    z-index: 1;
+    padding: 0 120px;
+    box-shadow: -2px 0 4px 0 rgba(0, 0, 0, 0.05);
+    z-index: 999999;
 
-    .preview-helper {
-      position: fixed;
-      bottom: 0;
-      left: 0;
-      width: 100%;
-      height: 80px;
-      color: $white;
-      background: rgba($black, 70%);
-      display: flex;
-      align-items: center;
-      font-size: 20px;
-      z-index: 1;
-      padding: 0 120px;
-      box-shadow: -2px 0 4px 0 rgba(0, 0, 0, .05);
-      z-index: 999999;
-
-      .logo-name {
-        font-weight: bold;
-        margin-left: 12px;
-        flex: 1;
-      }
-
-      .close-btn {
-        margin-left: 24px;
-      }
+    .logo-name {
+      font-weight: bold;
+      margin-left: 12px;
+      flex: 1;
     }
 
-    iframe {
-      width: 100%;
-      height: 100%;
+    .close-btn {
+      margin-left: 24px;
     }
   }
-  </style>
+
+  iframe {
+    width: 100%;
+    height: 100%;
+  }
+}
+</style>

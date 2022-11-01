@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onBeforeMount, provide } from 'vue'
-import { useRoute } from 'vue-router';
-import { $t } from './constants/i18n';
-import { pinia } from './stores';
+import { useRoute } from 'vue-router'
+import { $t } from './constants/i18n'
+import { pinia } from './stores'
 import { useUserStore } from './stores/user'
-import { AlertError } from './utils/alert';
+import { AlertError } from './utils/alert'
 import { logtoMeApi, persistToken } from './utils/mande'
-import Icon from './components/widgets/Icon.vue';
+import Icon from './components/widgets/Icon.vue'
 
 let isReady = $ref(false)
 
@@ -34,7 +34,7 @@ onBeforeMount(async () => {
   if (token) {
     try {
       fetchUserInfo()
-    } catch(e) {
+    } catch (e) {
       clearUserInfo()
     }
   }
@@ -93,7 +93,7 @@ provide('globalLoading', {
   pointer-events: none;
   z-index: $global-loading-zIndex;
   background-color: $panel-dark;
-  opacity: .95;
+  opacity: 0.95;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -121,11 +121,14 @@ provide('globalLoading', {
   }
   // 滚动条
   ::-webkit-scrollbar {
-    width:8px;
-    height:8px;
+    width: 8px;
+    height: 8px;
     background-color: $tr;
   }
-  ::-webkit-scrollbar-button, ::-webkit-scrollbar-track-piece, ::-webkit-scrollbar-track, ::-webkit-scrollbar-corner {
+  ::-webkit-scrollbar-button,
+  ::-webkit-scrollbar-track-piece,
+  ::-webkit-scrollbar-track,
+  ::-webkit-scrollbar-corner {
     background-color: $tr;
   }
 }

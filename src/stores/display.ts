@@ -32,7 +32,7 @@ export type DisplayMode = 'preview' | 'drag' | 'edit'
 export const useDisplayStore = defineStore('display', {
   persist: {
     key: '__display_store__',
-    paths: ['editorSettings', 'minimize', 'presetDevice', 'activeIndex', 'device', 'isFirst']
+    paths: ['editorSettings', 'minimize', 'presetDevice', 'activeIndex', 'device', 'isFirst'],
   },
   state: () => ({
     /** 预设 */

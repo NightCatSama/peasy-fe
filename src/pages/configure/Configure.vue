@@ -31,7 +31,12 @@ import { templatePreviewUrl } from '@/utils/mande'
 import { useEditorStylesheet } from '@/utils/color'
 import { useShortCut } from './hooks/shortcut'
 import { useProvide } from './hooks/provide'
-import { useDisplayStoreHelper, useHistoryStoreHelper, usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
+import {
+  useDisplayStoreHelper,
+  useHistoryStoreHelper,
+  usePageStoreHelper,
+  useUserStoreHelper,
+} from '@/hooks/store'
 
 const route = useRoute()
 const router = useRouter()
@@ -55,14 +60,10 @@ const {
   downloadAll,
   saveProjectData,
   loadTemplateData,
-  fetchSaveMaterial
+  fetchSaveMaterial,
 } = usePageStoreHelper()
 
-const {
-  deviceType,
-  setDevice,
-  editorSettings
-} = useDisplayStoreHelper()
+const { deviceType, setDevice, editorSettings } = useDisplayStoreHelper()
 
 const { isSave, saveHistory, setIsSave } = useHistoryStoreHelper()
 
@@ -82,7 +83,7 @@ const setGlobalLoading = getSetLoading()
 /** 下载当前页面 */
 const handleDownload = async () => {
   let hide: any
-  const timer = setTimeout(() => hide = setGlobalLoading($t('downloadLoading')), 300)
+  const timer = setTimeout(() => (hide = setGlobalLoading($t('downloadLoading'))), 300)
   try {
     download()
     // const res = await download()
@@ -96,7 +97,7 @@ const handleDownload = async () => {
 /** 下载整个项目 */
 const handleDownloadAll = async () => {
   let hide: any
-  const timer = setTimeout(() => hide = setGlobalLoading($t('downloadLoading')), 300)
+  const timer = setTimeout(() => (hide = setGlobalLoading($t('downloadLoading'))), 300)
   try {
     downloadAll()
     // const res = await download()
@@ -147,7 +148,7 @@ const handleSaveMaterial = async () => {
       setting: setting.value,
       /** 字体配置 */
       font: font.value,
-    }
+    },
   }
   try {
     const data = await fetchSaveMaterial(material)
@@ -315,7 +316,7 @@ watch(
         :is-template="isEditTemplate"
         @download="showDownloadModal = true"
         @preview="openPreviewTemplate"
-        @save="() => !isEditTemplate ? handleSaveProject() : handleSaveMaterial()"
+        @save="() => (!isEditTemplate ? handleSaveProject() : handleSaveMaterial())"
         @project-setting="showProjectModal = true"
         @template-setting="showSaveMaterialModal = true"
       ></ConfigHeader>

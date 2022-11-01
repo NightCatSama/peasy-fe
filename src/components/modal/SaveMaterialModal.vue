@@ -36,7 +36,14 @@ interface SaveMaterialModalProps {
   onSave?: ((material: IMaterialItem) => void) | null
 }
 
-const { modelValue, material, autoCreateCover, actionText = $t('save'), hideCreateCover, onSave } = defineProps<SaveMaterialModalProps>()
+const {
+  modelValue,
+  material,
+  autoCreateCover,
+  actionText = $t('save'),
+  hideCreateCover,
+  onSave,
+} = defineProps<SaveMaterialModalProps>()
 
 const { colorVars, fetchSaveMaterial } = usePageStoreHelper()
 
@@ -68,25 +75,26 @@ const initJSONEditor = async () => {
   moduleConfigEditor = await createJSONEditor('.module-config')
   if (!moduleConfigEditor) return
   moduleConfigEditor.set(
-    node.moduleConfig && node.moduleConfig?.length > 0 ? node.moduleConfig :
-      ([
-        {
-          title: '标题',
-          titleEn: 'Title',
-          icon: 'basic',
-          defaultCollapsed: true,
-          data: [
-            {
-              type: 'text',
-              label: '文本',
-              labelEn: 'Text',
-              props: { type: 'textarea' },
-              sourceValue: 'children[0].config.props.basic.text',
-              targetValue: 'children[0].config.props.basic.text',
-            },
-          ],
-        },
-      ] as IModuleConfigGroup[])
+    node.moduleConfig && node.moduleConfig?.length > 0
+      ? node.moduleConfig
+      : ([
+          {
+            title: '标题',
+            titleEn: 'Title',
+            icon: 'basic',
+            defaultCollapsed: true,
+            data: [
+              {
+                type: 'text',
+                label: '文本',
+                labelEn: 'Text',
+                props: { type: 'textarea' },
+                sourceValue: 'children[0].config.props.basic.text',
+                targetValue: 'children[0].config.props.basic.text',
+              },
+            ],
+          },
+        ] as IModuleConfigGroup[])
   )
 }
 
@@ -95,10 +103,11 @@ const initJSONDependence = async () => {
   moduleDependenceElemEditor = await createJSONEditor('.module-dependence')
   if (!moduleDependenceElemEditor) return
   moduleDependenceElemEditor.set(
-    node.moduleDependence || {
-      customFontFace: '',
-      colorVars: colorVars.value,
-    } as PageNode['moduleDependence']
+    node.moduleDependence ||
+      ({
+        customFontFace: '',
+        colorVars: colorVars.value,
+      } as PageNode['moduleDependence'])
   )
 }
 
@@ -108,8 +117,8 @@ const handleCreateCover = async () => {
   try {
     coverLoading = true
     const elem = isTemplate
-      ? document.querySelector(`.edit-content`) as HTMLElement
-      : document.querySelector(`[data-name="${node?.name}"]`) as HTMLElement
+      ? (document.querySelector(`.edit-content`) as HTMLElement)
+      : (document.querySelector(`[data-name="${node?.name}"]`) as HTMLElement)
     if (!elem) return
     const cover = await createMaterialSnapshot(elem)
     if (cover.length >= 10000) {
@@ -164,7 +173,7 @@ const handleSave = async () => {
     })
     onSave?.(data)
     alertCb($t('saveSuccess'))
-  } catch(e) {
+  } catch (e) {
     hide?.()
     throw e
   }
@@ -184,7 +193,7 @@ const handleTreeNodeClick = (e: Event) => {
     targetElem = targetElem.parentElement as HTMLDivElement
   }
   list.shift()
-  setClipboard(list.map(i => `children[${i}]`).join('.'))
+  setClipboard(list.map((i) => `children[${i}]`).join('.'))
 }
 
 /** 设置粘贴板 */
@@ -242,7 +251,11 @@ const setValue = (key: 'name' | 'enName' | 'category' | 'categoryEn' | 'cover', 
           :model-value="editItem.categoryEn || ''"
           @update:model-value="(val: string) => setValue('categoryEn', val)"
         ></InputItem>
-        <SwitchItem v-if="isAdmin && !isTemplate" :label="$t('moduleSwitch')" v-model="isModule"></SwitchItem>
+        <SwitchItem
+          v-if="isAdmin && !isTemplate"
+          :label="$t('moduleSwitch')"
+          v-model="isModule"
+        ></SwitchItem>
       </div>
       <ImageItem
         hide-label

@@ -1,6 +1,6 @@
 import { useUserStore } from '@/stores/user'
 import { ref, onMounted, onUnmounted } from 'vue'
-import { storeToRefs } from 'pinia';
+import { storeToRefs } from 'pinia'
 
 export const usePreviewURL = (url: string) => {
   const userStore = useUserStore()

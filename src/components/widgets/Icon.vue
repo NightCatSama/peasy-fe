@@ -244,7 +244,7 @@ const style = $ref({
     border-radius: $inner-radius;
 
     &:hover {
-      opacity: .8;
+      opacity: 0.8;
     }
     &:active {
       opacity: 0.9;

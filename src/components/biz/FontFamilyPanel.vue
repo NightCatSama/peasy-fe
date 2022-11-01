@@ -51,7 +51,7 @@ const deleteFontFace = (index: number) => {
       :tip="$t('mediaFontSizeTip')"
       :model-value="showMediaSetting ? $t('hidden') : $t('edit')"
       :btn-color="'primary'"
-      :on-click="() => showMediaSetting = !showMediaSetting"
+      :on-click="() => (showMediaSetting = !showMediaSetting)"
     >
       <template #default v-if="Object.keys(font.mediaFontSize).length === 0">
         <span class="media-item-text">{{ $t('mediaFontSizeEmpty') }}</span>
@@ -67,7 +67,7 @@ const deleteFontFace = (index: number) => {
           :label="'' + width"
           :model-value="+val"
           :max="100"
-          @update:model-value="val => font.mediaFontSize[width] = Number(val)"
+          @update:model-value="(val) => (font.mediaFontSize[width] = Number(val))"
         ></SliderItem>
       </GroupItem>
     </div>
@@ -100,7 +100,9 @@ const deleteFontFace = (index: number) => {
         @update:model-value="(val: string) => font.customFontFace[index] = val"
       ></InputItem>
     </GroupItem>
-    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddFontFace">{{ $t('addFontFace') }}</Btn>
+    <Btn is-block type="inner" class="full-btn add-color-btn" @click="handleAddFontFace">{{
+      $t('addFontFace')
+    }}</Btn>
   </div>
 </template>
 

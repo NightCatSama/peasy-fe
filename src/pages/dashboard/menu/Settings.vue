@@ -8,7 +8,8 @@ import { Alert } from '@/utils/alert'
 import { Modal } from '@/components/modal'
 import { useUserStoreHelper } from '@/hooks/store'
 
-const { avatar, userName, isLogin, vipName, expireDate, updateAvatar, activeMember } = useUserStoreHelper()
+const { avatar, userName, isLogin, vipName, expireDate, updateAvatar, activeMember } =
+  useUserStoreHelper()
 
 const router = useRouter()
 const route = useRoute()
@@ -21,7 +22,7 @@ const handleUpgradePlan = () => {
   Alert($t('upgradePlanTip'))
 }
 
-const handleInviteCode = async() => {
+const handleInviteCode = async () => {
   const code = await Modal.prompt($t('inviteCode'))
 
   if (code && typeof code === 'string') {
@@ -30,13 +31,13 @@ const handleInviteCode = async() => {
   }
 }
 
-const switchLang = async(lang: 'zh' | 'en') => {
+const switchLang = async (lang: 'zh' | 'en') => {
   router.replace({
     name: route.name!,
     params: { ...route.params },
     query: {
-      lang
-    }
+      lang,
+    },
   })
   setTimeout(() => location.reload(), 0)
 }
@@ -50,7 +51,12 @@ const switchLang = async(lang: 'zh' | 'en') => {
     <div :class="['data-wrapper']">
       <div class="item">
         <div class="label">{{ $t('avatar') }}</div>
-        <Avatar :image="avatar" :size="80" :can-upload="isLogin" :on-upload="handleUpdateAvatar"></Avatar>
+        <Avatar
+          :image="avatar"
+          :size="80"
+          :can-upload="isLogin"
+          :on-upload="handleUpdateAvatar"
+        ></Avatar>
       </div>
       <div class="item">
         <div class="label">{{ $t('account') }}</div>
@@ -58,7 +64,7 @@ const switchLang = async(lang: 'zh' | 'en') => {
       </div>
       <div class="item">
         <div class="label">{{ $t('language') }}</div>
-        <Btn type="text" class="value" @click=" () => switchLang(lang === 'en' ? 'zh' : 'en')">
+        <Btn type="text" class="value" @click="() => switchLang(lang === 'en' ? 'zh' : 'en')">
           {{ lang === 'zh' ? $t('switchToEN') : $t('switchToZH') }}
         </Btn>
       </div>
@@ -73,7 +79,14 @@ const switchLang = async(lang: 'zh' | 'en') => {
         <div class="label">
           <span>{{ $t('pricingPlan') }}</span>
           <div class="btn-wrapper">
-            <Btn type="text" size="sm" color="second" class="invite-code-btn" @click="handleInviteCode">{{ $t('iHaveInviteCode') }}</Btn>
+            <Btn
+              type="text"
+              size="sm"
+              color="second"
+              class="invite-code-btn"
+              @click="handleInviteCode"
+              >{{ $t('iHaveInviteCode') }}</Btn
+            >
             <Btn color="purple" @click="handleUpgradePlan">{{ $t('upgradePlan') }}</Btn>
           </div>
         </div>
@@ -115,7 +128,9 @@ const switchLang = async(lang: 'zh' | 'en') => {
           <div class="table-column">
             <div class="table-td">
               <div class="table-td-name">{{ 'Advanced' }}</div>
-              <div class="table-td-pricing highlight">{{ '10$' }}<span class="date">{{ $t('perMonth') }}</span></div>
+              <div class="table-td-pricing highlight">
+                {{ '10$' }}<span class="date">{{ $t('perMonth') }}</span>
+              </div>
             </div>
             <div class="table-td">{{ '5' }}</div>
             <div class="table-td">{{ '99' }}</div>
@@ -136,7 +151,9 @@ const switchLang = async(lang: 'zh' | 'en') => {
           <div class="table-column">
             <div class="table-td">
               <div class="table-td-name">{{ 'Professional' }}</div>
-              <div class="table-td-pricing highlight">{{ '29$' }}<span class="date">{{ $t('perMonth') }}</span></div>
+              <div class="table-td-pricing highlight">
+                {{ '29$' }}<span class="date">{{ $t('perMonth') }}</span>
+              </div>
             </div>
             <div class="table-td">{{ '99' }}</div>
             <div class="table-td">{{ '999' }}</div>
@@ -177,7 +194,7 @@ const switchLang = async(lang: 'zh' | 'en') => {
     flex-direction: column;
     padding: 16px 24px;
     border-radius: $normal-radius;
-    background-color: rgba($black, .2);
+    background-color: rgba($black, 0.2);
 
     .label {
       font-size: 20px;
@@ -254,7 +271,7 @@ const switchLang = async(lang: 'zh' | 'en') => {
         }
 
         &:nth-child(2n) {
-          background: rgba($black, .2);
+          background: rgba($black, 0.2);
         }
 
         &-name {

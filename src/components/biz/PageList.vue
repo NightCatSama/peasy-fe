@@ -1,20 +1,21 @@
 <script setup lang="ts">
 import { usePageStore } from '@/stores/page'
 import { storeToRefs } from 'pinia'
-import MaterialCard from '../widgets/MaterialCard.vue';
-import ProjectModal from '../modal/ProjectModal.vue';
-import { useRoute } from 'vue-router';
-import { Alert, AlertSuccess } from '@/utils/alert';
+import MaterialCard from '../widgets/MaterialCard.vue'
+import ProjectModal from '../modal/ProjectModal.vue'
+import { useRoute } from 'vue-router'
+import { Alert, AlertSuccess } from '@/utils/alert'
 import { $t } from '@/constants/i18n'
-import { Modal } from '../modal';
-import { useHistoryStore } from '@/stores/history';
-import { Project } from '@@/entities/project.entity';
-import { IMaterialItem } from '@/config';
-import SaveMaterialModal from '../modal/SaveMaterialModal.vue';
-import { emitter } from '@/utils/event';
-import { useHistoryStoreHelper, usePageStoreHelper } from '@/hooks/store';
+import { Modal } from '../modal'
+import { useHistoryStore } from '@/stores/history'
+import { Project } from '@@/entities/project.entity'
+import { IMaterialItem } from '@/config'
+import SaveMaterialModal from '../modal/SaveMaterialModal.vue'
+import { emitter } from '@/utils/event'
+import { useHistoryStoreHelper, usePageStoreHelper } from '@/hooks/store'
 
-const { mainProject, allProjectData, project, saveProjectData, switchProject, deleteProject } = usePageStoreHelper()
+const { mainProject, allProjectData, project, saveProjectData, switchProject, deleteProject } =
+  usePageStoreHelper()
 
 const { isSave, clearHistory } = useHistoryStoreHelper()
 
@@ -154,7 +155,7 @@ const handleSettingProject = async (project: Project) => {
   background-color: rgba($panel-header, 98%);
   z-index: $header-page-list-zIndex;
   border-top: 1px solid $border;
-  transition: all .2s;
+  transition: all 0.2s;
   height: 0;
   padding: 0 24px 0;
   overflow: hidden;

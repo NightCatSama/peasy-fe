@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Icon from '../widgets/Icon.vue';
+import Icon from '../widgets/Icon.vue'
 const covertText = (str: string) => {
-  str = str.replace(/「.*?」/g, str => `「<strong>${str.slice(1, -1)}</strong>」`)
-  str = str.replace(/\[.*?\]/g, str => `[<strong>${str.slice(1, -1)}</strong>]`)
+  str = str.replace(/「.*?」/g, (str) => `「<strong>${str.slice(1, -1)}</strong>」`)
+  str = str.replace(/\[.*?\]/g, (str) => `[<strong>${str.slice(1, -1)}</strong>]`)
   return str
 }
 </script>

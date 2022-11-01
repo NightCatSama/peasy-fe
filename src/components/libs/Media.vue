@@ -5,7 +5,7 @@ export default {
 </script>
 
 <script setup lang="ts">
-import { getContext } from '@/utils/context';
+import { getContext } from '@/utils/context'
 import { useAttrs } from 'vue'
 import { IProps, useProps } from './hooks/common'
 
@@ -49,7 +49,7 @@ const autoplayAttrs = $computed(() => {
   if (props.basic.type === 'source' && props.basic.autoplay) {
     return {
       autoplay: true,
-      muted: true
+      muted: true,
     }
   }
   return null
@@ -62,7 +62,7 @@ const iframeAttrs = $computed(() => {
       border: '0',
       frameborder: '0',
       framespacing: '0',
-      allowfullscreen: 'true'
+      allowfullscreen: 'true',
     }
   }
   return null
@@ -90,12 +90,14 @@ const componentAttrs = $computed(() => ({
 
 <style lang="scss">
 .media-wrapper {
-  > iframe, > video {
+  > iframe,
+  > video {
     width: 100%;
     height: 100%;
   }
   &.disabled {
-    > iframe, > video {
+    > iframe,
+    > video {
       pointer-events: none;
     }
   }

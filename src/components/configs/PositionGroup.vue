@@ -59,7 +59,7 @@ const showByOffset = $computed({
   },
   set(val: string) {
     position.showByOffset = val
-  }
+  },
 })
 
 const handlePositionChange = (value: IPosition['position']) => {
@@ -95,11 +95,7 @@ const handleLockChange = () => {
       @update:model-value="handlePositionChange"
     >
     </TabsItem>
-    <Tip
-      v-if="position.position === 'fixed'"
-      type="warning"
-      :message="$t('fixedTip')"
-    ></Tip>
+    <Tip v-if="position.position === 'fixed'" type="warning" :message="$t('fixedTip')"></Tip>
     <div class="item position-item" v-if="position.position !== 'static'">
       <PositionTable
         :size="80"

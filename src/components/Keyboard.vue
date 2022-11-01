@@ -10,11 +10,7 @@ const { show } = defineProps<IKeyboardProps>()
 
 <template>
   <div class="keyboard-list" v-show="show">
-    <div
-      class="keyboard-item"
-      v-for="(map, key) in ShortcutMap"
-      :key="key"
-    >
+    <div class="keyboard-item" v-for="(map, key) in ShortcutMap" :key="key">
       <div>{{ map.title }}：</div>
       <div class="keyboard-item-value">{{ map.value }}</div>
     </div>

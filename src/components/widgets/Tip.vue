@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { lang } from '@/constants/i18n';
+import { lang } from '@/constants/i18n'
 import Icon from './Icon.vue'
 
 interface ITipProps {
@@ -16,7 +16,7 @@ const iconMap = {
   warning: 'warning',
 } as any
 
-const showMsg = $computed(() => lang === 'en' && messageEn || message)
+const showMsg = $computed(() => (lang === 'en' && messageEn) || message)
 </script>
 
 <template>

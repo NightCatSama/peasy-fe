@@ -9,8 +9,21 @@ import { Alert } from '@/utils/alert'
 import { Modal } from './modal'
 import SaveMaterialModal from './modal/SaveMaterialModal.vue'
 import { $t, getMaterialCategory, getMaterialName } from '@/constants/i18n'
-import { EmptyBlock, EmptyIcon, EmptyImage, EmptySection, EmptyText, EmptyMedia, EmptyInputField } from '@/utils/mock'
-import { useDisplayStoreHelper, useDragStoreHelper, usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
+import {
+  EmptyBlock,
+  EmptyIcon,
+  EmptyImage,
+  EmptySection,
+  EmptyText,
+  EmptyMedia,
+  EmptyInputField,
+} from '@/utils/mock'
+import {
+  useDisplayStoreHelper,
+  useDragStoreHelper,
+  usePageStoreHelper,
+  useUserStoreHelper,
+} from '@/hooks/store'
 
 const { pageData, materialData, addSection, deleteMaterial } = usePageStoreHelper()
 
@@ -125,10 +138,12 @@ const currentCategory = $computed(() => {
               :can-operate="isAdmin || item.uid === uid"
               @click="handleAddSection(item as IMaterialItem)"
               @delete="handleDelete(item)"
-              @edit="() => {
-                curMaterial = item
-                showSaveMaterialModal = true
-              }"
+              @edit="
+                () => {
+                  curMaterial = item
+                  showSaveMaterialModal = true
+                }
+              "
             ></Element>
           </div>
         </template>

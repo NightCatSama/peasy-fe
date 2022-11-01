@@ -100,7 +100,12 @@ const handleGotoProject = (project?: Project) => {
 }
 
 const handleDeleteProject = async (project: Project) => {
-  if (await Modal.confirm($t('deleteConfirmMsg', project.name), { title: $t('deleteConfirm', project.name), inputVerify: project.name })) {
+  if (
+    await Modal.confirm($t('deleteConfirmMsg', project.name), {
+      title: $t('deleteConfirm', project.name),
+      inputVerify: project.name,
+    })
+  ) {
     await projectApi.delete(project.id)
     showMap['project'] = projectList.filter((p) => p.id !== project.id)
     AlertSuccess($t('deleteSuccess'))
@@ -119,7 +124,7 @@ const handleSaveProject = async (project: IProject) => {
     cover: project.cover,
     isPublic: project.isPublic || false,
     domain: project.domain || '',
-    host: project.host || ''
+    host: project.host || '',
   })
   curEditProject.name = project.name
   curEditProject.cover = project.cover
@@ -146,7 +151,7 @@ const handleMaterialImageClick = async (material: IMaterialItem) => {
         page: material.page,
         isPublic: false,
         domain: '',
-        host: ''
+        host: '',
       } as SaveProjectDto)
       handleGotoProject(data)
     }
@@ -208,7 +213,7 @@ const handleEditMaterial = (material: IMaterialItem) => {
       name: 'template-edit',
       params: {
         id: material.id,
-      }
+      },
     })
   }
 }
@@ -230,9 +235,12 @@ const handleSwitchPage = (menuType: string) => {
   curMenu = menuType
   router.replace({
     name: route.name!,
-    query: menuType !== 'dashboard' ? {
-      page: menuType,
-    } : {}
+    query:
+      menuType !== 'dashboard'
+        ? {
+            page: menuType,
+          }
+        : {},
   })
 }
 </script>
@@ -246,19 +254,31 @@ const handleSwitchPage = (menuType: string) => {
         <span v-if="vipName" :class="['tag', vipName]">{{ vipName }}</span>
       </div>
       <div class="menu-list" v-if="isLogin">
-        <div :class="['menu-item', { active: curMenu === 'dashboard' }]" @click="handleSwitchPage('dashboard')">
+        <div
+          :class="['menu-item', { active: curMenu === 'dashboard' }]"
+          @click="handleSwitchPage('dashboard')"
+        >
           <Icon class="menu-item-icon" name="home" :size="16"></Icon>
           <div class="menu-item-text">{{ $t('dashboard') }}</div>
         </div>
-        <div :class="['menu-item', { active: curMenu === 'template' }]" @click="handleSwitchPage('template')">
+        <div
+          :class="['menu-item', { active: curMenu === 'template' }]"
+          @click="handleSwitchPage('template')"
+        >
           <Icon class="menu-item-icon" name="template" :size="16"></Icon>
           <div class="menu-item-text">{{ $t('templates') }}</div>
         </div>
-        <div :class="['menu-item', { active: curMenu === 'material' }]" @click="handleSwitchPage('material')">
+        <div
+          :class="['menu-item', { active: curMenu === 'material' }]"
+          @click="handleSwitchPage('material')"
+        >
           <Icon class="menu-item-icon" name="material" :size="16"></Icon>
           <div class="menu-item-text">{{ $t('materials') }}</div>
         </div>
-        <div :class="['menu-item', { active: curMenu === 'setting' }]" @click="handleSwitchPage('setting')">
+        <div
+          :class="['menu-item', { active: curMenu === 'setting' }]"
+          @click="handleSwitchPage('setting')"
+        >
           <Icon class="menu-item-icon" name="advanced" :size="16"></Icon>
           <div class="menu-item-text">{{ $t('settings') }}</div>
         </div>
@@ -397,26 +417,29 @@ const handleSwitchPage = (menuType: string) => {
       border-radius: $normal-radius;
       margin-bottom: 4px;
       cursor: pointer;
-      transition: all .3s;
+      transition: all 0.3s;
 
-      &.active, &:hover {
-        background-color: rgba(0, 0, 0, .25);
+      &.active,
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.25);
       }
 
       &.link:hover {
         color: $cyan;
-        background-color: rgba(0, 0, 0, .05);
+        background-color: rgba(0, 0, 0, 0.05);
       }
 
       &.primary {
-        &.active, &:hover {
-          background-color: rgba($green, .5);
+        &.active,
+        &:hover {
+          background-color: rgba($green, 0.5);
         }
       }
 
       &.danger {
-        &.active, &:hover {
-          background-color: rgba($red, .5);
+        &.active,
+        &:hover {
+          background-color: rgba($red, 0.5);
         }
       }
 

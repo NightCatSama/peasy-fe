@@ -1,5 +1,5 @@
-import type { IMaterialItem } from "@/config"
-import { setLang } from "@/utils/mande"
+import type { IMaterialItem } from '@/config'
+import { setLang } from '@/utils/mande'
 
 export const i18nText = {
   zh: {
@@ -14,23 +14,32 @@ export const i18nText = {
     downloadPeasy: '通过 p-easy.net 访问 ⭐️',
     downloadPeasyMsgNoLogin: '注册登录后保存项目，即可得到一个可访问你网站的链接（免费）。',
     downloadPeasyMsg: '保存项目后会生成个只属于你的访问链接。（需要勾选「公开」）',
-    downloadPeasyLink: '访问链接：<a target="_blank" href="https://{0}.p-easy.net">https://{0}.p-easy.net</a>。',
+    downloadPeasyLink:
+      '访问链接：<a target="_blank" href="https://{0}.p-easy.net">https://{0}.p-easy.net</a>。',
     downloadGithubPage: '使用 Github Page 部署页面',
     downloadGithubPageMsg: '部署成功后，你可以得到一个 {name}.github.io 的链接。',
-    downloadGithubPageStep1: '<em>第一步</em>：注册一个 Github 账号（名字尽可能和你的项目相关）<br/>注册链接<a href="https://github.com/signup" target="_blank">https://github.com/signup</a>',
-    downloadGithubPageStep2: '<em>第二步</em>：在 Github 上创建一个新项目，项目名字为 {username}.github.io, username 必须为你的 github 的账号名称<br/>创建链接：<a href="https://github.com/new" target="_blank">https://github.com/new</a>',
-    downloadGithubPageStep3: '<em>第三步</em>：点击 「<b>uploading an existing file</b>」，把下载的文件上传上去（文件名必须为 index.html）。然后点击 「<b>Commit changes</b>」按钮提交上去',
-    downloadGithubPageStep4: '<em>完成</em>：稍等几分钟，即可访问 {username}.github.io 查看你的网站 🎉',
+    downloadGithubPageStep1:
+      '<em>第一步</em>：注册一个 Github 账号（名字尽可能和你的项目相关）<br/>注册链接<a href="https://github.com/signup" target="_blank">https://github.com/signup</a>',
+    downloadGithubPageStep2:
+      '<em>第二步</em>：在 Github 上创建一个新项目，项目名字为 {username}.github.io, username 必须为你的 github 的账号名称<br/>创建链接：<a href="https://github.com/new" target="_blank">https://github.com/new</a>',
+    downloadGithubPageStep3:
+      '<em>第三步</em>：点击 「<b>uploading an existing file</b>」，把下载的文件上传上去（文件名必须为 index.html）。然后点击 「<b>Commit changes</b>」按钮提交上去',
+    downloadGithubPageStep4:
+      '<em>完成</em>：稍等几分钟，即可访问 {username}.github.io 查看你的网站 🎉',
     downloadVercel: '使用 Vercel 部署页面',
     downloadVercelMsg: '部署成功后，你可以得到一个 <b>{name}.vercel.app</b> 的链接。',
-    downloadVercelStep1: '<em>第一步</em>：注册一个 Github 账号 <br/> 注册链接: <a href="https://github.com/signup" target="_blank">https://github.com/signup</a>',
-    downloadVercelStep2: '<em>第二步</em>：在 Github 上创建一个新项目<br/>创建链接：<a href="https://github.com/new" target="_blank">https://github.com/new</a>',
-    downloadVercelStep3: '<em>第三步</em>：点击 「<b>uploading an existing file</b>」，把下载的文件上传上去（文件名必须为 index.html）。然后点击 「<b>Commit changes</b>」按钮提交上去',
-    downloadVercelStep4: '<em>第四步</em> 登录 Vercel 并选择刚刚创建的 Github 项目<br/>Vercel 链接: <a href="https://vercel.app" target="_blank">https://vercel.app</a>',
+    downloadVercelStep1:
+      '<em>第一步</em>：注册一个 Github 账号 <br/> 注册链接: <a href="https://github.com/signup" target="_blank">https://github.com/signup</a>',
+    downloadVercelStep2:
+      '<em>第二步</em>：在 Github 上创建一个新项目<br/>创建链接：<a href="https://github.com/new" target="_blank">https://github.com/new</a>',
+    downloadVercelStep3:
+      '<em>第三步</em>：点击 「<b>uploading an existing file</b>」，把下载的文件上传上去（文件名必须为 index.html）。然后点击 「<b>Commit changes</b>」按钮提交上去',
+    downloadVercelStep4:
+      '<em>第四步</em> 登录 Vercel 并选择刚刚创建的 Github 项目<br/>Vercel 链接: <a href="https://vercel.app" target="_blank">https://vercel.app</a>',
     downloadVercelStep5: '<em>第五步</em>：不需要调整任何默认配置，点击 「<b>Deploy</b>」 即可',
     downloadVercelStep6: '<em>完成</em>：Vercel 会生成一个链接去访问你的网站 🎉',
     checkGuide: '☞ 查看指引',
-    downloadLoading: "正在下载中",
+    downloadLoading: '正在下载中',
     unknownError: '未知错误',
     projectSetting: '项目设置',
     download: '下载',
@@ -142,7 +151,8 @@ export const i18nText = {
     pasteSuccess: '粘贴组件成功',
     brokenLink: '取消关联',
     linkTip: '是否关联到原组件',
-    linkTipMsg: '关联后，组件的配置和内容会同步更新。\n不过可以点击「取消关联」按钮取消单个或者全部配置的关联。',
+    linkTipMsg:
+      '关联后，组件的配置和内容会同步更新。\n不过可以点击「取消关联」按钮取消单个或者全部配置的关联。',
     unlink: '解除关联',
     unlinkSelf: '只解除自身',
     unlinkAll: '包含子组件',
@@ -189,13 +199,16 @@ export const i18nText = {
     custom: '自定义',
     tagType: '元素类型',
     transform: '变形',
-    transformTip: 'Transform 可能会影响到「位置」和「动画」配置，使用时需要注意。<br/>更多用法可以参考：<a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform">MDN - transform</a>',
+    transformTip:
+      'Transform 可能会影响到「位置」和「动画」配置，使用时需要注意。<br/>更多用法可以参考：<a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform">MDN - transform</a>',
     attrs: '自定义属性',
     attrsPlaceholder: 'class: custom-class\naria-label: custom-label',
-    attrsTip: '每行对应一条属性设置，无法设置 <small>id</small>、<small>style</small> 和 <small>data-name</small>。<br/><br/>格式：<em>[name]: value</em>',
+    attrsTip:
+      '每行对应一条属性设置，无法设置 <small>id</small>、<small>style</small> 和 <small>data-name</small>。<br/><br/>格式：<em>[name]: value</em>',
     script: '脚本',
     scriptPlaceholder: 'elem.ondblclick = () => alert("Hello")',
-    scriptTip: '<b>elem</b><em>[Obj]</em>: 为当前组件的 DOM 元素<br/><b>data</b><em>[Obj]</em>: 配置数据<br/><b>name</b><em>[Func]</em>: 通过名字获取对应元素<br/><b>tag</b><em>[Func]</em>: 通过 Tag 获取对应元素<br/><b>getDataByName</b><em>[Func]</em>: 通过名字获取配置数据<br/><b>getDataByTag</b><em>[Func]</em>: 通过 Tag 获取配置数据列表',
+    scriptTip:
+      '<b>elem</b><em>[Obj]</em>: 为当前组件的 DOM 元素<br/><b>data</b><em>[Obj]</em>: 配置数据<br/><b>name</b><em>[Func]</em>: 通过名字获取对应元素<br/><b>tag</b><em>[Func]</em>: 通过 Tag 获取对应元素<br/><b>getDataByName</b><em>[Func]</em>: 通过名字获取配置数据<br/><b>getDataByTag</b><em>[Func]</em>: 通过 Tag 获取配置数据列表',
     customStyle: '样式',
     stylePlaceholder: 'transform: rotate(45deg)\ntransform-origin: center',
     styleTip: '请使用 CSS 样式语法，每行对应一条样式。',
@@ -275,7 +288,8 @@ export const i18nText = {
     textShadow: '文字阴影',
     fontFamily: '字体',
     addSubText: '添加子文本',
-    subTextTip: '子文本可以帮助你单独设置其中一段文本的样式。你可以先点击「添加子文本」，然后在文本中使用 {{n}} 去使用它。注意 n 是子文本的索引。',
+    subTextTip:
+      '子文本可以帮助你单独设置其中一段文本的样式。你可以先点击「添加子文本」，然后在文本中使用 {{n}} 去使用它。注意 n 是子文本的索引。',
     eventTriggerType: '触发方式',
     eventNone: '无',
     eventTap: '点击',
@@ -284,12 +298,14 @@ export const i18nText = {
     link: '链接',
     eventLinkTip: '跳转链接，可以使用 <b>./{filename}.html</b> 去跳转到子页面。',
     function: '脚本方法',
-    functionTip: '<b>event</b><em>[Obj]</em>: 本次事件<br/><b>data</b><em>[Obj]</em>: 配置数据<br/><b>name</b><em>[Func]</em>: 通过名字获取对应元素<br/><b>tag</b><em>[Func]</em>: 通过 Tag 获取对应元素<br/><b>getDataByName</b><em>[Func]</em>: 通过名字获取配置数据<br/><b>getDataByTag</b><em>[Func]</em>: 通过 Tag 获取配置数据列表',
+    functionTip:
+      '<b>event</b><em>[Obj]</em>: 本次事件<br/><b>data</b><em>[Obj]</em>: 配置数据<br/><b>name</b><em>[Func]</em>: 通过名字获取对应元素<br/><b>tag</b><em>[Func]</em>: 通过 Tag 获取对应元素<br/><b>getDataByName</b><em>[Func]</em>: 通过名字获取配置数据<br/><b>getDataByTag</b><em>[Func]</em>: 通过 Tag 获取配置数据列表',
     scrollTo: '滚动至',
     scrollToPlaceholder: '组件名称或者顶部距离',
     componentName: '组件名称',
     linkPlaceholder: '输入一个链接',
-    functionPlaceholder: '修改的组件配置会立即生效，若想在预览模式中触发事件，请先点击右侧解锁按钮。',
+    functionPlaceholder:
+      '修改的组件配置会立即生效，若想在预览模式中触发事件，请先点击右侧解锁按钮。',
     stopPropagation: '阻止冒泡',
     openNewTab: '在新标签页打开',
     hover: '悬停',
@@ -335,7 +351,8 @@ export const i18nText = {
     source: '资源',
     sourcePlaceholder: '资源地址',
     youtube: 'Youtube',
-    youtubeTip: '例如视频链接为 https://www.youtube.com/watch?v=dQw4w9WgXcQ，则 Youtube ID 为 dQw4w9WgXcQ',
+    youtubeTip:
+      '例如视频链接为 https://www.youtube.com/watch?v=dQw4w9WgXcQ，则 Youtube ID 为 dQw4w9WgXcQ',
     youtubePlaceholder: 'Youtube ID',
     iframe: '内联 iframe',
     iframePlaceholder: '内联 iframe 的链接',
@@ -358,7 +375,8 @@ export const i18nText = {
     objectFitFill: '填充',
     objectFitNone: '无',
     objectFitScaleDown: '原比例-自动缩放',
-    iconTip: '默认使用第三方 CDN 加载图标，不保证稳定性。图标使用的是 FontAwesome，更多图标查阅：<a href="https://fontawesome.com/v4/icons/" target="_blank">https://fontawesome.com/v4/icons/</a>',
+    iconTip:
+      '默认使用第三方 CDN 加载图标，不保证稳定性。图标使用的是 FontAwesome，更多图标查阅：<a href="https://fontawesome.com/v4/icons/" target="_blank">https://fontawesome.com/v4/icons/</a>',
     iconName: '图标名称',
     iconSize: '尺寸',
     iconColor: '颜色',
@@ -428,7 +446,8 @@ export const i18nText = {
     pageDescriptionPlaceholder: '简短的描述有利于搜索引擎优化',
     pageFavicon: '徽标',
     pageGoogleAnalytics: 'Google Analytics',
-    pageGoogleAnalyticsTip: 'Want analytics? We need your MeasurementID. <a href="https://support.google.com/analytics/answer/7372977" target="_blank">Help Link</a>',
+    pageGoogleAnalyticsTip:
+      'Want analytics? We need your MeasurementID. <a href="https://support.google.com/analytics/answer/7372977" target="_blank">Help Link</a>',
     pageGoogleAnalyticsPlaceholder: 'G-XXXXXXXXX',
     customCode: '自定义脚本',
     customCodePlaceholder: '例如 <script> 标签, <style> 标签, <link> 标签, 等等',
@@ -514,27 +533,43 @@ export const i18nText = {
     downloadGuide: '📌 Download Guide',
     downloadImmediately: 'Download Now',
     downloadAll: 'Download All Page',
-    downloadNetworkTip: 'After downloading the file, how do I get it onto the web for all to access?',
+    downloadNetworkTip:
+      'After downloading the file, how do I get it onto the web for all to access?',
     downloadPeasy: 'Accessed via p-easy.net ⭐️',
-    downloadPeasyMsgNoLogin: 'Register and log in and save the project to get a link to access your website (free of charge).',
-    downloadPeasyMsg: 'After saving the project, an access link will be generated. (You need to open the "Public")',
-    downloadPeasyLink: 'Access Link: <a target="_blank" href="https://{0}.p-easy.net">https://{0}.p-easy.net</a>',
+    downloadPeasyMsgNoLogin:
+      'Register and log in and save the project to get a link to access your website (free of charge).',
+    downloadPeasyMsg:
+      'After saving the project, an access link will be generated. (You need to open the "Public")',
+    downloadPeasyLink:
+      'Access Link: <a target="_blank" href="https://{0}.p-easy.net">https://{0}.p-easy.net</a>',
     downloadGithubPage: 'Deploy by Github.io',
-    downloadGithubPageMsg: 'After successful deployment, you can get a link to <b>{name}.github.io</b>.',
-    downloadGithubPageStep1: '<em>Step.1</em>: Register a Github account. (name as relevant to your project as possible)<br/> Registration link: <a href="https://github.com/signup" target="_blank">https://github.com/signup</a>',
-    downloadGithubPageStep2: '<em>Step.2</em>: Create a repository with the name <b>{username}.github.io</b>, username must be your username on Github<br/>Create repository link：<a href="https://github.com/new" target="_blank">https://github.com/new</a>',
-    downloadGithubPageStep3: '<em>Step.3</em>: Click "<b>uploading an existing file</b>" to upload the downloaded file. (file name must be index.html)<br/>Then click the "<b>Commit changes</b>" button to commit',
-    downloadGithubPageStep4: '<em>Finish</em>: Just wait a few minutes to access your site via <b>{username}.github.io</b> 🎉',
+    downloadGithubPageMsg:
+      'After successful deployment, you can get a link to <b>{name}.github.io</b>.',
+    downloadGithubPageStep1:
+      '<em>Step.1</em>: Register a Github account. (name as relevant to your project as possible)<br/> Registration link: <a href="https://github.com/signup" target="_blank">https://github.com/signup</a>',
+    downloadGithubPageStep2:
+      '<em>Step.2</em>: Create a repository with the name <b>{username}.github.io</b>, username must be your username on Github<br/>Create repository link：<a href="https://github.com/new" target="_blank">https://github.com/new</a>',
+    downloadGithubPageStep3:
+      '<em>Step.3</em>: Click "<b>uploading an existing file</b>" to upload the downloaded file. (file name must be index.html)<br/>Then click the "<b>Commit changes</b>" button to commit',
+    downloadGithubPageStep4:
+      '<em>Finish</em>: Just wait a few minutes to access your site via <b>{username}.github.io</b> 🎉',
     downloadVercel: 'Deploy by Vercel',
-    downloadVercelMsg: 'After successful deployment, you can get a link to <b>{name}.vercel.app</b>.',
-    downloadVercelStep1: '<em>Step.1</em>: Register a Github account.<br/> Registration link: <a href="https://github.com/signup" target="_blank">https://github.com/signup</a>',
-    downloadVercelStep2: '<em>Step.2</em>: Create a repository on Github<br/>Create repository link：<a href="https://github.com/new" target="_blank">https://github.com/new</a>',
-    downloadVercelStep3: '<em>Step.3</em>: Click "<b>uploading an existing file</b>" to upload the downloaded file. (file name must be index.html)<br/>Then click the "<b>Commit changes</b>" button to commit',
-    downloadVercelStep4: '<em>Step.4</em>: Log in to Vercel and select the Github repository.<br/>Vercel link：<a href="https://vercel.app" target="_blank">https://vercel.app</a>',
-    downloadVercelStep5: '<em>Step.5</em>: Use the default configuration, just click "<b>deploy</b>"',
-    downloadVercelStep6: '<em>Finish</em>: Vercel will generate an accessible link to your website 🎉',
+    downloadVercelMsg:
+      'After successful deployment, you can get a link to <b>{name}.vercel.app</b>.',
+    downloadVercelStep1:
+      '<em>Step.1</em>: Register a Github account.<br/> Registration link: <a href="https://github.com/signup" target="_blank">https://github.com/signup</a>',
+    downloadVercelStep2:
+      '<em>Step.2</em>: Create a repository on Github<br/>Create repository link：<a href="https://github.com/new" target="_blank">https://github.com/new</a>',
+    downloadVercelStep3:
+      '<em>Step.3</em>: Click "<b>uploading an existing file</b>" to upload the downloaded file. (file name must be index.html)<br/>Then click the "<b>Commit changes</b>" button to commit',
+    downloadVercelStep4:
+      '<em>Step.4</em>: Log in to Vercel and select the Github repository.<br/>Vercel link：<a href="https://vercel.app" target="_blank">https://vercel.app</a>',
+    downloadVercelStep5:
+      '<em>Step.5</em>: Use the default configuration, just click "<b>deploy</b>"',
+    downloadVercelStep6:
+      '<em>Finish</em>: Vercel will generate an accessible link to your website 🎉',
     checkGuide: '☞ Check Guide',
-    downloadLoading: "Downloading...",
+    downloadLoading: 'Downloading...',
     unknownError: 'Unknown Error',
     projectSetting: 'Project Setting',
     download: 'Download',
@@ -607,15 +642,18 @@ export const i18nText = {
     basicTemplate: 'Basic',
     allTemplates: 'All',
     upgradePlan: 'Upgrade Plan',
-    upgradePlanTip: 'Pricing are still not officially available. If you want to experience the premium features in advance, please contact us.',
+    upgradePlanTip:
+      'Pricing are still not officially available. If you want to experience the premium features in advance, please contact us.',
     iHaveInviteCode: 'I have an invite code 🎉',
     inviteCode: 'Invite Code',
     activeSuccess: 'Activated successfully',
     activeCode: 'Active',
     expiresOn: 'Expires on',
     projectNoData: 'No Project is available, click "New Project" to start creating.',
-    templateNoData: 'No Template is available, you need to create a project first and save it as a template.',
-    materialNoData: 'No Material is available, you need to select a component in the edit page and save it.',
+    templateNoData:
+      'No Template is available, you need to create a project first and save it as a template.',
+    materialNoData:
+      'No Material is available, you need to select a component in the edit page and save it.',
     templateTip: 'Select your favourite template',
     templateStart: 'Start creating your website',
     edit: 'Edit',
@@ -635,7 +673,8 @@ export const i18nText = {
     layers: 'Layers',
     ungroup: 'Ungroup',
     ungroupTip: 'Ungroup is irreversible, and undo can be reverted.',
-    ungroupNotify: 'If you need to add or modify in it, please click the “Ungroup” button above first',
+    ungroupNotify:
+      'If you need to add or modify in it, please click the “Ungroup” button above first',
     hidden: 'Hidden',
     visible: 'Visible',
     save: 'Save',
@@ -646,7 +685,8 @@ export const i18nText = {
     pasteSuccess: 'Paste component successfully',
     brokenLink: 'Unlink',
     linkTip: 'Whether to link to origin component',
-    linkTipMsg: 'After link, the configuration of the component will be updated simultaneously. \nBut you can click the "Unlink" button to unlink single or all configurations.',
+    linkTipMsg:
+      'After link, the configuration of the component will be updated simultaneously. \nBut you can click the "Unlink" button to unlink single or all configurations.',
     unlink: 'Unlink with',
     unlinkSelf: 'Self-Unlink',
     unlinkAll: 'Includes Children',
@@ -665,7 +705,8 @@ export const i18nText = {
     simulator: 'Simulator',
     zoom: 'Zoom',
     mediaFontSize: 'Media Font Size',
-    mediaFontSizeTip: 'When the browser width is greater than or equal to the width of the current simulated device, the font size is automatically adjusted to the set font size. Valid when units use rem',
+    mediaFontSizeTip:
+      'When the browser width is greater than or equal to the width of the current simulated device, the font size is automatically adjusted to the set font size. Valid when units use rem',
     mediaFontSizeEmpty: 'Not configured',
     inputFieldType: 'Input Type',
     inputFieldTypeInput: 'Single Line',
@@ -693,18 +734,22 @@ export const i18nText = {
     custom: 'Custom',
     tagType: 'Element Tag',
     transform: 'Transform',
-    transformTip: 'Transform may affect "position" and "animation" configuration.<br/>Usage refer to <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform">MDN - transform</a>',
+    transformTip:
+      'Transform may affect "position" and "animation" configuration.<br/>Usage refer to <a target="_blank" href="https://developer.mozilla.org/en-US/docs/Web/CSS/transform">MDN - transform</a>',
     attrs: 'Attributes',
     attrsPlaceholder: 'class: custom-class\naria-label: custom-label',
-    attrsTip: 'One Attribute pre Line; <small>id</small>, <small>style</small> and <small>data-name</small> cannot be set.<br/><br/>Format: <em>[name]: value</em>',
+    attrsTip:
+      'One Attribute pre Line; <small>id</small>, <small>style</small> and <small>data-name</small> cannot be set.<br/><br/>Format: <em>[name]: value</em>',
     script: 'Scripts',
     scriptPlaceholder: 'elem.ondblclick = () => alert("Hello")',
-    scriptTip: '<b>elem</b><em>[Obj]</em>: The DOM Element<br/><b>data</b><em>[Obj]</em>: Configure Data<br/><b>name</b><em>[Func]</em>: get Element by Name<br/><b>tag</b><em>[Func]</em>: get Element list by Tag<br/><b>getDataByName</b><em>[Func]</em>: get Configure Data by Name<br/><b>getDataByTag</b><em>[Func]</em>: get Configure Data list by Tag',
+    scriptTip:
+      '<b>elem</b><em>[Obj]</em>: The DOM Element<br/><b>data</b><em>[Obj]</em>: Configure Data<br/><b>name</b><em>[Func]</em>: get Element by Name<br/><b>tag</b><em>[Func]</em>: get Element list by Tag<br/><b>getDataByName</b><em>[Func]</em>: get Configure Data by Name<br/><b>getDataByTag</b><em>[Func]</em>: get Configure Data list by Tag',
     customStyle: 'Styles',
     stylePlaceholder: 'transform: rotate(45deg)\ntransform-origin: center',
     styleTip: 'Please use CSS Style syntax, One Style per Line.',
     code: 'Code',
-    codeTip: 'Custom scripts do not run at edit time. Can Download the Page or Save Project and Open a Public Domain to check it.',
+    codeTip:
+      'Custom scripts do not run at edit time. Can Download the Page or Save Project and Open a Public Domain to check it.',
     notCover: 'Not Cover',
     nameRequired: 'Name cannot be empty',
     saveSuccess: 'Saved successfully',
@@ -724,7 +769,8 @@ export const i18nText = {
     domainRandom: 'Random ID',
     domainTip: 'Sub-domains can be customized after upgrading your identity',
     domainVerifyEmptyMsg: 'The subdomain cannot be empty',
-    domainValidMsg: 'Sub-domain name format is incorrect. (Only include letters, numbers, underline and hyphens)',
+    domainValidMsg:
+      'Sub-domain name format is incorrect. (Only include letters, numbers, underline and hyphens)',
     domainLengthMsg: 'Sub-domain name length must not exceed 15 characters',
     ok: 'OK',
     cancel: 'Cancel',
@@ -779,7 +825,8 @@ export const i18nText = {
     textShadow: 'Text Shadow',
     fontFamily: 'Font Family',
     addSubText: 'Add Sub-Text',
-    subTextTip: 'Sub-text helps you to style a section of text individually, by clicking on \'Add Sub-Text\' and then using {{n}} in the text to use it. Note that n is the index of the subtext.',
+    subTextTip:
+      "Sub-text helps you to style a section of text individually, by clicking on 'Add Sub-Text' and then using {{n}} in the text to use it. Note that n is the index of the subtext.",
     eventTriggerType: 'Trigger Type',
     eventNone: 'None',
     eventTap: 'Tap',
@@ -788,12 +835,14 @@ export const i18nText = {
     link: 'Link',
     eventLinkTip: 'Can use <b>./{filename}.html</b> to jump to a Sub-Page',
     function: 'Function',
-    functionTip: '<b>event</b><em>[Obj]</em>: current event<br/><b>data</b><em>[Obj]</em>: Configure Data<br/><b>name</b><em>[Func]</em>: get element by name<br/><b>tag</b><em>[Func]</em>: get element list by tag name<br/><b>getDataByName</b><em>[Func]</em>: get Configure Data by name<br/><b>getDataByTag</b><em>[Func]</em>: get Configure Data list by tag',
+    functionTip:
+      '<b>event</b><em>[Obj]</em>: current event<br/><b>data</b><em>[Obj]</em>: Configure Data<br/><b>name</b><em>[Func]</em>: get element by name<br/><b>tag</b><em>[Func]</em>: get element list by tag name<br/><b>getDataByName</b><em>[Func]</em>: get Configure Data by name<br/><b>getDataByTag</b><em>[Func]</em>: get Configure Data list by tag',
     scrollTo: 'Scroll To',
     componentName: 'Component Name',
     scrollToPlaceholder: 'Component Name or Distance to Top',
     linkPlaceholder: 'Enter a link here',
-    functionPlaceholder: 'The Configure Data modified will take effect immediately. If you want to trigger an event, need to click the unlock button.',
+    functionPlaceholder:
+      'The Configure Data modified will take effect immediately. If you want to trigger an event, need to click the unlock button.',
     stopPropagation: 'Stop Propagation',
     openNewTab: 'Open in New Tab',
     hover: 'Hover',
@@ -839,7 +888,8 @@ export const i18nText = {
     source: 'Source',
     sourcePlaceholder: 'Source URL',
     youtube: 'Youtube',
-    youtubeTip: 'For example, if the video link is https://www.youtube.com/watch?v=dQw4w9WgXcQ, the Youtube ID is dQw4w9WgXcQ',
+    youtubeTip:
+      'For example, if the video link is https://www.youtube.com/watch?v=dQw4w9WgXcQ, the Youtube ID is dQw4w9WgXcQ',
     youtubePlaceholder: 'Youtube ID',
     iframe: 'iframe',
     iframePlaceholder: 'iframe URL',
@@ -862,7 +912,8 @@ export const i18nText = {
     objectFitFill: 'Fill',
     objectFitNone: 'None',
     objectFitScaleDown: 'Scale Down',
-    iconTip: 'Icons are loaded by default using a third party CDN. The default icon is FontAwesome, for more icons see.：<a href="https://fontawesome.com/v4/icons/" target="_blank">https://fontawesome.com/v4/icons/</a>',
+    iconTip:
+      'Icons are loaded by default using a third party CDN. The default icon is FontAwesome, for more icons see.：<a href="https://fontawesome.com/v4/icons/" target="_blank">https://fontawesome.com/v4/icons/</a>',
     iconName: 'Name',
     iconSize: 'Size',
     iconColor: 'Color',
@@ -878,7 +929,8 @@ export const i18nText = {
     backgroundClipPadding: 'Extends to Padding',
     backgroundClipContent: 'Content Box',
     backgroundClipText: 'Text',
-    backgroundClipTextTip: 'When "Text" is selected, the background will be used as the foreground color for the text.',
+    backgroundClipTextTip:
+      'When "Text" is selected, the background will be used as the foreground color for the text.',
     backgroundColor: 'Background Color',
     backgroundLink: 'Image Source',
     backgroundSize: 'Background Size',
@@ -932,7 +984,8 @@ export const i18nText = {
     pageDescriptionPlaceholder: 'Description are good for SEO',
     pageFavicon: 'Favicon',
     pageGoogleAnalytics: 'Google Analytics',
-    pageGoogleAnalyticsTip: '用于分析你的站点访问数据，需要输入你的衡量ID。<a href="https://support.google.com/analytics/answer/7372977" target="_blank">帮助链接</a>',
+    pageGoogleAnalyticsTip:
+      '用于分析你的站点访问数据，需要输入你的衡量ID。<a href="https://support.google.com/analytics/answer/7372977" target="_blank">帮助链接</a>',
     pageGoogleAnalyticsPlaceholder: 'G-XXXXXXXXX',
     customCode: 'Custom Code',
     customCodePlaceholder: 'i.e <script> tag, <style> tag, <link> tag, etc.',
@@ -954,7 +1007,8 @@ export const i18nText = {
     useIt: 'Use This',
     newProject: 'New Project',
     emptyProject: 'Create a empty project',
-    notSaveDataTip: 'Do you have data that is still unsaved from the last edit and are you restoring it?',
+    notSaveDataTip:
+      'Do you have data that is still unsaved from the last edit and are you restoring it?',
     pageGlobalSetting: 'Page Setting',
     fontSetting: 'Font Setting',
     shortcut: 'Shortcut',
@@ -988,7 +1042,8 @@ export const i18nText = {
     close: 'Close',
     question: 'FAQ',
     question1: '💡 How to understand the page structure?',
-    answer1: 'A page is made up of multiple sections stacked on top of each other, and any number of components can be added to the sections.',
+    answer1:
+      'A page is made up of multiple sections stacked on top of each other, and any number of components can be added to the sections.',
     question2: '💡 Which unit should I use?',
     answer2: `
 <li>px: Absolute units, expressed in pixels, can be understood as pixel values.</li>
@@ -1009,17 +1064,19 @@ and add it to [Font] in [Font Settings] or in a separate setting in the Text com
 `,
     question4: '📮 Feedback',
     answer4: `Welcome to send email → <a target="_blank" href="mailto:nightcat@hzfe.org">nightcat@hzfe.org</a>`,
-  }
+  },
 }
 
 export const lang: 'zh' | 'en' =
   location.search.indexOf('lang=en') > -1
     ? 'en'
     : location.search.indexOf('lang=zh') > -1
-      ? 'zh'
-      : ['en', 'zh'].includes(localStorage.getItem('lang')! || '')
-        ? localStorage.getItem('lang') as 'zh' | 'en'
-        : navigator.language.toLowerCase().startsWith('zh') ? 'zh' : 'en'
+    ? 'zh'
+    : ['en', 'zh'].includes(localStorage.getItem('lang')! || '')
+    ? (localStorage.getItem('lang') as 'zh' | 'en')
+    : navigator.language.toLowerCase().startsWith('zh')
+    ? 'zh'
+    : 'en'
 
 setLang(lang)
 
@@ -1031,5 +1088,6 @@ export const $t = (key: keyof typeof i18nText['zh'], ...args: (string | number)[
   return str
 }
 
-export const getMaterialName = (item: IMaterialItem) => lang === 'en' && item.enName || item.name
-export const getMaterialCategory = (item: IMaterialItem) => lang === 'en' && item.categoryEn || item.category
+export const getMaterialName = (item: IMaterialItem) => (lang === 'en' && item.enName) || item.name
+export const getMaterialCategory = (item: IMaterialItem) =>
+  (lang === 'en' && item.categoryEn) || item.category

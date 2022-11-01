@@ -1,6 +1,6 @@
-import { $t } from "./i18n";
+import { $t } from './i18n'
 
-export const isMacOS = navigator.platform.toUpperCase().indexOf('MAC') >= 0;
+export const isMacOS = navigator.platform.toUpperCase().indexOf('MAC') >= 0
 
 export const ShortcutMap = {
   /** 切换展示模式 */
@@ -91,9 +91,9 @@ export const ShortcutMap = {
   },
   /** 切换到下一个尺寸的设备模拟器 */
   nextDeviceIndex: {
-    key: isMacOS ? 'meta.\'' : 'ctrl.\'',
+    key: isMacOS ? "meta.'" : "ctrl.'",
     title: $t('nextDeviceSize'),
-    value: isMacOS ? '⌘ + \'' : 'Ctrl + \'',
+    value: isMacOS ? "⌘ + '" : "Ctrl + '",
   },
   /** 切换到下一个尺寸的设备模拟器 */
   prevDeviceIndex: {
@@ -103,13 +103,15 @@ export const ShortcutMap = {
   },
   /** 全部折叠 */
   collapseAll: {
-    key: (e: KeyboardEvent) => (isMacOS ? e.metaKey : e.ctrlKey) && (isMacOS ? e.shiftKey : e.altKey) && e.key === '.',
+    key: (e: KeyboardEvent) =>
+      (isMacOS ? e.metaKey : e.ctrlKey) && (isMacOS ? e.shiftKey : e.altKey) && e.key === '.',
     title: $t('collapseAll'),
     value: isMacOS ? '⌘ + Shift + .' : 'Ctrl + Alt + .',
   },
   /** 切换 Section */
   switchSection: {
-    key: (e: KeyboardEvent) => (isMacOS ? e.metaKey : e.ctrlKey) && (isMacOS ? e.shiftKey : e.altKey) && /\d/.test(e.key),
+    key: (e: KeyboardEvent) =>
+      (isMacOS ? e.metaKey : e.ctrlKey) && (isMacOS ? e.shiftKey : e.altKey) && /\d/.test(e.key),
     title: $t('switchSection'),
     value: isMacOS ? '⌘ + Shift + {数字键}' : 'Ctrl + Alt + {数字键}',
   },

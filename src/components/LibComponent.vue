@@ -16,9 +16,19 @@ interface ILibComponentProps {
 
 const { parent, item, inModule } = defineProps<ILibComponentProps>()
 
-const { activeNode, setActiveNode, insertNode, swapNode, addActiveParentChain } = usePageStoreHelper()
+const { activeNode, setActiveNode, insertNode, swapNode, addActiveParentChain } =
+  usePageStoreHelper()
 
-const { dragNode, dragType, dropZone, dragNodeType, isCancelDrag, setDropZone, setDragNode, getIsInDragNode } = useDragStoreHelper()
+const {
+  dragNode,
+  dragType,
+  dropZone,
+  dragNodeType,
+  isCancelDrag,
+  setDropZone,
+  setDragNode,
+  getIsInDragNode,
+} = useDragStoreHelper()
 
 const { displayMode, lockDrag } = useDisplayStoreHelper()
 
@@ -179,13 +189,14 @@ watch(
 const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
   if (
     displayMode.value === 'drag' || // 拖拽模式下
-    (!lockDrag.value && ['absolute', 'fixed'].includes(useConfigProps(subItem).position?.position || '')) // 组件调整绝对定位位置时
+    (!lockDrag.value &&
+      ['absolute', 'fixed'].includes(useConfigProps(subItem).position?.position || '')) // 组件调整绝对定位位置时
   ) {
     e.stopPropagation()
   }
 }
 
-const handleSetElement = (el: HTMLElement) => $el = el
+const handleSetElement = (el: HTMLElement) => ($el = el)
 </script>
 
 <template>

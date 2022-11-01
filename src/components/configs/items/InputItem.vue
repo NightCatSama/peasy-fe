@@ -8,8 +8,8 @@ export default {
 import Input from '@/components/widgets/Input.vue'
 import Icon from '@/components/widgets/Icon.vue'
 import { emitter } from '@/utils/event'
-import { inConfigMain } from '@/utils/helper';
-import { nextTick } from 'vue';
+import { inConfigMain } from '@/utils/helper'
+import { nextTick } from 'vue'
 
 type IInputProps = Partial<InstanceType<typeof Input>>
 
@@ -65,7 +65,7 @@ const handleBlur = (e: Event) => {
         :size="13"
         v-tooltip="{
           content: tip,
-          html: true
+          html: true,
         }"
       ></Icon>
       <div class="label-suffix"><slot name="label-suffix"></slot></div>

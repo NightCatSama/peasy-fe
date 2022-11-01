@@ -3,7 +3,7 @@ import { useRouter } from 'vue-router'
 import MaterialCard from '@/components/widgets/MaterialCard.vue'
 import Icon from '@/components/widgets/Icon.vue'
 import { IMaterialItem } from '@/config'
-import { $t } from '@/constants/i18n';
+import { $t } from '@/constants/i18n'
 
 interface ITemplatesProps {
   section: IMaterialItem[]
@@ -17,7 +17,7 @@ const router = useRouter()
 let curType = $ref<string>('section')
 
 const list = $computed(() => getList(curType))
-const getList = (type: string) => type === 'section' ? section : component
+const getList = (type: string) => (type === 'section' ? section : component)
 
 let titleMap: { [key: string]: string } = {
   component: $t('component'),
@@ -82,19 +82,20 @@ let titleMap: { [key: string]: string } = {
     flex-direction: column;
     padding: 8px 16px;
     border-radius: $normal-radius;
-    background-color: rgba($black, .2);
+    background-color: rgba($black, 0.2);
 
-    transition: all .2s;
+    transition: all 0.2s;
 
     &:not(:last-child) {
       margin-bottom: 12px;
     }
 
-    &:hover, &.active {
-      background-color: rgba($black, .5);
-    .project-item-operate-group {
-      opacity: 1;
-    }
+    &:hover,
+    &.active {
+      background-color: rgba($black, 0.5);
+      .project-item-operate-group {
+        opacity: 1;
+      }
     }
   }
 

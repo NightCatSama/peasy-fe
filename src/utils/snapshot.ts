@@ -31,4 +31,3 @@ export const createMaterialSnapshot = (el: HTMLElement, options?: any) => {
     return canvas.toDataURL('image/png', 1)
   })
 }
-

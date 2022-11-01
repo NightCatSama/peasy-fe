@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import Icon from '../widgets/Icon.vue';
-import Logo from '../Logo.vue';
-import Btn from '../widgets/Btn.vue';
-import { AlertError, AlertSuccess } from '@/utils/alert';
-import { $t } from '@/constants/i18n';
-import { sendEmailApi } from '@/utils/mande';
-import { onMounted, onUnmounted } from 'vue';
-import { emitter } from '@/utils/event';
+import Icon from '../widgets/Icon.vue'
+import Logo from '../Logo.vue'
+import Btn from '../widgets/Btn.vue'
+import { AlertError, AlertSuccess } from '@/utils/alert'
+import { $t } from '@/constants/i18n'
+import { sendEmailApi } from '@/utils/mande'
+import { onMounted, onUnmounted } from 'vue'
+import { emitter } from '@/utils/event'
 
-let chatVisible = $ref(false);
+let chatVisible = $ref(false)
 let email = $ref('')
 let msg = $ref('')
 let emailElem = $ref<HTMLInputElement | null>(null)
@@ -25,7 +25,7 @@ const handleSend = async () => {
 
   await sendEmailApi.post({
     email,
-    msg
+    msg,
   })
   msg = ''
   chatVisible = false
@@ -126,7 +126,8 @@ onUnmounted(() => {
         border-bottom: 1px solid $border;
       }
 
-      input, textarea {
+      input,
+      textarea {
         width: 100%;
         height: 100%;
         font-size: 14px;

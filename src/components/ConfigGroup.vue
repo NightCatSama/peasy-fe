@@ -64,9 +64,9 @@ const iconName = $computed(
   () => (bindProps as any)?.icon || groupIconMap[groupType] || defaultGroupIcon
 )
 
-const showTitle = $computed(
-  () => (bindProps as any)?.title
-    ? lang === 'en' && (bindProps as any)?.titleEn || (bindProps as any)?.title
+const showTitle = $computed(() =>
+  (bindProps as any)?.title
+    ? (lang === 'en' && (bindProps as any)?.titleEn) || (bindProps as any)?.title
     : groupTitleMap[groupType]
 )
 
@@ -79,11 +79,7 @@ onErrorCaptured((err) => {
 
 <template>
   <div
-    v-if="
-      activeNode &&
-      componentNameMap[groupType] &&
-      !ignoreGroup.includes(groupType)
-    "
+    v-if="activeNode && componentNameMap[groupType] && !ignoreGroup.includes(groupType)"
     class="config-group"
   >
     <Component

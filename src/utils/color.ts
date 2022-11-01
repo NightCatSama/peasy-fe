@@ -1,4 +1,4 @@
-import { getColorVarStylesheet } from "./core"
+import { getColorVarStylesheet } from './core'
 
 /** TODO: 判断是否为标准颜色格式 */
 export const isColor = (color: string): boolean => {

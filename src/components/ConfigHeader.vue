@@ -32,13 +32,10 @@ const { isTemplate } = defineProps<IConfigHeaderProps>()
 
 const { userName, avatar } = useUserStoreHelper()
 
-const { project, mainProject, colorVars, allPageData, template, updateAllPageNode } = usePageStoreHelper()
+const { project, mainProject, colorVars, allPageData, template, updateAllPageNode } =
+  usePageStoreHelper()
 
-const {
-  displayMode,
-  curPresetDeviceList: deviceList,
-  setDisplayMode
-} = useDisplayStoreHelper()
+const { displayMode, curPresetDeviceList: deviceList, setDisplayMode } = useDisplayStoreHelper()
 
 const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
@@ -75,14 +72,14 @@ const gotoMePage = async () => {
     router.push({ name: 'dashboard' })
   }
 }
-const switchLang = async(lang: 'zh' | 'en') => {
+const switchLang = async (lang: 'zh' | 'en') => {
   if (await Modal.confirm($t('switchLangTip'))) {
     router.replace({
       name: route.name!,
       params: { ...route.params },
       query: {
-        lang
-      }
+        lang,
+      },
     })
     setTimeout(() => location.reload(), 0)
   }
@@ -95,7 +92,7 @@ let showColorVarDropdown = $ref(false)
 let showPageList = $ref(false)
 
 const domain = $computed(() =>
-  (mainProject.value?.isPublic && mainProject.value?.domain)
+  mainProject.value?.isPublic && mainProject.value?.domain
     ? getDomainURL(mainProject.value.domain, project.value.filename)
     : ''
 )
@@ -146,7 +143,7 @@ emitter.on('saveColorVars', (color: string) => {
   })
 })
 
-emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
+emitter.on('switchPageList', (open: boolean = false) => (showPageList = open))
 </script>
 
 <template>
@@ -158,10 +155,14 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
           <div class="ext">.html</div>
           <Icon name="down" type="pure" color="grey" :size="9"></Icon>
         </div>
-        <a v-if="domain" class="page-domain" target="_blank" :href="domain" @click.stop>{{ domain }}</a>
+        <a v-if="domain" class="page-domain" target="_blank" :href="domain" @click.stop>{{
+          domain
+        }}</a>
       </div>
       <div v-else class="page-info">
-        <span class="page-label">{{ $t('editTemplate') }}: <span class="name">{{ template?.name }}</span></span>
+        <span class="page-label"
+          >{{ $t('editTemplate') }}: <span class="name">{{ template?.name }}</span></span
+        >
       </div>
       <Btn
         class="project-setting-btn"
@@ -200,7 +201,11 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
         @update:model-value="handleModeClick"
       >
         <template #value>
-          <Icon class="icon" :name="modeMap[displayMode].icon" :size="displayMode === 'preview' ? 13 : 11"></Icon>
+          <Icon
+            class="icon"
+            :name="modeMap[displayMode].icon"
+            :size="displayMode === 'preview' ? 13 : 11"
+          ></Icon>
           <span>{{ modeMap[displayMode].title }}</span>
         </template>
       </Select>
@@ -253,15 +258,61 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
           <div class="user-content">
             <template v-if="isAuthenticated">
               <div class="user-name">{{ userName }}</div>
-              <div class="item" @click=" () => { gotoMePage(); hide() }">{{ $t('profile') }}</div>
-              <div class="item" @click=" () => { showEditorSetting = true; hide() }">{{ $t('editorSetting') }}</div>
-              <div class="item" @click=" () => { switchLang(lang === 'en' ? 'zh' : 'en'); hide() }">
+              <div
+                class="item"
+                @click="
+                  () => {
+                    gotoMePage()
+                    hide()
+                  }
+                "
+              >
+                {{ $t('profile') }}
+              </div>
+              <div
+                class="item"
+                @click="
+                  () => {
+                    showEditorSetting = true
+                    hide()
+                  }
+                "
+              >
+                {{ $t('editorSetting') }}
+              </div>
+              <div
+                class="item"
+                @click="
+                  () => {
+                    switchLang(lang === 'en' ? 'zh' : 'en')
+                    hide()
+                  }
+                "
+              >
                 {{ lang === 'zh' ? $t('switchToEN') : $t('switchToZH') }}
               </div>
-              <div class="item danger" @click=" () => { handleSignOut(); hide() }">{{ $t('signOut') }}</div>
+              <div
+                class="item danger"
+                @click="
+                  () => {
+                    handleSignOut()
+                    hide()
+                  }
+                "
+              >
+                {{ $t('signOut') }}
+              </div>
             </template>
             <template v-else>
-              <div class="item" @click=" () => { switchLang(lang === 'en' ? 'zh' : 'en'); hide() }">
+              <div
+                class="item"
+                @click="
+                  () => {
+                    switchLang(lang === 'en' ? 'zh' : 'en')
+                    hide()
+                  }
+                "
+              >
                 {{ lang === 'zh' ? $t('switchToEN') : $t('switchToZH') }}
               </div>
               <div class="item primary" @click="handleSignIn">{{ $t('signIn') }}</div>
@@ -271,7 +322,10 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
       </Dropdown>
     </div>
     <PageList :class="{ show: showPageList }" @hide="showPageList = false"></PageList>
-    <EditorSettingModal v-model="showEditorSetting" @close="showEditorSetting = false"></EditorSettingModal>
+    <EditorSettingModal
+      v-model="showEditorSetting"
+      @close="showEditorSetting = false"
+    ></EditorSettingModal>
   </div>
 </template>
 

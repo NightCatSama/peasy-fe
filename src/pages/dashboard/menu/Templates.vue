@@ -68,19 +68,20 @@ const openPreviewTemplate = (item: IMaterialItem) => {
     flex-direction: column;
     padding: 8px 16px;
     border-radius: $normal-radius;
-    background-color: rgba($black, .2);
+    background-color: rgba($black, 0.2);
 
-    transition: all .2s;
+    transition: all 0.2s;
 
     &:not(:last-child) {
       margin-bottom: 12px;
     }
 
-    &:hover, &.active {
-      background-color: rgba($black, .5);
-    .project-item-operate-group {
-      opacity: 1;
-    }
+    &:hover,
+    &.active {
+      background-color: rgba($black, 0.5);
+      .project-item-operate-group {
+        opacity: 1;
+      }
     }
   }
 

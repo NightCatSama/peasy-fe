@@ -104,6 +104,7 @@ export const covertSizeToOtherUnit = (n: number, oldUnit: string, newUnit: strin
       : oldUnit === 'vh'
       ? fixedPointToNumber(n / (100 / useDisplayStore().device.height))
       : n
-  if (newUnit === 'vw' || newUnit === 'rem' || newUnit === 'vh') return covertSizeToOtherUnit(toPx, 'px', newUnit)
+  if (newUnit === 'vw' || newUnit === 'rem' || newUnit === 'vh')
+    return covertSizeToOtherUnit(toPx, 'px', newUnit)
   return toPx
 }

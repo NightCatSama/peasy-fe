@@ -19,7 +19,14 @@ interface ICustomGroupProps extends IModuleConfigGroup {
   node: PageNode
 }
 
-const { node, title, titleEn, icon, data, defaultCollapsed = false } = useAttrs() as unknown as ICustomGroupProps
+const {
+  node,
+  title,
+  titleEn,
+  icon,
+  data,
+  defaultCollapsed = false,
+} = useAttrs() as unknown as ICustomGroupProps
 const dataRef = reactive(data)
 const getComponentData = (type: string) => getFormPropsByType(type)
 
@@ -39,8 +46,10 @@ const setValue = (targetValue: string | string[], value: string) => {
   }
 }
 
-const showTitle = $computed(() => lang === 'en' && titleEn || title)
-const getLabel = $computed(() => (item: IModuleConfigItem) => lang === 'en' && item.labelEn || item.label)
+const showTitle = $computed(() => (lang === 'en' && titleEn) || title)
+const getLabel = $computed(
+  () => (item: IModuleConfigItem) => (lang === 'en' && item.labelEn) || item.label
+)
 </script>
 
 <template>

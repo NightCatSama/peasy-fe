@@ -43,19 +43,21 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
   useEffect(propsRef)
 
   if (propsRef?.position?.position === 'fixed' && propsRef?.position?.showByOffset) {
-    useScrollByOffset(propsRef.position.showByOffset, (show: boolean) => propsRef.common.hide = !show)
+    useScrollByOffset(
+      propsRef.position.showByOffset,
+      (show: boolean) => (propsRef.common.hide = !show)
+    )
   }
 
   const styleMap = computed(() => ({
-    basic: (
+    basic:
       componentTypeName === 'Text'
-      ? useTextBasicStyle(propsRef.basic)
-      : componentTypeName === 'Image'
-      ? useImageBasicStyle(propsRef.basic)
-      : componentTypeName === 'Icon'
-      ? useIconBasicStyle(propsRef.basic)
-      : {}
-    ),
+        ? useTextBasicStyle(propsRef.basic)
+        : componentTypeName === 'Image'
+        ? useImageBasicStyle(propsRef.basic)
+        : componentTypeName === 'Icon'
+        ? useIconBasicStyle(propsRef.basic)
+        : {},
     font: useFontStyle(propsRef.font),
     layout: useLayoutStyle(propsRef.layout),
     size: useSizeStyle(propsRef.size, propsRef.direction),
@@ -66,7 +68,7 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
     position: usePositionStyle(propsRef.position),
     animation: useAnimationStyle(animationMap),
     effect: useEffectStyle(propsRef.effect, propsRef.componentName),
-    common: (propsRef.common.hide ? { display: 'none' } : null),
+    common: propsRef.common.hide ? { display: 'none' } : null,
     code: useCodeStyle(propsRef.code),
   }))
 
@@ -96,14 +98,14 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
     ;(elem.value as any).__node__ = props
     if (props.code?.script && !isEditMode) {
       const args = '...args'
-      const fn = new Function(args, `var [
+      const fn = new Function(
+        args,
+        `var [
         elem,
         props,
-      ] = args;${props.code.script}`)
-      fn(
-        elem.value,
-        propsRef,
+      ] = args;${props.code.script}`
       )
+      fn(elem.value, propsRef)
     }
   })
 

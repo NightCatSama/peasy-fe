@@ -2,7 +2,7 @@ import { $t } from '@/constants/i18n'
 import { v4 as uuidv4 } from 'uuid'
 import { AlertError } from './alert'
 
-export const getClient = async() => {
+export const getClient = async () => {
   const OSS = (await import('ali-oss')).default
   const client = new OSS({
     region: 'oss-cn-shanghai',

@@ -1,9 +1,9 @@
-import { useDisplayStore } from "@/stores/display"
-import { useDragStore } from "@/stores/drag"
-import { useHistoryStore } from "@/stores/history"
-import { usePageStore } from "@/stores/page"
-import { useUserStore } from "@/stores/user"
-import { storeToRefs } from "pinia"
+import { useDisplayStore } from '@/stores/display'
+import { useDragStore } from '@/stores/drag'
+import { useHistoryStore } from '@/stores/history'
+import { usePageStore } from '@/stores/page'
+import { useUserStore } from '@/stores/user'
+import { storeToRefs } from 'pinia'
 
 /**
  * 简化 store 数据的获取

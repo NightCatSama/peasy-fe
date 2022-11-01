@@ -18,7 +18,14 @@ interface IGroupProps {
   defaultCollapsed?: boolean
   canAdvanced?: boolean
 }
-const { title, titleEn, groupName, icon, defaultCollapsed = true, canAdvanced } = defineProps<IGroupProps>()
+const {
+  title,
+  titleEn,
+  groupName,
+  icon,
+  defaultCollapsed = true,
+  canAdvanced,
+} = defineProps<IGroupProps>()
 
 const pageStore = usePageStore()
 const { activeNode } = storeToRefs(pageStore)
@@ -29,9 +36,7 @@ const { saveGroupStatus, getGroupStatus } = displayStore
 
 const groupStatusKey = $computed(() => title || groupName!)
 const showTitle = $computed(() => {
-  return title
-    ? lang === 'en' && titleEn || title
-    : (groupName && groupTitleMap[groupName])
+  return title ? (lang === 'en' && titleEn) || title : groupName && groupTitleMap[groupName]
 })
 
 const status = getGroupStatus(activeNode.value?.component, groupStatusKey)
@@ -44,7 +49,10 @@ const isMobileStyle = $computed(() => isMobileGroupConfig(activeNode.value, grou
 const handleSwitchMobileConfig = () => groupName && switchActiveNodeConfigMode(groupName)
 
 onUpdated(() => {
-  saveGroupStatus(activeNode.value?.component, groupStatusKey, { collapsed, advanced: showAdvanced })
+  saveGroupStatus(activeNode.value?.component, groupStatusKey, {
+    collapsed,
+    advanced: showAdvanced,
+  })
 })
 const collapseFn = () => (collapsed = false)
 onMounted(() => {

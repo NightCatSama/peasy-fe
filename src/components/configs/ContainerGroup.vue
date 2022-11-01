@@ -33,7 +33,7 @@ const blur = $computed({
     } else {
       container.filter = ''
     }
-  }
+  },
 })
 </script>
 
@@ -54,7 +54,12 @@ const blur = $computed({
       ></SliderItem>
       <SelectItem
         :label="$t('overflow')"
-        :options="{ visible: $t('visible'), hidden: $t('hidden'), scroll: $t('scroll'), auto: $t('auto') }"
+        :options="{
+          visible: $t('visible'),
+          hidden: $t('hidden'),
+          scroll: $t('scroll'),
+          auto: $t('auto'),
+        }"
         v-model="container.overflow"
       ></SelectItem>
       <SelectItem

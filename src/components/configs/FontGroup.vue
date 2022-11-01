@@ -131,7 +131,11 @@ const textShadowPreset = [
           v-model="font.fontWeight"
           :options="fontWeightMap"
         ></SelectItem>
-        <PreviewItem :label="$t('textShadow')" :options="textShadowPreset" v-model="font.textShadow">
+        <PreviewItem
+          :label="$t('textShadow')"
+          :options="textShadowPreset"
+          v-model="font.textShadow"
+        >
           <template #default="{ item: shadow, active }">
             <div :class="['inner-text', { active }]" :style="{ textShadow: shadow }">T</div>
           </template>

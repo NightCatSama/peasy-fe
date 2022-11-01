@@ -10,7 +10,15 @@ import type { SortableEvent } from 'sortablejs'
 import { nextTick } from 'vue'
 import draggable from 'vuedraggable'
 
-const { activeSection, isActiveAllSection, allPageData, addSection, setActiveSection, setActiveNode, swapSection } = usePageStoreHelper()
+const {
+  activeSection,
+  isActiveAllSection,
+  allPageData,
+  addSection,
+  setActiveSection,
+  setActiveNode,
+  swapSection,
+} = usePageStoreHelper()
 
 const { dragNode, dragType, dragNodeType, isCancelDrag } = useDragStoreHelper()
 
