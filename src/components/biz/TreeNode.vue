@@ -1,17 +1,13 @@
 <script setup lang="ts">
 import { PageNode } from '@/config'
-import { useDisplayStore } from '@/stores/display'
-import { Alert } from '@/utils/alert'
-import { watch, ref } from 'vue'
-import { storeToRefs } from 'pinia'
-import Icon from '../widgets/Icon.vue'
-import { usePageStore } from '@/stores/page'
-import { emitter } from '@/utils/event'
-import { useConfigProps } from '@/utils/config'
-import draggable from 'vuedraggable'
-import type { SortableEvent } from 'sortablejs'
-import { useDragStore } from '@/stores/drag'
 import { useDisplayStoreHelper, useDragStoreHelper } from '@/hooks/store'
+import { usePageStore } from '@/stores/page'
+import { useConfigProps } from '@/utils/config'
+import { storeToRefs } from 'pinia'
+import type { SortableEvent } from 'sortablejs'
+import { ref, watch } from 'vue'
+import draggable from 'vuedraggable'
+import Icon from '../widgets/Icon.vue'
 
 interface ITreeNodeListProps {
   node: PageNode

@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import { usePageStore } from '@/stores/page'
-import Avatar from './widgets/Avatar.vue'
-import Icon from './widgets/Icon.vue'
 import SectionList from '@/components/biz/SectionList.vue'
-import GlobalSettingPanel from './biz/GlobalSettingPanel.vue'
-import Dropdown from './widgets/Dropdown.vue'
-import FontFamilyPanel from './biz/FontFamilyPanel.vue'
-import Logo from './Logo.vue'
-import QuestionPanel from './biz/QuestionPanel.vue'
 import { useRouter } from 'vue-router'
+import FontFamilyPanel from './biz/FontFamilyPanel.vue'
+import GlobalSettingPanel from './biz/GlobalSettingPanel.vue'
+import QuestionPanel from './biz/QuestionPanel.vue'
+import Logo from './Logo.vue'
+import Dropdown from './widgets/Dropdown.vue'
+import Icon from './widgets/Icon.vue'
 
 interface ISidebarProps {
   keyboard: boolean

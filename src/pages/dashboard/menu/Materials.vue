@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { useRouter } from 'vue-router'
-import MaterialCard from '@/components/widgets/MaterialCard.vue'
 import Icon from '@/components/widgets/Icon.vue'
+import MaterialCard from '@/components/widgets/MaterialCard.vue'
 import { IMaterialItem } from '@/config'
 import { $t } from '@/constants/i18n'
+import { useRouter } from 'vue-router'
 
 interface ITemplatesProps {
   section: IMaterialItem[]

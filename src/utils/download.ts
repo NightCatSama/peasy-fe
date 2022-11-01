@@ -1,7 +1,7 @@
+import type { IPage } from '@/config'
 import { parsePageData } from '@/utils/core'
-import type { IPage, PageNode } from '@/config'
-import JSZip from 'jszip'
 import { Project } from '@@/entities/project.entity'
+import JSZip from 'jszip'
 
 import temp from '../../template-dist/index.html?raw'
 

@@ -1,16 +1,14 @@
 <script setup lang="ts">
-import Group from '../widgets/Group.vue'
-import { fixedPoint, fixedPointToNumber } from '@/utils/sizeHelper'
 import { PageNode } from '@/config'
-import InputItem from './items/InputItem.vue'
-import SelectItem from './items/SelectItem.vue'
-import ColorItem from './items/ColorItem.vue'
-import Tabs from '../widgets/Tabs.vue'
-import Icon from '../widgets/Icon.vue'
-import TabsItem from './items/TabsItem.vue'
-import { emitter } from '@/utils/event'
 import { $t } from '@/constants/i18n'
+import { emitter } from '@/utils/event'
+import { fixedPoint, fixedPointToNumber } from '@/utils/sizeHelper'
 import { getColor } from '../libs/hooks/color'
+import Group from '../widgets/Group.vue'
+import Icon from '../widgets/Icon.vue'
+import ColorItem from './items/ColorItem.vue'
+import InputItem from './items/InputItem.vue'
+import TabsItem from './items/TabsItem.vue'
 
 interface IFontGroupProps {
   node: PageNode

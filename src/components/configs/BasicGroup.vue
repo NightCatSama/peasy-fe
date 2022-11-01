@@ -1,23 +1,18 @@
 <script setup lang="ts">
-import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
-import { PageNode, isSomeBasicType, DefaultIconStyleLink } from '@/config'
+import { DefaultIconStyleLink, isSomeBasicType, PageNode } from '@/config'
+import { $t } from '@/constants/i18n'
+import { usePageStore } from '@/stores/page'
+import { getDefaultBasic } from '@/utils/defaultConfig'
+import { emitter } from '@/utils/event'
+import Btn from '../widgets/Btn.vue'
+import Group from '../widgets/Group.vue'
+import Tip from '../widgets/Tip.vue'
+import BtnItem from './items/BtnItem.vue'
+import ColorItem from './items/ColorItem.vue'
 import ImageItem from './items/ImageItem.vue'
 import SelectItem from './items/SelectItem.vue'
 import SwitchItem from './items/SwitchItem.vue'
-import { usePageStore } from '@/stores/page'
-import BtnItem from './items/BtnItem.vue'
-import ColorItem from './items/ColorItem.vue'
-import Tip from '../widgets/Tip.vue'
-import { $t } from '@/constants/i18n'
-import Btn from '../widgets/Btn.vue'
-import {
-  getDefaultBackground,
-  getDefaultBasic,
-  getDefaultBorder,
-  getDefaultSpacing,
-} from '@/utils/defaultConfig'
-import { emitter } from '@/utils/event'
 
 interface IBasicGroupProps {
   node: PageNode

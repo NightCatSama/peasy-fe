@@ -1,17 +1,17 @@
-import { createApp } from 'vue'
-import FloatingVue, { VTooltip, VClosePopper } from 'floating-vue'
 import { createLogto, LogtoConfig } from '@logto/vue'
+import FloatingVue, { VClosePopper, VTooltip } from 'floating-vue'
+import { createApp } from 'vue'
 
-import App from './App.vue'
-import { Text, Block, Image, Icon, Media, InputField } from './components/libs'
-import GlobalDirective from './toolkit/global.directive'
 import Toast from 'vue-toastification'
+import App from './App.vue'
+import { Block, Icon, Image, InputField, Media, Text } from './components/libs'
+import GlobalDirective from './toolkit/global.directive'
 
 import 'floating-vue/dist/style.css'
 import 'vue-toastification/dist/index.css'
+import { $t } from './constants/i18n'
 import { router } from './router'
 import { pinia } from './stores'
-import { $t } from './constants/i18n'
 
 const config: LogtoConfig = {
   endpoint: import.meta.env.VITE_LOGTO_HOST,

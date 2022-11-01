@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import { watch } from 'vue'
-import Icon from './Icon.vue'
-import { IMaterialItem, imgErrorFallback, PageNodeType } from '@/config'
+import { IMaterialItem } from '@/config'
+import { $t } from '@/constants/i18n'
 import { Project } from '@@/entities/project.entity'
 import { useRouter } from 'vue-router'
-import { Modal } from '../modal'
-import { $t } from '@/constants/i18n'
+import Icon from './Icon.vue'
 
 interface IMaterialCardProps {
   type: string | number

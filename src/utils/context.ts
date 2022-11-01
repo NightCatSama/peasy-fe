@@ -1,5 +1,5 @@
-import { inject } from 'vue'
 import type { DisplayMode } from '@/stores/display'
+import { inject } from 'vue'
 
 export interface EditContext {
   isEditMode: boolean

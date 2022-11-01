@@ -1,14 +1,10 @@
 <script setup lang="ts">
-import { usePageStore } from '@/stores/page'
-import { storeToRefs } from 'pinia'
-import { Alert } from '@/utils/alert'
-import InputItem from '../configs/items/InputItem.vue'
-import ImageItem from '../configs/items/ImageItem.vue'
-import SelectItem from '../configs/items/SelectItem.vue'
-import { useDisplayStore } from '@/stores/display'
-import { nextTick } from 'vue'
-import { emitter } from '@/utils/event'
 import { useDisplayStoreHelper, usePageStoreHelper } from '@/hooks/store'
+import { emitter } from '@/utils/event'
+import { nextTick } from 'vue'
+import ImageItem from '../configs/items/ImageItem.vue'
+import InputItem from '../configs/items/InputItem.vue'
+import SelectItem from '../configs/items/SelectItem.vue'
 
 const { setting } = usePageStoreHelper()
 

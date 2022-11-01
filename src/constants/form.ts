@@ -1,11 +1,11 @@
-import type { ModuleConfigType } from '@/config'
 import ColorItemVue from '@/components/configs/items/ColorItem.vue'
+import ImageItemVue from '@/components/configs/items/ImageItem.vue'
 import InputItemVue from '@/components/configs/items/InputItem.vue'
 import SliderItemVue from '@/components/configs/items/SliderItem.vue'
-import ImageItemVue from '@/components/configs/items/ImageItem.vue'
 import SwitchItemVue from '@/components/configs/items/SwitchItem.vue'
 import TabsItemVue from '@/components/configs/items/TabsItem.vue'
 import TipVue from '@/components/widgets/Tip.vue'
+import type { ModuleConfigType } from '@/config'
 import { $t } from './i18n'
 
 export const getFormPropsByType = (type: ModuleConfigType | string) => {

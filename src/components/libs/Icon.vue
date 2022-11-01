@@ -8,7 +8,7 @@ const iconLinkList: string[] = []
 
 <script setup lang="ts">
 import { getIsEditMode } from '@/utils/context'
-import { ref, useAttrs, watch } from 'vue'
+import { useAttrs, watch } from 'vue'
 import { IProps, useProps } from './hooks/common'
 
 const { elem, uName, style, props, tagClassNames } = useProps(

@@ -2,19 +2,16 @@
 initRecentColors()
 </script>
 <script setup lang="ts">
-import { Chrome } from '@ckpack/vue-color'
-import InputItem from './InputItem.vue'
+import { getColor, variableColorSymbol } from '@/components/libs/hooks/color'
 import Dropdown from '@/components/widgets/Dropdown.vue'
-import { initRecentColors, getRecentColors, isColor, pushRecentColor } from '@/utils/color'
-import { getColor } from '@/components/libs/hooks/color'
-import Tabs from '@/components/widgets/Tabs.vue'
 import Select from '@/components/widgets/Select.vue'
-import { usePageStore } from '@/stores/page'
 import { useDisplayStore } from '@/stores/display'
-import { storeToRefs } from 'pinia'
-import { variableColorSymbol } from '@/components/libs/hooks/color'
+import { usePageStore } from '@/stores/page'
+import { getRecentColors, initRecentColors, isColor, pushRecentColor } from '@/utils/color'
 import { emitter } from '@/utils/event'
-import { hide } from '@floating-ui/core'
+import { Chrome } from '@ckpack/vue-color'
+import { storeToRefs } from 'pinia'
+import InputItem from './InputItem.vue'
 
 interface IColorItemProps {
   label: string

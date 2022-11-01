@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { onBeforeUnmount, onMounted, ComponentPublicInstance, watch } from 'vue'
-import draggable from 'vuedraggable'
-import type { SortableEvent } from 'sortablejs'
+import { PageNode } from '@/config'
+import { useDisplayStoreHelper, useDragStoreHelper, usePageStoreHelper } from '@/hooks/store'
+import { useConfigProps } from '@/utils/config'
 import { emitter } from '@/utils/event'
 import { disabledMoveable, getMoveable, useMoveable } from '@/utils/moveable'
-import { PageNode } from '@/config'
-import { useConfigProps } from '@/utils/config'
-import { useDisplayStoreHelper, useDragStoreHelper, usePageStoreHelper } from '@/hooks/store'
+import type { SortableEvent } from 'sortablejs'
+import { ComponentPublicInstance, onBeforeUnmount, onMounted, watch } from 'vue'
+import draggable from 'vuedraggable'
 
 interface ILibComponentProps {
   parent?: PageNode

@@ -5,13 +5,13 @@ import {
   RouteLocationNormalized,
 } from 'vue-router'
 
-import Configure from '@/pages/configure/Configure.vue'
-import Redirect from '@/pages/Redirect.vue'
-import Dashboard from '@/pages/dashboard/Dashboard.vue'
-import Template from '@/pages/Template.vue'
-import NotFound from '@/pages/NotFound.vue'
 import Admin from '@/pages/Admin.vue'
+import Configure from '@/pages/configure/Configure.vue'
+import Dashboard from '@/pages/dashboard/Dashboard.vue'
+import NotFound from '@/pages/NotFound.vue'
 import Preview from '@/pages/Preview.vue'
+import Redirect from '@/pages/Redirect.vue'
+import Template from '@/pages/Template.vue'
 
 const needReloadPage = (
   to: RouteLocationNormalized,

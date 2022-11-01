@@ -1,10 +1,11 @@
-import { DataType, ModuleConfigType, PageNode, PropsTypes } from '@/config'
+import { DataType, ModuleConfigType, PageNode } from '@/config'
 import {
-  getDefaultCommon,
   getDefaultAnimation,
   getDefaultBackground,
   getDefaultBasic,
   getDefaultBorder,
+  getDefaultCode,
+  getDefaultCommon,
   getDefaultContainer,
   getDefaultEffect,
   getDefaultEvent,
@@ -13,7 +14,6 @@ import {
   getDefaultPosition,
   getDefaultSize,
   getDefaultSpacing,
-  getDefaultCode,
 } from './defaultConfig'
 
 export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNode<'Block'> => {

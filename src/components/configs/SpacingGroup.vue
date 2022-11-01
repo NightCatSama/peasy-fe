@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Group from '../widgets/Group.vue'
-import { fixedPointToNumber } from '@/utils/sizeHelper'
 import { PageNode } from '@/config'
 import { emitter } from '@/utils/event'
+import { fixedPointToNumber } from '@/utils/sizeHelper'
+import Group from '../widgets/Group.vue'
 
 interface IFontGroupProps {
   node: PageNode

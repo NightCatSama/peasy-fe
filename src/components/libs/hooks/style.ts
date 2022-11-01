@@ -1,7 +1,7 @@
 import { getIsEditMode } from '@/utils/context'
 import type { AnimationMapType } from './animation'
-import { effectName2PropertyMap } from './effect'
 import { getColor } from './color'
+import { effectName2PropertyMap } from './effect'
 // import { covertSize as covertSizeUseStore } from '@/utils/sizeHelper'
 
 // NOTE: vite 的 tree-shaking 不知道为啥不起作用，改用 window 调用去解决

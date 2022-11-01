@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
 import { PageNode } from '@/config'
 import { $t } from '@/constants/i18n'
+import Group from '../widgets/Group.vue'
 import Tip from '../widgets/Tip.vue'
 
 interface ICodeGroupProps {

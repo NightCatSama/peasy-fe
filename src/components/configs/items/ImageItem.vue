@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { upload, uploadByEvent } from '@/utils/oss'
-import InputItem from './InputItem.vue'
 import Icon from '@/components/widgets/Icon.vue'
-import { emitter } from '@/utils/event'
-import { AlertError } from '@/utils/alert'
-import { watch } from 'vue'
 import { imgErrorFallback } from '@/config'
 import { $t } from '@/constants/i18n'
+import { AlertError } from '@/utils/alert'
+import { emitter } from '@/utils/event'
 import { inConfigMain } from '@/utils/helper'
+import { uploadByEvent } from '@/utils/oss'
+import { watch } from 'vue'
+import InputItem from './InputItem.vue'
 
 interface IImageItemProps {
   label?: string

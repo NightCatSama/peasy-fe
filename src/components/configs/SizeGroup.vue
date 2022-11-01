@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
 import { PageNode } from '@/config'
-import { updateDirection } from '@/utils/moveable'
 import { $t } from '@/constants/i18n'
+import { updateDirection } from '@/utils/moveable'
+import Group from '../widgets/Group.vue'
 
 interface ISizeGroupProps {
   node: PageNode

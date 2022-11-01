@@ -1,14 +1,12 @@
 <script setup lang="ts">
-import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
-import { PageNode, isSomeBasicType, DefaultIconStyleLink } from '@/config'
-import SelectItem from './items/SelectItem.vue'
-import Icon from '../widgets/Icon.vue'
-import TabsItem from './items/TabsItem.vue'
-import SwitchItem from './items/SwitchItem.vue'
-import { useDisplayStore } from '@/stores/display'
-import { storeToRefs } from 'pinia'
+import { PageNode } from '@/config'
 import { useDisplayStoreHelper } from '@/hooks/store'
+import Group from '../widgets/Group.vue'
+import Icon from '../widgets/Icon.vue'
+import SelectItem from './items/SelectItem.vue'
+import SwitchItem from './items/SwitchItem.vue'
+import TabsItem from './items/TabsItem.vue'
 
 interface IEventGroupProps {
   node: PageNode

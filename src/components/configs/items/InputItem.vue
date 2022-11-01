@@ -5,8 +5,8 @@ export default {
 </script>
 
 <script setup lang="ts">
-import Input from '@/components/widgets/Input.vue'
 import Icon from '@/components/widgets/Icon.vue'
+import Input from '@/components/widgets/Input.vue'
 import { emitter } from '@/utils/event'
 import { inConfigMain } from '@/utils/helper'
 import { nextTick } from 'vue'

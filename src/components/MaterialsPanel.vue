@@ -1,29 +1,29 @@
 <script setup lang="ts">
-import draggable from 'vuedraggable'
-import { emitter } from '@/utils/event'
-import Element from './widgets/Element.vue'
-import { DisplayMode } from '@/stores/display'
-import { IMaterialItem, DataStatus } from '@/config'
-import Tabs from './widgets/Tabs.vue'
-import { Alert } from '@/utils/alert'
-import { Modal } from './modal'
-import SaveMaterialModal from './modal/SaveMaterialModal.vue'
+import { DataStatus, IMaterialItem } from '@/config'
 import { $t, getMaterialCategory, getMaterialName } from '@/constants/i18n'
-import {
-  EmptyBlock,
-  EmptyIcon,
-  EmptyImage,
-  EmptySection,
-  EmptyText,
-  EmptyMedia,
-  EmptyInputField,
-} from '@/utils/mock'
 import {
   useDisplayStoreHelper,
   useDragStoreHelper,
   usePageStoreHelper,
   useUserStoreHelper,
 } from '@/hooks/store'
+import { DisplayMode } from '@/stores/display'
+import { Alert } from '@/utils/alert'
+import { emitter } from '@/utils/event'
+import {
+  EmptyBlock,
+  EmptyIcon,
+  EmptyImage,
+  EmptyInputField,
+  EmptyMedia,
+  EmptySection,
+  EmptyText,
+} from '@/utils/mock'
+import draggable from 'vuedraggable'
+import { Modal } from './modal'
+import SaveMaterialModal from './modal/SaveMaterialModal.vue'
+import Element from './widgets/Element.vue'
+import Tabs from './widgets/Tabs.vue'
 
 const { pageData, materialData, addSection, deleteMaterial } = usePageStoreHelper()
 

@@ -1,7 +1,4 @@
 <script setup lang="ts">
-import { useDisplayStore } from '@/stores/display'
-import { emitter } from '@/utils/event'
-import { Menu as VMenu } from 'floating-vue'
 import { Dropdown as VDropdown } from 'floating-vue'
 interface IDropdownProps {
   type?: 'default' | 'color-picker' | 'pure' | 'pure-dropdown'

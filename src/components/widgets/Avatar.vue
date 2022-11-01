@@ -1,5 +1,5 @@
 <script setup lang="ts">
-import { upload, uploadByEvent } from '@/utils/oss'
+import { uploadByEvent } from '@/utils/oss'
 
 interface IAvatarProps {
   image?: string

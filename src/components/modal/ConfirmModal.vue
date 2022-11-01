@@ -5,11 +5,10 @@ export default {
 </script>
 
 <script setup lang="ts">
-import Modal from './Modal.vue'
-import Btn from '../widgets/Btn.vue'
-import Icon from '../widgets/Icon.vue'
 import { $t } from '@/constants/i18n'
+import Btn from '../widgets/Btn.vue'
 import Input from '../widgets/Input.vue'
+import Modal from './Modal.vue'
 
 interface IConfirmModal {
   title?: string

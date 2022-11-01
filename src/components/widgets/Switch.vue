@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { watchEffect } from 'vue'
-
 const emit = defineEmits(['update:model-value'])
 
 interface ISwitchProps {

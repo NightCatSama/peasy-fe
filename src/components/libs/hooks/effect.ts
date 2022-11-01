@@ -1,5 +1,5 @@
 import { getTagClassName, getUniqueName } from '@/config'
-import { onBeforeUnmount, reactive, ref, watch } from 'vue'
+import { onBeforeUnmount, watch } from 'vue'
 import { getColor } from './color'
 import type { IProps } from './common'
 

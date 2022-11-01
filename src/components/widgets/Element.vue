@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import { imgErrorFallback } from '@/config'
 import { watch } from 'vue'
 import Icon from './Icon.vue'
-import { imgErrorFallback } from '@/config'
 
 interface IElementProps {
   cover?: string

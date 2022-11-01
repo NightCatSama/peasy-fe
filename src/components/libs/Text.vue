@@ -9,7 +9,7 @@ import { getUniqueName } from '@/config'
 import { getIsEditMode } from '@/utils/context'
 import { escapeHtml } from '@/utils/xss'
 import { nextTick, useAttrs, watch } from 'vue'
-import { useProps, IProps } from './hooks/common'
+import { IProps, useProps } from './hooks/common'
 
 const { elem, uName, style, props, tagClassNames } = useProps(
   useAttrs() as unknown as IProps<'Text'>,

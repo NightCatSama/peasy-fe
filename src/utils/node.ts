@@ -1,4 +1,4 @@
-import { IMaterialItem, PageNode } from '@/config'
+import { PageNode } from '@/config'
 import { cloneDeep } from 'lodash-es'
 
 /** 生成唯一的节点 name */

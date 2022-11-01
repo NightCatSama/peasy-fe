@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import Icon from '../widgets/Icon.vue'
-import Logo from '../Logo.vue'
-import Btn from '../widgets/Btn.vue'
-import { AlertError, AlertSuccess } from '@/utils/alert'
 import { $t } from '@/constants/i18n'
+import { AlertError, AlertSuccess } from '@/utils/alert'
+import { emitter } from '@/utils/event'
 import { sendEmailApi } from '@/utils/mande'
 import { onMounted, onUnmounted } from 'vue'
-import { emitter } from '@/utils/event'
+import Logo from '../Logo.vue'
+import Btn from '../widgets/Btn.vue'
+import Icon from '../widgets/Icon.vue'
 
 let chatVisible = $ref(false)
 let email = $ref('')

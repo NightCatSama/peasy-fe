@@ -5,12 +5,12 @@ export default {
 </script>
 
 <script setup lang="ts">
-import Btn from '../widgets/Btn.vue'
-import Modal from './Modal.vue'
 import { $t } from '@/constants/i18n'
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
 import { Modal as ModalInstance } from '.'
+import Btn from '../widgets/Btn.vue'
+import Modal from './Modal.vue'
 
 interface IDownloadModalProps {
   showDownloadAll: boolean

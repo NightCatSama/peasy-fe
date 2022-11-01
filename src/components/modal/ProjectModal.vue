@@ -5,21 +5,18 @@ export default {
 </script>
 
 <script setup lang="ts">
+import { $t } from '@/constants/i18n'
+import { usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
+import { AlertError } from '@/utils/alert'
+import { uploadByBase64 } from '@/utils/oss'
+import { createMaterialSnapshot } from '@/utils/snapshot'
+import { verifySubDomain } from '@/utils/validation'
+import { reactive, useAttrs, watch } from 'vue'
+import ImageItem from '../configs/items/ImageItem.vue'
 import InputItem from '../configs/items/InputItem.vue'
+import SwitchItem from '../configs/items/SwitchItem.vue'
 import Btn from '../widgets/Btn.vue'
 import Modal from './Modal.vue'
-import { createMaterialSnapshot } from '@/utils/snapshot'
-import ImageItem from '../configs/items/ImageItem.vue'
-import { Alert, AlertError, AlertLoading } from '@/utils/alert'
-import { reactive, useAttrs, watch } from 'vue'
-import { $t } from '@/constants/i18n'
-import { uploadByBase64 } from '@/utils/oss'
-import SwitchItem from '../configs/items/SwitchItem.vue'
-import { useUserStore } from '@/stores/user'
-import { storeToRefs } from 'pinia'
-import { verifySubDomain } from '@/utils/validation'
-import { usePageStore } from '@/stores/page'
-import { usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
 
 interface IProjectModalProps {
   project: IProject

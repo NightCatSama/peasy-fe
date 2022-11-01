@@ -1,5 +1,4 @@
 <script setup lang="ts">
-import { Alert } from '@/utils/alert'
 import { getUnValidChar } from '@/utils/validation'
 import { VueTagsInput } from '@sipec/vue3-tags-input'
 

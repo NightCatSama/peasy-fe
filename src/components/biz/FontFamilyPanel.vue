@@ -1,12 +1,10 @@
 <script setup lang="ts">
-import InputItem from '../configs/items/InputItem.vue'
-import { usePageStore } from '@/stores/page'
-import { storeToRefs } from 'pinia'
+import { usePageStoreHelper } from '@/hooks/store'
+import BtnItem from '../configs/items/BtnItem.vue'
 import GroupItem from '../configs/items/GroupItem.vue'
+import InputItem from '../configs/items/InputItem.vue'
 import SliderItem from '../configs/items/SliderItem.vue'
 import Btn from '../widgets/Btn.vue'
-import BtnItem from '../configs/items/BtnItem.vue'
-import { usePageStoreHelper } from '@/hooks/store'
 
 const { font } = usePageStoreHelper()
 

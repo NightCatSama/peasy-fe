@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import Group from '../widgets/Group.vue'
 import SelectItem from '@/components/configs/items/SelectItem.vue'
 import { PageNode } from '@/config'
-import TabsItem from './items/TabsItem.vue'
-import SliderItem from './items/SliderItem.vue'
+import Group from '../widgets/Group.vue'
 import InputItem from './items/InputItem.vue'
 import PreviewItem from './items/PreviewItem.vue'
+import SliderItem from './items/SliderItem.vue'
 
 interface IContainerGroupProps {
   node: PageNode

@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import { useDisplayStore } from '@/stores/display'
-import { onBeforeUnmount, onMounted, onUpdated, watchEffect } from 'vue'
-import { groupIconMap, defaultGroupIcon, groupTitleMap } from '@/constants/group'
-import Icon from './Icon.vue'
-import { storeToRefs } from 'pinia'
 import { GroupType } from '@/config'
-import { useGroupConfigByNode, useMobileConfig, isMobileGroupConfig } from '@/utils/config'
-import { emitter } from '@/utils/event'
-import { usePageStore } from '@/stores/page'
+import { defaultGroupIcon, groupIconMap, groupTitleMap } from '@/constants/group'
 import { lang } from '@/constants/i18n'
+import { useDisplayStore } from '@/stores/display'
+import { usePageStore } from '@/stores/page'
+import { isMobileGroupConfig, useGroupConfigByNode, useMobileConfig } from '@/utils/config'
+import { emitter } from '@/utils/event'
+import { storeToRefs } from 'pinia'
+import { onBeforeUnmount, onMounted, onUpdated } from 'vue'
+import Icon from './Icon.vue'
 interface IGroupProps {
   title?: string
   titleEn?: string

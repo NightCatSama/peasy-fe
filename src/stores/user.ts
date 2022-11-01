@@ -1,8 +1,7 @@
-import { PageNode } from '@/config'
 import { activeMemberApi, logtoMeApi } from '@/utils/mande'
-import { defineStore } from 'pinia'
-import { IUserProfile, MemberRole } from '@@/types/user'
 import { IResponse } from '@@/types/response'
+import { IUserProfile, MemberRole } from '@@/types/user'
+import { defineStore } from 'pinia'
 
 export interface IUserInfo {
   username: string

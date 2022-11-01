@@ -1,12 +1,12 @@
 <script setup lang="ts">
 import { onBeforeMount, provide } from 'vue'
 import { useRoute } from 'vue-router'
+import Icon from './components/widgets/Icon.vue'
 import { $t } from './constants/i18n'
 import { pinia } from './stores'
 import { useUserStore } from './stores/user'
 import { AlertError } from './utils/alert'
-import { logtoMeApi, persistToken } from './utils/mande'
-import Icon from './components/widgets/Icon.vue'
+import { persistToken } from './utils/mande'
 
 let isReady = $ref(false)
 

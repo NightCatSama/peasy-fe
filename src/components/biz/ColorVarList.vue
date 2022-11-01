@@ -1,13 +1,10 @@
 <script setup lang="ts">
-import { DefaultColor, PageNode } from '@/config'
-import { usePageStore } from '@/stores/page'
-import { storeToRefs } from 'pinia'
+import { DefaultColor } from '@/config'
+import { usePageStoreHelper } from '@/hooks/store'
 import ColorItem from '../configs/items/ColorItem.vue'
-import Icon from '../widgets/Icon.vue'
+import GroupItem from '../configs/items/GroupItem.vue'
 import InputItem from '../configs/items/InputItem.vue'
 import Btn from '../widgets/Btn.vue'
-import GroupItem from '../configs/items/GroupItem.vue'
-import { usePageStoreHelper } from '@/hooks/store'
 
 const { colorVars } = usePageStoreHelper()
 

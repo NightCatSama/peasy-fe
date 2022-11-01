@@ -1,19 +1,16 @@
 <script setup lang="ts">
 import { $t } from '@/constants/i18n'
 import { ShortcutKey } from '@/constants/shortcut'
-import { useDisplayStore } from '@/stores/display'
-import { usePageStore } from '@/stores/page'
+import { useDisplayStoreHelper, usePageStoreHelper } from '@/hooks/store'
 import { emitter } from '@/utils/event'
 import { useKeyPress } from 'ahooks-vue'
-import { storeToRefs } from 'pinia'
 import { nextTick, ref } from 'vue'
+import Btn from '../widgets/Btn.vue'
 import Dropdown from '../widgets/Dropdown.vue'
 import Icon from '../widgets/Icon.vue'
-import Switch from '../widgets/Switch.vue'
-import Slider from '../widgets/Slider.vue'
-import Btn from '../widgets/Btn.vue'
 import Input from '../widgets/Input.vue'
-import { useDisplayStoreHelper, usePageStoreHelper } from '@/hooks/store'
+import Slider from '../widgets/Slider.vue'
+import Switch from '../widgets/Switch.vue'
 
 const {
   device,

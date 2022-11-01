@@ -1,17 +1,17 @@
 <script setup lang="ts">
+import { Modal } from '@/components/modal'
+import Btn from '@/components/widgets/Btn.vue'
+import MaterialCard from '@/components/widgets/MaterialCard.vue'
 import { IMaterialItem } from '@/config'
-import { templatePreviewUrl, materialApi, getTemplatePreview } from '@/utils/mande'
+import { $t } from '@/constants/i18n'
+import { useUserStoreHelper } from '@/hooks/store'
+import { AlertSuccess } from '@/utils/alert'
+import { getSetLoading } from '@/utils/context'
+import { materialApi, templatePreviewUrl } from '@/utils/mande'
 import { IResponse } from '@@/types/response'
 import { onBeforeMount } from 'vue'
-import MaterialCard from '@/components/widgets/MaterialCard.vue'
 import { useRouter } from 'vue-router'
-import { Modal } from '@/components/modal'
-import { $t } from '@/constants/i18n'
-import { AlertSuccess } from '@/utils/alert'
 import SaveMaterialModal from '../components/modal/SaveMaterialModal.vue'
-import { getSetLoading } from '@/utils/context'
-import Btn from '@/components/widgets/Btn.vue'
-import { useUserStoreHelper } from '@/hooks/store'
 
 const router = useRouter()
 

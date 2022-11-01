@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import Group from '../widgets/Group.vue'
-import SliderItem from '@/components/configs/items/SliderItem.vue'
-import SelectItem from '@/components/configs/items/SelectItem.vue'
-import { PageNode } from '@/config'
-import { getDefaultAnimationItem, getDefaultAnimationSettings } from '@/utils/defaultConfig'
 import PreviewItem from '@/components/configs/items/PreviewItem.vue'
-import Tip from '../widgets/Tip.vue'
+import SelectItem from '@/components/configs/items/SelectItem.vue'
+import SliderItem from '@/components/configs/items/SliderItem.vue'
+import { PageNode } from '@/config'
+import { $t } from '@/constants/i18n'
+import { getDefaultAnimationItem, getDefaultAnimationSettings } from '@/utils/defaultConfig'
 import Btn from '../widgets/Btn.vue'
+import Group from '../widgets/Group.vue'
+import Tip from '../widgets/Tip.vue'
 import CollapseItem from './items/CollapseItem.vue'
 import InputItem from './items/InputItem.vue'
-import { $t } from '@/constants/i18n'
 
 interface IAnimationGroupProps {
   node: PageNode

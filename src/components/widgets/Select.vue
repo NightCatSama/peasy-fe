@@ -6,9 +6,8 @@ export interface ISelectItem {
 }
 </script>
 <script setup lang="ts">
-import { watchEffect } from 'vue'
-import Icon from './Icon.vue'
 import Dropdown from './Dropdown.vue'
+import Icon from './Icon.vue'
 
 const emit = defineEmits(['update:model-value'])
 

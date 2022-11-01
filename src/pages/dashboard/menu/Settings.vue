@@ -1,12 +1,12 @@
 <script setup lang="ts">
-import { useRoute, useRouter } from 'vue-router'
-import Icon from '@/components/widgets/Icon.vue'
-import { $t, lang } from '@/constants/i18n'
+import { Modal } from '@/components/modal'
 import Avatar from '@/components/widgets/Avatar.vue'
 import Btn from '@/components/widgets/Btn.vue'
-import { Alert } from '@/utils/alert'
-import { Modal } from '@/components/modal'
+import Icon from '@/components/widgets/Icon.vue'
+import { $t, lang } from '@/constants/i18n'
 import { useUserStoreHelper } from '@/hooks/store'
+import { Alert } from '@/utils/alert'
+import { useRoute, useRouter } from 'vue-router'
 
 const { avatar, userName, isLogin, vipName, expireDate, updateAvatar, activeMember } =
   useUserStoreHelper()

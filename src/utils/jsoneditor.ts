@@ -1,5 +1,5 @@
-import JSONEditorType from 'jsoneditor'
 import type { JSONEditorOptions } from 'jsoneditor'
+import JSONEditorType from 'jsoneditor'
 
 let JSONEditor: JSONEditorType | null = null
 

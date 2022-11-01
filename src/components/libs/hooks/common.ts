@@ -1,6 +1,6 @@
 import { ComponentName, getTagClassName, getUniqueName, GroupPropType, PageNode } from '@/config'
 import { getIsEditMode } from '@/utils/context'
-import { watch, computed, reactive, ref, onMounted, onBeforeMount } from 'vue'
+import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue'
 import { useAnimation } from './animation'
 import { useEffect } from './effect'
 import { useEvent } from './event'
@@ -9,6 +9,7 @@ import {
   useAnimationStyle,
   useBackgroundStyle,
   useBorderStyle,
+  useCodeStyle,
   useContainerStyle,
   useEffectStyle,
   useFontStyle,
@@ -20,7 +21,6 @@ import {
   useSpacingStyle,
   useStyle,
   useTextBasicStyle,
-  useCodeStyle,
 } from './style'
 
 export type IProps<T extends ComponentName = any> = {

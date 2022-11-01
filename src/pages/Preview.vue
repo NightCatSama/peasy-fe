@@ -1,9 +1,9 @@
 <script setup lang="ts">
-import { getTemplatePreview, getProjectPreview } from '@/utils/mande'
-import { useRoute, useRouter } from 'vue-router'
 import Logo from '@/components/Logo.vue'
 import Btn from '@/components/widgets/Btn.vue'
 import { usePreviewURL } from '@/toolkit/hooks/usePreviewURL'
+import { getProjectPreview, getTemplatePreview } from '@/utils/mande'
+import { useRoute, useRouter } from 'vue-router'
 
 const route = useRoute()
 const router = useRouter()

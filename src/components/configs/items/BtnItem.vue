@@ -1,7 +1,6 @@
 <script setup lang="ts">
-import { emitter } from '@/utils/event'
-import Icon from '@/components/widgets/Icon.vue'
 import Btn from '@/components/widgets/Btn.vue'
+import Icon from '@/components/widgets/Icon.vue'
 
 interface IBtnItemProps {
   label: string

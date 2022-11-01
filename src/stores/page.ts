@@ -1,40 +1,38 @@
-import { defineStore } from 'pinia'
-import { getMockBlock, getMockImage, getMockText, getMockIcon } from '@/utils/mock'
 import {
-  PageNode,
-  ComponentPropsGroup,
   ComponentName,
+  ComponentPropsGroup,
   GroupType,
-  IPage,
   IMaterialItem,
+  IPage,
+  PageNode,
 } from '@/config'
-import { useDragStore } from './drag'
-import { formatNodeByUniqueName } from '@/utils/node'
+import { $t } from '@/constants/i18n'
+import { Alert, AlertError } from '@/utils/alert'
+import { copyToClipboard, getClipboardText } from '@/utils/clipboard'
 import {
+  isMobileGroupConfig,
   useConfig,
   useGroupConfig,
-  isMobileGroupConfig,
-  useMobileConfig,
   useGroupConfigByNode,
+  useMobileConfig,
 } from '@/utils/config'
-import { nextTick } from 'vue'
-import { cloneDeep, merge } from 'lodash-es'
-import { downloadApi, materialApi, projectApi } from '@/utils/mande'
-import { SaveProjectDto } from '@@/dto/data.dto'
-import { Project } from '@@/entities/project.entity'
-import { IResponse } from '@@/types/response'
-import { getStoragePageState } from '.'
-import { Alert, AlertError } from '@/utils/alert'
-import { $t } from '@/constants/i18n'
-import { copyToClipboard, getClipboardText } from '@/utils/clipboard'
-import { Modal } from '@/components/modal'
-import { isValidName } from '@/utils/validation'
-import { downloadAllPages, downloadByPageNode } from '@/utils/download'
 import {
   getDefaultColorVars,
   getDefaultFontSetting,
   getDefaultSetting,
 } from '@/utils/defaultConfig'
+import { downloadAllPages, downloadByPageNode } from '@/utils/download'
+import { materialApi, projectApi } from '@/utils/mande'
+import { formatNodeByUniqueName } from '@/utils/node'
+import { isValidName } from '@/utils/validation'
+import { SaveProjectDto } from '@@/dto/data.dto'
+import { Project } from '@@/entities/project.entity'
+import { IResponse } from '@@/types/response'
+import { cloneDeep, merge } from 'lodash-es'
+import { defineStore } from 'pinia'
+import { nextTick } from 'vue'
+import { getStoragePageState } from '.'
+import { useDragStore } from './drag'
 
 type MaterialData = {
   [key in PageNode['type']]: IMaterialItem[]

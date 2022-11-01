@@ -1,18 +1,15 @@
 <script setup lang="ts">
-import { usePageStore } from '@/stores/page'
-import { storeToRefs } from 'pinia'
-import MaterialCard from '../widgets/MaterialCard.vue'
-import ProjectModal from '../modal/ProjectModal.vue'
-import { useRoute } from 'vue-router'
-import { Alert, AlertSuccess } from '@/utils/alert'
-import { $t } from '@/constants/i18n'
-import { Modal } from '../modal'
-import { useHistoryStore } from '@/stores/history'
-import { Project } from '@@/entities/project.entity'
 import { IMaterialItem } from '@/config'
-import SaveMaterialModal from '../modal/SaveMaterialModal.vue'
-import { emitter } from '@/utils/event'
+import { $t } from '@/constants/i18n'
 import { useHistoryStoreHelper, usePageStoreHelper } from '@/hooks/store'
+import { Alert, AlertSuccess } from '@/utils/alert'
+import { emitter } from '@/utils/event'
+import { Project } from '@@/entities/project.entity'
+import { useRoute } from 'vue-router'
+import { Modal } from '../modal'
+import ProjectModal from '../modal/ProjectModal.vue'
+import SaveMaterialModal from '../modal/SaveMaterialModal.vue'
+import MaterialCard from '../widgets/MaterialCard.vue'
 
 const { mainProject, allProjectData, project, saveProjectData, switchProject, deleteProject } =
   usePageStoreHelper()

@@ -1,17 +1,16 @@
 <script setup lang="ts">
-import Group from '../widgets/Group.vue'
-import SwitchItem from '@/components/configs/items/SwitchItem.vue'
 import SelectItem from '@/components/configs/items/SelectItem.vue'
-import ColorItem from './items/ColorItem.vue'
-import { PageNode } from '@/config'
-import Icon from '../widgets/Icon.vue'
-import { upload } from '@/utils/oss'
-import TabsItem from './items/TabsItem.vue'
-import SliderItem from './items/SliderItem.vue'
-import Slider from '../widgets/Slider.vue'
-import PositionTable from '../widgets/PositionTable.vue'
-import ImageItem from './items/ImageItem.vue'
+import SwitchItem from '@/components/configs/items/SwitchItem.vue'
 import { getColor } from '@/components/libs/hooks/color'
+import { PageNode } from '@/config'
+import Group from '../widgets/Group.vue'
+import Icon from '../widgets/Icon.vue'
+import PositionTable from '../widgets/PositionTable.vue'
+import Slider from '../widgets/Slider.vue'
+import ColorItem from './items/ColorItem.vue'
+import ImageItem from './items/ImageItem.vue'
+import SliderItem from './items/SliderItem.vue'
+import TabsItem from './items/TabsItem.vue'
 
 interface IBackgroundGroupProps {
   node: PageNode

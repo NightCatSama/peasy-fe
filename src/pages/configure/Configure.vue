@@ -1,42 +1,42 @@
 <script setup lang="ts">
-import { onMounted, nextTick, watch, onBeforeUnmount } from 'vue'
+import { nextTick, onBeforeUnmount, onMounted, watch } from 'vue'
 
-import ConfigSection from '@/components/ConfigSection.vue'
-import Sidebar from '@/components/Sidebar.vue'
 import ConfigHeader from '@/components/ConfigHeader.vue'
-import MaterialsPanel from '@/components/MaterialsPanel.vue'
-import Keyboard from '@/components/Keyboard.vue'
+import ConfigSection from '@/components/ConfigSection.vue'
 import EditSection from '@/components/EditSection.vue'
-import { emitter } from '@/utils/event'
+import Keyboard from '@/components/Keyboard.vue'
 import { useColorVars } from '@/components/libs/hooks/color'
 import { useFont } from '@/components/libs/hooks/font'
-import { AlertProcess } from '@/utils/alert'
-import { useRoute, useRouter } from 'vue-router'
-import {
-  saveStoragePageState,
-  haveStoragePageState,
-  clearStoragePageState,
-  getStoragePageState,
-} from '@/stores'
+import MaterialsPanel from '@/components/MaterialsPanel.vue'
 import { Modal } from '@/components/modal'
-import ProjectModal from '@/components/modal/ProjectModal.vue'
-import { destroyMoveable } from '@/utils/moveable'
-import { $t } from '@/constants/i18n'
-import { getJSONEditor } from '@/utils/jsoneditor'
-import { getSetLoading } from '@/utils/context'
 import DownloadModal from '@/components/modal/DownloadModal.vue'
+import ProjectModal from '@/components/modal/ProjectModal.vue'
 import SaveMaterialModal from '@/components/modal/SaveMaterialModal.vue'
+import Sidebar from '@/components/Sidebar.vue'
 import { IMaterialItem } from '@/config'
-import { templatePreviewUrl } from '@/utils/mande'
-import { useEditorStylesheet } from '@/utils/color'
-import { useShortCut } from './hooks/shortcut'
-import { useProvide } from './hooks/provide'
+import { $t } from '@/constants/i18n'
 import {
   useDisplayStoreHelper,
   useHistoryStoreHelper,
   usePageStoreHelper,
   useUserStoreHelper,
 } from '@/hooks/store'
+import {
+  clearStoragePageState,
+  getStoragePageState,
+  haveStoragePageState,
+  saveStoragePageState,
+} from '@/stores'
+import { AlertProcess } from '@/utils/alert'
+import { useEditorStylesheet } from '@/utils/color'
+import { getSetLoading } from '@/utils/context'
+import { emitter } from '@/utils/event'
+import { getJSONEditor } from '@/utils/jsoneditor'
+import { templatePreviewUrl } from '@/utils/mande'
+import { destroyMoveable } from '@/utils/moveable'
+import { useRoute, useRouter } from 'vue-router'
+import { useProvide } from './hooks/provide'
+import { useShortCut } from './hooks/shortcut'
 
 const route = useRoute()
 const router = useRouter()

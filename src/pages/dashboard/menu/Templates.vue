@@ -1,8 +1,8 @@
 <script setup lang="ts">
-import MaterialCard from '@/components/widgets/MaterialCard.vue'
-import { templatePreviewUrl } from '@/utils/mande'
 import Icon from '@/components/widgets/Icon.vue'
+import MaterialCard from '@/components/widgets/MaterialCard.vue'
 import { IMaterialItem } from '@/config'
+import { templatePreviewUrl } from '@/utils/mande'
 
 interface ITemplatesProps {
   templates: IMaterialItem[]

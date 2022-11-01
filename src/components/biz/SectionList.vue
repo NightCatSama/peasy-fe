@@ -1,11 +1,7 @@
 <script setup lang="ts">
 import { PageNode } from '@/config'
 import { useDragStoreHelper, usePageStoreHelper } from '@/hooks/store'
-import { useDisplayStore } from '@/stores/display'
-import { useDragStore } from '@/stores/drag'
-import { usePageStore } from '@/stores/page'
 import { emitter } from '@/utils/event'
-import { storeToRefs } from 'pinia'
 import type { SortableEvent } from 'sortablejs'
 import { nextTick } from 'vue'
 import draggable from 'vuedraggable'

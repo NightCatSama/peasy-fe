@@ -1,4 +1,4 @@
-import { useToast, TYPE } from 'vue-toastification'
+import { TYPE, useToast } from 'vue-toastification'
 
 export const toast = useToast()
 export let curToastId = 1

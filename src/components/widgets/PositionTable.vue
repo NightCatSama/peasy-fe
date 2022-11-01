@@ -1,6 +1,4 @@
 <script setup lang="ts">
-import { watchEffect } from 'vue'
-
 interface ICheckerProps {
   modelValue: string
   options: string[]

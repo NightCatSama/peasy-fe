@@ -1,6 +1,6 @@
-import { defaults, mande, MandeInstance } from 'mande'
-import { useLogto } from '@logto/vue'
 import { useUserStore } from '@/stores/user'
+import { useLogto } from '@logto/vue'
+import { defaults, mande } from 'mande'
 
 export const apiURL = (import.meta.env.VITE_BE_HOST || '') + (import.meta.env.VITE_BE_PREFIX || '')
 

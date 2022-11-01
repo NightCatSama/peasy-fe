@@ -1,7 +1,7 @@
 <script setup lang="ts">
+import Icon from '@/components/widgets/Icon.vue'
 import Select, { ISelectItem } from '@/components/widgets/Select.vue'
 import { emitter } from '@/utils/event'
-import Icon from '@/components/widgets/Icon.vue'
 import { inConfigMain } from '@/utils/helper'
 
 interface ISelectItemProps {

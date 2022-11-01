@@ -1,6 +1,6 @@
 import { getTagClassName, getUniqueName } from '@/config'
 import { getContext } from '@/utils/context'
-import { watch, onBeforeMount, onMounted, Ref } from 'vue'
+import { onBeforeMount, onMounted, Ref, watch } from 'vue'
 import type { IProps } from './common'
 
 export const useEvent = (propsRef: IProps, el: Ref<HTMLDivElement | null>) => {

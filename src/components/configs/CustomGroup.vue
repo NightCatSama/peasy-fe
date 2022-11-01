@@ -1,19 +1,10 @@
 <script setup lang="ts">
-import Group from '../widgets/Group.vue'
-import {
-  PageNode,
-  isSomeBasicType,
-  DefaultIconStyleLink,
-  IModuleConfigItem,
-  ModuleConfigType,
-  IModuleConfigGroup,
-} from '@/config'
+import { IModuleConfigGroup, IModuleConfigItem, PageNode } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
-import { onUpdated, reactive, useAttrs } from 'vue'
-import { get, set, has } from 'lodash-es'
-import { useConfig } from '@/utils/config'
 import { lang } from '@/constants/i18n'
-import { emitter } from '@/utils/event'
+import { get, has, set } from 'lodash-es'
+import { reactive, useAttrs } from 'vue'
+import Group from '../widgets/Group.vue'
 
 interface ICustomGroupProps extends IModuleConfigGroup {
   node: PageNode

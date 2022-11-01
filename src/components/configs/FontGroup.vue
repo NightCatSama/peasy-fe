@@ -1,13 +1,12 @@
 <script setup lang="ts">
-import Group from '../widgets/Group.vue'
 import InputItem from '@/components/configs/items/InputItem.vue'
 import SelectItem from '@/components/configs/items/SelectItem.vue'
-import ColorItem from './items/ColorItem.vue'
-import { usePageStore } from '@/stores/page'
 import { PageNode } from '@/config'
-import TabsItem from './items/TabsItem.vue'
-import PreviewItem from './items/PreviewItem.vue'
 import { $t } from '@/constants/i18n'
+import Group from '../widgets/Group.vue'
+import ColorItem from './items/ColorItem.vue'
+import PreviewItem from './items/PreviewItem.vue'
+import TabsItem from './items/TabsItem.vue'
 
 interface IFontGroupProps {
   node: PageNode

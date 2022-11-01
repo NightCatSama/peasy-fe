@@ -1,23 +1,19 @@
 <script setup lang="ts">
-import { storeToRefs } from 'pinia'
-import { onMounted, onUnmounted, reactive, watch, ref, watchEffect, nextTick } from 'vue'
-import draggable from 'vuedraggable'
+import { useKeyPress, useSize } from 'ahooks-vue'
 import panzoom, { PanZoom } from 'panzoom'
 import type { SortableEvent } from 'sortablejs'
-import { useKeyPress, useSize } from 'ahooks-vue'
+import { nextTick, onMounted, onUnmounted, ref, watch, watchEffect } from 'vue'
+import draggable from 'vuedraggable'
 
 import LibComponent from '@/components/LibComponent.vue'
-import { usePageStore } from '@/stores/page'
-import { useDisplayStore } from '@/stores/display'
-import Icon from './widgets/Icon.vue'
-import { emitter } from '@/utils/event'
-import { useDragStore } from '@/stores/drag'
-import Btn from './widgets/Btn.vue'
-import { ShortcutKey } from '@/constants/shortcut'
-import MaterialCard from './widgets/MaterialCard.vue'
-import { AlertSuccess } from '@/utils/alert'
 import { $t } from '@/constants/i18n'
+import { ShortcutKey } from '@/constants/shortcut'
 import { useDisplayStoreHelper, useDragStoreHelper, usePageStoreHelper } from '@/hooks/store'
+import { AlertSuccess } from '@/utils/alert'
+import { emitter } from '@/utils/event'
+import Btn from './widgets/Btn.vue'
+import Icon from './widgets/Icon.vue'
+import MaterialCard from './widgets/MaterialCard.vue'
 
 const {
   pageData,

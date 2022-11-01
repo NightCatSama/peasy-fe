@@ -1,15 +1,15 @@
 <script setup lang="ts">
-import { Project } from '@@/entities/project.entity'
-import { useRouter } from 'vue-router'
-import MaterialCard from '@/components/widgets/MaterialCard.vue'
-import Btn from '@/components/widgets/Btn.vue'
-import { getDomainURL, projectApi, projectPreviewUrl } from '@/utils/mande'
-import { reactive } from 'vue'
-import { IResponse } from '@@/types/response'
-import Icon from '@/components/widgets/Icon.vue'
 import { Modal } from '@/components/modal'
+import Btn from '@/components/widgets/Btn.vue'
+import Icon from '@/components/widgets/Icon.vue'
+import MaterialCard from '@/components/widgets/MaterialCard.vue'
 import { $t } from '@/constants/i18n'
 import { AlertSuccess } from '@/utils/alert'
+import { getDomainURL, projectApi, projectPreviewUrl } from '@/utils/mande'
+import { Project } from '@@/entities/project.entity'
+import { IResponse } from '@@/types/response'
+import { reactive } from 'vue'
+import { useRouter } from 'vue-router'
 
 interface IDashboardProps {
   projects: Project[]
