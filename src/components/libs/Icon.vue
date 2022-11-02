@@ -40,25 +40,24 @@ watch(
 )
 
 const classNames = $computed(() => [
-  'fa',
   uName.value,
   ...tagClassNames.value,
-  `${props.basic.prefixClass || ''}${props.basic.name}`,
+  `${props.basic?.prefixClass || ''}${props.basic.name}`,
   `${props.basic?.extraClass || ''}`,
 ])
 </script>
 
 <template>
-  <div ref="elem" :class="['fa-icon']" v-bind="props.inheritAttrs">
+  <div ref="elem" :class="['icon']" v-bind="props.inheritAttrs">
     <i :class="classNames" :style="style" :id="uName" />
   </div>
 </template>
 
 <style lang="scss" scoped>
-.fa-icon {
+.icon {
   display: inline-flex;
 
-  .fa {
+  > i {
     font-style: normal;
   }
 }

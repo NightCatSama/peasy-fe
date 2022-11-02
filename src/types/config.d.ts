@@ -69,6 +69,8 @@ interface IIconBasicType {
   size: string
   /** 图标颜色 */
   color: string
+  /** 图标线条 */
+  fontWeight: 'normal' | 'bold'
   /** 图标前缀 */
   prefixClass: string
   /** 图标额外属性 */
@@ -115,7 +117,7 @@ interface IFont {
   lineHeight: string
   /** 颜色 */
   color: string
-  /** 自重 */
+  /** 字重 */
   fontWeight: 'normal' | 'bold' | '500' | '600' | '800' | '900'
   /** 文字风格 */
   fontStyle: 'normal' | 'italic'

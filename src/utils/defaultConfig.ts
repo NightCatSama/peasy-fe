@@ -1,5 +1,7 @@
 import {
   ComponentName,
+  DefaultIconFontClass,
+  DefaultIconFontPrefixClass,
   DefaultIconStyleLink,
   GroupPropType,
   isSomeBasicType,
@@ -45,11 +47,12 @@ export const getDefaultBasic = <
   if (isSomeBasicType(component, 'Icon', obj)) {
     obj = {
       name: 'home',
-      size: '24px',
+      size: '30px',
       color: '$primary',
-      prefixClass: 'fa-',
-      extraClass: '',
+      prefixClass: DefaultIconFontPrefixClass,
+      extraClass: DefaultIconFontClass,
       styleLink: DefaultIconStyleLink,
+      fontWeight: 'normal',
     }
   }
   if (isSomeBasicType(component, 'Media', obj)) {

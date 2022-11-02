@@ -33,6 +33,11 @@ interface ShowItem {
   labelSuffixClick?: () => void
 }
 
+const iconFontWeightMap: { [key in IIconBasicType['fontWeight']]: string } = {
+  normal: 'Normal',
+  bold: 'Bold',
+}
+
 const configs: ShowItem[] = $computed(() => {
   /** Block 组件 */
   if (isSomeBasicType(node.component, 'Block', basic)) {
@@ -243,6 +248,18 @@ const configs: ShowItem[] = $computed(() => {
       },
       {
         isAdvanced: true,
+        component: SelectItem,
+        props: {
+          label: $t('iconFontWeight'),
+          modelValue: basic.fontWeight,
+          options: iconFontWeightMap,
+        },
+        setValue: (val: IIconBasicType['fontWeight']) => {
+          basic.fontWeight = val
+        },
+      },
+      {
+        isAdvanced: true,
         component: InputItem,
         props: {
           label: $t('prefixClass'),
@@ -412,6 +429,7 @@ const configs: ShowItem[] = $computed(() => {
   }
   return []
 })
+
 </script>
 
 <template>

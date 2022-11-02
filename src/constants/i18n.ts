@@ -285,6 +285,7 @@ export const i18nText = {
     fontColor: '颜色',
     lineHeight: '行高',
     fontWeight: '字重',
+    iconFontWeight: '线条宽度',
     textShadow: '文字阴影',
     fontFamily: '字体',
     addSubText: '添加子文本',
@@ -376,7 +377,7 @@ export const i18nText = {
     objectFitNone: '无',
     objectFitScaleDown: '原比例-自动缩放',
     iconTip:
-      '默认使用第三方 CDN 加载图标，不保证稳定性。图标使用的是 FontAwesome，更多图标查阅：<a href="https://fontawesome.com/v4/icons/" target="_blank">https://fontawesome.com/v4/icons/</a>',
+      '默认使用第三方 CDN 加载图标，不保证稳定性。图标使用的是 Tabler Icon，更多图标查阅：<a href="https://tabler-icons.io/" target="_blank">https://tabler-icons.io/</a>',
     iconName: '图标名称',
     iconSize: '尺寸',
     iconColor: '颜色',
@@ -822,6 +823,7 @@ export const i18nText = {
     fontColor: 'Color',
     lineHeight: 'Line Height',
     fontWeight: 'Font Weight',
+    iconFontWeight: 'Stroke width',
     textShadow: 'Text Shadow',
     fontFamily: 'Font Family',
     addSubText: 'Add Sub-Text',
@@ -913,7 +915,7 @@ export const i18nText = {
     objectFitNone: 'None',
     objectFitScaleDown: 'Scale Down',
     iconTip:
-      'Icons are loaded by default using a third party CDN. The default icon is FontAwesome, for more icons see.：<a href="https://fontawesome.com/v4/icons/" target="_blank">https://fontawesome.com/v4/icons/</a>',
+      'Icons are loaded by default using a third party CDN. The default icon is Tabler Icon, for more icons see.：<a href="https://tabler-icons.io/" target="_blank">https://tabler-icons.io/</a>',
     iconName: 'Name',
     iconSize: 'Size',
     iconColor: 'Color',
