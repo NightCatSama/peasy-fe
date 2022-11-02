@@ -429,7 +429,6 @@ const configs: ShowItem[] = $computed(() => {
   }
   return []
 })
-
 </script>
 
 <template>
