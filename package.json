@@ -18,7 +18,7 @@
     "preview": "vite preview",
     "prettier": "npx prettier --write src/",
     "prepare": "husky install",
-    "pretty-quick": "pretty-quick"
+    "pretty-quick": "pretty-quick --staged"
   },
   "dependencies": {
     "@ckpack/vue-color": "^1.2.0",
