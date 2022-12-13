@@ -8,7 +8,7 @@
       user-select: none;
       animation: none !important;
 
-      &:not(.active):not(.inModule)::before {
+      &:not(.active):not(.noSelect)::before {
         content: '';
         left: 0;
         top: 0;
@@ -21,7 +21,7 @@
         transition: outline 0.15s;
       }
 
-      &:not(.active):not(.inModule):hover::before {
+      &:not(.active):not(.noSelect):hover::before {
         content: '';
         left: 0;
         top: 0;
@@ -46,11 +46,11 @@
       // transition: font-size 0.3s;
       animation: none !important;
 
-      .inModule {
+      .noSelect {
         pointer-events: none;
       }
 
-      &:not(.inModule)::before {
+      &:not(.noSelect)::before {
         content: '';
         left: 0;
         top: 0;

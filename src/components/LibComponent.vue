@@ -9,12 +9,15 @@ import { ComponentPublicInstance, onBeforeUnmount, onMounted, watch } from 'vue'
 import draggable from 'vuedraggable'
 
 interface ILibComponentProps {
+  /** 父组件 */
   parent?: PageNode
+  /** 当前组件数据 */
   item: PageNode<any>
-  inModule?: boolean
+  /** 是否无法选择 */
+  noSelect?: boolean
 }
 
-const { parent, item, inModule } = defineProps<ILibComponentProps>()
+const { parent, item, noSelect } = defineProps<ILibComponentProps>()
 
 const { activeNode, setActiveNode, insertNode, swapNode, addActiveParentChain } =
   usePageStoreHelper()
@@ -197,6 +200,8 @@ const preventChildrenMousedown = (e: MouseEvent, subItem: PageNode) => {
 }
 
 const handleSetElement = (el: HTMLElement) => ($el = el)
+
+const isNoSelect = $computed(() => item.isModule || noSelect)
 </script>
 
 <template>
@@ -223,7 +228,7 @@ const handleSetElement = (el: HTMLElement) => ($el = el)
             active: isActive,
             grading: inDraggable,
             module: !!item.isModule,
-            inModule: inModule,
+            noSelect: noSelect,
           },
         ],
         'data-name': item.name,
@@ -242,7 +247,7 @@ const handleSetElement = (el: HTMLElement) => ($el = el)
       <LibComponent
         :item="subItem"
         :parent="item"
-        :in-module="item.isModule || inModule"
+        :no-select="isNoSelect"
         :key="subItem.name"
         @mousedown="(e: MouseEvent) => preventChildrenMousedown(e, subItem)"
         @dragstart="(event: DragEvent) => handleChildrenDragStart(event, subItem)"

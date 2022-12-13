@@ -32,7 +32,15 @@ export type DisplayMode = 'preview' | 'drag' | 'edit'
 export const useDisplayStore = defineStore('display', {
   persist: {
     key: '__display_store__',
-    paths: ['editorSettings', 'minimize', 'presetDevice', 'activeIndex', 'device', 'isFirst'],
+    paths: [
+      'editorSettings',
+      'minimize',
+      'presetDevice',
+      'activeIndex',
+      'device',
+      'isFirst',
+      'expertMode',
+    ],
   },
   state: () => ({
     /** 预设 */
@@ -67,7 +75,6 @@ export const useDisplayStore = defineStore('display', {
      * edit: 编辑模式
      * preview: 预览模式
      * drag: 拖拽模式
-     * grid: 布局模式
      */
     displayMode: 'edit' as DisplayMode,
     /** 手动锁定拖拽修改 position */
@@ -80,8 +87,12 @@ export const useDisplayStore = defineStore('display', {
     colorType: 'variable' as 'variable' | 'recent',
     /** 编辑器设置 */
     editorSettings: getDefaultEditorSetting(),
+    /** 高级模式 */
+    expertMode: false,
   }),
   getters: {
+    displayModeList: (state): DisplayMode[] =>
+      state.expertMode ? ['edit', 'drag', 'preview'] : ['edit', 'preview'],
     /** 当前展示的宽高（缩放后） */
     realDeviceSize(state) {
       return {

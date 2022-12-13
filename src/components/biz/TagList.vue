@@ -58,6 +58,9 @@ const filteredItems = $computed(() => {
   background: $panel-content;
   margin: 0 8px 8px;
   border-radius: $normal-radius;
+  *::before {
+    display: none;
+  }
   .tag-input.vue-tags-input {
     background: $tr;
     width: 100%;
