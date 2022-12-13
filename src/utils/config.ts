@@ -1,11 +1,4 @@
-import {
-  ComponentName,
-  ComponentPropsGroup,
-  GroupType,
-  IPropConfig,
-  PageNode,
-  PropsTypes,
-} from '@/config'
+import { ComponentName, GroupType, IPropConfig, PageNode, PropsTypes } from '@/config'
 import { useDisplayStore } from '@/stores/display'
 import { usePageStore } from '@/stores/page'
 
@@ -24,12 +17,16 @@ export const useConfig = <T extends ComponentName = any>(node: PageNode<T>): IPr
   return useSourceNode(node).config
 }
 
+export const usePropListByComponent = (node: PageNode): GroupType[] => {
+  return Object.keys(node.config.props || []) as GroupType[]
+}
+
 /** 获得组件在对应设备场景下的全量配置 */
 export const useConfigProps = <T extends ComponentName = any>(
   node: PageNode<T> | null
 ): PropsTypes<T> => {
   if (!node) return { common: { hide: false } } as unknown as PropsTypes<T>
-  const groupTypeList = ComponentPropsGroup[node.component]
+  const groupTypeList = usePropListByComponent(node)
   let obj: PropsTypes<T> = {} as any
   for (let i = 0; i < groupTypeList.length; i++) {
     const groupType = groupTypeList[i]

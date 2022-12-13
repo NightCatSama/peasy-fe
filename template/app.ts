@@ -1,7 +1,6 @@
-
+import * as Components from '@/components/libs'
 import type { IPage, PageNode } from '../src/config'
 import { unescapeHtml } from '../src/utils/xss'
-import { Text, Block, Image, Icon, Media, InputField } from '@/components/libs'
 
 // Debug
 // import { createApp } from 'vue'
@@ -17,8 +16,8 @@ if (!createApp) {
 const getTemplate = (pageNode: PageNode[]) => {
   let template = ''
   pageNode.forEach((item) => {
-    template += getHtml(item);
-  });
+    template += getHtml(item)
+  })
   return template
 }
 
@@ -26,9 +25,7 @@ const getHtml = (obj: PageNode, parent?: PageNode): string => {
   return `
 <${obj.component}
   :direction='${parent?.name ? `getProps("${parent.name}")?.layout?.direction` : '""'}'
-  :tags='${
-    JSON.stringify(obj.tags) || '[]'
-  }'
+  :tags='${JSON.stringify(obj.tags) || '[]'}'
   data-name="${obj.name}"
   componentName="${obj.name}"
   :children='${obj.component === 'Text' && obj.children ? `getChild("${obj.name}")` : 'undefined'}'
@@ -36,14 +33,15 @@ const getHtml = (obj: PageNode, parent?: PageNode): string => {
 >
 ${(obj.children || []).map((child) => getHtml(child, obj)).join('')}
 </${obj.component}>
-`;
-};
+`
+}
 
-const data: IPage = JSON.parse(
-  unescapeHtml((window as any).data)
-    .replace(/\r/g, '\\r')
-    .replace(/\n/g, '\\n')
-) || []
+const data: IPage =
+  JSON.parse(
+    unescapeHtml((window as any).data)
+      .replace(/\r/g, '\\r')
+      .replace(/\n/g, '\\n')
+  ) || []
 
 const isMobile = () => document.body.clientWidth < 768
 
@@ -57,20 +55,20 @@ if (data) {
         data: data.pageData,
         font: data.font,
         setting: data.setting,
-        colorVars: data.colorVars
+        colorVars: data.colorVars,
       }
     },
     computed: {
       nameMap(): { [name: string]: PageNode } {
-        const nameMap: { [name: string]: PageNode } = {};
+        const nameMap: { [name: string]: PageNode } = {}
         const dfs = (nodes: PageNode[]) => {
           nodes.forEach((item) => {
-            nameMap[item.name] = item;
-            if (item.children) dfs(item.children);
-          });
-        };
-        dfs(this.data);
-        return nameMap;
+            nameMap[item.name] = item
+            if (item.children) dfs(item.children)
+          })
+        }
+        dfs(this.data)
+        return nameMap
       },
       getProps() {
         return (name: string) => {
@@ -90,10 +88,10 @@ if (data) {
           const node = this.nameMap[name] as PageNode
           return node?.children || []
         }
-      }
+      },
     },
     created() {
-      window.onresize = () => this.isMobile = isMobile()
+      window.onresize = () => (this.isMobile = isMobile())
     },
     provide: {
       editContext: {
@@ -101,14 +99,7 @@ if (data) {
         displayMode: '',
       },
     },
-    components: {
-      Text,
-      Block,
-      Image,
-      Icon,
-      Media,
-      InputField,
-    }
+    components: Components,
   })
 } else {
   app = createApp({

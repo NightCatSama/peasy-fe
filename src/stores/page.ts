@@ -1,11 +1,4 @@
-import {
-  ComponentName,
-  ComponentPropsGroup,
-  GroupType,
-  IMaterialItem,
-  IPage,
-  PageNode,
-} from '@/config'
+import { GroupType, IMaterialItem, IPage, PageNode } from '@/config'
 import { $t } from '@/constants/i18n'
 import { Alert, AlertError } from '@/utils/alert'
 import { copyToClipboard, getClipboardText } from '@/utils/clipboard'
@@ -15,6 +8,7 @@ import {
   useGroupConfig,
   useGroupConfigByNode,
   useMobileConfig,
+  usePropListByComponent,
 } from '@/utils/config'
 import {
   getDefaultColorVars,
@@ -83,7 +77,7 @@ export const usePageStore = defineStore('page', {
       state.activeNode
         ? state.activeNode.isModule
           ? new Array(state.activeNode?.moduleConfig?.length || 0).fill('custom')
-          : ComponentPropsGroup[state.activeNode.component as ComponentName]
+          : usePropListByComponent(state.activeNode)
         : null,
     isActiveAllSection: (state) => state.activeSection === null,
     activeSectionIndex: (state) =>
@@ -160,7 +154,7 @@ export const usePageStore = defineStore('page', {
     activeNodeHide: (state) =>
       state.activeNode ? useGroupConfig(state.activeNode, 'common').hide || false : false,
     activeNodeIsSonText: (state) =>
-      state.activeNode ? useGroupConfig(state.activeNode, 'basic').isSonText || false : false,
+      state.activeNode ? useGroupConfig(state.activeNode, 'basic')?.isSonText || false : false,
     getMaterialByMaterialId:
       (state) =>
       (materialId: string): IMaterialItem | void => {

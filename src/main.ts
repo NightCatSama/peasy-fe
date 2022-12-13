@@ -4,7 +4,7 @@ import { createApp } from 'vue'
 
 import Toast from 'vue-toastification'
 import App from './App.vue'
-import { Block, Icon, Image, InputField, Media, Text } from './components/libs'
+import * as ComponentsList from './components/libs'
 import GlobalDirective from './toolkit/global.directive'
 
 import 'floating-vue/dist/style.css'
@@ -48,12 +48,9 @@ FloatingVue.options.themes.tooltip.popperTriggers = ['hover', 'focus']
 app.directive('tooltip', VTooltip)
 app.directive('close-popper', VClosePopper)
 
-app.component('Text', Text)
-app.component('Block', Block)
-app.component('Image', Image)
-app.component('Icon', Icon)
-app.component('Media', Media)
-app.component('InputField', InputField)
+Object.keys(ComponentsList).forEach((name: string) =>
+  app.component(name, (ComponentsList as any)[name])
+)
 
 app.config.globalProperties.$t = $t
 

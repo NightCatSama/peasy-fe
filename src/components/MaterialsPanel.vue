@@ -10,15 +10,7 @@ import {
 import { DisplayMode } from '@/stores/display'
 import { Alert } from '@/utils/alert'
 import { emitter } from '@/utils/event'
-import {
-  EmptyBlock,
-  EmptyIcon,
-  EmptyImage,
-  EmptyInputField,
-  EmptyMedia,
-  EmptySection,
-  EmptyText,
-} from '@/utils/mock'
+import { BuiltInComponent, BuiltInSection } from '@/utils/mock'
 import draggable from 'vuedraggable'
 import { Modal } from './modal'
 import SaveMaterialModal from './modal/SaveMaterialModal.vue'
@@ -84,10 +76,10 @@ const currentNodeList = $computed(() => {
   const list = (materialData.value as any)[currentType]
   if (isAdmin.value) {
     if (currentType === 'section') {
-      return [...list, EmptySection]
+      return [...list, ...BuiltInSection]
     }
     if (currentType === 'component') {
-      return [...list, EmptyBlock, EmptyText, EmptyImage, EmptyIcon, EmptyMedia, EmptyInputField]
+      return [...list, ...BuiltInComponent]
     }
   }
   return list

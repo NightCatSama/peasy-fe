@@ -289,79 +289,115 @@ export const getMockInputField = (): PageNode<'InputField'> => {
   }
 }
 
-export const EmptySection = {
-  name: '空白章节',
-  enName: 'Empty Section',
-  category: '基础',
-  categoryEn: 'Basic',
-  type: 'section',
-  cover: '',
-  dataType: DataType.Page,
-  node: getMockBlock('section'),
-}
+export const BuiltInSection = [
+  {
+    name: '空白章节',
+    enName: 'Empty Section',
+    category: '基础',
+    categoryEn: 'Basic',
+    type: 'section',
+    cover: '',
+    dataType: DataType.Page,
+    node: getMockBlock('section'),
+  },
+]
 
-export const EmptyBlock = {
-  name: '容器',
-  enName: 'Block',
-  category: '基础',
-  categoryEn: 'Basic',
-  type: 'component',
-  cover: '',
-  dataType: DataType.Page,
-  node: getMockBlock('component'),
-}
-
-export const EmptyText = {
-  name: '文本',
-  enName: 'Text',
-  category: '基础',
-  categoryEn: 'Basic',
-  type: 'component',
-  cover: '',
-  dataType: DataType.Page,
-  node: getMockText(),
-}
-
-export const EmptyImage = {
-  name: '图片',
-  enName: 'Image',
-  category: '基础',
-  categoryEn: 'Basic',
-  type: 'component',
-  cover: '',
-  dataType: DataType.Page,
-  node: getMockImage(),
-}
-
-export const EmptyIcon = {
-  name: '图标',
-  enName: 'Icon',
-  category: '基础',
-  categoryEn: 'Basic',
-  type: 'component',
-  cover: '',
-  dataType: DataType.Page,
-  node: getMockIcon(),
-}
-
-export const EmptyMedia = {
-  name: '媒体',
-  enName: 'Media',
-  category: '基础',
-  categoryEn: 'Basic',
-  type: 'component',
-  cover: '',
-  dataType: DataType.Page,
-  node: getMockMedia(),
-}
-
-export const EmptyInputField = {
-  name: '输入框',
-  enName: 'InputField',
-  category: '基础',
-  categoryEn: 'Basic',
-  type: 'component',
-  cover: '',
-  dataType: DataType.Page,
-  node: getMockInputField(),
-}
+export const BuiltInComponent = [
+  {
+    name: '容器',
+    enName: 'Block',
+    category: '基础',
+    categoryEn: 'Basic',
+    type: 'component',
+    cover: '',
+    dataType: DataType.Page,
+    node: getMockBlock('component'),
+  },
+  {
+    name: '文本',
+    enName: 'Text',
+    category: '基础',
+    categoryEn: 'Basic',
+    type: 'component',
+    cover: '',
+    dataType: DataType.Page,
+    node: getMockText(),
+  },
+  {
+    name: '图片',
+    enName: 'Image',
+    category: '基础',
+    categoryEn: 'Basic',
+    type: 'component',
+    cover: '',
+    dataType: DataType.Page,
+    node: getMockImage(),
+  },
+  {
+    name: '图标',
+    enName: 'Icon',
+    category: '基础',
+    categoryEn: 'Basic',
+    type: 'component',
+    cover: '',
+    dataType: DataType.Page,
+    node: getMockIcon(),
+  },
+  {
+    name: '媒体',
+    enName: 'Media',
+    category: '基础',
+    categoryEn: 'Basic',
+    type: 'component',
+    cover: '',
+    dataType: DataType.Page,
+    node: getMockMedia(),
+  },
+  {
+    name: '测试组件',
+    enName: 'Test',
+    category: '基础',
+    categoryEn: 'Basic',
+    type: 'component',
+    cover: '',
+    dataType: DataType.Page,
+    node: {
+      type: 'component',
+      name: 'Test',
+      component: 'Test',
+      tags: ['Test'],
+      isModule: true,
+      config: {
+        props: {
+          common: getDefaultCommon(),
+          size: getDefaultSize(),
+          custom: {
+            text: '测试组件',
+          },
+        },
+      },
+      moduleConfig: [
+        {
+          /** 配置名称 */
+          title: '设置',
+          titleEn: 'Setting',
+          /** 图标 */
+          icon: 'advanced',
+          /** 是否折叠 */
+          defaultCollapsed: true,
+          /** 分组数据 */
+          data: [
+            {
+              type: ModuleConfigType.Text,
+              label: '文本',
+              labelEn: 'Text',
+              props: {},
+              sourceValue: 'config.props.custom.text',
+              targetValue: 'config.all.custom.text',
+            },
+          ],
+        },
+      ],
+    } as PageNode<any>,
+  },
+]

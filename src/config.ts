@@ -109,6 +109,7 @@ export type GroupType =
   | 'animation'
   | 'custom'
   | 'code'
+  | `config:${string}`
 
 /** 配置对应约束类型 */
 export interface GroupPropType<T extends ComponentName = any> {
@@ -135,16 +136,19 @@ export interface GroupPropType<T extends ComponentName = any> {
   animation: IAnimation
   code: ICode
   custom: any
+  [key: `config:${string}`]: any
 }
 
 export type ComponentPropsGroupType = typeof ComponentPropsGroup
-export type ComponentName = keyof ComponentPropsGroupType
+export type ComponentName = keyof ComponentPropsGroupType | string
 
 type IsAny<T> = 0 extends 1 & T ? true : false
 
 /** 将配置分组名和约束类型相对应 */
 export type PropsTypes<T extends ComponentName = any> = IsAny<T> extends false
-  ? Pick<GroupPropType<T>, ComponentPropsGroupType[T][number]>
+  ? T extends keyof ComponentPropsGroupType
+    ? Pick<GroupPropType<T>, ComponentPropsGroupType[T][number]>
+    : any
   : Partial<{
       [key in GroupType]: GroupPropType[key]
     }> &
@@ -189,8 +193,6 @@ export interface PageNode<T extends ComponentName = any> {
   tags: string[]
   /** 组件名称 */
   component: T
-  /** 参数 */
-  props?: PropsTypes<T>
   /** 组件配置 */
   config: IPropConfig<T>
   /** 配置参数链接到其他组件 */

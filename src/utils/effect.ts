@@ -1,14 +1,7 @@
-import {
-  ComponentName,
-  ComponentPropsGroup,
-  DefaultColor,
-  GroupType,
-  isSomeBasicType,
-  PageNode,
-} from '@/config'
+import { DefaultColor, GroupType, isSomeBasicType, PageNode } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
 import { $t } from '@/constants/i18n'
-import { useConfigProps } from './config'
+import { useConfigProps, usePropListByComponent } from './config'
 
 export interface IEffectShowItem {
   label: string
@@ -24,7 +17,7 @@ export type IEffectShowItemMap = {
 
 export const getEffectMapByNode = (node: PageNode, isSelf?: boolean): IEffectShowItemMap | null => {
   if (!node) return {}
-  const nodeGroups = ComponentPropsGroup[node.component as ComponentName]
+  const nodeGroups = usePropListByComponent(node)
   let map = {}
   ;(nodeGroups || [])
     .map((group) => getEffectShowItemByGroup(group, node))
