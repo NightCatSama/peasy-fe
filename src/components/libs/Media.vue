@@ -9,14 +9,14 @@ import { getContext } from '@/utils/context'
 import { useAttrs } from 'vue'
 import { IProps, useProps } from './hooks/common'
 
-const { elem, uName, style, props, tagClassNames } = useProps(
+const { elem, style, props, tagClassNames } = useProps(
   useAttrs() as unknown as IProps<'Media'>,
   'Media'
 )
 
 const context = getContext()
 const disabled = $computed(() => context?.isEditMode && context?.displayMode !== 'preview')
-const classNames = $computed(() => ['media', uName.value, ...tagClassNames.value])
+const classNames = $computed(() => ['media', ...tagClassNames.value])
 
 const controls = $computed(() => {
   if (context?.isEditMode && context?.displayMode !== 'preview') {
@@ -81,7 +81,6 @@ const componentAttrs = $computed(() => ({
     ref="elem"
     :class="['media-wrapper', { disabled }, ...classNames]"
     :style="style"
-    :id="uName"
     v-bind="props.inheritAttrs"
   >
     <component :is="componentName" v-bind="componentAttrs"></component>

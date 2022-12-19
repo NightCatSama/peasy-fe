@@ -142,9 +142,9 @@ const componentEvents = $computed(() =>
             dragNode.value && // 存在拖拽组件
             !item.isModule && // 当前组件不是 Module 组件
             !inDraggable && // 当前组件不是拖拽中的组件 （避免自己拖拽进自己）
-            !getIsInDragNode.value(item.name) && // 当前组件不是拖拽组件的子组件 （避免把拖拽自己拖进自己的子组件）
+            !getIsInDragNode.value(item.id!) && // 当前组件不是拖拽组件的子组件 （避免把拖拽自己拖进自己的子组件）
             // NOTE: isContainer 拖拽时触发 drag-enter 不一定是当前组件，所以以下判断有问题
-            (e.target as HTMLDivElement)?.dataset?.name === item.name // 确认目前触发的元素是当前组件
+            (e.target as HTMLDivElement)?.dataset?.id === item.id // 确认目前触发的元素是当前组件
           ) {
             setDropZone(item)
           }
@@ -221,7 +221,7 @@ const isNoSelect = $computed(() => item.isModule || noSelect)
     :component-data="{
       ...useConfigProps(item),
       tags: item.tags,
-      componentName: item.name,
+      id: item.id,
       direction: parent ? useConfigProps(parent).layout?.direction : void 0,
       children: item.component === 'Text' && item.children ? item.children : void 0,
       inheritAttrs: {
@@ -234,7 +234,7 @@ const isNoSelect = $computed(() => item.isModule || noSelect)
             noSelect: noSelect,
           },
         ],
-        'data-name': item.name,
+        'data-id': item.id,
         ...componentEvents,
         ...$attrs,
       },

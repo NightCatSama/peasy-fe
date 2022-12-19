@@ -8,17 +8,12 @@ export default {
 import { nextTick, useAttrs, watch } from 'vue'
 import { IProps, useProps } from './hooks/common'
 
-const { elem, uName, style, props, tagClassNames } = useProps(
+const { elem, style, props, tagClassNames } = useProps(
   useAttrs() as unknown as IProps<'Block'>,
   'Block'
 )
 
-const classNames = $computed(() => [
-  'block',
-  uName.value,
-  ...tagClassNames.value,
-  customAttrs?.class,
-])
+const classNames = $computed(() => ['block', ...tagClassNames.value, customAttrs?.class])
 const elementTag = $computed(() => props.basic?.tag || 'div')
 const emit = defineEmits(['updateElem'])
 const customAttrs = $computed(() =>
@@ -56,7 +51,6 @@ watch(
     }"
     :class="classNames"
     :style="style"
-    :id="uName"
     @submit.prevent
   >
     <slot></slot>

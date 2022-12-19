@@ -273,7 +273,7 @@ const handleSelectTemplate = async (templateId: string) => {
         v-on="dragEvents"
       >
         <template #item="{ element: item }">
-          <LibComponent :item="item" :key="item.name" :in-module="item.isModule"></LibComponent>
+          <LibComponent :item="item" :key="item.id" :in-module="item.isModule"></LibComponent>
         </template>
       </draggable>
     </div>

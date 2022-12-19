@@ -11,12 +11,12 @@ import { escapeHtml } from '@/utils/xss'
 import { nextTick, useAttrs, watch } from 'vue'
 import { IProps, useProps } from './hooks/common'
 
-const { elem, uName, style, props, tagClassNames } = useProps(
+const { elem, style, props, tagClassNames } = useProps(
   useAttrs() as unknown as IProps<'Text'>,
   'Text'
 )
 
-const classNames = $computed(() => ['text', uName.value, ...tagClassNames.value])
+const classNames = $computed(() => ['text', ...tagClassNames.value])
 
 const nextProcessFn: any = getIsEditMode() ? nextTick : setTimeout
 
@@ -62,7 +62,7 @@ const renderText = $computed(() => {
 </script>
 
 <template>
-  <div ref="elem" :style="style" :class="classNames" :id="uName" v-bind="props.inheritAttrs">
+  <div ref="elem" :style="style" :class="classNames" v-bind="props.inheritAttrs">
     <span class="text-content" v-html="renderText"></span>
     <div v-if="!props.basic.isSonText" class="text-children"><slot></slot></div>
   </div>

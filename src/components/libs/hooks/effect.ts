@@ -40,7 +40,7 @@ export const useEffect = (propsRef: IProps<any>) => {
         if (dynamicAnimationStyles) dynamicAnimationStyles.innerHTML = ''
         return
       }
-      const uName = getUniqueName(propsRef.componentName)
+      const uName = getUniqueName(propsRef.id)
       // 初始化动态样式表
       if (!dynamicAnimationStyles) {
         dynamicAnimationStyles = document.createElement('style')
@@ -62,13 +62,13 @@ export const useEffect = (propsRef: IProps<any>) => {
           if (item?.targetType === 'self') {
             styles.push({
               priority: selectorPriority[key] || 0,
-              style: `#${uName}:${key} { ${getEffectStyle(item, value)} }`,
+              style: `[data-id="${uName}"]:${key} { ${getEffectStyle(item, value)} }`,
             })
           }
           if (item?.targetType === 'name') {
             styles.push({
               priority: selectorPriority[key] || 0,
-              style: `.${uName}:${key} .${getUniqueName(item.target)} { ${getEffectStyle(
+              style: `[data-id="${uName}"]:${key} .${getUniqueName(item.target)} { ${getEffectStyle(
                 item,
                 value
               )} }`,
@@ -77,10 +77,9 @@ export const useEffect = (propsRef: IProps<any>) => {
           if (item?.targetType === 'tag') {
             styles.push({
               priority: selectorPriority[key] || 0,
-              style: `.${uName}:${key} .${getTagClassName(item.target)} { ${getEffectStyle(
-                item,
-                value
-              )} }`,
+              style: `[data-id="${uName}"]:${key} .${getTagClassName(
+                item.target
+              )} { ${getEffectStyle(item, value)} }`,
             })
           }
         })

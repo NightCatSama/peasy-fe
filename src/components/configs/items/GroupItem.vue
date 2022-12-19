@@ -66,14 +66,17 @@ const { canDelete = true } = defineProps<ICollapseItemProps>()
     display: flex;
     align-items: center;
     min-height: 32px;
+
     &:not(:last-child) {
       margin-bottom: 8px;
     }
+
     .label {
       flex: 1;
       font-size: 12px;
       margin-right: 12px;
       padding-left: 10px;
+      flex-shrink: 0;
     }
   }
 }

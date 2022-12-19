@@ -1,4 +1,4 @@
-import { ComponentName, getTagClassName, getUniqueName, GroupPropType, PageNode } from '@/config'
+import { ComponentName, getTagClassName, GroupPropType, PageNode } from '@/config'
 import { getIsEditMode } from '@/utils/context'
 import { computed, onBeforeMount, onMounted, reactive, ref } from 'vue'
 import { useAnimation } from './animation'
@@ -26,7 +26,7 @@ import {
 export type IProps<T extends ComponentName = any> = {
   inheritAttrs?: any
   tags: string[]
-  componentName: string
+  id: string
   direction?: 'row' | 'column'
   /** 子元素的名字列表，目前用于 Text 子文本查找 */
   children?: PageNode<any>[]
@@ -67,7 +67,7 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
     container: useContainerStyle(propsRef.container),
     position: usePositionStyle(propsRef.position),
     animation: useAnimationStyle(animationMap),
-    effect: useEffectStyle(propsRef.effect, propsRef.componentName),
+    effect: useEffectStyle(propsRef.effect),
     common: propsRef.common.hide ? { display: 'none' } : null,
     code: useCodeStyle(propsRef.code),
   }))
@@ -90,7 +90,6 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
     })
   )
 
-  const uName = computed(() => getUniqueName(propsRef.componentName))
   const tagClassNames = computed(() => propsRef.tags.map((tag) => getTagClassName(tag)))
 
   onMounted(() => {
@@ -118,7 +117,6 @@ export const useProps = <T extends IProps<any> = IProps>(props: T, componentType
     elem,
     styleMap,
     style,
-    uName,
     tagClassNames,
     props: propsRef,
   }

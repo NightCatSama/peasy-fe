@@ -19,6 +19,7 @@ import {
 export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNode<'Block'> => {
   const type = initType || 'component'
   return {
+    id: '',
     type: type,
     name: name || (type === 'component' ? 'Block' : 'Section'),
     component: 'Block',
@@ -46,6 +47,7 @@ export const getMockBlock = (initType?: PageNode['type'], name?: string): PageNo
 
 export const getMockModuleBlock = (): PageNode<'Block'> => {
   return {
+    id: '',
     type: 'component',
     name: `Block`,
     component: 'Block',
@@ -159,6 +161,7 @@ export const getMockModuleBlock = (): PageNode<'Block'> => {
 
 export const getMockText = (): PageNode<'Text'> => {
   return {
+    id: '',
     type: 'component',
     name: 'Text',
     component: 'Text',
@@ -184,6 +187,7 @@ export const getMockText = (): PageNode<'Text'> => {
 
 export const getMockImage = (src?: string): PageNode<'Image'> => {
   return {
+    id: '',
     type: 'component',
     name: 'Image',
     component: 'Image',
@@ -208,6 +212,7 @@ export const getMockImage = (src?: string): PageNode<'Image'> => {
 
 export const getMockIcon = (name?: string): PageNode<'Icon'> => {
   return {
+    id: '',
     type: 'component',
     name: 'Icon',
     component: 'Icon',
@@ -232,6 +237,7 @@ export const getMockIcon = (name?: string): PageNode<'Icon'> => {
 
 export const getMockMedia = (): PageNode<'Media'> => {
   return {
+    id: '',
     type: 'component',
     name: 'Media',
     component: 'Media',
@@ -260,6 +266,7 @@ export const getMockMedia = (): PageNode<'Media'> => {
 
 export const getMockInputField = (): PageNode<'InputField'> => {
   return {
+    id: '',
     type: 'component',
     name: 'InputField',
     component: 'InputField',

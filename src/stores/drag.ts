@@ -21,14 +21,14 @@ export const useDragStore = defineStore('drag', {
     /** 当前拖拽组件的类型 */
     dragNodeType: (state) => state.dragNode?.type,
     /** 当前拖拽组件的组件名列表（包含子组件） */
-    dragNodeChildNameMap: (state): { [key: string]: PageNode } => {
+    dragNodeChildNameMap: (state): { [id: string]: PageNode } => {
       if (state.dragNode === null || state.dragType !== 'move') return {}
-      const nameMap: { [key: string]: PageNode } = {
-        [state.dragNode.name]: state.dragNode,
+      const nameMap: { [id: string]: PageNode } = {
+        [state.dragNode.id]: state.dragNode,
       }
       const dfs = (nodes: PageNode[]) => {
         nodes.forEach((item) => {
-          nameMap[item.name] = item
+          nameMap[item.id] = item
           if (item.children) dfs(item.children)
         })
       }
@@ -37,7 +37,7 @@ export const useDragStore = defineStore('drag', {
     },
     /** 判断该组件名是否在拖拽组件中 */
     getIsInDragNode: function () {
-      return (name: string) => this.dragNodeChildNameMap[name]
+      return (id: string) => this.dragNodeChildNameMap[id]
     },
   },
   actions: {

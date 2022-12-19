@@ -10,12 +10,12 @@ import { useAttrs } from 'vue'
 import { IProps, useProps } from './hooks/common'
 import { useStyle } from './hooks/style'
 
-const { elem, uName, style, styleMap, props, tagClassNames } = useProps(
+const { elem, style, styleMap, props, tagClassNames } = useProps(
   useAttrs() as unknown as IProps<'InputField'>,
   'InputField'
 )
 
-const classNames = $computed(() => ['input-field', uName.value, ...tagClassNames.value])
+const classNames = $computed(() => ['input-field', ...tagClassNames.value])
 const context = getContext()
 const disabled = $computed(() => context?.isEditMode && context?.displayMode !== 'preview')
 
@@ -45,7 +45,7 @@ const componentStyles = $computed(() =>
   <label
     ref="elem"
     :class="['input-field-wrapper', { disabled }]"
-    :for="uName"
+    :for="props.id"
     :style="wrapperStyles"
     v-bind="props.inheritAttrs"
   >
@@ -56,7 +56,7 @@ const componentStyles = $computed(() =>
       :disabled="disabled || props.basic.disabled"
       :maxlength="props.basic.maxLength"
       :style="componentStyles"
-      :id="uName"
+      :id="props.id"
     ></component>
   </label>
 </template>

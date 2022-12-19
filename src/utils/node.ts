@@ -1,16 +1,10 @@
 import { PageNode } from '@/config'
 import { cloneDeep } from 'lodash-es'
+import { v4 as uuidv4 } from 'uuid'
 
 /** 生成唯一的节点 name */
-const createUnitName = (originName: string, nameMap: { [key: string]: PageNode }): string => {
-  const matchObj = /(?<name>.*)-(?<index>\d+)$/.exec(originName)
-  let baseName = matchObj?.groups?.name ?? originName
-  let i = matchObj?.groups?.index ? parseInt(matchObj?.groups?.index) + 1 : 1
-  let name = `${baseName}-${i}`
-  while (nameMap[name]) {
-    name = `${baseName}-${++i}`
-  }
-  return name
+const createUnitID = (): string => {
+  return uuidv4()
 }
 
 /**
@@ -20,7 +14,7 @@ const createUnitName = (originName: string, nameMap: { [key: string]: PageNode }
  */
 export const formatNodeByUniqueName = (
   originNode: PageNode,
-  nameMap: { [key: string]: PageNode },
+  idMap: { [key: string]: PageNode },
   /** 是否链接到原组件，适用于复制组件 */
   isLinkProp: boolean = false,
   removeChildren: boolean = false
@@ -34,22 +28,29 @@ export const formatNodeByUniqueName = (
   // 全部的节点
   let allChildNode = []
   // 名字更新列表
-  let nameUpdatedMap: { [originName: string]: string } = {}
+  let idUpdateMap: { [originId: string]: string } = {}
 
   while (pendingNodeList.length) {
     const node = pendingNodeList.shift()!
     allChildNode.push(node)
-    if (node.name in nameMap) {
-      const originName = node.name
-      node.name = createUnitName(originName, nameMap)
-      nameUpdatedMap[originName] = node.name
+    if (node.id in idMap) {
+      const originId = node.id
+
+      // 生成一个新的唯一名字，并记录新的名字
+      node.id = createUnitID()
+      idUpdateMap[originId] = node.id
+
       // 链接到原组件
       if (isLinkProp) {
         // 如果组件本身是链接组件，则继承特殊配置
         node.config = node.propLink && node.config ? node.config : ({ props: {} } as any)
-        node.propLink = node.propLink || originName
+        node.propLink = node.propLink || originId
       }
-      nameMap[node.name] = node
+
+      // TODO: delete
+      idMap[node.id] = node
+    } else {
+      node.id = createUnitID()
     }
     if (node.children) {
       pendingNodeList = pendingNodeList.concat(node.children)
@@ -59,10 +60,11 @@ export const formatNodeByUniqueName = (
   if (!isLinkProp) {
     allChildNode.forEach((node) => {
       if (node.propLink) {
-        node.propLink = nameUpdatedMap[node.propLink] || node.propLink
+        node.propLink = idUpdateMap[node.propLink] || node.propLink
       }
     })
   }
+
   return newNode
 }
 

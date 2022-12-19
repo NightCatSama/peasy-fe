@@ -300,7 +300,7 @@ export const useAnimationStyle = (animationMap: AnimationMapType) => {
   }
 }
 
-export const useEffectStyle = (effect: IEffect, name: string) => {
+export const useEffectStyle = (effect: IEffect) => {
   if (!effect) return {}
 
   return {

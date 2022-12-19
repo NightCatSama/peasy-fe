@@ -187,6 +187,8 @@ export interface PageNode<T extends ComponentName = any> {
    * template: 模板组件
    */
   type: PageNodeType
+  /** 唯一 id */
+  id: string
   /** 组件名称 */
   name: string
   /** 标签 */
@@ -284,6 +286,7 @@ export enum DataStatus {
 export interface IMaterialItem {
   /** 物料名称 */
   name: string
+  /** 英文名称 */
   enName?: string
   /** 组件数据，type 为 component/section 时存在 */
   node?: PageNode
@@ -325,5 +328,5 @@ export const imgErrorFallback =
 
 export const DefaultColor = '#333333'
 
-export const getUniqueName = (name: string) => `_name_${name}_`
+export const getUniqueName = (id: string) => `${id}`
 export const getTagClassName = (tag: string) => `_tag_${tag}_`

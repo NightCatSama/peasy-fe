@@ -15,7 +15,7 @@ import Icon from './widgets/Icon.vue'
 import Tip from './widgets/Tip.vue'
 
 const {
-  nameMap,
+  idMap,
   pageData,
   activeNode,
   activeNodeGroups,
@@ -88,8 +88,8 @@ const handleUnlink = (includeChildren?: boolean) => unlinkActiveNodeProp(include
 const handleFocusLinkNode = () =>
   activeNode.value &&
   activeNode.value?.propLink &&
-  nameMap.value[activeNode.value.propLink] &&
-  setActiveNode(nameMap.value[activeNode.value.propLink])
+  idMap.value[activeNode.value.propLink] &&
+  setActiveNode(idMap.value[activeNode.value.propLink])
 
 const iconList: {
   hide?: boolean
@@ -233,7 +233,7 @@ const openMaterialModal = async () => {
           :group-type="configGroup.groupType"
           :groupProps="configGroup.props"
           :minimize="true"
-          :key="configGroup.groupType + activeNode.name + index + '_mini'"
+          :key="`${activeNode.id}_${index}_mini`"
         ></ConfigGroup>
       </div>
       <div class="bottom" v-if="activeNode">
@@ -260,6 +260,7 @@ const openMaterialModal = async () => {
           >
             {{ activeNode.name }}
           </div>
+          <div class="id-text">ID: {{ activeNode.id }}</div>
         </div>
         <div class="op-icon-wrapper">
           <div
@@ -326,7 +327,7 @@ const openMaterialModal = async () => {
             :group-type="configGroup.groupType"
             :groupProps="configGroup.props"
             :minimize="false"
-            :key="configGroup.groupType + activeNode.name + index"
+            :key="`${activeNode.id}_${index}`"
           ></ConfigGroup>
         </div>
       </div>
@@ -343,7 +344,7 @@ const openMaterialModal = async () => {
           ></Icon>
         </div>
         <div class="content layers-content">
-          <TreeNode v-for="node in pageData" :key="node.name" :node="node" can-drag></TreeNode>
+          <TreeNode v-for="node in pageData" :key="node.id" :node="node" can-drag></TreeNode>
         </div>
       </div>
     </div>
@@ -430,9 +431,9 @@ const openMaterialModal = async () => {
 
   .header {
     display: flex;
-    padding: 0 16px;
-    height: $config-header-height;
-    align-items: center;
+    padding: 16px 12px 12px;
+    justify-content: center;
+    flex-direction: column;
 
     .title {
       flex: 1;
@@ -451,6 +452,17 @@ const openMaterialModal = async () => {
       &:focus {
         outline: none;
       }
+    }
+
+    .id-text {
+      flex: 1;
+      font-size: 10px;
+      white-space: nowrap;
+      overflow: hidden;
+      color: $grey;
+      opacity: 0.7;
+      white-space: nowrap;
+      text-overflow: ellipsis;
     }
   }
 

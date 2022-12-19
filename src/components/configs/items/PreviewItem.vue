@@ -52,6 +52,7 @@ const showCodeInput = $ref(false)
 
   .label {
     margin: 5px 0 10px 0;
+    align-self: flex-start;
   }
 
   .preview-wrapper {

@@ -20,12 +20,12 @@ interface IEffectGroupProps {
 }
 const { effect, node } = defineProps<IEffectGroupProps>()
 
-const { getTagsByNode, nameMap, activeNode } = usePageStoreHelper()
+const { getTagsByNode, idMap, activeNode } = usePageStoreHelper()
 
 let collapsedIndex = $ref(0)
 
 const handleAddEffect = () => {
-  effect.effectList.push(getDefaultEffectItem(node.name))
+  effect.effectList.push(getDefaultEffectItem(node.id))
   collapsedIndex = effect.effectList.length - 1
 }
 
@@ -33,7 +33,7 @@ const handleAddEffect = () => {
 const getEffectMap = $computed(() => (target: string, targetType: string): IEffectShowItemMap => {
   return targetType === 'tag'
     ? allEffectMap
-    : getEffectMapByNode(nameMap.value[target], targetType === 'self') || {}
+    : getEffectMapByNode(idMap.value[target], targetType === 'self') || {}
 })
 
 const getEffectLabel = (target: string, targetType: string) =>
@@ -74,9 +74,9 @@ const handleSetStyle = (
 const effectTargetMap: { [key: string]: ISelectItem } = $computed(() => {
   let obj: { [key: string]: ISelectItem } = {
     // 加 % 避免和 tag 命名重复
-    ['%' + node.name]: {
-      target: node.name,
-      title: node.name,
+    ['%' + node.id]: {
+      target: node.id,
+      title: 'Self',
       type: 'self',
     },
   }
@@ -152,7 +152,7 @@ let showTimingCode = $ref(false)
     >
       <template #name>
         <span v-if="!item.name">{{ $t('chooseAStyle') }}</span>
-        <span v-else-if="item.target && item.target !== node.name">
+        <span v-else-if="item.target && item.target !== node.id">
           <span class="highlight">{{ item.target }}<br /></span>
           <span>{{ item.name }}</span>
         </span>
@@ -163,7 +163,7 @@ let showTimingCode = $ref(false)
           v-if="Object.keys(effectTargetMap).length > 1"
           :label="$t('target')"
           :options="effectTargetMap"
-          :model-value="item.target"
+          :model-value="item.target === node.id ? 'Self' : item.target"
           @update:model-value="handleTargetChange($event, item)"
         >
           <template #item="data">
@@ -183,7 +183,7 @@ let showTimingCode = $ref(false)
         ></SelectItem>
         <template v-if="item.name">
           <SliderItem
-            v-if="item.target == node.name"
+            v-if="item.target == node.id"
             :label="$t('duration')"
             :min="0"
             :max="5"
@@ -191,7 +191,7 @@ let showTimingCode = $ref(false)
             v-model="item.duration"
           ></SliderItem>
           <SelectItem
-            v-if="item.target == node.name"
+            v-if="item.target == node.id"
             :label="$t('timing')"
             :options="timingFunction"
             v-model="item.timingFunction"

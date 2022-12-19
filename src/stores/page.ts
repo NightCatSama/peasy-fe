@@ -86,16 +86,16 @@ export const usePageStore = defineStore('page', {
       return pageData ? [pageData] : state.allPageData
     },
     /** 所有组件的命名列表 */
-    nameMap: (state): { [key: string]: PageNode } => {
-      const nameMap: { [key: string]: PageNode } = {}
+    idMap: (state): { [key: string]: PageNode } => {
+      const idMap: { [key: string]: PageNode } = {}
       const dfs = (nodes: PageNode[]) => {
         nodes.forEach((item) => {
-          nameMap[item.name] = item
+          idMap[item.id] = item
           if (item.children) dfs(item.children)
         })
       }
       dfs(state.allPageData)
-      return nameMap
+      return idMap
     },
     /** 获取组件的 Tag 列表（包含子组件） */
     getTagsByNode:
@@ -357,7 +357,7 @@ export const usePageStore = defineStore('page', {
       removeChildren = false
     ) {
       const newNode = this.handleInsertNode(
-        formatNodeByUniqueName(dragNode, this.nameMap, isLinkProp, removeChildren)
+        formatNodeByUniqueName(dragNode, this.idMap, isLinkProp, removeChildren)
       )
       parentNode.children?.splice(index, 0, newNode)
       return newNode
@@ -381,7 +381,7 @@ export const usePageStore = defineStore('page', {
     /** 添加 Section */
     addSection(node: PageNode, index?: number) {
       const insertIndex = index ?? this.allPageData.length
-      const newSection = this.handleInsertNode(formatNodeByUniqueName(node, this.nameMap))
+      const newSection = this.handleInsertNode(formatNodeByUniqueName(node, this.idMap))
       this.allPageData.splice(insertIndex, 0, newSection)
       return newSection
     },
@@ -461,8 +461,8 @@ export const usePageStore = defineStore('page', {
     removeNode(node: PageNode) {
       const children = [node].concat(this.getAllChildNode(node))
       // 当移除的组件有其他组件链接，则移除链接关系
-      Object.values(this.nameMap).forEach((obj: PageNode) => {
-        const deleteNode = children.find((c) => c.name === obj.propLink)
+      Object.values(this.idMap).forEach((obj: PageNode) => {
+        const deleteNode = children.find((c) => c.id === obj.propLink)
         if (deleteNode) {
           obj.propLink = ''
           obj.config = merge({}, cloneDeep(deleteNode.config), obj.config)
@@ -508,18 +508,18 @@ export const usePageStore = defineStore('page', {
     },
     /** 更新所有页面数据 */
     updateAllPageNode(pageNode: PageNode[]) {
-      // 先直接更新 allPageData 去更新 nameMap
+      // 先直接更新 allPageData 去更新 idMap
       this.allPageData = pageNode
-      const newNameMap = this.nameMap
+      const newIdMap = this.idMap
       // 之后根据 name 去同步更新 activeNode 等节点
       if (this.activeNode) {
-        this.activeNode = newNameMap[this.activeNode.name]
+        this.activeNode = newIdMap[this.activeNode.id]
       }
       if (this.activeSection) {
-        this.activeSection = newNameMap[this.activeSection.name]
+        this.activeSection = newIdMap[this.activeSection.id]
       }
       if (this.activeParentChain.length) {
-        this.activeParentChain = this.activeParentChain.map((node) => newNameMap[node.name])
+        this.activeParentChain = this.activeParentChain.map((node) => newIdMap[node.id])
       }
     },
     /** 设置当前激活组件隐藏 */
@@ -555,9 +555,9 @@ export const usePageStore = defineStore('page', {
       const list: PageNode[] = [this.activeNode]
       while (list.length) {
         const node = list.shift()!
-        const linkName = node.propLink
-        if (!linkName) break
-        const linkNode = this.nameMap[linkName]
+        const linkId = node.propLink
+        if (!linkId) break
+        const linkNode = this.idMap[linkId]
         const linkNodeConfig = cloneDeep(linkNode.config)
         node.config = merge(linkNodeConfig, node.config)
         node.propLink = ''
@@ -570,9 +570,9 @@ export const usePageStore = defineStore('page', {
     unlinkActiveNodePropGroup(groupType: GroupType) {
       if (!this.activeNode) return
       const node = this.activeNode
-      const linkName = node.propLink
-      if (!linkName) return
-      const linkNode = this.nameMap[linkName]
+      const linkId = node.propLink
+      if (!linkId) return
+      const linkNode = this.idMap[linkId]
       if (!linkNode) return
       if (linkNode.config.mobile?.[groupType]) {
         if (!node.config.mobile) node.config.mobile = {} as any
@@ -606,14 +606,14 @@ export const usePageStore = defineStore('page', {
       const node = cloneDeep(originNode)
       const nodeList = [node, ...this.getAllChildNode(node)]
       const nodeNameMap: { [name: string]: PageNode } = {}
-      const allNameMap = this.nameMap
-      nodeList.forEach((n) => (nodeNameMap[n.name] = n))
+      const allIdMap = this.idMap
+      nodeList.forEach((n) => (nodeNameMap[n.id] = n))
       nodeList.forEach((n) => {
         // 如果非链接组件，或链接组件在物料中，则不需要处理
         if (!n.propLink || nodeNameMap[n.propLink]) return
         // 否则需要解除链接，并将链接组件的配置合并到当前组件中
-        if (allNameMap[n.propLink]) {
-          n.config = merge({}, allNameMap[n.propLink].config, n.config)
+        if (allIdMap[n.propLink]) {
+          n.config = merge({}, allIdMap[n.propLink].config, n.config)
           n.propLink = ''
         }
       })
@@ -650,15 +650,6 @@ export const usePageStore = defineStore('page', {
       if (!isValidName(newName) || !newName) {
         AlertError($t('nameValidTip'))
         return
-      }
-      if (this.nameMap[newName]) {
-        AlertError($t('nameExistTip'))
-        return
-      }
-      for (let n in this.nameMap) {
-        if (n !== node.name && this.nameMap[n].propLink === node.name) {
-          this.nameMap[n].propLink = newName
-        }
       }
       node.name = newName
       return true
@@ -705,16 +696,17 @@ export const usePageStore = defineStore('page', {
         const text = await getClipboardText()
         if (text) {
           let pasteNode = JSON.parse(text) as PageNode
-          if (pasteNode.name && pasteNode.component) {
+          if (pasteNode.id && pasteNode.component) {
             if (
               // 不允许将普通组件当 section 插入
               (pasteNode.type === 'component' && !parentNode) ||
               // 不允许在 Module 中插入组件
               parentNode?.isModule
-            )
+            ) {
               return
+            }
             // 若粘贴的组件已经在项目中，则提示是否要链接到原组件
-            const originNode = this.nameMap[pasteNode.name]
+            const originNode = this.idMap[pasteNode.id]
             let isLink = false
             if (
               originNode &&
@@ -726,10 +718,10 @@ export const usePageStore = defineStore('page', {
               pasteNode = originNode
               isLink = true
             } else if (
-              // 若粘贴的组件是被剪切的组件，且 name 一致，则直接移动
+              // 若粘贴的组件是被剪切的组件，且 id 一致，则直接移动
               prevCutNode &&
-              !this.nameMap[prevCutNode.name] &&
-              prevCutNode.name === pasteNode.name &&
+              !this.idMap[prevCutNode.id] &&
+              prevCutNode.id === pasteNode.id &&
               prevCutNode.component === pasteNode.component &&
               prevCutNode.type === pasteNode.type
             ) {

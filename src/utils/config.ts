@@ -8,7 +8,7 @@ export const useMobileConfig = () =>
 
 /** 获得原始组件 */
 export const useSourceNode = <T extends ComponentName = any>(node: PageNode<T>): PageNode<T> => {
-  const linkNode = (node.propLink && usePageStore().nameMap[node.propLink]) as PageNode<T> | null
+  const linkNode = (node.propLink && usePageStore().idMap[node.propLink]) as PageNode<T> | null
   return linkNode || node
 }
 
@@ -18,7 +18,7 @@ export const useConfig = <T extends ComponentName = any>(node: PageNode<T>): IPr
 }
 
 export const usePropListByComponent = (node: PageNode): GroupType[] => {
-  return Object.keys(node.config.props || []) as GroupType[]
+  return Object.keys(useSourceNode(node).config.props || []) as GroupType[]
 }
 
 /** 获得组件在对应设备场景下的全量配置 */
@@ -41,7 +41,7 @@ export const useConfigProps = <T extends ComponentName = any>(
 /** 获得组件在对应设备场景下的单个配置组的配置 */
 export const useGroupConfig = (node: PageNode | null, groupType: GroupType) => {
   if (!node) return null
-  const linkNode = (node.propLink && usePageStore().nameMap[node.propLink]) as PageNode | null
+  const linkNode = (node.propLink && usePageStore().idMap[node.propLink]) as PageNode | null
   // 先从自身取，若自身取不到，则去 propLink 链接元素取
   return useGroupConfigByNode(node, groupType) || useGroupConfigByNode(linkNode, groupType)
 }

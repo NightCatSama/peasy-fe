@@ -11,7 +11,7 @@ import { getIsEditMode } from '@/utils/context'
 import { useAttrs, watch } from 'vue'
 import { IProps, useProps } from './hooks/common'
 
-const { elem, uName, style, props, tagClassNames } = useProps(
+const { elem, style, props, tagClassNames } = useProps(
   useAttrs() as unknown as IProps<'Icon'>,
   'Icon'
 )
@@ -40,7 +40,6 @@ watch(
 )
 
 const classNames = $computed(() => [
-  uName.value,
   ...tagClassNames.value,
   `${props.basic?.prefixClass || ''}${props.basic.name}`,
   `${props.basic?.extraClass || ''}`,
@@ -49,7 +48,7 @@ const classNames = $computed(() => [
 
 <template>
   <div ref="elem" :class="['icon']" v-bind="props.inheritAttrs">
-    <i :class="classNames" :style="style" :id="uName" />
+    <i :class="classNames" :style="style" />
   </div>
 </template>
 

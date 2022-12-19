@@ -13,9 +13,7 @@ interface IData {
   height: number
 }
 
-const { elem, uName, style, props, tagClassNames } = useProps(
-  useAttrs() as unknown as IProps<'Test'>
-)
+const { elem, style, props, tagClassNames } = useProps(useAttrs() as unknown as IProps<'Test'>)
 
 const data: IData = props.data
 </script>
