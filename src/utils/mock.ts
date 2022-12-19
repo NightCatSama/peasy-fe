@@ -400,6 +400,18 @@ export const BuiltInComponent = [
               sourceValue: 'data.text',
               targetValue: 'data.text',
             },
+          ],
+        },
+        {
+          /** 配置名称 */
+          title: '设置 2',
+          titleEn: 'Setting 2',
+          /** 图标 */
+          icon: 'advanced',
+          /** 是否折叠 */
+          defaultCollapsed: true,
+          /** 分组数据 */
+          data: [
             {
               type: ModuleConfigType.Size,
               label: '高度',

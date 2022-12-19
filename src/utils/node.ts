@@ -71,5 +71,5 @@ export const formatNodeByUniqueName = (
  * NOTE: isContainer 暂不支持自定义容器组件，后续支持可去掉 Block 的判断
  */
 export const isContainerNode = (node: PageNode): boolean => {
-  return node.name === 'Block' || !!node.isContainer
+  return node.component === 'Block' || !!node.isContainer
 }
