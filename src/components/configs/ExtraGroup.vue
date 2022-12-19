@@ -1,12 +1,13 @@
 <script setup lang="ts">
-import { IModuleConfigGroup, IModuleConfigItem, PageNode } from '@/config'
+import { GroupType, IModuleConfigGroup, IModuleConfigItem, PageNode } from '@/config'
 import { getFormPropsByType } from '@/constants/form'
 import { lang } from '@/constants/i18n'
+import { useGroupConfig } from '@/utils/config'
 import { get, has, set } from 'lodash-es'
 import { reactive, useAttrs } from 'vue'
 import Group from '../widgets/Group.vue'
 
-interface ICustomGroupProps extends IModuleConfigGroup {
+interface IExtraGroupProps extends IModuleConfigGroup {
   node: PageNode
 }
 
@@ -17,24 +18,30 @@ const {
   icon,
   data,
   defaultCollapsed = false,
-} = useAttrs() as unknown as ICustomGroupProps
+} = useAttrs() as unknown as IExtraGroupProps
 
 const dataRef = reactive(data)
 const getComponentData = (type: string) => getFormPropsByType(type)
 
-const getValue = (sourceValue: string) => get(node, sourceValue)
+const getValue = (sourceValue: string) => {
+  const list = sourceValue.split('.')
+  const props = useGroupConfig(node, list[0] as GroupType)
+  const path = list.slice(1).join('.')
+  return get(props, path)
+}
 const setValue = (targetValue: string | string[], value: string) => {
-  const list = Array.isArray(targetValue) ? targetValue.slice() : [targetValue]
-  while (list.length) {
-    const v = list.shift()!
-    if (v.includes('config.all.')) {
-      list.unshift(
-        v.replace('config.all.', 'config.props.'),
-        v.replace('config.all.', 'config.mobile.')
-      )
-    } else {
-      has(node, v) && set(node, v, value)
-    }
+  if (Array.isArray(targetValue)) {
+    targetValue.forEach((item) => setValueOnce(item, value))
+  } else {
+    setValueOnce(targetValue, value)
+  }
+}
+const setValueOnce = (targetValue: string, value: string) => {
+  const list = targetValue.split('.')
+  const props = useGroupConfig(node, list[0] as GroupType)
+  const path = list.slice(1).join('.')
+  if (has(props, path)) {
+    set(props, path, value)
   }
 }
 
@@ -45,7 +52,7 @@ const getLabel = $computed(
 </script>
 
 <template>
-  <Group :title="showTitle" :icon="icon" class="custom-group" :default-collapsed="defaultCollapsed">
+  <Group :title="showTitle" :icon="icon" class="data-group" :default-collapsed="defaultCollapsed">
     <template v-for="item in dataRef">
       <component
         :is="getComponentData(item.type).component"
@@ -62,7 +69,7 @@ const getLabel = $computed(
 </template>
 
 <style lang="scss" scoped>
-.custom-group {
+.data-group {
   .label {
     flex: 1;
     margin-right: 8px;

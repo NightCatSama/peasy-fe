@@ -1,4 +1,3 @@
-import { GroupType } from '@/config'
 import { $t } from './i18n'
 
 export const groupIconMap = {
@@ -17,7 +16,7 @@ export const groupIconMap = {
   code: 'code',
 } as any
 
-export const groupTitleMap: { [key in GroupType]: string } = {
+export const groupTitleMap: { [key in string]: string } = {
   common: '',
   layout: $t('layout'),
   size: $t('size'),

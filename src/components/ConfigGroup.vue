@@ -1,10 +1,8 @@
 <script setup lang="ts">
-import { GroupType } from '@/config'
 import { defaultGroupIcon, groupIconMap, groupTitleMap } from '@/constants/group'
 import { lang } from '@/constants/i18n'
 import { usePageStoreHelper } from '@/hooks/store'
 import { AlertError } from '@/utils/alert'
-import { useGroupConfig } from '@/utils/config'
 import { onErrorCaptured } from 'vue'
 import AnimationGroup from './configs/AnimationGroup.vue'
 import BackgroundGroup from './configs/BackgroundGroup.vue'
@@ -15,6 +13,7 @@ import ContainerGroup from './configs/ContainerGroup.vue'
 import CustomGroup from './configs/CustomGroup.vue'
 import EffectGroup from './configs/EffectGroup.vue'
 import EventGroup from './configs/EventGroup.vue'
+import ExtraGroup from './configs/ExtraGroup.vue'
 import FontGroup from './configs/FontGroup.vue'
 import LayoutGroup from './configs/LayoutGroup.vue'
 import PositionGroup from './configs/PositionGroup.vue'
@@ -24,16 +23,25 @@ import Dropdown from './widgets/Dropdown.vue'
 import Icon from './widgets/Icon.vue'
 
 interface IConfigGroupProps {
-  groupType: GroupType
-  index: number
+  groupType: string
+  groupProps: Record<string, any>
   minimize?: boolean
 }
-const { groupType, index, minimize } = defineProps<IConfigGroupProps>()
+const { groupType, groupProps, minimize } = defineProps<IConfigGroupProps>()
 
 const { activeNode } = usePageStoreHelper()
 
-const componentNameMap: { [type in GroupType]: any | null } = {
-  common: null,
+const componentName = $computed(() => {
+  if (groupType === 'module') {
+    return CustomGroup
+  }
+  if (groupType === 'extra') {
+    return ExtraGroup
+  }
+  return componentNameMap[groupType] || null
+})
+
+const componentNameMap: { [type in string]: any | null } = {
   basic: BasicGroup,
   size: SizeGroup,
   font: FontGroup,
@@ -46,17 +54,12 @@ const componentNameMap: { [type in GroupType]: any | null } = {
   event: EventGroup,
   effect: EffectGroup,
   animation: AnimationGroup,
-  custom: CustomGroup,
   code: CodeGroup,
 }
 
 const ignoreGroup = activeNode.value?.type === 'section' ? ['position'] : []
 
-const bindProps = $computed(() =>
-  activeNode.value?.isModule
-    ? activeNode.value.moduleConfig?.[index]
-    : { [groupType]: useGroupConfig(activeNode.value, groupType) }
-)
+const bindProps = $computed(() => groupProps)
 
 const iconName = $computed(
   () => (bindProps as any)?.icon || groupIconMap[groupType] || defaultGroupIcon
@@ -76,13 +79,10 @@ onErrorCaptured((err) => {
 </script>
 
 <template>
-  <div
-    v-if="activeNode && componentNameMap[groupType] && !ignoreGroup.includes(groupType)"
-    class="config-group"
-  >
+  <div v-if="activeNode && componentName && !ignoreGroup.includes(groupType)" class="config-group">
     <Component
       v-if="!minimize"
-      :is="componentNameMap[groupType]"
+      :is="componentName"
       :node="activeNode"
       v-bind="bindProps"
     ></Component>

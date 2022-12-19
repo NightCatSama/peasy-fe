@@ -109,7 +109,7 @@ export type GroupType =
   | 'animation'
   | 'custom'
   | 'code'
-  | `config:${string}`
+  | 'data'
 
 /** 配置对应约束类型 */
 export interface GroupPropType<T extends ComponentName = any> {
@@ -136,7 +136,7 @@ export interface GroupPropType<T extends ComponentName = any> {
   animation: IAnimation
   code: ICode
   custom: any
-  [key: `config:${string}`]: any
+  data: any
 }
 
 export type ComponentPropsGroupType = typeof ComponentPropsGroup
@@ -193,8 +193,13 @@ export interface PageNode<T extends ComponentName = any> {
   tags: string[]
   /** 组件名称 */
   component: T
+  // NOTE: isContainer 暂不支持，可搜 NOTE: isContainer 查看
+  /** 是否容器组件 */
+  isContainer?: boolean
   /** 组件配置 */
   config: IPropConfig<T>
+  /** 自定义配置 */
+  customConfig?: IModuleConfigGroup[]
   /** 配置参数链接到其他组件 */
   propLink?: string
   /** 包含的子组件 */

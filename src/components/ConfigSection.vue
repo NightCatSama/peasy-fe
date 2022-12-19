@@ -3,6 +3,7 @@ import { IMaterialItem } from '@/config'
 import { $t, getMaterialName } from '@/constants/i18n'
 import { ShortcutKey } from '@/constants/shortcut'
 import { useDisplayStoreHelper, usePageStoreHelper, useUserStoreHelper } from '@/hooks/store'
+import { useGroupConfig } from '@/utils/config'
 import { useKeyPress } from 'ahooks-vue'
 import TagList from './biz/TagList.vue'
 import TreeNode from './biz/TreeNode.vue'
@@ -54,6 +55,32 @@ const handleActiveNodeChange = async (event: Event) => {
 const disabledUnlinkDropdown = $computed(
   () => !activeNode.value || !activeNode.value.children || activeNode.value.children.length === 0
 )
+
+const configGroupList = $computed(() => {
+  if (!activeNode.value) return []
+  if (activeNode.value.isModule) {
+    return (activeNode.value.moduleConfig || []).map((props) => ({
+      groupType: 'module',
+      props,
+    }))
+  }
+  let list: {
+    groupType: string
+    props: Record<string, any>
+  }[] = (activeNodeGroups.value || []).map((groupType) => ({
+    groupType,
+    props: { [groupType]: useGroupConfig(activeNode.value, groupType) },
+  }))
+
+  list = list.concat(
+    (activeNode.value.customConfig || []).map((props) => ({
+      groupType: 'extra',
+      props,
+    }))
+  )
+
+  return list
+})
 
 /** 取消组件配置关联 */
 const handleUnlink = (includeChildren?: boolean) => unlinkActiveNodeProp(includeChildren)
@@ -202,11 +229,11 @@ const openMaterialModal = async () => {
       <div class="top"></div>
       <div class="mini-content" v-if="activeNode">
         <ConfigGroup
-          v-for="(groupType, index) in activeNodeGroups"
-          :group-type="groupType"
-          :index="index"
+          v-for="(configGroup, index) in configGroupList"
+          :group-type="configGroup.groupType"
+          :groupProps="configGroup.props"
           :minimize="true"
-          :key="groupType + activeNode.name + index + '_mini'"
+          :key="configGroup.groupType + activeNode.name + index + '_mini'"
         ></ConfigGroup>
       </div>
       <div class="bottom" v-if="activeNode">
@@ -295,10 +322,11 @@ const openMaterialModal = async () => {
             no-radius
           ></Tip>
           <ConfigGroup
-            v-for="(groupType, index) in activeNodeGroups"
-            :group-type="groupType"
-            :index="index"
-            :key="groupType + activeNode.name + index"
+            v-for="(configGroup, index) in configGroupList"
+            :group-type="configGroup.groupType"
+            :groupProps="configGroup.props"
+            :minimize="false"
+            :key="configGroup.groupType + activeNode.name + index"
           ></ConfigGroup>
         </div>
       </div>

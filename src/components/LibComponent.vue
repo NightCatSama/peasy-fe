@@ -4,6 +4,7 @@ import { useDisplayStoreHelper, useDragStoreHelper, usePageStoreHelper } from '@
 import { useConfigProps } from '@/utils/config'
 import { emitter } from '@/utils/event'
 import { disabledMoveable, getMoveable, useMoveable } from '@/utils/moveable'
+import { isContainerNode } from '@/utils/node'
 import type { SortableEvent } from 'sortablejs'
 import { ComponentPublicInstance, onBeforeUnmount, onMounted, watch } from 'vue'
 import draggable from 'vuedraggable'
@@ -117,6 +118,7 @@ const handleAddNode = (event: SortableEvent) => {
 /** 处理组件与组件的排序 */
 const handleSortNode = (event: SortableEvent) => {
   // 交互组件位置
+  // NOTE: isContainer 暂不支持拖拽原因，因为内部存在多个元素，无法确定可拖拽进去的元素，所以此处索引有问题
   if (event.pullMode !== 'clone' && event.oldIndex !== void 0 && event.newIndex !== void 0) {
     swapNode(item, event.oldIndex, event.newIndex)
     setDragNode(null)
@@ -125,7 +127,7 @@ const handleSortNode = (event: SortableEvent) => {
 }
 
 // 只有 block 组件才有拖拽排序功能（包含 children）
-const isBlockComponent = $computed(() => item.component === 'Block')
+const isBlockComponent = $computed(() => isContainerNode(item))
 
 // 滚动列表
 const scrollList: Set<HTMLDivElement> = new Set()
@@ -141,6 +143,7 @@ const componentEvents = $computed(() =>
             !item.isModule && // 当前组件不是 Module 组件
             !inDraggable && // 当前组件不是拖拽中的组件 （避免自己拖拽进自己）
             !getIsInDragNode.value(item.name) && // 当前组件不是拖拽组件的子组件 （避免把拖拽自己拖进自己的子组件）
+            // NOTE: isContainer 拖拽时触发 drag-enter 不一定是当前组件，所以以下判断有问题
             (e.target as HTMLDivElement)?.dataset?.name === item.name // 确认目前触发的元素是当前组件
           ) {
             setDropZone(item)

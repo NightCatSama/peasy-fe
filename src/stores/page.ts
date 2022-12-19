@@ -17,7 +17,7 @@ import {
 } from '@/utils/defaultConfig'
 import { downloadAllPages, downloadByPageNode } from '@/utils/download'
 import { materialApi, projectApi } from '@/utils/mande'
-import { formatNodeByUniqueName } from '@/utils/node'
+import { formatNodeByUniqueName, isContainerNode } from '@/utils/node'
 import { isValidName } from '@/utils/validation'
 import { SaveProjectDto } from '@@/dto/data.dto'
 import { Project } from '@@/entities/project.entity'
@@ -74,11 +74,7 @@ export const usePageStore = defineStore('page', {
   getters: {
     /** 当前激活节点对应的配置数据 */
     activeNodeGroups: (state) =>
-      state.activeNode
-        ? state.activeNode.isModule
-          ? new Array(state.activeNode?.moduleConfig?.length || 0).fill('custom')
-          : usePropListByComponent(state.activeNode)
-        : null,
+      state.activeNode ? usePropListByComponent(state.activeNode) : null,
     isActiveAllSection: (state) => state.activeSection === null,
     activeSectionIndex: (state) =>
       state.activeSection === null ? 0 : state.allPageData.indexOf(state.activeSection),
@@ -696,7 +692,7 @@ export const usePageStore = defineStore('page', {
       let parentNode = this.activeParentNode
       let index
       // 粘贴到组件内部, 若当前选中组件不是容器组件，则按相邻组件粘贴处理
-      if (pasteToInside && node.component === 'Block' && node.children) {
+      if (pasteToInside && isContainerNode(node) && node.children) {
         parentNode = node
         index = node.children?.length
       } else {

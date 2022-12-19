@@ -65,3 +65,11 @@ export const formatNodeByUniqueName = (
   }
   return newNode
 }
+
+/**
+ * 判断当前组件是否是容器组件
+ * NOTE: isContainer 暂不支持自定义容器组件，后续支持可去掉 Block 的判断
+ */
+export const isContainerNode = (node: PageNode): boolean => {
+  return node.name === 'Block' || !!node.isContainer
+}

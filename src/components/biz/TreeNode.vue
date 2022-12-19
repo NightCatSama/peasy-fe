@@ -3,6 +3,7 @@ import { PageNode } from '@/config'
 import { useDisplayStoreHelper, useDragStoreHelper } from '@/hooks/store'
 import { usePageStore } from '@/stores/page'
 import { useConfigProps } from '@/utils/config'
+import { isContainerNode } from '@/utils/node'
 import { storeToRefs } from 'pinia'
 import type { SortableEvent } from 'sortablejs'
 import { ref, watch } from 'vue'
@@ -113,7 +114,7 @@ const handleChildrenDragStart = (event: DragEvent) => {
 const handleDragEnter = (e: DragEvent) => {
   if (
     dragNode.value && // 存在拖拽组件
-    node.component === 'Block' &&
+    isContainerNode(node) &&
     !node.isModule // 当前组件不是 Module 组件
   ) {
     e.stopPropagation()

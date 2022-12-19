@@ -366,17 +366,22 @@ export const BuiltInComponent = [
       name: 'Test',
       component: 'Test',
       tags: ['Test'],
-      isModule: true,
+      isModule: false,
+      isContainer: false,
       config: {
         props: {
           common: getDefaultCommon(),
-          size: getDefaultSize(),
-          custom: {
+          size: getDefaultSize('component', {
+            width: '300px',
+            height: '400px',
+          }),
+          data: {
             text: '测试组件',
+            height: '30px',
           },
         },
       },
-      moduleConfig: [
+      customConfig: [
         {
           /** 配置名称 */
           title: '设置',
@@ -392,8 +397,16 @@ export const BuiltInComponent = [
               label: '文本',
               labelEn: 'Text',
               props: {},
-              sourceValue: 'config.props.custom.text',
-              targetValue: 'config.all.custom.text',
+              sourceValue: 'data.text',
+              targetValue: 'data.text',
+            },
+            {
+              type: ModuleConfigType.Size,
+              label: '高度',
+              labelEn: 'Height',
+              props: {},
+              sourceValue: 'data.height',
+              targetValue: 'data.height',
             },
           ],
         },
