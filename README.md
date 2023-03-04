@@ -33,3 +33,23 @@ http://localhost:3002/oidc/jwks
 ### pm2 启动 Logto
 
 pm2 start npm --name "logto" -- start
+
+### ubuntu 启动
+
+1. 启动 Logto
+
+```base
+pm2 start npm --name "logto" -- start
+```
+
+2. 启动 mysql
+
+```base
+pm2 start npm --name "logto" -- start
+```
+
+3. 启动后端
+
+```base
+cd peasy-be && npm run pm2
+```
