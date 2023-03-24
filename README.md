@@ -36,6 +36,10 @@ pm2 start npm --name "logto" -- start
 
 ### ubuntu 启动
 
+0. 启动 Postgresql
+
+sudo systemctl restart postgresql.service
+
 1. 启动 Logto
 
 ```base
@@ -45,7 +49,7 @@ pm2 start npm --name "logto" -- start
 2. 启动 mysql
 
 ```base
-pm2 start npm --name "logto" -- start
+service mysql start
 ```
 
 3. 启动后端
