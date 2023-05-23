@@ -1,6 +1,7 @@
 import ColorItemVue from '@/components/configs/items/ColorItem.vue'
 import ImageItemVue from '@/components/configs/items/ImageItem.vue'
 import InputItemVue from '@/components/configs/items/InputItem.vue'
+import SelectItemVue from '@/components/configs/items/SelectItem.vue'
 import SliderItemVue from '@/components/configs/items/SliderItem.vue'
 import SwitchItemVue from '@/components/configs/items/SwitchItem.vue'
 import TabsItemVue from '@/components/configs/items/TabsItem.vue'
@@ -116,6 +117,12 @@ export const getFormPropsByType = (type: ModuleConfigType | string) => {
         props: {
           type: 'text',
           placeholder: 'key: value',
+        },
+      }
+    case 'select':
+      return {
+        component: SelectItemVue,
+        props: {
         },
       }
     default:

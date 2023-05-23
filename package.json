@@ -28,6 +28,7 @@
     "@types/sortablejs": "^1.13.0",
     "ahooks-vue": "^0.13.3",
     "ali-oss": "^6.17.1",
+    "element-plus": "^2.2.27",
     "floating-vue": "^2.0.0-beta.17",
     "html2canvas": "^1.4.1",
     "jsoneditor": "^9.9.0",

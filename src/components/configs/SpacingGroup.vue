@@ -95,12 +95,13 @@ $gapX: 44px;
 $gapY: 30px;
 $inputW: 40px;
 $inputH: 14px;
+$height: 150px;
 .spacing-group {
   .spacing-block {
     position: relative;
     margin: 6px 0;
     width: 100%;
-    height: 150px;
+    height: $height;
     padding: $gapY $gapX;
     border-radius: $normal-radius;
     border: 1px dashed lighten($panel, 12%);
@@ -127,6 +128,8 @@ $inputH: 14px;
     }
   }
 
+  $margin-width: $config-width - 30px;
+
   .margin-sign {
     width: 0;
     height: 0;
@@ -136,10 +139,12 @@ $inputH: 14px;
     position: absolute;
     top: 0;
     left: 0;
-    box-shadow: (268px * 0.5 - 2px) 0 0 4px $panel-light,
-      (268px * 0.5 - 2px) (150px - 2px) 0 4px $panel-light, 0 (150px * 0.5 - 2px) 0 4px $panel-light,
-      (268px - 2px) (150px * 0.5 - 2px) 0 4px $panel-light;
+    box-shadow: ($margin-width * 0.5 - 2px) 0 0 4px $panel-light,
+      ($margin-width * 0.5 - 2px) ($height - 2px) 0 4px $panel-light, 0 ($height * 0.5 - 2px) 0 4px $panel-light,
+      ($margin-width - 2px) ($height * 0.5 - 2px) 0 4px $panel-light;
   }
+
+  $padding-width: $config-width - 90px - 30px;
 
   .padding-sign {
     position: absolute;
@@ -150,8 +155,8 @@ $inputH: 14px;
     margin: auto;
     top: -1px;
     left: -1px;
-    box-shadow: (178px * 0.5 - 2px) 0 0 2px $theme, (178px * 0.5 - 2px) (88px - 2px) 0 2px $theme,
-      0 (88px * 0.5 - 2px) 0 2px $theme, (178px - 2px) (88px * 0.5 - 2px) 0 2px $theme;
+    box-shadow: ($padding-width * 0.5 - 2px) 0 0 2px $theme, ($padding-width * 0.5 - 2px) (88px - 2px) 0 2px $theme,
+      0 (88px * 0.5 - 2px) 0 2px $theme, ($padding-width - 2px) (88px * 0.5 - 2px) 0 2px $theme;
   }
 
   .spacing-input {

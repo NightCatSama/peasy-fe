@@ -432,4 +432,72 @@ export const BuiltInComponent = [
       ],
     } as PageNode<any>,
   },
+  {
+    name: 'ElementTag',
+    enName: 'ElementTag',
+    category: '基础',
+    categoryEn: 'Basic',
+    type: 'component',
+    cover: '',
+    dataType: DataType.Page,
+    node: {
+      type: 'component',
+      name: 'ElementTag',
+      component: 'ElementTag',
+      tags: ['tag'],
+      isModule: false,
+      isContainer: false,
+      config: {
+        props: {
+          common: getDefaultCommon(),
+          code: getDefaultCode(),
+          size: getDefaultSize('component', {
+            width: '300px',
+            height: '400px',
+          }),
+          data: {
+            text: 'Tag',
+            type: 'success',
+            size: 'small',
+          },
+        },
+      },
+      customConfig: [
+        {
+          /** 配置名称 */
+          title: '设置',
+          titleEn: 'Setting',
+          /** 图标 */
+          icon: 'advanced',
+          /** 是否折叠 */
+          defaultCollapsed: true,
+          /** 分组数据 */
+          data: [
+            {
+              type: ModuleConfigType.Text,
+              label: '文本',
+              labelEn: 'Text',
+              props: {},
+              sourceValue: 'data.text',
+              targetValue: 'data.text',
+            },
+            {
+              type: ModuleConfigType.Select,
+              label: '尺寸',
+              labelEn: 'Size',
+              props: {
+                options: {
+                  small: 'small',
+                  default: 'default',
+                  large: 'large',
+                }
+              },
+              sourceValue: 'data.size',
+              targetValue: 'data.size',
+            },
+          ],
+        },
+      ],
+    } as PageNode<any>,
+  },
 ]

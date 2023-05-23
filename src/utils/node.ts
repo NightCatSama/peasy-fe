@@ -10,7 +10,7 @@ const createUnitID = (): string => {
 /**
  * 将节点和子节点的名字设置为唯一的
  * @param node 节点
- * @param nameMap 已存在的名字映射
+ * @param idMap 已存在的 id 映射
  */
 export const formatNodeByUniqueName = (
   originNode: PageNode,

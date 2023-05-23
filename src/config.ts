@@ -243,6 +243,8 @@ export enum ModuleConfigType {
   Tip = 'tip',
   /** 尺寸 */
   Size = 'size',
+  /** 选项 */
+  Select = 'select',
   /** 一组数据 */
   // Group = 'group',
 }

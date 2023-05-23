@@ -5,5 +5,6 @@ export { default as InputField } from './InputField.vue'
 export { default as Media } from './Media.vue'
 export { default as Test } from './Test.vue'
 export { default as Text } from './Text.vue'
+export { default as ElementTag } from './element/Tag.vue'
 
 import './template.scss'
