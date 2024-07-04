@@ -30,6 +30,7 @@ interface IConfigHeaderProps {
 const { isTemplate } = defineProps<IConfigHeaderProps>()
 
 const userStore = useUserStore()
+const { clearUserInfo } = userStore
 const { isLogin, userProfile, userName, avatar } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
@@ -52,6 +53,7 @@ const handleSignIn = () => {
 }
 const handleSignOut = async () => {
   if (await Modal.confirm($t('signOutTip'), { title: $t('signOutTipTitle') })) {
+    clearUserInfo()
     signout()
   }
 }

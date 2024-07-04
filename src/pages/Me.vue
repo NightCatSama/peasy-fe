@@ -28,6 +28,7 @@ const router = useRouter()
 const route = useRoute()
 
 const userStore = useUserStore()
+const { clearUserInfo } = userStore
 const { userName, avatar, vipName, isLogin } = storeToRefs(userStore)
 
 const handleSignIn = () => {
@@ -35,6 +36,7 @@ const handleSignIn = () => {
 }
 const handleSignOut = async () => {
   if (await Modal.confirm('', { title: $t('signOutTipTitle') })) {
+    clearUserInfo()
     signout()
   }
 }
