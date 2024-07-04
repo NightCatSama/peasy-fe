@@ -81,11 +81,13 @@ const handleDelete = async (item: IMaterialItem) => {
 
 const currentNodeList = $computed(() => {
   const list = (materialData.value as any)[currentType]
-  if (currentType === 'section') {
-    return [...list, EmptySection]
-  }
-  if (currentType === 'component') {
-    return [...list, EmptyBlock, EmptyText, EmptyImage, EmptyIcon, EmptyMedia, EmptyInputField]
+  if (isAdmin.value) {
+    if (currentType === 'section') {
+      return [...list, EmptySection]
+    }
+    if (currentType === 'component') {
+      return [...list, EmptyBlock, EmptyText, EmptyImage, EmptyIcon, EmptyMedia, EmptyInputField]
+    }
   }
   return list
 })
