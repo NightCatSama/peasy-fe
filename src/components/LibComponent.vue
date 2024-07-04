@@ -242,7 +242,7 @@ const handleSetElement = (el: HTMLElement) => $el = el
         :parent="item"
         :in-module="item.isModule || inModule"
         :key="subItem.name"
-        @mousedown="(e) => preventChildrenMousedown(e, subItem)"
+        @mousedown="(e: any) => preventChildrenMousedown(e, subItem)"
         @dragstart="(event: DragEvent) => handleChildrenDragStart(event, subItem)"
       ></LibComponent>
     </template>
