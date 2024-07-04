@@ -1,6 +1,5 @@
 import { createApp } from 'vue'
 import FloatingVue, { VTooltip, VClosePopper } from 'floating-vue'
-import { createLogto, LogtoConfig } from '@logto/vue'
 
 import App from './App.vue'
 import { Text, Block, Image, Icon, Media, InputField } from './components/libs'
@@ -13,16 +12,9 @@ import { router } from './router'
 import { pinia } from './stores'
 import { $t } from './constants/i18n'
 
-const config: LogtoConfig = {
-  endpoint: import.meta.env.VITE_LOGTO_HOST,
-  appId: import.meta.env.VITE_LOGTO_APPID,
-  resources: [import.meta.env.VITE_LOGTO_RESOURCE],
-}
-
 const app = createApp(App)
 
 app.use(router)
-app.use(createLogto, config)
 
 app.use(pinia)
 ;(window as any).__pinia__ = pinia

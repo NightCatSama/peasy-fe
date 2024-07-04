@@ -1,10 +1,9 @@
 <script setup lang="ts">
 import { useUserStore } from '@/stores/user'
 import { storeToRefs } from 'pinia'
-import { useLogto } from '@logto/vue'
 import Avatar from '@/components/widgets/Avatar.vue'
 import { materialApi, projectApi } from '@/utils/mande'
-import { onErrorCaptured, onMounted, reactive } from 'vue'
+import { onErrorCaptured, onMounted, reactive, watch } from 'vue'
 import { IMaterialItem, IPage } from '@/config'
 import { Project } from '@@/entities/project.entity'
 import { IResponse } from '@@/types/response'
@@ -23,22 +22,20 @@ import Materials from './menu/Materials.vue'
 import Settings from './menu/Settings.vue'
 import Chat from '@/components/biz/Chat.vue'
 import { emitter } from '@/utils/event'
+import { signInGithub, signout } from '@/utils/auth'
 
 const router = useRouter()
 const route = useRoute()
 
 const userStore = useUserStore()
 const { userName, avatar, vipName, isLogin } = storeToRefs(userStore)
-const { updateAvatar } = userStore
 
-const { signOut, signIn } = useLogto()
 const handleSignIn = () => {
-  sessionStorage.setItem('redirect', location.href)
-  signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
+  signInGithub()
 }
 const handleSignOut = async () => {
   if (await Modal.confirm('', { title: $t('signOutTipTitle') })) {
-    signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
+    signout()
   }
 }
 
@@ -61,9 +58,23 @@ onMounted(async () => {
   if (!isLogin.value) {
     showMap['project'] = []
     curMenu = ''
-    handleSignIn()
     return
   }
+
+  loadProject()
+})
+
+watch(
+  () => isLogin.value,
+  (newValue, oldValue) => {
+    if (newValue && !oldValue) {
+      loadProject()
+    }
+  },
+  { flush: 'post' }
+)
+
+const loadProject = async() => {
   const setGlobalLoading = getSetLoading()
   const hide = setGlobalLoading?.($t('loading'))
   const { data } = await projectApi.get<IResponse<Project[]>>('')
@@ -79,7 +90,7 @@ onMounted(async () => {
       showMap[key] = []
     }
   })
-})
+}
 
 onErrorCaptured((error: any) => {
   AlertError(error?.body?.message || error?.message || error?.msg || $t('unknownError'))

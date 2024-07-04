@@ -7,12 +7,13 @@ import { useUserStore } from './stores/user'
 import { AlertError } from './utils/alert';
 import { logtoMeApi, persistToken } from './utils/mande'
 import Icon from './components/widgets/Icon.vue';
+import { onMounted } from 'vue';
 
 let isReady = $ref(false)
 
 const route = useRoute()
 const userStore = useUserStore()
-const { fetchUserInfo, clearUserInfo } = userStore
+const { setAccessToken, fetchUserInfo, clearUserInfo } = userStore
 
 let showGlobalLoading = $ref(false)
 let globalLoadingText = $ref('')
@@ -23,7 +24,8 @@ onBeforeMount(async () => {
   }
 
   // 先获取 token
-  const { token } = await persistToken()
+  const token = persistToken()
+
   isReady = true
 
   if (['zh', 'en'].includes(route.query?.lang as string)) {
@@ -33,11 +35,24 @@ onBeforeMount(async () => {
   // 再获取用户信息
   if (token) {
     try {
+      setAccessToken(token)
       fetchUserInfo()
     } catch(e) {
       clearUserInfo()
     }
   }
+})
+
+onMounted(() => {
+  window.addEventListener('storage', async (e) => {
+    if (e.key === 'access_token') {
+      const token = persistToken()
+      if (token) {
+        setAccessToken(token)
+        fetchUserInfo()
+      }
+    }
+  })
 })
 
 pinia.use(({ store }) => {

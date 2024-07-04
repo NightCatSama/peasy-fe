@@ -1,6 +1,4 @@
 import { defaults, mande, MandeInstance } from 'mande'
-import { useLogto } from '@logto/vue'
-import { useUserStore } from '@/stores/user'
 
 export const apiURL = (import.meta.env.VITE_BE_HOST || '') + (import.meta.env.VITE_BE_PREFIX || '')
 
@@ -16,23 +14,10 @@ export function clearToken() {
   delete defaults.headers.Authorization
 }
 
-export async function persistToken() {
-  const { getAccessToken, getIdTokenClaims } = useLogto()
-  const token = (await getAccessToken?.(import.meta.env.VITE_LOGTO_RESOURCE)) || ''
-  const userInfo = await getIdTokenClaims()
+export function persistToken() {
+  const token = localStorage.getItem('access_token') || ''
   if (token) setToken(token)
-  if (token && userInfo) {
-    useUserStore().setUserInfo(token, {
-      username: userInfo.username || userInfo.name || '',
-      avatar: userInfo.avatar || '',
-      roleNames: userInfo?.role_names || [],
-      uid: userInfo.sub || '',
-    })
-  }
-  return {
-    token,
-    userInfo,
-  }
+  return token
 }
 
 /** BE 接口 */

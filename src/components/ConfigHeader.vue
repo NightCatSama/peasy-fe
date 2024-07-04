@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { storeToRefs } from 'pinia'
-import { useLogto } from '@logto/vue'
 
 import Btn from './widgets/Btn.vue'
 import Avatar from './widgets/Avatar.vue'
@@ -22,6 +21,7 @@ import PageList from './biz/PageList.vue'
 import { getDomainURL } from '@/utils/mande'
 import EditorSettingModal from './modal/EditorSettingModal.vue'
 import Simulator from './biz/Simulator.vue'
+import { signInGithub, signout } from '@/utils/auth'
 
 interface IConfigHeaderProps {
   isTemplate: boolean
@@ -30,7 +30,7 @@ interface IConfigHeaderProps {
 const { isTemplate } = defineProps<IConfigHeaderProps>()
 
 const userStore = useUserStore()
-const { userName, avatar } = storeToRefs(userStore)
+const { isLogin, userProfile, userName, avatar } = storeToRefs(userStore)
 
 const pageStore = usePageStore()
 const { project, mainProject, colorVars, allPageData, template } = storeToRefs(pageStore)
@@ -47,14 +47,12 @@ const historyStore = useHistoryStore()
 const { canUndoHistory, canRedoHistory, isSave } = storeToRefs(historyStore)
 const { undoHistory, redoHistory } = historyStore
 
-const { signIn, signOut, isAuthenticated } = useLogto()
 const handleSignIn = () => {
-  sessionStorage.setItem('redirect', location.href)
-  signIn(import.meta.env.VITE_LOGTO_REDIRECT_URL)
+  signInGithub()
 }
 const handleSignOut = async () => {
   if (await Modal.confirm($t('signOutTip'), { title: $t('signOutTipTitle') })) {
-    signOut(import.meta.env.VITE_LOGTO_SIGN_OUT_URL)
+    signout()
   }
 }
 
@@ -254,7 +252,7 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
         <Avatar :image="avatar" :size="36" can-operator />
         <template #content="{ hide }">
           <div class="user-content">
-            <template v-if="isAuthenticated">
+            <template v-if="isLogin && userProfile?.userInfo">
               <div class="user-name">{{ userName }}</div>
               <div class="item" @click=" () => { gotoMePage(); hide() }">{{ $t('profile') }}</div>
               <div class="item" @click=" () => { showEditorSetting = true; hide() }">{{ $t('editorSetting') }}</div>
