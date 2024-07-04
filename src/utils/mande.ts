@@ -46,6 +46,6 @@ export const getProjectPreview = (projectId: string) =>
   `${apiURL}/api/data/preview/project/${projectId}`
 
 /** 获取网站访问链接 */
-export const getDomainURL = (domain: string, filename?: string) => `https://${domain}.p-easy.net${
+export const getDomainURL = (domain: string, filename?: string) => `https://p.hzfe.org/${domain}${
   filename && filename !== 'index' ? `/${filename}.html` : ''
 }`

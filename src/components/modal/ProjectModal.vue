@@ -161,14 +161,14 @@ const filename = $computed({
         <div class="domain-input item" v-if="editProject.isPublic">
           <div class="label">{{ $t('domain') }}</div>
           <div class="domain">
-            <span
+            p.hzfe.org/<span
               :class="['sub-domain', { disabled: !isVIP }]"
               :contenteditable="isVIP ? 'true' : 'false'"
               v-tooltip="{ content: $t('domainTip'), disabled: isVIP }"
               @keydown.enter.stop="(e: Event) => (e.target as HTMLDivElement)?.blur()"
               @blur="verifyDomain"
             >{{ editProject.domain || (isVIP ? '' : $t('domainRandom')) }}</span>
-            <span>.p-easy.net</span>
+            <span></span>
           </div>
         </div>
       </template>
