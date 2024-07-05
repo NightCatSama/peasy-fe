@@ -280,7 +280,7 @@ const handleSwitchPage = (menuType: string) => {
         </div>
       </div>
       <div class="menu-list">
-        <div class="menu-item link" @click="openLink('https://discord.gg/AXQP9YUSXk')">
+      <div class="menu-item link" @click="openLink('https://discord.gg/AXQP9YUSXk')">
           <Icon class="menu-item-icon" name="discord" :size="16"></Icon>
           <div class="menu-item-text">{{ $t('discord') }}</div>
         </div>

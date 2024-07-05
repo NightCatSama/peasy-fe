@@ -99,8 +99,8 @@ const switchLang = async(lang: 'zh' | 'en') => {
               <div class="table-td-name">{{ 'Basic' }}</div>
               <div class="table-td-pricing">{{ $t('free') }}</div>
             </div>
-            <div class="table-td">{{ '1' }}</div>
-            <div class="table-td">{{ '5' }}</div>
+            <div class="table-td">{{ '3' }}</div>
+            <div class="table-td">{{ '10' }}</div>
             <div class="table-td">{{ $t('basicTemplate') }}</div>
             <div class="table-td">
               <Icon name="check" color="green" :size="16"></Icon>
@@ -120,7 +120,7 @@ const switchLang = async(lang: 'zh' | 'en') => {
               <div class="table-td-name">{{ 'Advanced' }}</div>
               <div class="table-td-pricing highlight">{{ '10$' }}<span class="date">{{ $t('perMonth') }}</span></div>
             </div>
-            <div class="table-td">{{ '5' }}</div>
+            <div class="table-td">{{ '10' }}</div>
             <div class="table-td">{{ '99' }}</div>
             <div class="table-td">{{ $t('allTemplates') }}</div>
             <div class="table-td">

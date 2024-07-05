@@ -4,8 +4,8 @@ import { useRoute } from 'vue-router';
 import { $t } from './constants/i18n';
 import { pinia } from './stores';
 import { useUserStore } from './stores/user'
-import { AlertError } from './utils/alert';
-import { logtoMeApi, persistToken } from './utils/mande'
+import { AlertError, AlertSuccess } from './utils/alert';
+import { persistToken } from './utils/mande'
 import Icon from './components/widgets/Icon.vue';
 import { onMounted } from 'vue';
 
@@ -48,6 +48,7 @@ onMounted(() => {
     if (e.key === 'access_token') {
       const token = persistToken()
       if (token) {
+        AlertSuccess($t('signInSuccess'))
         setAccessToken(token)
         fetchUserInfo()
       }

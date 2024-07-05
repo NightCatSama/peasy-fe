@@ -51,6 +51,11 @@ const { undoHistory, redoHistory } = historyStore
 const handleSignIn = () => {
   signInGithub()
 }
+
+const handleSignInWithTestAccount = () => {
+  localStorage.setItem('access_token', 'gho_testAccessTokenXXXXXXX')
+}
+
 const handleSignOut = async () => {
   if (await Modal.confirm($t('signOutTip'), { title: $t('signOutTipTitle') })) {
     clearUserInfo()
@@ -268,6 +273,7 @@ emitter.on('switchPageList', (open: boolean = false) => showPageList = open)
                 {{ lang === 'zh' ? $t('switchToEN') : $t('switchToZH') }}
               </div>
               <div class="item primary" @click="handleSignIn">{{ $t('signIn') }}</div>
+              <div class="item primary" @click="handleSignInWithTestAccount">{{ $t('signInByTestAccount') }}</div>
             </template>
           </div>
         </template>
