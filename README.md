@@ -1,3 +1,20 @@
+# 项目介绍
+> 无代码页面生成平台
+<img width="3444" height="1744" alt="image" src="https://github.com/user-attachments/assets/d7ffeac5-ac8c-4489-9578-1bdeacce183d" />
+
+## Feature
+- 无代码页面配置，支持常用样式配置
+- 支持组件化/模块化复用
+- 支持多页面编辑
+- 支持导出 html 页面
+- 支持直接访问
+
+<img width="3448" height="1734" alt="image" src="https://github.com/user-attachments/assets/da91bf0a-24ab-4d5c-92d0-2804507ca728" />
+
+编辑保存可直接访问: [https://p.hzfe.org/66929co70j04](https://p.hzfe.org/66929co70j04)
+
+# 启动项目
+
 ## 克隆后端 submodule
 
 ```
@@ -14,42 +31,6 @@ mysql.server start
 
 ```
 vi ./peasy-be/.env
-```
-
-## 启动 Logto
-
-按教程安装 Logto
-
-下载 Postgresql
-
-将 env-notes/.env 放置到 logto 目录，再 npm start 启动
-
-访问 logto 服务的 jwk 的公钥集接口
-
-http://localhost:3002/oidc/jwks
-
-复制到 peasy-be/config/jwk.ts 中
-
-### pm2 启动 Logto
-
-pm2 start npm --name "logto" -- start
-
-### ubuntu 启动
-
-0. 启动 Postgresql
-
-sudo systemctl restart postgresql.service
-
-1. 启动 Logto
-
-```base
-pm2 start npm --name "logto" -- start
-```
-
-2. 启动 mysql
-
-```base
-service mysql start
 ```
 
 3. 启动后端
